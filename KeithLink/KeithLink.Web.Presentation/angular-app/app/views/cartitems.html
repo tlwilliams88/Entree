@@ -16,67 +16,79 @@
   </div>
 </div>
 
-<div class="col-xs-12 col-sm-10 col-md-8">
-    <h2>
-      <span style="padding-right: 29%">Review Cart and Shipping Details</span>
-         
-      <a 
-        ng-if="::!isChangeOrder" 
-        ui-sref="menu.addtoorder.items({ cartId: currentCart.id, listId: currentCart.listid, listType: currentCart.listtype  })" 
-        class="btn btn-default">
-        Continue Shopping
-      </a>
-
-      <a 
-        ng-if="::isChangeOrder" 
-        ui-sref="menu.addtoorder.items({ cartId: currentCart.ordernumber, listId: currentCart.listid, listType: currentCart.listtype })" 
-        class="btn btn-default">
-        Continue Shopping
-      </a>
-
-      <a 
-        type="button" 
-        ng-if="::!isChangeOrder" 
-        class="btn btn-default btn-mobile" 
-        ng-disabled="cartForm.$pristine" 
-        ng-click="cancelChanges()" >
-        Cancel Changes
-      </a>
-
-      <a 
-        class="btn btn-primary btn-mobile" 
-        ng-if="::!isChangeOrder" 
-        type="submit" 
-        ng-disabled="cartForm.$pristine" 
-        ng-click="saveCart(currentCart)">
-        Save Cart
-      </a>
-
-      <a 
-        type="button" 
-        class=" btn btn-default btn-mobile" 
-        ng-if="::isChangeOrder"  
-        ng-disabled="cartForm.$pristine" 
-        ng-click="cancelChanges()" >
-        Cancel Changes
-      </a>
-
-      <a 
-        type="button" 
-        class="btn btn-primary  btn-mobile" 
-        ng-if="::isChangeOrder"  
-        ng-disabled="cartForm.$pristine" 
-        ng-click="saveChangeOrder(currentCart)">
-        Save Order
-      </a>
-
-
-
-    </h2>
-    <hr>
+<div class="row col-xs-12 col-lg-8">
+    <span class="col-xs-7 col-lg-8" style="padding-left: 0; font-size: 1.75em; font-weight: bold;">Review Cart and Shipping Details</span>
+        <span class="col-xs-5 col-lg-4">
+          <a
+            ng-if="::!isChangeOrder" 
+            ui-sref="menu.addtoorder.items({ cartId: currentCart.id, listId: currentCart.listid, listType: currentCart.listtype  })" 
+            class="btn btn-default"
+            style="margin-top: 5px;">
+            Continue Shopping
+          </a>
+  
+          <a 
+            ng-if="::isChangeOrder" 
+            ui-sref="menu.addtoorder.items({ cartId: currentCart.ordernumber, listId: currentCart.listid, listType: currentCart.listtype })" 
+            class="btn btn-default"
+            style="margin-top: 5px;">
+            Continue Shopping
+          </a>
+  
+          <a 
+            type="button" 
+            ng-if="::!isChangeOrder" 
+            class="btn btn-default btn-mobile" 
+            ng-disabled="cartForm.$pristine" 
+            ng-click="cancelChanges()"
+            style="margin-top: 5px;">
+            Cancel Changes
+          </a>
+  
+          <a 
+            class="btn btn-primary btn-mobile" 
+            ng-if="::!isChangeOrder" 
+            type="submit" 
+            ng-disabled="cartForm.$pristine" 
+            ng-click="saveCart(currentCart)"
+            style="margin-top: 5px;">
+            Save Cart
+          </a>
+  
+          <a 
+            type="button" 
+            class=" btn btn-default btn-mobile" 
+            ng-if="::isChangeOrder"  
+            ng-disabled="cartForm.$pristine" 
+            ng-click="cancelChanges()"
+            style="margin-top: 5px;">
+            Cancel Changes
+          </a>
+  
+          <a 
+            type="button" 
+            class="btn btn-primary  btn-mobile" 
+            ng-if="::isChangeOrder"  
+            ng-disabled="cartForm.$pristine" 
+            ng-click="saveChangeOrder(currentCart)"
+            style="margin-top: 5px;">
+            Save Order
+          </a>
+        </span>
+    <hr class="col-xs-12">
+    <span>
+        <span class="text-red" ng-show="cartForm.$invalid && !cartForm.$pristine">Your cart has some errors. Please fix these before submitting your order.</span>
+                <span class="text-red" ng-show="(currentCart.requestedshipdate && cartForm.cutoffDate.$error.orderCutoffDate) || invalidSelectedDate">Selected ship date is invalid.</span>
+                <span class="text-red" ng-show="!currentCart.requestedshipdate && !cartForm.$pristine">Selected ship date is required.</span>
+                <span class="text-red" ng-show="cartForm.mandatoryItemsCount.$error.mandatoryItemsCheck">Cart is missing some mandatory items.</span>
+                <span class="text-red" ng-show="cartForm.poNumber.$error.required">PO Number is required.</span>
+                <span class="text-red" ng-show="cartForm.poNumber.$error.maxlength">PO Number cannot be more than 20 characters.</span>
+                <span class="text-red" ng-show="(!currentCart.items || currentCart.items.length === 0)">There are no items in this cart. Cannot submit order.</span>
+                <span class="text-red" ng-if="currentCart.status === 'Confirmed with un-submitted changes'">This order has pending changes. Click Submit Changes to update order.</span>
+    </span>
     <div class="page-content col-xs-12 container-fluid" style="display: inline-block;">
         <div class="pull-left" ng-hide="currentCart.isRenaming">
-            <h3 style="margin-top: 5px;">Cart Name:</h3>
+            <h3 style="margin-top: 5px; font-weight: bold;">Cart Name:</h3>
             <div class="btn-group" dropdown is-open="status.isopen">
               <button type="button" class="select-cart btn-lg btn btn-default dropdown-toggle">
                 {{currentCart.name || '# ' + currentCart.invoicenumber}} <span class="hidden-print icon-arrow-down6"></span>
@@ -151,12 +163,11 @@
             <span class="form-error-message" ng-show="renameCartForm.cartName.$error.noDuplicates">Duplicate cart name</span>
           </form>
 
-        <div class="pull-right col-xs-12 col-md-5">
-          <h3 style="margin-top: 5px;">Delivery Details:</h3>
-          <div class="col-sm-12"></div>
-          <label for="shipDate" class="col-sm-5 control-label" style="padding-left: 0;">Ship Date:</label>
+        <div class="pull-right col-xs-12 col-md-6" style="padding-top: 10px;">
+          <span style="margin-left: -15px; font-size: 1.5em; font-weight: bold;">Delivery Details:</span>
+          <div class="row">
+          <label for="shipDate" class="col-sm-4 control-label" style="padding-left: 0;">Ship Date:</label>
             <div class="btn-group" dropdown is-open="showShipDates">
-              <p>
                 {{currentCart.requestedshipdate | formatDate}}
                 <button type="button" class="btn-no-style dropdown-toggle hidden-print"> <span class="text-blue icon-calendar"></span></button><span ng-if="currentCart.containsspecialitems" class="text-black glyphicon-asterisk"></span>
                 <div class="dropdown-menu">
@@ -173,31 +184,83 @@
                     </tr>
                   </table>
                 </div>
-              </p>
 
-            </div>
-
-            <label for="shipDate" class="col-sm-5 control-label" style="padding-left: 0;">Submit by:</label>
-            <div>
-              <p class="form-control-static text-light">{{selectedShipDate.cutoffdatetime | formatDateWithTimezone}}</p>
-              <input name="cutoffDate" type="hidden" ng-model="selectedShipDate.cutoffdatetime" order-cutoff-date>
-            </div>
-  
-            <label for="shipDate" class="col-sm-5 control-label" style="padding-left: 0;">PO #:</label>
-            <div class="col-sm-6" style="padding-left: 0;">
-              <input class="form-control print-clean" ng-maxlength="20" name="poNumber" type="text" ng-model="currentCart.ponumber" ng-required="selectedUserContext.customer.isPoRequired" ng-readonly="::isChangeOrder">
             </div>
           </div>
+
+            <div class="row">
+                <label for="shipDate" class="col-xs-3 col-sm-4 control-label" style="padding-left: 0;">Submit by:</label>
+                <div>
+                  {{selectedShipDate.cutoffdatetime | formatDateWithTimezone}}
+                  <input name="cutoffDate" type="hidden" ng-model="selectedShipDate.cutoffdatetime" order-cutoff-date>
+                </div>
+              </div>
+      
+              <div class="row">
+                <label for="shipDate" class="col-xs-3 col-sm-4 control-label" style="padding-left: 0;">PO #:</label>
+                <div class="col-xs-6" style="padding-left: 0;">
+                  <input class="form-control print-clean" ng-maxlength="20" name="poNumber" type="text" ng-model="currentCart.ponumber" ng-required="selectedUserContext.customer.isPoRequired" ng-readonly="::isChangeOrder" placeholder="Enter PO Number">
+                </div>
+            </div>
+
+            
+          </div>
+          <div class="hidden-lg" style="border: 2px solid #C4BC9E; border-radius: 5px; height: 200px; padding: 10px; margin-top: 200px;">
+              <h2 style="padding-left: 25px;">Order Summary</h2>
+        
+              <div class="row" style="padding-left: 25px;">
+                <label for="items" class="col-xs-4 col-sm-5 control-label">Items: </label>
+                <div class="col-xs-4 col-sm-6" style="padding-left: 0;">
+                    {{(currentCart.itemcount ||  '0') + (currentCart.itemcount === 1 ? ' Item' : ' Items')}}
+                </div>
+              </div>
+            
+              <div class="row" style="padding-left: 25px;">
+                <label for="pieces" class="col-xs-4 col-sm-5 control-label">Pieces: </label>
+                <div class="col-sm-4" style="padding-left: 0;">
+                    {{(currentCart.piececount || '0') + (currentCart.piececount === 1 ? ' Piece' : ' Pieces')}}
+                </div>
+              </div>
+        
+              <div class="row" style="padding-left: 25px;">
+                  <label for="total" class="col-xs-4 col-sm-5 control-label" style="font-size: 1.5em">Total:</label>
+                  <div class="col-sm-4" style="padding-left: 0; font-size: 1.5em; font-weight: bold;">
+                      <span class="text-green">
+                        {{currentCart.subtotal | currency}}
+                      </span>
+                  </div>
+                </div>
+        
+                <div class="row col-xs-12" style="padding-left: 40px;">
+                    <button 
+                      ng-if="canSubmitOrders" 
+                      type="button" 
+                      class="btn btn-primary btn-mobile col-xs-12"
+                      style="background-color: #04a773; border: none;"
+                      ng-disabled="cartForm.$invalid || disableSubmitButtons" 
+                      ng-click="submitOrder(currentCart)" 
+                      analytics-on 
+                      analytics-category="Orders" 
+                      analytics-event="Submit Order" 
+                      analytics-label="Order">
+                      Submit Order
+                    </button>
+                  </div>
+        
+        
+        
+            </div>
+          
       </div>
   </div>
 
-      <div class="col-xs-12 col-lg-8" style="margin-top: 50px; padding-right: 15px;">
-        <tabset class="tabset critical-items__tabset tab-border pull-left" style="max-height: 300px;">
+      <div class="col-xs-12 col-lg-8" style="margin-top: 40px; padding-left: 0;">
+        <form name="cartForm">
+        <tabset class="tabset tab-border pull-left" style="width: 100%;">
           <tab ng-if="canCreateOrders && cartHeaders && cartHeaders.length > 0" class="text-center" active="currentCart.active">
-              <tab-heading><span class="icon-cart" style="padding-right: 5px;"></span>Cart</tab-heading>
+              <tab-heading><span class="icon-cart" style="padding-right: 5px; color: #3E9DCD"></span>Cart</tab-heading>
               <h3 class="visible-print-block hidden-xs hidden-sm hidden-md hidden-lg"><span class="icon-cart" style="padding-right: 5px;"></span>Cart</h3>
-              <table class="table item-details__table table-striped-rows no-margin" style="table-layout: fixed;
-              width: 100%;">
+              <table class="table item-details__table table-striped-rows no-margin" style="width: 100%; padding-bottom: 10px;">
                 <tbody>
                   <tr>
                     <th class="sort-col-header" ng-click="sortBy='itemnumber';sortOrder=!sortOrder;">
@@ -233,7 +296,7 @@
                       <th class="hidden-mobile-visible-print ">
                         Ext Price
                       </th>
-                      <th class="large-icon icon-col">
+                      <th class="large-icon icon-col hidden-xs">
                         <a ng-click="showFilter = !showFilter;"><span class="icon-filter hidden-print"></span></a>
                       </th>
                   </tr>
@@ -295,7 +358,7 @@
                       {{item.extPrice | currency}}
                     </td>
                     <td class="large-icon icon-col">
-                      <a class="hidden-print visible-xs-inline visible-sm-inline"><span class="hidden-print text-light visible-xs-inline visible-sm-inline icon-ellipsis" ng-click="showDetails = !showDetails;"></span></a>
+                      <a class="hidden-print hidden-xs hidden-sm visible-md-inline visible-lg-inline"><span class="hidden-print text-light visible-xs-inline visible-sm-inline icon-ellipsis" ng-click="showDetails = !showDetails;"></span></a>
                       <a class="hidden-print hidden-xs hidden-sm" ng-if="!(item.isMandatory && isChangeOrder || item.status == 'Deleted')" ng-click="deleteItem(item)"><span class="text-red icon-cross"></span></a>
                     </td>
                   </tr>
@@ -311,10 +374,10 @@
             </tab>
 
             <tab heading="Mandatory Items" ng-show="mandatoryList && mandatoryList.items.length > 0" active="mandatoryList.active" class="text-center">
-              <tab-heading><span class="icon-warning" style="padding-right: 5px;"></span>Mandatory Items</tab-heading>
+              <tab-heading><span class="icon-warning" style="padding-right: 5px;" ng-style="mandatoryItems.length > 0 && {'color': 'rgb(226, 38, 44)'}"></span>Mandatory Items</tab-heading>
               <input name="mandatoryItemsCount" type="hidden" ng-model="mandatoryItems.length" mandatory-items-check>
       
-              <table class="table table-striped-rows table-narrow" style="table-layout: fixed; width: 100%;">
+              <table class="table table-striped-rows table-narrow" style="width: 100%;">
                 <thead>
                   <tr>
                     <th class="input-col">
@@ -369,9 +432,8 @@
             </tab>
         
             <tab ng-show="reminderList && reminderList.items.length > 0" active="reminderList.active" class="text-center">
-              <tab-heading><span class="icon-alarm" style="padding-right: 5px;"></span>Reminder Items</tab-heading>
-              <table class="table table-striped-rows table-narrow" style="table-layout: fixed;
-              width: 100%;">
+              <tab-heading><span class="icon-alarm" style="padding-right: 5px;" ng-style="reminderItems.length > 0 && {'color': 'rgb(180, 180, 18)'}"></span>Reminder Items</tab-heading>
+              <table class="table table-striped-rows table-narrow" style="width: 100%;">
                 <thead>
                   <tr>
                     <th class="input-col">
@@ -412,11 +474,119 @@
                 </tfoot>
               </table>
             </tab>
+
+            <tab ng-show="true" active="recommendedList.active" class="text-center hidden-lg">
+                <tab-heading><span class="icon-new" style="padding-right: 5px; color: #00A874;"></span>Recommended Items</tab-heading>
+                <table class="table table-striped-rows table-narrow" style="table-layout: fixed;
+                width: 100%;">
+                  <thead>
+                    <tr>
+                      <th class="input-col">
+                        <input type="checkbox" ng-model="reminderList.allSelected" no-dirty-check ng-change="changeAllSelectedItems(reminderItems, reminderList.allSelected)">
+                      </th>
+                      <th class="sort-col-header" ng-click="reminderSortBy='itemnumber';reminderSortOrder=!reminderSortOrder;">
+                        Item
+                        <span># <span sort-icons field="'itemnumber'" sortorder="reminderSortOrder" sortby="reminderSortBy"></span></span>
+                      </th>
+                      <th class="sort-col-header" ng-click="reminderSortBy='name';reminderSortOrder=!reminderSortOrder;">
+                        <span>Name <span sort-icons field="'name'" sortorder="reminderSortOrder" sortby="reminderSortBy"></span></span>
+                      </th>
+                      <th class="input-col">
+                        <a class="pull-right" ng-show="reminderItems && reminderItems.length > 0" ng-click="addSelectedToCart(reminderItems)"><span class="icon-plus3 large-icon"></span> Add</a>
+                      </th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr ng-repeat="item in (reminderItems = (reminderList.items | meetsMinimumQuantity:currentCart.items | orderBy:reminderSortBy:reminderSortOrder)) | limitTo: 5"  ng-class="{ odd : $odd, even: $even, 'item-selected': item.isSelected }">
+                      <td class="input-col">
+                        <input type="checkbox" ng-model="item.isSelected" no-dirty-check>
+                      </td>
+                      <td>
+                        <a ng-if="item.catalog_id && item.catalog_id.indexOf('unfi') == 0" ui-sref="menu.catalog.products.details({itemNumber: item.itemnumber, catalogType: 'UNFI'})">{{item.itemnumber}}</a>
+                        <a ng-if="!item.catalog_id || item.catalog_id.indexOf('unfi') != 0" ui-sref="menu.catalog.products.details({itemNumber: item.itemnumber})">{{item.itemnumber}}</a>
+                      </td>
+                      <td colspan="2">
+                        {{item.name}}
+                      </td>
+                    </tr>
+                  </tbody>
+                  <tfoot ng-show="reminderList.active && reminderItems.length === 0">
+                    <tr>
+                      <td colspan="12">
+                        There are no missing reminder items for this cart.
+                      </td>
+                    </tr>
+                  </tfoot>
+                </table>
+              </tab>
         </tabset>
+      </form>
       </div>
 
-  <div class="row col-xs-4 hidden-xs hidden-sm" style="width: 32%; padding-left: 15px; margin-left: 15px; margin-top: -200px;">
+  <div class="col-xs-4 hidden-xs hidden-sm hidden-md" style="width: 32%; padding-left: 15px; margin-left: 15px; margin-top: -180px; height: 100%;">
 
-    <div style="border: 2px solid black; border-radius: 5px; height: 200px; padding-right: 10px;"></div>
+    <div sticky offset="20" style="border: 2px solid #C4BC9E; border-radius: 5px; height: 200px; padding: 10px;">
+      <h2 style="padding-left: 25px;">Order Summary</h2>
 
+      <div class="row" style="padding-left: 25px;">
+        <label for="items" class="col-sm-5 control-label">Items: </label>
+        <div class="col-sm-6" style="padding-left: 0;">
+            {{(currentCart.itemcount ||  '0') + (currentCart.itemcount === 1 ? ' Item' : ' Items')}}
+        </div>
+      </div>
+    
+      <div class="row" style="padding-left: 25px;">
+        <label for="pieces" class="col-sm-5 control-label">Pieces: </label>
+        <div class="col-sm-4" style="padding-left: 0;">
+            {{(currentCart.piececount || '0') + (currentCart.piececount === 1 ? ' Piece' : ' Pieces')}}
+        </div>
+      </div>
+
+      <div class="row" style="padding-left: 25px;">
+          <label for="total" class="col-sm-5 control-label" style="font-size: 1.5em">Total Price:</label>
+          <div class="col-sm-4" style="padding-left: 0; font-size: 1.5em; font-weight: bold;">
+              <span class="text-green">
+                {{currentCart.subtotal | currency}}
+              </span>
+          </div>
+        </div>
+
+        <div class="row col-xs-12" style="padding-left: 40px;">
+            <button 
+              ng-if="canSubmitOrders" 
+              type="button" 
+              class="btn btn-primary btn-mobile col-xs-12 submitOrderBtn"
+              style="background-color: #04a773; border: none;"
+              ng-disabled="cartForm.$invalid || disableSubmitButtons" 
+              ng-click="submitOrder(currentCart)" 
+              analytics-on 
+              analytics-category="Orders" 
+              analytics-event="Submit Order" 
+              analytics-label="Order">
+              Submit Order
+            </button>
+          </div>
+
+
+
+    </div>
+
+    <div sticky offset="230" class="row hidden-xs hidden-sm hidden-md" style="margin-top: 12px; padding-left: 15px;">
+        <h3>Recommendations Based On Your Cart</h3>
+        <div>
+          
+          
+          <div style="border: 2px solid #C4BC9E; border-radius: 5px; height: 100px; padding: 10px; margin-top: 10px;"></div>
+  
+          <div style="border: 2px solid #C4BC9E; border-radius: 5px; height: 100px; padding: 10px; margin-top: 10px;"></div>
+  
+          <div style="border: 2px solid #C4BC9E; border-radius: 5px; height: 100px; padding: 10px; margin-top: 10px;"></div>
+  
+          <div style="border: 2px solid #C4BC9E; border-radius: 5px; height: 100px; padding: 10px; margin-top: 10px;"></div>
+  
+          <div style="border: 2px solid #C4BC9E; border-radius: 5px; height: 100px; padding: 10px; margin-top: 10px; margin-bottom: 10px;"></div>
+    
+        </div>
+    
+      </div>
   </div>

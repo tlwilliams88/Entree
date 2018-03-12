@@ -15,8 +15,13 @@
   }
 
   .tab-content {
-    @include scroll-div-vertical(400px);
+    @include scroll-div-vertical(475px);
+    padding-bottom: 10px;
   }
+}
+
+.tab-content {
+  padding-bottom: 10px;
 }
 
 .cart-items-form .button-row{
@@ -40,5 +45,9 @@
     padding: none;
     font-size: 16px;
   }
+}
+
+.submitOrderBtn:disabled {
+  opacity: .4;
 }
   
