@@ -784,7 +784,7 @@ namespace KeithLink.Svc.Impl.Logic
 			updateCart.PONumber = cart.PONumber;
 
             OrderedFromList o2l = _orderedFromListRepository.Read(cart.CartId.ToString());
-            if (o2l == null && cart.ListId != null)
+            if (o2l == null && cart.ListId != null && cart.CartId != null)
             {
                 _orderedFromListRepository.Write(new OrderedFromList()
                 {
@@ -793,7 +793,7 @@ namespace KeithLink.Svc.Impl.Logic
                     ListType = cart.ListType
                 });
             }
-            else if(o2l != null && o2l.ListId != cart.ListId)
+            else if(o2l != null && o2l.ListId != cart.ListId && cart.CartId != null)
             {
                 _orderedFromListRepository.Delete(cart.CartId.ToString());
                 if (cart.ListId != null)
