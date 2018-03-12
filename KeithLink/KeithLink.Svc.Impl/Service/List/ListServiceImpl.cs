@@ -696,6 +696,17 @@ namespace KeithLink.Svc.Impl.Service.List
         {
             ListModel copyList = list.NewCopy();
 
+            // set copied items to target branch
+            foreach (var item in copyList.Items) {
+                if (item.CatalogId.StartsWith("f", StringComparison.CurrentCultureIgnoreCase)) {
+                    item.CatalogId = catalogInfo.BranchId;
+                }
+                else if (item.CatalogId.StartsWith("u", StringComparison.CurrentCultureIgnoreCase)) {
+                    item.CatalogId =
+                        _catalogLogic.GetBranchId(catalogInfo.BranchId, _catalogLogic.GetCatalogTypeFromCatalogId(item.CatalogId));
+                }
+            }
+
             ListModel newList = CreateList(user,
                                            catalogInfo,
                                            ListType.Custom,

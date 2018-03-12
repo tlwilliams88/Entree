@@ -459,8 +459,11 @@
                 <span>Category <span sort-icons field="'itemclass'" sortorder="sort[0].order" sortby="sort[0].field"></span></span>
               </th>
               <th class="display-column drop-column-mobile"></th>
-              <th ng-if="listHasCustomItems" class="sort-col-header drop-column" ng-click="sortList('supplier',sort[0].order)">
+              <th ng-if="listHasCustomItems && selectedList.is_contract_list == false" class="sort-col-header drop-column" ng-click="sortList('supplier',sort[0].order)">
                 <span>Supplier <span sort-icons field="'supplier'" sortorder="sort[0].order" sortby="sort[0].field"></span></span>
+              </th>
+              <th class="sort-col-header drop-column">
+                  <span ng-if="selectedList.is_contract_list == true">Date <span ng-if="selectedFilterParameter != 'Recently Deleted Items'">Added</span><span ng-if="selectedFilterParameter == 'Recently Added/Deleted Items'"> - </span><span ng-if="selectedFilterParameter == 'Recently Deleted Items' || selectedFilterParameter == 'Recently Added/Deleted Items'">Deleted</span></span>
               </th>
               <th class="hidden-mobile-visible-print">
                 Pack/Size
@@ -557,8 +560,11 @@
               <td class="drop-column" ng-class="{'bek-drag-handle': !item.custominventoryitemid}">
                 {{item.class}}
               </td>
-              <td class="hidden-mobile-visible-print drop-column" ng-if="item.custominventoryitemid > -1" ng-class="{'bek-drag-handle': !item.custominventoryitemid}">
+              <td class="hidden-mobile-visible-print drop-column" ng-if="item.custominventoryitemid > -1 && selectedList.is_contract_list == false" ng-class="{'bek-drag-handle': !item.custominventoryitemid}">
                 {{item.supplier}}
+              </td>
+              <td class="hidden-mobile-visible-print drop-column">
+                  <span ng-if="item.delta == 'newly added active' || item.delta == 'active' || selectedFilterParameter == 'Recently Added/Deleted Items'">{{item.added | date}}</span><span ng-if="selectedFilterParameter == 'Recently Added/Deleted Items'"> - </span><span ng-if="item.delta == 'newly deleted' || selectedFilterParameter == 'Recently Added/Deleted Items'">{{item.todate | date}}</span>
               </td>
               <td class="hidden-mobile-visible-print" ng-class="{'bek-drag-handle': !item.custominventoryitemid}">
                 {{item.packsize}}
@@ -728,9 +734,16 @@
                       <td>Class</td>
                       <td>{{item.class}}</td>
                     </tr>
-                    <tr ng-if="item.custominventoryitemid > -1">
+                    <tr ng-if="item.custominventoryitemid > -1 && selectedList.is_contract_list == false">
                       <td>Supplier</td>
                       <td>{{item.supplier}}</td>
+                    </tr>
+                    <tr ng-if="selectedList.is_contract_list == true">
+                        <td>
+                            <span>Date <span ng-if="selectedFilterParameter != 'Recently Deleted Items'">Added</span><span ng-if="selectedFilterParameter == 'Recently Added/Deleted Items'"> - </span><span ng-if="selectedFilterParameter == 'Recently Deleted Items' || selectedFilterParameter == 'Recently Added/Deleted Items'">Deleted</span></td>
+                        <td>    
+                            <span ng-if="item.delta == 'newly added active' || item.delta == 'active' || selectedFilterParameter == 'Recently Added/Deleted Items'">{{item.added | date}}</span><span ng-if="selectedFilterParameter == 'Recently Added/Deleted Items'"> - </span><span ng-if="item.delta == 'newly deleted' || selectedFilterParameter == 'Recently Added/Deleted Items'">{{item.todate | date}}</span>
+                        </td>
                     </tr>
                     <tr>
                       <td>Pack/Size</td>
