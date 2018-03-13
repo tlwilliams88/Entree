@@ -783,31 +783,29 @@ namespace KeithLink.Svc.Impl.Logic
             updateCart.RequestedShipDate = cart.RequestedShipDate;
 			updateCart.PONumber = cart.PONumber;
 
-            OrderedFromList o2l = _orderedFromListRepository.Read(cart.CartId.ToString());
-            if (o2l == null && cart.ListId != null && cart.CartId != null)
-            {
-                _orderedFromListRepository.Write(new OrderedFromList()
-                {
-                    ControlNumber = cart.CartId.ToString(),
-                    ListId = cart.ListId.Value,
-                    ListType = cart.ListType
-                });
-            }
-            else if(o2l != null && o2l.ListId != cart.ListId && cart.CartId != null)
-            {
-                _orderedFromListRepository.Delete(cart.CartId.ToString());
-                if (cart.ListId != null)
-                {
-                    _orderedFromListRepository.Write(new OrderedFromList()
-                    {
-                        ControlNumber = cart.CartId.ToString(),
-                        ListId = cart.ListId.Value,
-                        ListType = cart.ListType
-                    });
-                }
-            }
+		    try {
+		        OrderedFromList o2l = _orderedFromListRepository.Read(cart.CartId.ToString());
+		        if (o2l == null &&
+		            cart.ListId != null) {
+		            _orderedFromListRepository.Write(new OrderedFromList() {
+		                ControlNumber = cart.CartId.ToString(),
+		                ListId = cart.ListId.Value,
+		                ListType = cart.ListType
+		            });
+		        } else if (o2l != null &&
+		                   o2l.ListId != cart.ListId) {
+		            _orderedFromListRepository.Delete(cart.CartId.ToString());
+		            if (cart.ListId != null) {
+		                _orderedFromListRepository.Write(new OrderedFromList() {
+		                    ControlNumber = cart.CartId.ToString(),
+		                    ListId = cart.ListId.Value,
+		                    ListType = cart.ListType
+		                });
+		            }
+		        }
+		    } catch { }
 
-            var itemsToRemove = new List<Guid>();
+		    var itemsToRemove = new List<Guid>();
 			var lineItems = new List<CS.LineItem>();
 
 			if (cart.Items != null)
