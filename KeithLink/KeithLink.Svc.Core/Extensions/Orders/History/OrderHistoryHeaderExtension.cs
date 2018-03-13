@@ -182,6 +182,7 @@ namespace KeithLink.Svc.Core.Extensions.Orders.History {
             FillEtaInformation(value, retVal);
 			retVal.PONumber = value.PONumber;
             retVal.IsSpecialOrder = value.IsSpecialOrder;
+		    retVal.OrderTotal = (double)value.OrderSubtotal;
             
 
             retVal.OrderSystem = new OrderSource().Parse(value.OrderSystem).ToString(); 
