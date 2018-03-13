@@ -205,7 +205,7 @@ namespace KeithLink.Svc.Impl.Service.List
                                     true);
                 }
 
-                if (CACHELISTS)
+                if (CACHELISTS && type != ListType.Recent) // do NOT cache recent(ly viewed) list
                 {
                     _cacheListLogic.AddCachedTypedLists(catalogInfo, type, headerOnly, returnList);
                 }
