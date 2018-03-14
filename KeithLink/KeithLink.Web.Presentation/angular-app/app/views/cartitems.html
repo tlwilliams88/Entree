@@ -17,8 +17,8 @@
 </div>
 
 <div class="row col-xs-12 col-lg-8" style="padding-right: 0;">
-    <span class="col-xs-7 col-lg-8" style="padding-left: 0; font-size: 1.75em; font-weight: bold;">Review Cart and Shipping Details</span>
-        <span class="col-xs-5 col-lg-4" style="margin-bottom: 10px; padding-right: 0px;">
+    <span class="col-xs-6 col-lg-6" style="padding-left: 0; font-size: 1.75em; font-weight: bold;">Review Cart and Shipping Details</span>
+        <span class="col-xs-6 col-lg-6 pull-right" style="margin-bottom: 10px; padding-right: 0px;">
           <a 
             class="btn btn-primary btn-mobile pull-right" 
             ng-if="::!isChangeOrder" 
@@ -26,7 +26,8 @@
             ng-disabled="cartForm.$pristine" 
             ng-click="saveCart(currentCart)"
             style="padding: 10px;
-            margin-left: 10px;">
+            margin-left: 10px;
+            margin-bottom: 5px;">
             Save Cart
           </a>
   
@@ -37,7 +38,8 @@
             ng-disabled="cartForm.$pristine" 
             ng-click="saveChangeOrder(currentCart)"
             style="padding: 10px;
-            margin-left: 10px;">
+            margin-left: 10px;
+            margin-bottom: 5px;">
             Save Order
           </a>
 
@@ -47,7 +49,8 @@
             ng-disabled="cartForm.$pristine" 
             ng-click="cancelChanges()"
             style="padding: 10px;
-            margin-left: 10px;">
+            margin-left: 10px;
+            margin-bottom: 5px;">
             Cancel Changes
           </a>
 
@@ -56,8 +59,9 @@
             ng-if="::!isChangeOrder" 
             ui-sref="menu.addtoorder.items({ cartId: currentCart.id, listId: currentCart.listid, listType: currentCart.listtype  })" 
             class="btn btn-default pull-right"
-            style="padding: 10px;
-            margin-left: 10px;">
+            style="padding: 9px;
+            margin-left: 10px;
+            margin-bottom: 5px;">
             Continue Shopping
           </a>
   
@@ -66,26 +70,26 @@
             ng-if="::isChangeOrder" 
             ui-sref="menu.addtoorder.items({ cartId: currentCart.ordernumber, listId: currentCart.listid, listType: currentCart.listtype })" 
             class="btn btn-default pull-right"
-            style="padding: 10px;
-            margin-left: 10px;">
+            style="padding: 9px;
+            margin-left: 10px;
+            margin-bottom: 5px;">
             Continue Shopping
           </a>
         </span>
         <div style="width: 100%; height: 2px; background: #C7BEA3; overflow: hidden; margin-bottom: 10px;"></div>
-    <span>
-        <span class="text-red" ng-show="cartForm.$invalid && !cartForm.$pristine">Your cart has some errors. Please fix these before submitting your order.</span>
-                <p class="text-red" ng-show="(currentCart.requestedshipdate && cartForm.cutoffDate.$error.orderCutoffDate) || invalidSelectedDate">Selected ship date is invalid.</span>
-                <p class="text-red" ng-show="!currentCart.requestedshipdate && !cartForm.$pristine">Selected ship date is required.</span>
-                <p class="text-red" ng-show="cartForm.mandatoryItemsCount.$error.mandatoryItemsCheck">Cart is missing some mandatory items.</span>
-                <p class="text-red" ng-show="cartForm.poNumber.$error.required">PO Number is required.</span>
-                <p class="text-red" ng-show="cartForm.poNumber.$error.maxlength">PO Number cannot be more than 20 characters.</span>
-                <p class="text-red" ng-show="(!currentCart.items || currentCart.items.length === 0)">There are no items in this cart. Cannot submit order.</span>
-                <p class="text-red" ng-if="currentCart.status === 'Confirmed with un-submitted changes'">This order has pending changes. Click Submit Changes to update order.</span>
+          <p class="text-red" ng-show="cartForm.$invalid && !cartForm.$pristine">Your cart has some errors. Please fix these before submitting your order.</p>
+          <p class="text-red" ng-show="(currentCart.requestedshipdate && cartForm.cutoffDate.$error.orderCutoffDate) || invalidSelectedDate">Selected ship date is invalid.</p>
+          <p class="text-red" ng-show="!currentCart.requestedshipdate && !cartForm.$pristine">Selected ship date is required.</p>
+          <p class="text-red" ng-show="cartForm.mandatoryItemsCount.$error.mandatoryItemsCheck">Cart is missing some mandatory items.</p>
+          <p class="text-red" ng-show="cartForm.poNumber.$error.required">PO Number is required.</p>
+          <p class="text-red" ng-show="cartForm.poNumber.$error.maxlength">PO Number cannot be more than 20 characters.</p>
+          <p class="text-red" ng-show="(!currentCart.items || currentCart.items.length === 0)">There are no items in this cart. Cannot submit order.</p>
+          <p class="text-red" ng-show="currentCart.status === 'Confirmed with un-submitted changes'">This order has pending changes. Click Submit Changes to update order.</p>
     </span>
-    <div class="page-content col-xs-12 container-fluid" style="display: inline-block; padding-right: 0px;">
-        <div class="pull-left" ng-hide="currentCart.isRenaming">
-            <h3 style="margin-top: 5px; font-weight: bold;">Cart Name:</h3>
-            <div class="btn-group" dropdown is-open="status.isopen">
+    <div class="col-xs-12 container-fluid" style="display: inline-block; padding-right: 0px;">
+        <div class="pull-left col-xs-12 col-sm-6">
+            <h3 style="margin-top: -3px; font-weight: bold; margin-left: -15px;">Cart Name:</h3>
+            <div class="btn-group" dropdown is-open="status.isopen" style="margin-top: -5px; margin-left: -15px;" ng-hide="currentCart.isRenaming">
               <button type="button" class="select-cart btn-lg btn btn-default dropdown-toggle">
                 {{currentCart.name || '# ' + currentCart.invoicenumber}} <span class="hidden-print icon-arrow-down6"></span>
               </button>
@@ -117,56 +121,86 @@
               </div>
             </div>
       
-            <div ng-if="::!isChangeOrder" style="display:inline-block;">
-              <a ng-click="startEditCartName(currentCart.name)"><span class="hidden-print large-icon text-light icon-pencil"></span></a>
-              <a
-                class="hidden-print"
+            <div class="hidden-print" ng-if="::!isChangeOrder" style="display: inline-flex;" ng-hide="currentCart.isRenaming">
+              <button 
+                ng-click="startEditCartName(currentCart.name)"
+                class="btn btn-default"
+                style="padding: 8px; margin-left: 3px; margin-right: 2px;"
+                tooltip="Edit Cart Name">
+                <span class="large-icon hidden-print text-light icon-pencil"></span>
+              </button>
+              <button
+                class="btn btn-default"
                 confirmed-click="deleteCart(currentCart)"
-                ng-confirm-click="{{'This will delete the cart ' + currentCart.name + ' and all items within. Are you sure you want to delete this cart?'}}">
+                ng-confirm-click="{{'This will delete the cart ' + currentCart.name + ' and all items within. Are you sure you want to delete this cart?'}}"
+                style="padding: 8px;"
+                tooltip="Delete Cart">
                 <span class="large-icon text-light icon-trash"></span>
-              </a>
+            </button>
             </div>
       
             <div ng-if="::isChangeOrder" style="display:inline-block;">
               <button type="button" ng-if="::isChangeOrder" style="margin-left: 10px;" class="btn-lg btn btn-danger" confirmed-click="cancelOrder(currentCart)" ng-confirm-click="{{'Are you sure you want to delete order # ' + currentCart.invoicenumber + '?'}}">Delete Order</button>
             </div>
-          </div>
-      
-          <form name="renameCartForm" class="style-validation-errors inline-header-form nowrap col-xs-4" ng-show="currentCart.isRenaming" autocomplete="off">
-            <input
-              no-duplicates="name"
-              collection="carts"
-              type="text"
-              max-length="15"
-              focus-me="currentCart.isRenaming"
-              class="input-lg form-control"
-              required
-              ng-model="editCart.name"
-              name="cartName"
-              id="cartName" />
-      
-            <button
-              ng-disabled="renamecartForm.$invalid"
-              class="btn-no-style"
-              type="submit"
-              type="button"
-              ng-click="renameCart(currentCart.id, editCart.name); renameCartForm.$setPristine();">
-              <span class="large-icon text-green icon-checkmark"></span>
-            </button>
-             <br class='visible-xs' ng-show="renameCartForm.cartName.$error.noDuplicates || renameCartForm.cartName.$error.required">
-            <a ng-click="currentCart.isRenaming = false"><span class="large-icon text-red icon-cross"></span></a>
-            <span class="form-error-message" ng-show="renameCartForm.cartName.$error.required">Cart name is required</span>
-            <span class="form-error-message" ng-show="renameCartForm.cartName.$error.noDuplicates">Duplicate cart name</span>
-          </form>
 
-        <div class="pull-right col-xs-12 col-md-6" style="padding-top: 10px;">
-          <span style="margin-left: -15px; font-size: 1.5em; font-weight: bold;">Delivery Details:</span>
-          <div class="row">
-          <label for="shipDate" class="col-sm-4 control-label" style="padding-left: 0;">Ship Date:</label>
+            <div class="col-xs-12" ng-if="currentCart.isRenaming" style="padding-bottom: 6px; padding-left: 0;">
+              <div class="input-group input-group-lg" style="margin-left: -16px;">
+                <form 
+                  name="renameCartForm" 
+                  class="style-validation-errors inline-header-form nowrap"
+                  ng-show="currentCart.isRenaming" 
+                  autocomplete="off" 
+                  style="display: -webkit-box;">
+                  <input
+                    no-duplicates="name"
+                    collection="carts"
+                    type="text"
+                    max-length="15"
+                    focus-me="currentCart.isRenaming"
+                    class="input-lg form-control"
+                    style="height: 40px;"
+                    required
+                    ng-model="editCart.name"
+                    name="cartName"
+                    id="cartName" />
+                  <span class="input-group-btn" style="background-color: #F3F1EB; border-radius: 4px;">
+                    <button
+                      ng-click="currentCart.isRenaming = false" 
+                      class="btn-default btn pull-right"
+                      type="submit"
+                      style="height: 40px">
+                      <span 
+                        class="large-icon text-red icon-cross">
+                      </span>
+                    </button>
+  
+                    <button
+                      ng-disabled="renamecartForm.$invalid"
+                      class="btn-default btn pull-right"
+                      type="submit"
+                      ng-click="renameCart(currentCart.id, editCart.name); renameCartForm.$setPristine();"
+                      style="height: 40px">
+                      <span class="large-icon text-green icon-checkmark"></span>
+                    </button>
+                  </span>
+                  <span class="form-error-message" ng-show="renameCartForm.cartName.$error.required">Cart name is required</span>
+                  <span class="form-error-message" ng-show="renameCartForm.cartName.$error.noDuplicates">Duplicate cart name</span>
+                </form>
+              </div>
+
+            </div>
+            
+
+          </div>
+
+        <div class="pull-right col-xs-12 col-sm-6" style="padding-top: 5px; margin-bottom: 10px;">
+          <span style="margin-left: -15px; font-size: 1.5em; font-weight: bold; margin-bottom: 5px;">Delivery Details:</span>
+          <div class="row" style="font-size: 14px;">
+            <label for="shipDate" class="col-xs-5 col-md-4 control-label" style="padding-left: 0;">Ship Date:</label>
             <div class="btn-group" dropdown is-open="showShipDates">
                 {{currentCart.requestedshipdate | formatDate}}
-                <button type="button" class="btn-no-style dropdown-toggle hidden-print"> <span class="text-blue icon-calendar"></span></button><span ng-if="currentCart.containsspecialitems" class="text-black glyphicon-asterisk"></span>
-                <div class="dropdown-menu">
+                <button type="button" class="btn-no-style dropdown-toggle hidden-print" style="font-size: 18px;"> <span class="text-blue icon-calendar"></span></button><span ng-if="currentCart.containsspecialitems" class="text-black glyphicon-asterisk"></span>
+                <div class="dropdown-menu" style="margin-left: -80px">
                   <table class="table no-margin">
                     <tr>
                       <th></th>
@@ -184,24 +218,24 @@
             </div>
           </div>
 
-            <div class="row">
-                <label for="shipDate" class="col-xs-3 col-sm-4 control-label" style="padding-left: 0;">Submit By:</label>
+            <div class="row" style="font-size: 14px;">
+                <label for="shipDate" class="col-xs-5 col-md-4 control-label" style="padding-left: 0;">Submit By:</label>
                 <div>
                   {{selectedShipDate.cutoffdatetime | formatDateWithTimezone}}
                   <input name="cutoffDate" type="hidden" ng-model="selectedShipDate.cutoffdatetime" order-cutoff-date>
                 </div>
               </div>
       
-              <div class="row">
-                <label for="shipDate" class="col-xs-3 col-sm-4 control-label" style="padding-left: 0; margin-top: 5px;">PO #:</label>
-                <div class="col-xs-6" style="padding-left: 0;">
+              <div class="row" style="font-size: 14px;">
+                <label for="shipDate" class="col-xs-5 col-md-4 control-label" style="padding-left: 0; margin-top: 5px;">PO #:</label>
+                <div class="col-xs-6 col-sm-4 col-md-6" style="padding-left: 0;">
                   <input class="form-control print-clean" ng-maxlength="20" name="poNumber" type="text" ng-model="currentCart.ponumber" ng-required="selectedUserContext.customer.isPoRequired" ng-readonly="::isChangeOrder" placeholder="Enter PO Number">
                 </div>
             </div>
 
             
           </div>
-          <div class="hidden-lg" style="border: 2px solid #C4BC9E; border-radius: 5px; height: 200px; padding: 10px; margin-top: 200px;">
+          <div class="hidden-lg" style="border: 2px solid #C4BC9E; border-radius: 5px; height: 200px; padding: 5px 10px 10px 20px; margin-top: 200px;">
               <h2 style="padding-left: 25px;">Order Summary</h2>
         
               <div class="row" style="padding-left: 25px;">
@@ -250,7 +284,7 @@
       </div>
   </div>
 
-      <div class="col-xs-12 col-lg-8" style="margin-top: 40px; padding-left: 0;">
+      <div class="col-xs-12 col-lg-8" style="margin-top: 15px; padding-left: 0;">
         <form name="cartForm">
         <tabset class="tabset tab-border pull-left" style="width: 100%;">
           <tab ng-if="canCreateOrders && cartHeaders && cartHeaders.length > 0" class="text-center" active="currentCart.active">
@@ -516,9 +550,9 @@
       </form>
       </div>
 
-  <div class="col-xs-4 hidden-xs hidden-sm hidden-md container-fluid" style="width: 32%; padding-left: 15px; margin-left: 15px; margin-top: -180px; height: 100%;">
+  <div class="col-xs-4 hidden-xs hidden-sm hidden-md container-fluid" style="width: 32%; padding-left: 15px; margin-left: 15px; margin-top: -217px; height: 100%;">
 
-    <div sticky offset="20" style="border: 2px solid #C4BC9E; border-radius: 5px; height: 200px; padding: 10px 10px 10px 20px;">
+    <div sticky offset="20" style="border: 2px solid #C4BC9E; border-radius: 5px; height: 200px; padding: 5px 10px 10px 20px;">
       <h2 style="padding-left: 25px;">Order Summary</h2>
 
       <div class="row" style="padding-left: 25px;">
