@@ -302,11 +302,11 @@ namespace KeithLink.Svc.Impl.Logic.Orders {
             stopWatch.Read(_log, "GetPagedOrders - Total time to get lookupcontrolnumberandstatus asqueryable");
 
             PagedResults<Order> pagedData = new PagedResults<Order>();
-            pagedData.Results = new List<Order>();
-            foreach (var header in headers)
-            {
-                pagedData.Results.Add(header.ToOrder());
-            }
+            pagedData.Results = data.ToList();
+            //foreach (var header in headers)
+            //{
+            //    pagedData.Results.Add(header.ToOrder());
+            //}
             stopWatch.Read(_log, "GetPagedOrders - Total time to get page");
 
             pagedData.TotalResults = _historyHeaderRepo.GetCustomerOrderHistoryHeaders(customerInfo.BranchId, customerInfo.CustomerId)
@@ -471,7 +471,7 @@ namespace KeithLink.Svc.Impl.Logic.Orders {
             List<CS.PurchaseOrder> POs = _poRepo.ReadPurchaseOrderHeadersByCustomerId(customerInfo.CustomerId);
             stopWatch.Read(_log, "LookupControlNumberAndStatus - ReadPurchaseOrderHeadersByCustomerId");
 
-            foreach (OrderHistoryHeader h in headers.OrderByDescending(hdr => hdr.CreatedUtc)) {
+            foreach (OrderHistoryHeader h in headers) {
                 try {
                     Order returnOrder = null;
 

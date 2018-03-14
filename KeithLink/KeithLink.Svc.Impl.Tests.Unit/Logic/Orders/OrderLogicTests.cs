@@ -5,6 +5,8 @@ using System.Linq.Expressions;
 
 using Autofac;
 
+using Castle.Components.DictionaryAdapter;
+
 using FluentAssertions;
 
 using KeithLink.Common.Core.Interfaces.Logging;
@@ -22,6 +24,8 @@ using KeithLink.Svc.Core.Interface.Profile;
 using KeithLink.Svc.Core.Interface.SiteCatalog;
 using KeithLink.Svc.Core.Models.Orders;
 using KeithLink.Svc.Core.Models.Orders.History.EF;
+using KeithLink.Svc.Core.Models.Paging;
+using KeithLink.Svc.Core.Models.Profile;
 using KeithLink.Svc.Core.Models.SiteCatalog;
 using KeithLink.Svc.Impl.Logic.Orders;
 
@@ -92,8 +96,51 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic.Orders {
                       .Should()
                       .BeNull();
             }
+
         }
+
         #endregion GetOrder
+
+        #region GetPagedOrder
+        public class GetPagedOrder {
+            [Fact]
+            public void GoodOrder_HasSubtotalOnReturnModel() {
+                // arrange
+                double expected = (double) 200.00;
+
+                MockDependents mockDependents = new MockDependents();
+                IOrderLogic testLogic = MakeTestsLogic(false, ref mockDependents);
+
+                Guid testGuid = new Guid("00000000-0000-0000-0000-000000000000");
+                UserSelectedContext testContext = new UserSelectedContext() {
+                    BranchId = "FUT",
+                    CustomerId = "111111"
+                };
+
+                PagingModel testPaging = new PagingModel() {
+                    Size = 50,
+                    From = 0,
+                    Sort = new List<SortInfo>() {
+                        new SortInfo() {
+                            Field = "createdate",
+                            Order = "desc"
+                        }
+                    },
+                    Filter = null
+                };
+
+                // act
+                PagedResults<Order> result = testLogic.GetPagedOrders(testGuid, testContext, testPaging);
+
+                // assert
+                result.Results
+                      .FirstOrDefault()
+                      .OrderTotal
+                      .Should()
+                      .Be(expected);
+            }
+        }
+        #endregion
 
         #region Setup
         public class MockDependents {
@@ -240,7 +287,7 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic.Orders {
                                         new OrderHistoryDetail {
                                             ItemNumber = "111111",
                                             TotalShippedWeight = 0,
-                                            SellPrice = 0,
+                                            SellPrice = (decimal)200.00,
                                             OrderQuantity = 1,
                                             ShippedQuantity = 1,
                                             LineNumber = 1,
@@ -250,7 +297,8 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic.Orders {
                                         }
                                     },
                             CustomerNumber = "123456",
-                            OrderSystem = "B"
+                            OrderSystem = "B",
+                            OrderSubtotal = (decimal)200.00
                         }
                     }.AsQueryable);
 
@@ -271,6 +319,59 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic.Orders {
 
             public static Mock<ICustomerRepository> MakeICustomerRepository() {
                 Mock<ICustomerRepository> mock = new Mock<ICustomerRepository>();
+
+                mock.Setup(x => x.GetCustomerByCustomerNumber(It.IsAny<string>(), It.IsAny<string>()))
+                    .Returns(
+                            new Customer() {
+                                CustomerNumber = "111111",
+                                CustomerName = "Test Customer",
+                                DisplayName = "Test Display Name",
+                                CustomerBranch = "FUT",
+                                NationalOrRegionalAccountNumber = "AAA",
+                                DsrNumber = "000",
+                                DsmNumber = "000",
+                                Dsr = new Dsr() {
+                                    Name = "Test DSR",
+                                    DsrNumber = "000",
+                                    Branch = "FUT",
+                                    ImageUrl = "Fake",
+                                    PhoneNumber = "888-888-8888",
+                                    EmailAddress = "fake@benekeith.com"
+                                },
+                                ContractId = null,
+                                IsPoRequired = false,
+                                IsPowerMenu = false,
+                                CustomerId = new Guid("00000000-0000-0000-0000-000000000000"),
+                                AccountId = new Guid("00000000-0000-0000-0000-000000000000"),
+                                Address = new Address() {
+                                    City = "Fake City",
+                                    PostalCode = "00000",
+                                    RegionCode = "",
+                                    StreetAddress = "1234 Test St."
+                                },
+                                Phone = "888-888-8888",
+                                Email = "customer@benekeith.com",
+                                PointOfContact = "Fake",
+                                TermCode = "Net 30",
+                                TermDescription = "Net 30",
+                                KPayCustomer = true,
+                                NationalId = "00",
+                                NationalNumber = "00",
+                                NationalSubNumber = "00",
+                                RegionalNumber = "00", 
+                                IsKeithNetCustomer = true,
+                                NationalIdDesc = "",
+                                NationalNumberSubDesc = "",
+                                RegionalIdDesc = "",
+                                RegionalNumberDesc = "",
+                                CanMessage = true,
+                                CanViewPricing = true,
+                                CanViewUNFI = true,
+                                CustomerUsers = new List<UserProfile>() {
+                                    
+                                }
+                        }
+                );
 
                 return mock;
             }
