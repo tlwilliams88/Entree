@@ -1316,33 +1316,6 @@ namespace KeithLink.Svc.Impl.Logic.Lists
             }
         }
 
-        public List<RecommendedItemModel> ReadRecommendedItemsList(UserSelectedContext catalogInfo) {
-            var list = _listRepo.Read(l => l.Type == ListType.RecommendedItems && l.CustomerId.Equals(catalogInfo.CustomerId) && l.BranchId.Equals(catalogInfo.BranchId)).FirstOrDefault();
-
-            if (list == null || list.Items == null)
-                return new List<RecommendedItemModel>();
-
-            var returnItems = list.Items.Where(i => (i.FromDate == null || i.FromDate <= DateTime.Now) && (i.ToDate == null || i.ToDate >= DateTime.Now)).Select(r => new RecommendedItemModel() { ItemNumber = r.ItemNumber }).ToList();
-
-            var products = _catalogLogic.GetProductsByIds(catalogInfo.BranchId, returnItems.Select(i => i.ItemNumber).Distinct().ToList());
-
-            returnItems.ForEach(delegate (RecommendedItemModel item)
-            {
-                var product = products.Products.Where(p => p.ItemNumber.Equals(item.ItemNumber)).FirstOrDefault();
-                if (product != null)
-                {
-                    item.Name = product.Name;
-                }
-            });
-
-            returnItems.ForEach(delegate (RecommendedItemModel item)
-            {
-                item.Images = _productImageRepo.GetImageList(item.ItemNumber).ProductImages;
-            });
-
-            return returnItems;
-        }
-
         public List<ListModel> ReadReminders(UserProfile user, UserSelectedContext catalogInfo)
         {
             var list = _listRepo.Read(l => l.CustomerId.Equals(catalogInfo.CustomerId) &&

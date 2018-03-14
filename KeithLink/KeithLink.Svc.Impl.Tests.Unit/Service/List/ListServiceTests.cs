@@ -28,7 +28,6 @@ using KeithLink.Svc.Core.Models.Lists.CustomList;
 using KeithLink.Svc.Core.Models.Lists.Favorites;
 using KeithLink.Svc.Core.Models.Lists.InventoryValuationList;
 using KeithLink.Svc.Core.Models.Lists.MandatoryItem;
-using KeithLink.Svc.Core.Models.Lists.RecommendedItems;
 using KeithLink.Svc.Core.Models.Paging;
 using KeithLink.Common.Core.Interfaces.Logging;
 using KeithLink.Svc.Impl.Service.List;
@@ -51,8 +50,6 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Service.List
             public Mock<IRecentlyViewedListLogic> RecentlyViewedListLogic { get; set; }
 
             public Mock<IRecentlyOrderedListLogic> RecentlyOrderedListLogic { get; set; }
-
-            public Mock<IRecommendedItemsListLogic> RecommendedItemsListLogic { get; set; }
 
             public Mock<IMandatoryItemsListLogic> MandatoryItemsListLogic { get; set; }
 
@@ -88,9 +85,6 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Service.List
                 cb.RegisterInstance(MakeMockRecentlyOrderedListLogic()
                                             .Object)
                   .As<IRecentlyOrderedListLogic>();
-                cb.RegisterInstance(MakeMockRecommendedItemsListLogic()
-                                            .Object)
-                  .As<IRecommendedItemsListLogic>();
                 cb.RegisterInstance(MakeMockMandatoryItemsListLogic()
                                             .Object)
                   .As<IMandatoryItemsListLogic>();
@@ -247,30 +241,6 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Service.List
                         Name = "double bad",
                         CasePrice = 0,
                         PackagePrice = 0
-                    });
-
-                return mock;
-            }
-
-            public static Mock<IRecommendedItemsListLogic> MakeMockRecommendedItemsListLogic()
-            {
-                Mock<IRecommendedItemsListLogic> mock = new Mock<IRecommendedItemsListLogic>();
-
-                mock.Setup(h => h.ReadList(It.IsAny<UserProfile>(),
-                                           It.IsAny<UserSelectedContext>(),
-                                           It.IsAny<bool>()))
-                    .Returns(new ListModel
-                    {
-                        ListId = 1,
-                        CustomerNumber = "123456",
-                        BranchId = "FUT",
-                        Items = new List<ListItemModel> {
-                            new ListItemModel {
-                                ItemNumber = "123456",
-                                Each = false,
-                                Category = "Fake Category"
-                            }
-                        }
                     });
 
                 return mock;
@@ -487,14 +457,13 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Service.List
             mockDependents.ProductImageRepository = MockDependents.MakeMockProductImageRepository();
             mockDependents.RecentlyOrderedListLogic = MockDependents.MakeMockRecentlyOrderedListLogic();
             mockDependents.RecentlyViewedListLogic = MockDependents.MakeMockRecentlyViewedListLogic();
-            mockDependents.RecommendedItemsListLogic = MockDependents.MakeMockRecommendedItemsListLogic();
             mockDependents.RemindersListLogic = MockDependents.MakeMockRemindersListLogic();
             mockDependents.CustomInventoryItemsRepository = MockDependents.MakeMockCustomInventoryItemRepository();
 
             ListServiceImpl testunit = new ListServiceImpl(mockDependents.HistoryListLogic.Object, mockDependents.CatalogLogic.Object, mockDependents.NotesListLogic.Object,
                                                            mockDependents.ItemHistoryRepository.Object, mockDependents.FavoritesListLogic.Object, mockDependents.PriceLogic.Object,
                                                            mockDependents.RecentlyViewedListLogic.Object, mockDependents.RecentlyOrderedListLogic.Object,
-                                                           mockDependents.RecommendedItemsListLogic.Object, mockDependents.RemindersListLogic.Object,
+                                                           mockDependents.RemindersListLogic.Object,
                                                            mockDependents.ProductImageRepository.Object, mockDependents.ExternalCatalogRepository.Object,
                                                            mockDependents.ItemBarcodeRepository.Object, mockDependents.MandatoryItemsListLogic.Object,
                                                            mockDependents.InventoryValuationListLogic.Object, mockDependents.ContractListLogic.Object,
@@ -853,27 +822,6 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Service.List
             }
 
             [Fact]
-            public void AnyUserAnyContextWithTypeReminder_CallsRecommendedItemsListLogicReadList()
-            {
-                // arrange
-                MockDependents mockDependents = new MockDependents();
-                IListService testunit = MakeTestsService(false, ref mockDependents);
-                UserProfile fakeUser = new UserProfile();
-                UserSelectedContext testcontext = new UserSelectedContext
-                {
-                    BranchId = "XXX",
-                    CustomerId = "123456"
-                };
-                ListType testListType = ListType.RecommendedItems;
-
-                // act
-                List<ListModel> results = testunit.ReadListByType(fakeUser, testcontext, testListType);
-
-                // assert
-                mockDependents.RecommendedItemsListLogic.Verify(m => m.ReadList(It.IsAny<UserProfile>(), It.IsAny<UserSelectedContext>(), It.IsAny<bool>()), Times.Once, "not called");
-            }
-
-            [Fact]
             public void AnyUserAnyContextWithTypeInventoryValuation_CallsInventoryValuationListLogicReadLists()
             {
                 // arrange
@@ -1066,26 +1014,6 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Service.List
                 mockDependents.MandatoryItemsListLogic.Verify(m => m.ReadList(It.IsAny<UserProfile>(), It.IsAny<UserSelectedContext>(), It.IsAny<bool>()), Times.Once, "not called");
             }
 
-            [Fact]
-            public void AnyUserAnyContext_CallsRecommendedItemsListLogicReadList()
-            {
-                // arrange
-                MockDependents mockDependents = new MockDependents();
-                IListService testunit = MakeTestsService(false, ref mockDependents);
-                UserProfile fakeUser = new UserProfile();
-                UserSelectedContext testcontext = new UserSelectedContext
-                {
-                    BranchId = "XXX",
-                    CustomerId = "123456"
-                };
-                bool testHeadersOnly = false;
-
-                // act
-                List<ListModel> results = testunit.ReadUserList(fakeUser, testcontext, testHeadersOnly);
-
-                // assert
-                mockDependents.RecommendedItemsListLogic.Verify(m => m.ReadList(It.IsAny<UserProfile>(), It.IsAny<UserSelectedContext>(), It.IsAny<bool>()), Times.Once, "not called");
-            }
         }
 
         public class ReadLabels
@@ -1315,28 +1243,6 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Service.List
             }
 
             [Fact]
-            public void AnyUserAnyContextWithTypeReminder_CallsRecommendedItemsListLogicGetListModel()
-            {
-                // arrange
-                MockDependents mockDependents = new MockDependents();
-                IListService testunit = MakeTestsService(false, ref mockDependents);
-                UserProfile fakeUser = new UserProfile();
-                UserSelectedContext testcontext = new UserSelectedContext
-                {
-                    BranchId = "XXX",
-                    CustomerId = "123456"
-                };
-                ListType testListType = ListType.RecommendedItems;
-                long testId = 0;
-
-                // act
-                ListModel results = testunit.ReadList(fakeUser, testcontext, testListType, testId);
-
-                // assert
-                mockDependents.RecommendedItemsListLogic.Verify(m => m.GetListModel(It.IsAny<UserProfile>(), It.IsAny<UserSelectedContext>(), It.IsAny<long>()), Times.Once, "not called");
-            }
-
-            [Fact]
             public void AnyUserAnyContextWithTypeInventoryValuation_CallsInventoryValuationListLogicReadList()
             {
                 // arrange
@@ -1543,29 +1449,6 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Service.List
 
                 // assert
                 mockDependents.MandatoryItemsListLogic.Verify(m => m.GetListModel(It.IsAny<UserProfile>(), It.IsAny<UserSelectedContext>(), It.IsAny<long>()), Times.Once, "not called");
-            }
-
-            [Fact]
-            public void AnyUserAnyContextWithTypeReminder_CallsRecommendedItemsListLogicGetListModel()
-            {
-                // arrange
-                MockDependents mockDependents = new MockDependents();
-                IListService testunit = MakeTestsService(false, ref mockDependents);
-                UserProfile fakeUser = new UserProfile();
-                UserSelectedContext testcontext = new UserSelectedContext
-                {
-                    BranchId = "XXX",
-                    CustomerId = "123456"
-                };
-                ListType testListType = ListType.RecommendedItems;
-                long testId = 0;
-                PagingModel testPaging = new PagingModel();
-
-                // act
-                PagedListModel results = testunit.ReadPagedList(fakeUser, testcontext, testListType, testId, testPaging);
-
-                // assert
-                mockDependents.RecommendedItemsListLogic.Verify(m => m.GetListModel(It.IsAny<UserProfile>(), It.IsAny<UserSelectedContext>(), It.IsAny<long>()), Times.Once, "not called");
             }
 
             [Fact]
@@ -2138,33 +2021,6 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Service.List
             }
 
             [Fact]
-            public void AnyUserAnyContextWithTypeRecommendedItems_CallsRecommendedItemsListLogicSaveDetail()
-            {
-                // arrange
-                MockDependents mockDependents = new MockDependents();
-                IListService testunit = MakeTestsService(false, ref mockDependents);
-                UserProfile fakeUser = new UserProfile();
-                UserSelectedContext testcontext = new UserSelectedContext
-                {
-                    BranchId = "XXX",
-                    CustomerId = "123456"
-                };
-                ListType testListType = ListType.RecommendedItems;
-                long testHeaderId = 1;
-                ListItemModel testListItem = new ListItemModel
-                {
-                    ItemNumber = "123456",
-                    CatalogId = "BEK"
-                };
-
-                // act
-                testunit.SaveItem(fakeUser, testcontext, testListType, testHeaderId, testListItem);
-
-                // assert
-                mockDependents.RecommendedItemsListLogic.Verify(m => m.SaveDetail(It.IsAny<UserSelectedContext>(), It.IsAny<RecommendedItemsListDetail>()), Times.Once, "not called");
-            }
-
-            [Fact]
             public void AnyUserAnyContextWithTypeInventoryValuation_CallsInventoryValuationListLogicSaveItem()
             {
                 // arrange
@@ -2407,38 +2263,6 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Service.List
 
                 // assert
                 mockDependents.MandatoryItemsListLogic.Verify(m => m.SaveDetail(It.IsAny<UserSelectedContext>(), It.IsAny<MandatoryItemsListDetail>()), Times.AtLeastOnce, "not called");
-            }
-
-            [Fact]
-            public void AnyUserAnyContextWithTypeRecommendedItems_CallsRecommendedItemsListLogiSaveDetailc()
-            {
-                // arrange
-                MockDependents mockDependents = new MockDependents();
-                IListService testunit = MakeTestsService(false, ref mockDependents);
-                UserProfile fakeUser = new UserProfile();
-                UserSelectedContext testcontext = new UserSelectedContext
-                {
-                    BranchId = "XXX",
-                    CustomerId = "123456"
-                };
-                ListType testListType = ListType.RecommendedItems;
-                long testHeaderId = 1;
-                List<ListItemModel> testListItems = new List<ListItemModel> {
-                    new ListItemModel {
-                        ItemNumber = "123456",
-                        CatalogId = "BEK"
-                    },
-                    new ListItemModel {
-                        ItemNumber = "234567",
-                        CatalogId = "BEK"
-                    }
-                };
-
-                // act
-                testunit.SaveItems(fakeUser, testcontext, testListType, testHeaderId, testListItems);
-
-                // assert
-                mockDependents.RecommendedItemsListLogic.Verify(m => m.SaveDetail(It.IsAny<UserSelectedContext>(), It.IsAny<RecommendedItemsListDetail>()), Times.AtLeastOnce, "not called");
             }
 
             [Fact]
@@ -2893,29 +2717,6 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Service.List
                                                                                             It.IsAny<long>(),
                                                                                             It.IsAny<string>(),
                                                                                             false), Times.Once, "not called");
-            }
-        }
-
-        public class ReadRecommendedItemsList
-        {
-            [Fact]
-            public void AnyUserAnyContext_CallsRecommendedItemsListLogicReadList()
-            {
-                // arrange
-                MockDependents mockDependents = new MockDependents();
-                IListService testunit = MakeTestsService(false, ref mockDependents);
-                UserSelectedContext testcontext = new UserSelectedContext
-                {
-                    BranchId = "FUT",
-                    CustomerId = "123456"
-                };
-
-                // act
-                testunit.ReadRecommendedItemsList(testcontext);
-
-                // assert
-                mockDependents.RecommendedItemsListLogic.Verify(m => m.ReadList(It.IsAny<UserProfile>(), It.IsAny<UserSelectedContext>(), It.IsAny<bool>()),
-                                                                Times.Once, "not called");
             }
         }
 
