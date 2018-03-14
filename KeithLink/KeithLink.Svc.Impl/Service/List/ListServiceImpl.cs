@@ -314,7 +314,6 @@ namespace KeithLink.Svc.Impl.Service.List
                 AddListsIfNotNull(user, catalogInfo, ListType.Contract, list, headerOnly);
                 AddListsIfNotNull(user, catalogInfo, ListType.Favorite, list, headerOnly);
                 AddListsIfNotNull(user, catalogInfo, ListType.Reminder, list, headerOnly);
-                AddListsIfNotNull(user, catalogInfo, ListType.RecommendedItems, list, headerOnly);
                 AddListsIfNotNull(user, catalogInfo, ListType.Mandatory, list, headerOnly);
                 AddListsIfNotNull(user, catalogInfo, ListType.Custom, list, headerOnly);
 
