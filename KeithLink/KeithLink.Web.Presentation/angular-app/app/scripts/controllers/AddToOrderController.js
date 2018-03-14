@@ -596,6 +596,7 @@ angular.module('bekApp')
     };
 
     $scope.filterItems = function(searchTerm) {
+      $scope.selectedList.active = true;
       if($stateParams.searchTerm || $scope.addToOrderForm.$pristine){
         if($stateParams.searchTerm ){
           $scope.orderSearchTerm = $stateParams.searchTerm;
@@ -635,8 +636,9 @@ angular.module('bekApp')
             }
         });
       }
+      $scope.selectedList.active = true;
       $scope.setCurrentPageAfterRedirect(1);
-      $scope.orderSearchForm.$setPristine();
+      // $scope.orderSearchForm.$setPristine();
     };
 
 
