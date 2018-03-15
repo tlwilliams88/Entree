@@ -42,9 +42,9 @@ namespace KeithLink.Svc.Impl.Repository.DataConnection
         /// <remarks>
         /// jwames - 6/27/2015 - original code
         /// </remarks>
-        public void ExecuteCommand(string sql)
+        public void ExecuteSPCommand(string sql)
         {
-            ExecuteCommand(GetCommandDefinition(sql));
+            ExecuteCommand(GetSPCommandDefinition(sql));
         }
 
         /// <summary>
@@ -56,12 +56,12 @@ namespace KeithLink.Svc.Impl.Repository.DataConnection
         /// <remarks>
         /// jwames - 6/27/2015 - original code
         /// </remarks>
-        public void ExecuteCommand(string sql, string parmName, object value)
+        public void ExecuteSPCommand(string sql, string parmName, object value)
         {
             DynamicParameters parms = new DynamicParameters();
             parms.Add(parmName, value);
 
-            ExecuteCommand(GetCommandDefinition(sql, parms));
+            ExecuteCommand(GetSPCommandDefinition(sql, parms));
         }
 
         /// <summary>
@@ -72,9 +72,9 @@ namespace KeithLink.Svc.Impl.Repository.DataConnection
         /// <remarks>
         /// jwames - 6/27/2015 - original code
         /// </remarks>
-        public void ExecuteCommand(string sql, DynamicParameters parms)
+        public void ExecuteSPCommand(string sql, DynamicParameters parms)
         {
-            ExecuteCommand(GetCommandDefinition(sql, parms));
+            ExecuteCommand(GetSPCommandDefinition(sql, parms));
         }
 
         /// <summary>
@@ -102,9 +102,9 @@ namespace KeithLink.Svc.Impl.Repository.DataConnection
         /// <remarks>
         /// jwames - 7/18/2015 - original code
         /// </remarks>
-        public T ExecuteScalarCommand<T>(string sql)
+        public T ExecuteScalarSPCommand<T>(string sql)
         {
-            return ExecuteScalarCommand<T>(GetCommandDefinition(sql));
+            return ExecuteScalarCommand<T>(GetSPCommandDefinition(sql));
         }
 
         /// <summary>
@@ -116,12 +116,12 @@ namespace KeithLink.Svc.Impl.Repository.DataConnection
         /// <remarks>
         /// jwames - 7/18/2015 - original code
         /// </remarks>
-        public T ExecuteScalarCommand<T>(string sql, string parmName, object value)
+        public T ExecuteScalarSPCommand<T>(string sql, string parmName, object value)
         {
             DynamicParameters parms = new DynamicParameters();
             parms.Add(parmName, value);
 
-            return ExecuteScalarCommand<T>(GetCommandDefinition(sql, parms));
+            return ExecuteScalarCommand<T>(GetSPCommandDefinition(sql, parms));
         }
 
         /// <summary>
@@ -132,17 +132,17 @@ namespace KeithLink.Svc.Impl.Repository.DataConnection
         /// <remarks>
         /// jwames - 7/18/2015 - original code
         /// </remarks>
-        public T ExecuteScalarCommand<T>(string sql, DynamicParameters parms)
+        public T ExecuteScalarSPCommand<T>(string sql, DynamicParameters parms)
         {
-            return ExecuteScalarCommand<T>(GetCommandDefinition(sql, parms));
+            return ExecuteScalarCommand<T>(GetSPCommandDefinition(sql, parms));
         }
 
-        private CommandDefinition GetCommandDefinition(string sql)
+        private CommandDefinition GetSPCommandDefinition(string sql)
         {
             return new CommandDefinition(sql, commandType: CommandType.StoredProcedure, flags: CommandFlags.None);
         }
 
-        private CommandDefinition GetCommandDefinition(string sql, DynamicParameters parms)
+        private CommandDefinition GetSPCommandDefinition(string sql, DynamicParameters parms)
         {
             return new CommandDefinition(sql, parms, commandType: CommandType.StoredProcedure, flags: CommandFlags.None);
         }
@@ -178,9 +178,9 @@ namespace KeithLink.Svc.Impl.Repository.DataConnection
         /// <remarks>
         /// jwames - 6/27/2015 - original code
         /// </remarks>
-        public List<T> Read<T>(string sql)
+        public List<T> ReadSP<T>(string sql)
         {
-            return Read<T>(GetCommandDefinition(sql));
+            return Read<T>(GetSPCommandDefinition(sql));
         }
 
         /// <summary>
@@ -194,12 +194,12 @@ namespace KeithLink.Svc.Impl.Repository.DataConnection
         /// <remarks>
         /// jwames - 6/27/2015 - original code
         /// </remarks>
-        public List<T> Read<T>(string sql, string parmName, object value)
+        public List<T> ReadSP<T>(string sql, string parmName, object value)
         {
             DynamicParameters parms = new DynamicParameters();
             parms.Add(parmName, value);
 
-            return Read<T>(GetCommandDefinition(sql, parms));
+            return Read<T>(GetSPCommandDefinition(sql, parms));
         }
 
         /// <summary>
@@ -212,9 +212,9 @@ namespace KeithLink.Svc.Impl.Repository.DataConnection
         /// <remarks>
         /// jwames - 6/27/2015 - original code
         /// </remarks>
-        public List<T> Read<T>(string sql, DynamicParameters parms)
+        public List<T> ReadSP<T>(string sql, DynamicParameters parms)
         {
-            return Read<T>(GetCommandDefinition(sql, parms));
+            return Read<T>(GetSPCommandDefinition(sql, parms));
         }
 
         /// <summary>
@@ -248,9 +248,9 @@ namespace KeithLink.Svc.Impl.Repository.DataConnection
         /// <remarks>
         /// jwames - 6/27/2015 - original code
         /// </remarks>
-        public T ReadOne<T>(string sql)
+        public T ReadOneSP<T>(string sql)
         {
-            return ReadOne<T>(GetCommandDefinition(sql));
+            return ReadOne<T>(GetSPCommandDefinition(sql));
         }
 
         /// <summary>
@@ -264,12 +264,12 @@ namespace KeithLink.Svc.Impl.Repository.DataConnection
         /// <remarks>
         /// jwames - 6/27/2015 - original code
         /// </remarks>
-        public T ReadOne<T>(string sql, string parmName, object value)
+        public T ReadOneSP<T>(string sql, string parmName, object value)
         {
             DynamicParameters parms = new DynamicParameters();
             parms.Add(parmName, value);
 
-            return ReadOne<T>(GetCommandDefinition(sql, parms));
+            return ReadOne<T>(GetSPCommandDefinition(sql, parms));
         }
 
         /// <summary>
@@ -282,11 +282,25 @@ namespace KeithLink.Svc.Impl.Repository.DataConnection
         /// <remarks>
         /// jwames - 6/27/2015 - original code
         /// </remarks>
-        public T ReadOne<T>(string sql, DynamicParameters parms)
+        public T ReadOneSP<T>(string sql, DynamicParameters parms)
         {
-            return ReadOne<T>(GetCommandDefinition(sql, parms));
+            return ReadOne<T>(GetSPCommandDefinition(sql, parms));
         }
         #endregion
+
+        public IEnumerable<T> QueryInline<T>(string sql, object parms = null)
+        {
+             return Connection.Query<T>(sql, parms);
+        }
+
+        public T ReadOneInline<T>(string sql, object parms = null)
+        {
+            return Connection.QuerySingle(sql, parms);
+        }
+        public void ExecuteInline(string sql, object parms = null)
+        {
+            Connection.Execute(sql, parms);
+        }
 
         #region properties
         public SqlConnection Connection { get; set; }

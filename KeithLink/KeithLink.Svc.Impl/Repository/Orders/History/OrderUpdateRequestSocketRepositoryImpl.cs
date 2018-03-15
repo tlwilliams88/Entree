@@ -75,7 +75,7 @@ namespace KeithLink.Svc.Impl.Repository.Orders.History {
             //byte[] bytes = Encoding.ASCII.GetBytes("HI");
 
             //try {
-            //    _readingStream.Read(bytes, 0, 2);
+            //    _readingStream.ReadSP(bytes, 0, 2);
             //} catch (Exception ex) {
             //    throw new SocketResponseException("Error reading from host socket connection", ex);
             //}

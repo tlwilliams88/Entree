@@ -36,11 +36,11 @@ namespace KeithLink.Svc.Impl.Repository.Lists
 
         #region methods
         public void DeleteReminderListDetail(long id) {
-            ExecuteCommand(SPNAME_DELETE, PARMNAME_ID, id);
+            ExecuteSPCommand(SPNAME_DELETE, PARMNAME_ID, id);
         }
 
         public List<ReminderItemsListDetail> GetRemindersDetails(long parentHeaderId) {
-            return Read<ReminderItemsListDetail>(SPNAME_GETALL, PARMNAME_HEADERID, parentHeaderId);
+            return ReadSP<ReminderItemsListDetail>(SPNAME_GETALL, PARMNAME_HEADERID, parentHeaderId);
         }
 
         public long SaveReminderListDetail(ReminderItemsListDetail model) {
@@ -55,7 +55,7 @@ namespace KeithLink.Svc.Impl.Repository.Lists
 
             parms.Add(PARMNAME_RETURNVALUE, direction: ParameterDirection.Output, dbType: DbType.Int64);
 
-            ExecuteCommand(SPNAME_SAVE, parms);
+            ExecuteSPCommand(SPNAME_SAVE, parms);
 
             return parms.Get<long>(PARMNAME_RETURNVALUE);
         }

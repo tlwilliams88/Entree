@@ -29,7 +29,7 @@ namespace KeithLink.Svc.Impl.Repository.Lists {
             parms.Add(PARMNAME_BRANCH, catalogInfo.BranchId);
             parms.Add(PARMNAME_CUSTNUM, catalogInfo.CustomerId);
 
-            return ReadOne<ReminderItemsListHeader>(SPNAME_GETONE, parms);
+            return ReadOneSP<ReminderItemsListHeader>(SPNAME_GETONE, parms);
         }
 
         public long SaveReminderListHeader(ReminderItemsListHeader model) {
@@ -39,7 +39,7 @@ namespace KeithLink.Svc.Impl.Repository.Lists {
             parms.Add(PARMNAME_ID, model.Id);
             parms.Add(PARMNAME_RETVAL, 0, dbType: DbType.Int64, direction: ParameterDirection.Output);
 
-            ExecuteCommand(SPNAME_SAVE, parms);
+            ExecuteSPCommand(SPNAME_SAVE, parms);
 
             return parms.Get<long>(PARMNAME_RETVAL);
         }

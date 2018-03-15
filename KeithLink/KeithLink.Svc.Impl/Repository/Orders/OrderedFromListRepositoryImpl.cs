@@ -50,7 +50,7 @@ namespace KeithLink.Svc.Impl.Repository.Orders
                 parms.Add(PARMNAME_LISTID, o2l.ListId.Value);
                 parms.Add(PARMNAME_LISTTYPE, o2l.ListType);
 
-                ExecuteCommand(STOREDPROC_WRITE_ONE, parms);
+                ExecuteSPCommand(STOREDPROC_WRITE_ONE, parms);
             }
         }
 
@@ -60,14 +60,14 @@ namespace KeithLink.Svc.Impl.Repository.Orders
             DynamicParameters parms = new DynamicParameters();
             parms.Add(PARMNAME_CONTROLNUM, controlNumber);
 
-            ExecuteCommand(STOREDPROC_DELETE_ONE, parms);
+            ExecuteSPCommand(STOREDPROC_DELETE_ONE, parms);
         }
 
         public void Purge(int PurgeDays)
         {
             if (PurgeDays < 0)
             {
-                ExecuteCommand(STOREDPROC_PURGE_BY_DAYS, "@PurgeDays", PurgeDays);
+                ExecuteSPCommand(STOREDPROC_PURGE_BY_DAYS, "@PurgeDays", PurgeDays);
             }
         }
     }
