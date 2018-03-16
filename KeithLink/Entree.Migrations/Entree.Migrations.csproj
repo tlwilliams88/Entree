@@ -339,6 +339,24 @@
     <Content Include="Scripts\AppData\Customers\Tables\ItemHistory\ItemHistory_0001_0001.11.00_up.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="Scripts\AppData\Customers\Tables\RecommendedItemContexts\RecommendedItemContexts_0067_2018.04.00_down.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Scripts\AppData\Customers\Tables\RecommendedItemContexts\RecommendedItemContexts_0067_2018.04.00_up.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Scripts\AppData\Customers\Tables\RecommendedItems\RecommendedItems_0067_2018.04.00_down.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Scripts\AppData\Customers\Tables\RecommendedItems\RecommendedItems_0067_2018.04.00_up.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Scripts\AppData\Customers\Tables\SICMap\SICMap_0067_2018.04.00_down.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Scripts\AppData\Customers\Tables\SICMap\SICMap_0067_2018.04.00_up.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="Scripts\AppData\Customers\Tables\SIC\SIC_0067_2018.04.00_down.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
@@ -2086,9 +2104,6 @@
     <Folder Include="Migrations\Data\IntegrationTests\Invoice\" />
     <Folder Include="Migrations\Data\IntegrationTests\Messaging\" />
     <Folder Include="Migrations\Data\IntegrationTests\Profile\" />
-    <Folder Include="Scripts\AppData\Customers\Tables\RecommendedItemsContexts\" />
-    <Folder Include="Scripts\AppData\Customers\Tables\RecommendedItems\" />
-    <Folder Include="Scripts\AppData\Customers\Tables\SICMap\" />
     <Folder Include="Scripts\AppData\List\Stored Procedures\UpdateSentOnContractListChangeByCustomerNumberBranch\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
