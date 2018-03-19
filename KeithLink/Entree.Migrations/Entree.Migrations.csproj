@@ -145,6 +145,7 @@
     <Compile Include="Migrations\v2017.06.03\Migration0065.cs" />
     <Compile Include="Migrations\v2017.06.03\Migration0063.cs" />
     <Compile Include="Migrations\v2018.01.00\Migration0066.cs" />
+    <Compile Include="Migrations\v2018.04.00\Migration0067.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -336,6 +337,30 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Scripts\AppData\Customers\Tables\ItemHistory\ItemHistory_0001_0001.11.00_up.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Scripts\AppData\Customers\Tables\RecommendedItemContexts\RecommendedItemContexts_0067_2018.04.00_down.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Scripts\AppData\Customers\Tables\RecommendedItemContexts\RecommendedItemContexts_0067_2018.04.00_up.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Scripts\AppData\Customers\Tables\RecommendedItems\RecommendedItems_0067_2018.04.00_down.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Scripts\AppData\Customers\Tables\RecommendedItems\RecommendedItems_0067_2018.04.00_up.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Scripts\AppData\Customers\Tables\SICMap\SICMap_0067_2018.04.00_down.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Scripts\AppData\Customers\Tables\SICMap\SICMap_0067_2018.04.00_up.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Scripts\AppData\Customers\Tables\SIC\SIC_0067_2018.04.00_down.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Scripts\AppData\Customers\Tables\SIC\SIC_0067_2018.04.00_up.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Scripts\AppData\dbo\Stored Procedures\spCreateAuditLogEntry\spCreateAuditLogEntry_0001_0001.11.00_down.sql">
@@ -677,6 +702,12 @@
     <Content Include="Scripts\AppData\ETL\Tables\Staging_Customer\Staging_Customer_0001_0001.11.00_down.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="Scripts\AppData\ETL\Tables\Staging_Customer\Staging_Customer_0067_2018.04.00_down.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Scripts\AppData\ETL\Tables\Staging_Customer\Staging_Customer_0067_2018.04.00_up.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="Scripts\AppData\ETL\Tables\Staging_Customer\Staging_Customer_0001_0001.11.00_up.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
@@ -788,6 +819,18 @@
     <Content Include="Scripts\AppData\ETL\Tables\Staging_ProprietaryItem\Staging_ProprietaryItem_0001_0001.11.00_up.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="Scripts\AppData\ETL\Tables\Staging_RecommendedItems\Staging_RecommendedItems_0067_2018.04.00_down.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Scripts\AppData\ETL\Tables\Staging_RecommendedItems\Staging_RecommendedItems_0067_2018.04.00_up.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Scripts\AppData\ETL\Tables\Staging_RecommendedItems_Context_Reference\Staging_RecommendedItems_0067_2018.04.00_down.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Scripts\AppData\ETL\Tables\Staging_RecommendedItems_Context_Reference\Staging_RecommendedItems_0067_2018.04.00_up.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="Scripts\AppData\ETL\Tables\Staging_RegionalIdDesc\Staging_RegionalIdDesc_0001_0001.11.00_down.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
@@ -798,6 +841,12 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Scripts\AppData\ETL\Tables\Staging_RegionalNumberDesc\Staging_RegionalNumberDesc_0001_0001.11.00_up.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Scripts\AppData\ETL\Tables\Staging_SIC_Codes\Staging_SICCodes_0067_2018.04.00_down.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Scripts\AppData\ETL\Tables\Staging_SIC_Codes\Staging_SICCodes_0067_2018.04.00_up.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Scripts\AppData\ETL\Tables\Staging_Terms\Staging_Terms_0001_0001.11.00_down.sql">
