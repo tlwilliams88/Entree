@@ -84,6 +84,56 @@
 
   <div class="row sub-content">
     <div class="col-lg-12">
+        <div style="height: 150px; background-color: #F3F1EC; margin-bottom: 20px;" class="hidden-xs hidden-sm hidden-md">
+          <h3 style="padding-top: 5px; padding-left: 10px;">Recommendations based on your cart</h3>
+          <div style="display: inline-flex; padding-left: 10px;">
+          
+          
+              <div style="border: 2px solid #C4BC9E; border-radius: 5px; height: 100px; display: inline-flex; margin-right: 5px; background-color: #FFFF;" ng-repeat="recommendedItem in recommendedItems | limitTo: 2">
+                
+                <div>
+                    <img 
+                    class="hand items pull-left"
+                    style="padding: 0; height: 96px;"
+                    ng-src="{{recommendedItem.productimages[0].url}}" />
+                </div>
+    
+    
+                <div class="pull-left" style="padding-top: 25px; padding-left: 10px; padding-right: 10px;">
+                  <p>{{recommendedItem.name}}</p>
+                  <p>{{recommendedItem.each ? recommendedItem.packageprice : recommendedItem.caseprice | currency}} - {{recommendedItem.packsize}}</p>
+                </div>
+    
+                <div class="pull-right" style="padding-top: 10px; padding-right: 10px;">
+                    <div class="hidden-print sub-content">
+              
+                        <form name="orderForm" style="display: inline-block;">
+                          <div counter allowDropdown="true" size="large" ng-model="item.quantity" min="0"></div>
+                          <span ng-if="packagePriceInd">Order By Package             
+                            <ng-form name="eachForm_mobile">
+                              <input type="checkbox" ng-model="item.each" id="each" name="each" />
+                            </ng-form>
+                          </span>
+                        </form>
+    
+                        <div class="btn-primary btn btn-lg">
+                            Add To Cart
+                          </div>
+                      </div>
+                  </div>
+    
+              </div>
+      
+              <!-- <div style="border: 2px solid #C4BC9E; border-radius: 5px; height: 100px; padding: 10px; margin-top: 10px;"></div>
+      
+              <div style="border: 2px solid #C4BC9E; border-radius: 5px; height: 100px; padding: 10px; margin-top: 10px;"></div>
+      
+              <div style="border: 2px solid #C4BC9E; border-radius: 5px; height: 100px; padding: 10px; margin-top: 10px;"></div>
+      
+              <div style="border: 2px solid #C4BC9E; border-radius: 5px; height: 100px; padding: 10px; margin-top: 10px; margin-bottom: 10px;"></div> -->
+        
+            </div>
+          </div>
       <tabset class="tabset tab-border">
         <tab heading="Item Specifications">
           <h3 class="visible-print-block hidden-xs hidden-sm hidden-md hidden-lg">Item Specifications</h3>
@@ -396,6 +446,28 @@
               <br />
           </div>
         </tab>
+        <tab heading="Recommendations" class="hidden-lg">
+            <h3 class="visible-print-block hidden-xs hidden-sm hidden-md hidden-lg">Recommendations</h3>
+              <table class="table item-details__table table-striped-rows no-margin hidden-lg" style="table-layout: fixed">
+                <tbody>
+                  <tr>
+                    <th>Item #</th>
+                    <th>Item Name</th>
+                    <th>Brand</th>
+                    <th>Price</th>
+
+                  </tr>
+                  <tr ng-repeat="recommendedItem in recommendedItems" ng-class="{ odd : $odd }">
+                      <td>{{recommendedItem.itemnumber}}</td>
+                      <td>{{recommendedItem.name}}</td>
+                      <td>{{recommendedItem.brand_extended_description}}</td>
+                      <td>{{recommendedItem.each ? recommendedItem.packageprice : recommendedItem.caseprice | currency}} - {{recommendedItem.packsize}}</td>
+
+                  </tr>
+
+                </tbody>
+              </table>
+          </tab>
       </tabset>
     </div>
   </div>
