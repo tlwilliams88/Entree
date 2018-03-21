@@ -32,53 +32,23 @@ namespace KeithLink.Svc.Impl.Repository.Customers
                 return null;
             }
 
-            SortedDictionary<string,string> dict = new SortedDictionary<string, string>();
-            if (cartItems != null && cartItems.Count>0) {
-                foreach (var entry in cartItems)
-                {
-                    if (dict.ContainsKey(entry.ItemNumber) == false) {
-                        dict.Add(entry.ItemNumber, entry.ItemNumber);    
-                    }                    
-                }
-            }
-            
             var parameters = new RecommendedItemsParametersModel() {
-                CallSize = numberItems + 5,
                 CustomerNumber = customernumber,
                 BranchId = branch,
-                CartItemsList = dict.Keys.ToList()
+                CartItemsList = (cartItems != null) ? cartItems.Select(c => c.ItemNumber).ToList() : new List<string>()
             };
 
-            List<RecommendedItemsModel> recommended = QueryFirstRecommended(parameters);
-
-            parameters.SkipSize = parameters.CallSize;
+            List<RecommendedItemsModel> recommended = QueryRecommended(parameters);
 
             list = recommended.Take(numberItems)
                               .ToList();
 
-            while (list.Count < numberItems) {
-
-                parameters.CallSize = 5;
-
-                recommended = QueryNextRecommended(parameters);
-
-                parameters.SkipSize += parameters.CallSize;
-
-                if (recommended.Count == 0) {
-                    break;
-                }
-
-                list.AddRange(recommended.Take(numberItems-list.Count));
-
-            }
-
             return list;
         }
 
-        private List<RecommendedItemsModel> QueryFirstRecommended(RecommendedItemsParametersModel parameters) {
+        private List<RecommendedItemsModel> QueryRecommended(RecommendedItemsParametersModel parameters) {
             var recommended = this.QueryInline<RecommendedItemsModel>(
                                                                       "SELECT " +
-                                                                      "TOP " + parameters.CallSize + " " +
                                                                       "* " +
                                                                       "FROM Customers.RecommendedItems ri " +
                                                                       "INNER JOIN Customers.RecommendedItemContexts ric ON ric.ContextKey=ri.ContextDescription " +
@@ -88,25 +58,6 @@ namespace KeithLink.Svc.Impl.Repository.Customers
                                                                       "AND ri.ItemNumber NOT IN (@CartItemsList) " +
                                                                       "AND ri.RecommendedItem NOT IN (@CartItemsList) " +
                                                                       "ORDER BY ri.Confidence DESC ",
-                                                                      parameters)
-                                  .ToList();
-            return recommended;
-        }
-        private List<RecommendedItemsModel> QueryNextRecommended(RecommendedItemsParametersModel parameters)
-        {
-            var recommended = this.QueryInline<RecommendedItemsModel>(
-                                                                      "SELECT " +
-                                                                      "* " +
-                                                                      "FROM Customers.RecommendedItems ri " +
-                                                                      "INNER JOIN Customers.RecommendedItemContexts ric ON ric.ContextKey=ri.ContextDescription " +
-                                                                      "INNER JOIN Customers.SICMap map ON map.SIC=ric.SIC " +
-                                                                      "WHERE map.CustomerNumber=@CustomerNumber " +
-                                                                      "AND map.BranchId=@BranchId " +
-                                                                      "AND ri.ItemNumber NOT IN (@CartItemsList) " +
-                                                                      "AND ri.RecommendedItem NOT IN (@CartItemsList) " +
-                                                                      "ORDER BY ri.Confidence DESC " +
-                                                                      "OFFSET " + parameters.SkipSize + " ROWS " +
-                                                                      "FETCH NEXT " + parameters.CallSize + " ROWS ONLY ",
                                                                       parameters)
                                   .ToList();
             return recommended;

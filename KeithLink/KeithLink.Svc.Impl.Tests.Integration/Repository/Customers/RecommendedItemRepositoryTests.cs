@@ -146,6 +146,29 @@ namespace KeithLink.Svc.Impl.Tests.Integration.Repository.Customer
                        .Should()
                        .Be(expected);
             }
+
+            [Fact]
+            public void GoodCustomerCartWithMatchingItemNumberRequestingNoSetNumber_Resultsin4()
+            {
+                // arrange
+                var customerNumber = "123456";
+                var branch = "FUT";
+                var cartitems = new List<ShoppingCartItem>() {
+                    new ShoppingCartItem() {
+                        ItemNumber = "111111"
+                    }
+                };
+                var repo = MakeRepo();
+                var expected = 4;
+
+                // act
+                var results = repo.GetRecommendedItemsForCustomer(customerNumber, branch, cartitems);
+
+                // assert
+                results.Count
+                       .Should()
+                       .Be(expected);
+            }
         }
     }
 }
