@@ -64,6 +64,9 @@
     <Compile Include="Migrations\Data\IntegrationTests\Configuration\AppSettings.cs" />
     <Compile Include="Migrations\Data\AppSettings.cs" />
     <Compile Include="Migrations\Data\Baseline_Data.cs" />
+    <Compile Include="Migrations\Data\IntegrationTests\Customers\RecommendedItemContexts.cs" />
+    <Compile Include="Migrations\Data\IntegrationTests\Customers\SICMap.cs" />
+    <Compile Include="Migrations\Data\IntegrationTests\Customers\RecommendedItems.cs" />
     <Compile Include="Migrations\Data\IntegrationTests\Lists\ListItemsDelta.cs" />
     <Compile Include="Migrations\Data\IntegrationTests\Lists\ContractDetails.cs" />
     <Compile Include="Migrations\Data\IntegrationTests\Lists\CustomListDetails.cs" />
@@ -2104,7 +2107,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Migrations\Data\IntegrationTests\BranchSupport\" />
-    <Folder Include="Migrations\Data\IntegrationTests\Customers\" />
     <Folder Include="Migrations\Data\IntegrationTests\dbo\" />
     <Folder Include="Migrations\Data\IntegrationTests\ETL\" />
     <Folder Include="Migrations\Data\IntegrationTests\Invoice\" />
