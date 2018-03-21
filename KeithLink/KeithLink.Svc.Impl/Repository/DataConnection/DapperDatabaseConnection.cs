@@ -288,16 +288,16 @@ namespace KeithLink.Svc.Impl.Repository.DataConnection
         }
         #endregion
 
-        public IEnumerable<T> QueryInline<T>(string sql, object parms = null)
+        public IEnumerable<T> Query<T>(string sql, object parms = null)
         {
              return Connection.Query<T>(sql, parms);
         }
 
-        public T ReadOneInline<T>(string sql, object parms = null)
+        public T ReadOne<T>(string sql, object parms = null)
         {
             return Connection.QuerySingle(sql, parms);
         }
-        public void ExecuteInline(string sql, object parms = null)
+        public void Execute(string sql, object parms = null)
         {
             Connection.Execute(sql, parms);
         }

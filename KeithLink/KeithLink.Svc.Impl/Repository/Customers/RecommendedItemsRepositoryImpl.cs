@@ -21,22 +21,20 @@ namespace KeithLink.Svc.Impl.Repository.Customers
         #endregion
 
         #region methods
-        public List<RecommendedItemsModel> GetRecommendedItemsForCustomer(string customernumber, 
-                                                                          string branch, 
-                                                                          List<ShoppingCartItem> cartItems,
+        public List<RecommendedItemsModel> GetRecommendedItemsForCustomer(RecommendedItemsParametersModel parameters,
                                                                           int numberItems = 4) {
 
             List<RecommendedItemsModel> list = new List<RecommendedItemsModel>();
 
-            if (customernumber == null | branch == null) {
+            if (parameters == null || (parameters.CustomerNumber == null | parameters.BranchId == null)) {
                 return null;
             }
 
-            var parameters = new RecommendedItemsParametersModel() {
-                CustomerNumber = customernumber,
-                BranchId = branch,
-                CartItemsList = (cartItems != null) ? cartItems.Select(c => c.ItemNumber).ToList() : new List<string>()
-            };
+            //var parameters = new RecommendedItemsParametersModel() {
+            //    CustomerNumber = customernumber,
+            //    BranchId = branch,
+            //    CartItemsList = (cartItems != null) ? cartItems.Select(c => c.ItemNumber).ToList() : new List<string>()
+            //};
 
             List<RecommendedItemsModel> recommended = QueryRecommended(parameters);
 
@@ -47,7 +45,7 @@ namespace KeithLink.Svc.Impl.Repository.Customers
         }
 
         private List<RecommendedItemsModel> QueryRecommended(RecommendedItemsParametersModel parameters) {
-            var recommended = this.QueryInline<RecommendedItemsModel>(
+            var recommended = this.Query<RecommendedItemsModel>(
                                                                       "SELECT " +
                                                                       "TOP 40 * " +
                                                                       "FROM Customers.RecommendedItems ri " +

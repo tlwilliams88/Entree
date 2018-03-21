@@ -10,6 +10,7 @@ using KeithLink.Svc.Core.Interface.Lists;
 using KeithLink.Svc.Impl.Repository.SmartResolver;
 using Xunit;
 using KeithLink.Svc.Core.Interface.Customers;
+using KeithLink.Svc.Core.Models.Customers;
 using KeithLink.Svc.Core.Models.ShoppingCart;
 
 namespace KeithLink.Svc.Impl.Tests.Integration.Repository.Customer
@@ -29,12 +30,15 @@ namespace KeithLink.Svc.Impl.Tests.Integration.Repository.Customer
             public void BadCustomerNoCart_ResultsNotNull()
             {
                 // arrange
-                var customerNumber = "654321";
-                var branch = "FUT";
+                var parms = new RecommendedItemsParametersModel() {
+                    CustomerNumber = "654321",
+                    BranchId = "FUT",
+                    CartItemsList = null
+                };
                 var repo = MakeRepo();
 
                 // act
-                var results = repo.GetRecommendedItemsForCustomer(customerNumber, branch, null);
+                var results = repo.GetRecommendedItemsForCustomer(parms);
 
                 // assert
                 results.Should()
@@ -47,10 +51,16 @@ namespace KeithLink.Svc.Impl.Tests.Integration.Repository.Customer
                 // arrange
                 var customerNumber = "123456";
                 var branch = "FUT";
+                var parms = new RecommendedItemsParametersModel()
+                {
+                    CustomerNumber = "654321",
+                    BranchId = "FUT",
+                    CartItemsList = null
+                };
                 var repo = MakeRepo();
 
                 // act
-                var results = repo.GetRecommendedItemsForCustomer(customerNumber, branch, null);
+                var results = repo.GetRecommendedItemsForCustomer(parms);
 
                 // assert
                 results.Should()
@@ -61,17 +71,16 @@ namespace KeithLink.Svc.Impl.Tests.Integration.Repository.Customer
             public void GoodCustomerCartWithMatchingItemNumber_ResultsNotNull()
             {
                 // arrange
-                var customerNumber = "123456";
-                var branch = "FUT";
-                var cartitems = new List<ShoppingCartItem>() {
-                    new ShoppingCartItem() {
-                        ItemNumber = "111111"
-                    }
+                var parms = new RecommendedItemsParametersModel()
+                {
+                    CustomerNumber = "123456",
+                    BranchId = "FUT",
+                    CartItemsList = new List<string>() { "111111" }
                 };
                 var repo = MakeRepo();
 
                 // act
-                var results = repo.GetRecommendedItemsForCustomer(customerNumber, branch, cartitems);
+                var results = repo.GetRecommendedItemsForCustomer(parms);
 
                 // assert
                 results.Should()
@@ -82,64 +91,61 @@ namespace KeithLink.Svc.Impl.Tests.Integration.Repository.Customer
             public void GoodCustomerCartWithMatchingItemNumber_ResultsItemNumbersDontContainCartItemNumbers()
             {
                 // arrange
-                var customerNumber = "123456";
-                var branch = "FUT";
-                var cartitems = new List<ShoppingCartItem>() {
-                    new ShoppingCartItem() {
-                        ItemNumber = "111111"
-                    }
+                var parms = new RecommendedItemsParametersModel()
+                {
+                    CustomerNumber = "123456",
+                    BranchId = "FUT",
+                    CartItemsList = new List<string>() { "111111" }
                 };
                 var repo = MakeRepo();
 
                 // act
-                var results = repo.GetRecommendedItemsForCustomer(customerNumber, branch, cartitems);
+                var results = repo.GetRecommendedItemsForCustomer(parms);
 
                 // assert
                 results.Select(r => r.ItemNumber)
                        .ToList()
                        .Should()
-                       .NotContain(cartitems.Select(i => i.ItemNumber).ToList());
+                       .NotContain(parms.CartItemsList);
             }
 
             [Fact]
             public void GoodCustomerCartWithMatchingItemNumber_ResultsRecommendedItemsDontContainCartItemNumbers()
             {
                 // arrange
-                var customerNumber = "123456";
-                var branch = "FUT";
-                var cartitems = new List<ShoppingCartItem>() {
-                    new ShoppingCartItem() {
-                        ItemNumber = "111111"
-                    }
+                var parms = new RecommendedItemsParametersModel()
+                {
+                    CustomerNumber = "123456",
+                    BranchId = "FUT",
+                    CartItemsList = new List<string>() { "111111" }
                 };
                 var repo = MakeRepo();
 
                 // act
-                var results = repo.GetRecommendedItemsForCustomer(customerNumber, branch, cartitems);
+                var results = repo.GetRecommendedItemsForCustomer(parms);
 
                 // assert
                 results.Select(r => r.RecommendedItem)
                        .ToList()
                        .Should()
-                       .NotContain(cartitems.Select(i => i.ItemNumber).ToList());
+                       .NotContain(parms.CartItemsList);
             }
 
             [Fact]
             public void GoodCustomerCartWithMatchingItemNumberRequesting2_Resultsin2()
             {
                 // arrange
-                var customerNumber = "123456";
-                var branch = "FUT";
-                var cartitems = new List<ShoppingCartItem>() {
-                    new ShoppingCartItem() {
-                        ItemNumber = "111111"
-                    }
+                var expected = 2;
+                var parms = new RecommendedItemsParametersModel()
+                {
+                    CustomerNumber = "123456",
+                    BranchId = "FUT",
+                    CartItemsList = new List<string>() { "111111" }
                 };
                 var repo = MakeRepo();
-                var expected = 2;
 
                 // act
-                var results = repo.GetRecommendedItemsForCustomer(customerNumber, branch, cartitems, expected);
+                var results = repo.GetRecommendedItemsForCustomer(parms);
 
                 // assert
                 results.Count
@@ -151,18 +157,17 @@ namespace KeithLink.Svc.Impl.Tests.Integration.Repository.Customer
             public void GoodCustomerCartWithMatchingItemNumberRequestingNoSetNumber_Resultsin4()
             {
                 // arrange
-                var customerNumber = "123456";
-                var branch = "FUT";
-                var cartitems = new List<ShoppingCartItem>() {
-                    new ShoppingCartItem() {
-                        ItemNumber = "111111"
-                    }
+                var expected = 4;
+                var parms = new RecommendedItemsParametersModel()
+                {
+                    CustomerNumber = "123456",
+                    BranchId = "FUT",
+                    CartItemsList = new List<string>() { "111111" }
                 };
                 var repo = MakeRepo();
-                var expected = 4;
 
                 // act
-                var results = repo.GetRecommendedItemsForCustomer(customerNumber, branch, cartitems);
+                var results = repo.GetRecommendedItemsForCustomer(parms);
 
                 // assert
                 results.Count
