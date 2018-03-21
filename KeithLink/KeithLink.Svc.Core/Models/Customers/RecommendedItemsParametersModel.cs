@@ -8,10 +8,6 @@ namespace KeithLink.Svc.Core.Models.Customers
 {
     public class RecommendedItemsParametersModel
     {
-        public int CallSize { get; set; }
-
-        public int SkipSize { get; set; }
-
         public string CustomerNumber { get; set; }
 
         public string BranchId { get; set; }
