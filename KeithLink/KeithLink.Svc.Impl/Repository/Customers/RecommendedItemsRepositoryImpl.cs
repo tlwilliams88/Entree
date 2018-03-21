@@ -49,7 +49,7 @@ namespace KeithLink.Svc.Impl.Repository.Customers
         private List<RecommendedItemsModel> QueryRecommended(RecommendedItemsParametersModel parameters) {
             var recommended = this.QueryInline<RecommendedItemsModel>(
                                                                       "SELECT " +
-                                                                      "* " +
+                                                                      "TOP 40 * " +
                                                                       "FROM Customers.RecommendedItems ri " +
                                                                       "INNER JOIN Customers.RecommendedItemContexts ric ON ric.ContextKey=ri.ContextDescription " +
                                                                       "INNER JOIN Customers.SICMap map ON map.SIC=ric.SIC " +
