@@ -155,19 +155,22 @@ namespace KeithLink.Svc.WebApi.Controllers {
         /// <returns></returns>
         [HttpGet]
         [ApiKeyedRoute("list/recommended")]
-        public OperationReturnModel<List<RecommendedItemModel>> ReadRecommendedItemsList() {
-            OperationReturnModel<List<RecommendedItemModel>> ret = new OperationReturnModel<List<RecommendedItemModel>>();
-            try
-            {
-                ret.SuccessResponse = _listService.ReadRecommendedItemsList(this.SelectedUserContext);
-                ret.IsSuccess = true;
-            }catch(Exception ex)
-            {
-                ret.IsSuccess = false;
-                ret.ErrorMessage = ex.Message;
-                _elRepo.WriteErrorLog("Recommended List", ex);
-            }
-            return ret;
+        public OperationReturnModel<List<string>> ReadRecommendedItemsList() {
+            // stub to remove the old model
+            // TODO: set up the new stuff
+            //OperationReturnModel<List<RecommendedItemModel>> ret = new OperationReturnModel<List<RecommendedItemModel>>();
+            //try
+            //{
+            //    ret.SuccessResponse = _listService.ReadRecommendedItemsList(this.SelectedUserContext);
+            //    ret.IsSuccess = true;
+            //}catch(Exception ex)
+            //{
+            //    ret.IsSuccess = false;
+            //    ret.ErrorMessage = ex.Message;
+            //    _elRepo.WriteErrorLog("Recommended List", ex);
+            //}
+            //return ret;
+            return new OperationReturnModel<List<string>>();
         }
 
         /// <summary>

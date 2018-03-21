@@ -328,7 +328,6 @@
     <Compile Include="Logic\Lists\MandatoryItemsListLogicImpl.cs" />
     <Compile Include="Logic\Lists\RecentlyViewedListLogicImpl.cs" />
     <Compile Include="Logic\Lists\ReminderItemsListLogicImpl.cs" />
-    <Compile Include="Logic\Lists\RecommendedItemsListLogicImpl.cs" />
     <Compile Include="Logic\Lists\RecentlyOrderedListLogicImpl.cs" />
     <Compile Include="Logic\Lists\HistoryListLogicImpl.cs" />
     <Compile Include="Logic\Lists\NotesListLogicImpl.cs" />
@@ -448,10 +447,8 @@
     <Compile Include="Repository\Lists\RecentlyViewedListDetailsRepositoryImpl.cs" />
     <Compile Include="Repository\Lists\RecentlyViewedListHeaderRepositoryImpl.cs" />
     <Compile Include="Repository\Lists\ReminderItemsListDetailsRepositoryImpl.cs" />
-    <Compile Include="Repository\Lists\RecommendedItemsListDetailsRepositoryImpl.cs" />
     <Compile Include="Repository\Lists\MandatoryItemsListHeadersRepositoryImpl.cs" />
     <Compile Include="Repository\Lists\ReminderItemsListHeadersRepositoryImpl.cs" />
-    <Compile Include="Repository\Lists\RecommendedItemsListHeadersRepositoryImpl.cs" />
     <Compile Include="Repository\Lists\RecentlyOrderedListHeadersRepositoryImpl.cs" />
     <Compile Include="Repository\Lists\RecentlyOrderedListDetailsRepositoryImpl.cs" />
     <Compile Include="Repository\Lists\NotesHeadersRepositoryImpl.cs" />

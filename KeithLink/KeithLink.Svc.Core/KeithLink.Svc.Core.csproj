@@ -204,8 +204,6 @@
     <Compile Include="Extensions\Lists\RecentlyViewedDetailsExtensions.cs" />
     <Compile Include="Extensions\Lists\RecentlyOrderedDetailExtensions.cs" />
     <Compile Include="Extensions\Lists\RecentlyViewedHeaderExtensions.cs" />
-    <Compile Include="Extensions\Lists\RecommendedDetailExtension.cs" />
-    <Compile Include="Extensions\Lists\RecommendedHeaderExtensions.cs" />
     <Compile Include="Extensions\Lists\ReminderDetailExtensions.cs" />
     <Compile Include="Extensions\Lists\RecentlyOrderedHeaderExtensions.cs" />
     <Compile Include="Extensions\Lists\ReminderHeaderExtensions.cs" />
@@ -303,10 +301,7 @@
     <Compile Include="Interface\Lists\IRecentlyViewedListHeadersRepository.cs" />
     <Compile Include="Interface\Lists\IRemindersListLogic.cs" />
     <Compile Include="Interface\Lists\IRemindersListDetailsRepository.cs" />
-    <Compile Include="Interface\Lists\IRecommendedItemsListDetailsRepository.cs" />
     <Compile Include="Interface\Lists\IRemindersListHeadersRepository.cs" />
-    <Compile Include="Interface\Lists\IRecommendedItemsListHeadersRepository.cs" />
-    <Compile Include="Interface\Lists\IRecommendedItemListLogic.cs" />
     <Compile Include="Interface\Lists\IRecentlyOrderedListLogic.cs" />
     <Compile Include="Interface\Lists\IRecentlyOrderedListHeadersRepository.cs" />
     <Compile Include="Interface\Lists\IFavoritesListLogic.cs" />
@@ -437,8 +432,6 @@
     <Compile Include="Models\Lists\NewListItem.cs" />
     <Compile Include="Models\Lists\ReminderItems\ReminderItemsListDetail.cs" />
     <Compile Include="Models\Lists\ReminderItems\ReminderItemsListHeader.cs" />
-    <Compile Include="Models\Lists\RecommendedItems\RecommendedItemsListDetail.cs" />
-    <Compile Include="Models\Lists\RecommendedItems\RecommendedItemsListHeader.cs" />
     <Compile Include="Models\Lists\Notes\NotesListDetail.cs" />
     <Compile Include="Models\Lists\Notes\NotesListHeader.cs" />
     <Compile Include="Models\Lists\PrintListModel.cs" />
@@ -498,7 +491,6 @@
     <Compile Include="Models\Lists\ListCopyShareModel.cs" />
     <Compile Include="Models\Lists\ListImportFileModel.cs" />
     <Compile Include="Models\Lists\PagedListModel.cs" />
-    <Compile Include="Models\Lists\RecommendedItemModel.cs" />
     <Compile Include="Models\Messaging\EF\UserPushNotificationDevice.cs" />
     <Compile Include="Models\Messaging\MailMessageModel.cs" />
     <Compile Include="Models\Messaging\PushDeviceRegistrationModel.cs" />

@@ -110,10 +110,8 @@
     <Compile Include="Repository\Lists\RecentlyViewedDetailRepositoryTests.cs" />
     <Compile Include="Repository\Lists\RecentlyOrderedDetailRepositoryTests.cs" />
     <Compile Include="Repository\Lists\RecentlyViewedHeaderRepositoryTests.cs" />
-    <Compile Include="Repository\Lists\RecommendedListDetailsRepositoryTests.cs" />
     <Compile Include="Repository\Lists\ReminderListDetailsRepositoryTests.cs" />
     <Compile Include="Repository\Lists\RecentlyOrderedHeaderRepositoryTests.cs" />
-    <Compile Include="Repository\Lists\RecommendedListHeaderRepositoryTests.cs" />
     <Compile Include="Repository\Lists\ReminderListHeaderRepositoryTests.cs" />
     <Compile Include="Repository\Marketing\CampaignCustomerRepositoryTests.cs" />
     <Compile Include="Repository\Marketing\CatalogCampaignHeaderRepositoryTests.cs" />
