@@ -12,8 +12,8 @@
   DTS:LocaleID="1033"
   DTS:ObjectName="Entree_BI_Process"
   DTS:PackageType="5"
-  DTS:VersionBuild="14"
-  DTS:VersionGUID="{91A74F9A-0286-4432-B0CB-E4FE0CE9F8F4}">
+  DTS:VersionBuild="15"
+  DTS:VersionGUID="{019D14AF-D0F9-4FBF-8FEE-37A4D85CCB38}">
   <DTS:Property
     DTS:Name="PackageFormatVersion">8</DTS:Property>
   <DTS:ConnectionManagers>
@@ -28,7 +28,7 @@
           <DTS:Password
             DTS:Name="Password"
             Sensitive="1"
-            Encrypted="1">AQAAANCMnd8BFdERjHoAwE/Cl+sBAAAAdq0bywyxk0SYGUE7Fv2fUwAAAAAIAAAARABUAFMAAAADZgAAwAAAABAAAAAZngmVQMnRGcftWzKUQwu4AAAAAASAAACgAAAAEAAAAC+Ny+kzSHc3SpHMqKo71T0IAAAAUFqut8wI+sgUAAAAFPFtt8G56p4MsoCW4jQHrq6U5c4</DTS:Password>
+            Encrypted="1">AQAAANCMnd8BFdERjHoAwE/Cl+sBAAAAdq0bywyxk0SYGUE7Fv2fUwAAAAAIAAAARABUAFMAAAADZgAAwAAAABAAAACwl2nzJHcY9EpI7f5H34c3AAAAAASAAACgAAAAEAAAAKo/wuc34h8QlKuqP3Cf6DgIAAAASPLvq8dwBRcUAAAAOAqt04W0P0JotpUE1Sc8UiBapzM</DTS:Password>
         </DTS:ConnectionManager>
       </DTS:ObjectData>
     </DTS:ConnectionManager>
@@ -43,7 +43,7 @@
           <DTS:Password
             DTS:Name="Password"
             Sensitive="1"
-            Encrypted="1">AQAAANCMnd8BFdERjHoAwE/Cl+sBAAAAdq0bywyxk0SYGUE7Fv2fUwAAAAAIAAAARABUAFMAAAADZgAAwAAAABAAAABR6N6YH/JGM5DcNuRP+OX5AAAAAASAAACgAAAAEAAAACzePWEteU8vRTPsQsbg7AEIAAAAltmxzGNSuVIUAAAA4U8rK/pigMI4Vos/AeWdTgbHsCc</DTS:Password>
+            Encrypted="1">AQAAANCMnd8BFdERjHoAwE/Cl+sBAAAAdq0bywyxk0SYGUE7Fv2fUwAAAAAIAAAARABUAFMAAAADZgAAwAAAABAAAADwpMDvKvCS/06/Yh6hDn1vAAAAAASAAACgAAAAEAAAADZa1oNSklh0AOnGjL8EqbgIAAAAWqqzKUGmPC4UAAAARMftErkgz2Fkam0CG8ECaRMZVmk</DTS:Password>
         </DTS:ConnectionManager>
       </DTS:ObjectData>
     </DTS:ConnectionManager>
@@ -1348,7 +1348,269 @@ FROM            ETL.Staging_RecommendedItems</property>
           <DTS:Variables />
           <DTS:ObjectData>
             <pipeline
-              version="1" />
+              version="1">
+              <components>
+                <component
+                  refId="Package\Process Data\Process RecommendedItemsContext\Flat File Source"
+                  componentClassID="Microsoft.FlatFileSource"
+                  contactInfo="Flat File Source;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;1"
+                  description="Flat File Source"
+                  localeId="1033"
+                  name="Flat File Source"
+                  usesDispositions="true"
+                  version="1">
+                  <properties>
+                    <property
+                      dataType="System.Boolean"
+                      description="Specifies whether zero-length columns are treated as null."
+                      name="RetainNulls">false</property>
+                    <property
+                      dataType="System.String"
+                      description="Specifies the name of an output column containing the file name. If no name is specified, no output column containing the file name will be generated."
+                      name="FileNameColumnName"></property>
+                  </properties>
+                  <connections>
+                    <connection
+                      refId="Package\Process Data\Process RecommendedItemsContext\Flat File Source.Connections[FlatFileConnection]"
+                      connectionManagerID="Package.ConnectionManagers[RecommendedItemsContext]"
+                      connectionManagerRefId="Package.ConnectionManagers[RecommendedItemsContext]"
+                      name="FlatFileConnection" />
+                  </connections>
+                  <outputs>
+                    <output
+                      refId="Package\Process Data\Process RecommendedItemsContext\Flat File Source.Outputs[Flat File Source Output]"
+                      name="Flat File Source Output">
+                      <outputColumns>
+                        <outputColumn
+                          refId="Package\Process Data\Process RecommendedItemsContext\Flat File Source.Outputs[Flat File Source Output].Columns[Context_Attribute]"
+                          codePage="1252"
+                          dataType="str"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\Process Data\Process RecommendedItemsContext\Flat File Source.Outputs[Flat File Source Output].ExternalColumns[Context_Attribute]"
+                          length="100"
+                          lineageId="Package\Process Data\Process RecommendedItemsContext\Flat File Source.Outputs[Flat File Source Output].Columns[Context_Attribute]"
+                          name="Context_Attribute"
+                          truncationRowDisposition="FailComponent">
+                          <properties>
+                            <property
+                              dataType="System.Boolean"
+                              description="Indicates whether the column uses the faster, locale-neutral parsing routines."
+                              name="FastParse">false</property>
+                            <property
+                              dataType="System.Boolean"
+                              description="Indicates whether the data is in binary format."
+                              name="UseBinaryFormat">false</property>
+                          </properties>
+                        </outputColumn>
+                        <outputColumn
+                          refId="Package\Process Data\Process RecommendedItemsContext\Flat File Source.Outputs[Flat File Source Output].Columns[IndSegment]"
+                          codePage="1252"
+                          dataType="str"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\Process Data\Process RecommendedItemsContext\Flat File Source.Outputs[Flat File Source Output].ExternalColumns[IndSegment]"
+                          length="4"
+                          lineageId="Package\Process Data\Process RecommendedItemsContext\Flat File Source.Outputs[Flat File Source Output].Columns[IndSegment]"
+                          name="IndSegment"
+                          truncationRowDisposition="FailComponent">
+                          <properties>
+                            <property
+                              dataType="System.Boolean"
+                              description="Indicates whether the column uses the faster, locale-neutral parsing routines."
+                              name="FastParse">false</property>
+                            <property
+                              dataType="System.Boolean"
+                              description="Indicates whether the data is in binary format."
+                              name="UseBinaryFormat">false</property>
+                          </properties>
+                        </outputColumn>
+                      </outputColumns>
+                      <externalMetadataColumns
+                        isUsed="True">
+                        <externalMetadataColumn
+                          refId="Package\Process Data\Process RecommendedItemsContext\Flat File Source.Outputs[Flat File Source Output].ExternalColumns[Context_Attribute]"
+                          codePage="1252"
+                          dataType="str"
+                          length="100"
+                          name="Context_Attribute" />
+                        <externalMetadataColumn
+                          refId="Package\Process Data\Process RecommendedItemsContext\Flat File Source.Outputs[Flat File Source Output].ExternalColumns[IndSegment]"
+                          codePage="1252"
+                          dataType="str"
+                          length="4"
+                          name="IndSegment" />
+                      </externalMetadataColumns>
+                    </output>
+                    <output
+                      refId="Package\Process Data\Process RecommendedItemsContext\Flat File Source.Outputs[Flat File Source Error Output]"
+                      isErrorOut="true"
+                      name="Flat File Source Error Output">
+                      <outputColumns>
+                        <outputColumn
+                          refId="Package\Process Data\Process RecommendedItemsContext\Flat File Source.Outputs[Flat File Source Error Output].Columns[Flat File Source Error Output Column]"
+                          codePage="1252"
+                          dataType="text"
+                          description="Flat File Source Error Output Column"
+                          lineageId="Package\Process Data\Process RecommendedItemsContext\Flat File Source.Outputs[Flat File Source Error Output].Columns[Flat File Source Error Output Column]"
+                          name="Flat File Source Error Output Column" />
+                        <outputColumn
+                          refId="Package\Process Data\Process RecommendedItemsContext\Flat File Source.Outputs[Flat File Source Error Output].Columns[ErrorCode]"
+                          dataType="i4"
+                          lineageId="Package\Process Data\Process RecommendedItemsContext\Flat File Source.Outputs[Flat File Source Error Output].Columns[ErrorCode]"
+                          name="ErrorCode"
+                          specialFlags="1" />
+                        <outputColumn
+                          refId="Package\Process Data\Process RecommendedItemsContext\Flat File Source.Outputs[Flat File Source Error Output].Columns[ErrorColumn]"
+                          dataType="i4"
+                          lineageId="Package\Process Data\Process RecommendedItemsContext\Flat File Source.Outputs[Flat File Source Error Output].Columns[ErrorColumn]"
+                          name="ErrorColumn"
+                          specialFlags="2" />
+                      </outputColumns>
+                      <externalMetadataColumns />
+                    </output>
+                  </outputs>
+                </component>
+                <component
+                  refId="Package\Process Data\Process RecommendedItemsContext\OLE DB Destination"
+                  componentClassID="Microsoft.OLEDBDestination"
+                  contactInfo="OLE DB Destination;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;4"
+                  description="OLE DB Destination"
+                  name="OLE DB Destination"
+                  usesDispositions="true"
+                  version="4">
+                  <properties>
+                    <property
+                      dataType="System.Int32"
+                      description="The number of seconds before a command times out.  A value of 0 indicates an infinite time-out."
+                      name="CommandTimeout">0</property>
+                    <property
+                      dataType="System.String"
+                      description="Specifies the name of the database object used to open a rowset."
+                      name="OpenRowset">[Customers].[RecommendedItemContexts]</property>
+                    <property
+                      dataType="System.String"
+                      description="Specifies the variable that contains the name of the database object used to open a rowset."
+                      name="OpenRowsetVariable"></property>
+                    <property
+                      dataType="System.String"
+                      description="The SQL command to be executed."
+                      name="SqlCommand"
+                      UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor, Microsoft.DataTransformationServices.Controls, Version=13.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91"></property>
+                    <property
+                      dataType="System.Int32"
+                      description="Specifies the column code page to use when code page information is unavailable from the data source."
+                      name="DefaultCodePage">1252</property>
+                    <property
+                      dataType="System.Boolean"
+                      description="Forces the use of the DefaultCodePage property value when describing character data."
+                      name="AlwaysUseDefaultCodePage">false</property>
+                    <property
+                      dataType="System.Int32"
+                      description="Specifies the mode used to access the database."
+                      name="AccessMode"
+                      typeConverter="AccessMode">3</property>
+                    <property
+                      dataType="System.Boolean"
+                      description="Indicates whether the values supplied for identity columns will be copied to the destination. If false, values for identity columns will be auto-generated at the destination. Applies only if fast load is turned on."
+                      name="FastLoadKeepIdentity">false</property>
+                    <property
+                      dataType="System.Boolean"
+                      description="Indicates whether the columns containing null will have null inserted in the destination. If false, columns containing null will have their default values inserted at the destination. Applies only if fast load is turned on."
+                      name="FastLoadKeepNulls">false</property>
+                    <property
+                      dataType="System.String"
+                      description="Specifies options to be used with fast load.  Applies only if fast load is turned on."
+                      name="FastLoadOptions">TABLOCK,CHECK_CONSTRAINTS</property>
+                    <property
+                      dataType="System.Int32"
+                      description="Specifies when commits are issued during data insertion.  A value of 0 specifies that one commit will be issued at the end of data insertion.  Applies only if fast load is turned on."
+                      name="FastLoadMaxInsertCommitSize">2147483647</property>
+                  </properties>
+                  <connections>
+                    <connection
+                      refId="Package\Process Data\Process RecommendedItemsContext\OLE DB Destination.Connections[OleDbConnection]"
+                      connectionManagerID="Package.ConnectionManagers[BEK_Commerce_AppData]"
+                      connectionManagerRefId="Package.ConnectionManagers[BEK_Commerce_AppData]"
+                      description="The OLE DB runtime connection used to access the database."
+                      name="OleDbConnection" />
+                  </connections>
+                  <inputs>
+                    <input
+                      refId="Package\Process Data\Process RecommendedItemsContext\OLE DB Destination.Inputs[OLE DB Destination Input]"
+                      errorOrTruncationOperation="Insert"
+                      errorRowDisposition="FailComponent"
+                      hasSideEffects="true"
+                      name="OLE DB Destination Input">
+                      <inputColumns>
+                        <inputColumn
+                          refId="Package\Process Data\Process RecommendedItemsContext\OLE DB Destination.Inputs[OLE DB Destination Input].Columns[Context_Attribute]"
+                          cachedCodepage="1252"
+                          cachedDataType="str"
+                          cachedLength="100"
+                          cachedName="Context_Attribute"
+                          externalMetadataColumnId="Package\Process Data\Process RecommendedItemsContext\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[ContextKey]"
+                          lineageId="Package\Process Data\Process RecommendedItemsContext\Flat File Source.Outputs[Flat File Source Output].Columns[Context_Attribute]" />
+                        <inputColumn
+                          refId="Package\Process Data\Process RecommendedItemsContext\OLE DB Destination.Inputs[OLE DB Destination Input].Columns[IndSegment]"
+                          cachedCodepage="1252"
+                          cachedDataType="str"
+                          cachedLength="4"
+                          cachedName="IndSegment"
+                          externalMetadataColumnId="Package\Process Data\Process RecommendedItemsContext\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[SIC]"
+                          lineageId="Package\Process Data\Process RecommendedItemsContext\Flat File Source.Outputs[Flat File Source Output].Columns[IndSegment]" />
+                      </inputColumns>
+                      <externalMetadataColumns
+                        isUsed="True">
+                        <externalMetadataColumn
+                          refId="Package\Process Data\Process RecommendedItemsContext\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[ContextKey]"
+                          codePage="1252"
+                          dataType="str"
+                          length="100"
+                          name="ContextKey" />
+                        <externalMetadataColumn
+                          refId="Package\Process Data\Process RecommendedItemsContext\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[SIC]"
+                          codePage="1252"
+                          dataType="str"
+                          length="4"
+                          name="SIC" />
+                      </externalMetadataColumns>
+                    </input>
+                  </inputs>
+                  <outputs>
+                    <output
+                      refId="Package\Process Data\Process RecommendedItemsContext\OLE DB Destination.Outputs[OLE DB Destination Error Output]"
+                      exclusionGroup="1"
+                      isErrorOut="true"
+                      name="OLE DB Destination Error Output"
+                      synchronousInputId="Package\Process Data\Process RecommendedItemsContext\OLE DB Destination.Inputs[OLE DB Destination Input]">
+                      <outputColumns>
+                        <outputColumn
+                          refId="Package\Process Data\Process RecommendedItemsContext\OLE DB Destination.Outputs[OLE DB Destination Error Output].Columns[ErrorCode]"
+                          dataType="i4"
+                          lineageId="Package\Process Data\Process RecommendedItemsContext\OLE DB Destination.Outputs[OLE DB Destination Error Output].Columns[ErrorCode]"
+                          name="ErrorCode"
+                          specialFlags="1" />
+                        <outputColumn
+                          refId="Package\Process Data\Process RecommendedItemsContext\OLE DB Destination.Outputs[OLE DB Destination Error Output].Columns[ErrorColumn]"
+                          dataType="i4"
+                          lineageId="Package\Process Data\Process RecommendedItemsContext\OLE DB Destination.Outputs[OLE DB Destination Error Output].Columns[ErrorColumn]"
+                          name="ErrorColumn"
+                          specialFlags="2" />
+                      </outputColumns>
+                      <externalMetadataColumns />
+                    </output>
+                  </outputs>
+                </component>
+              </components>
+              <paths>
+                <path
+                  refId="Package\Process Data\Process RecommendedItemsContext.Paths[Flat File Source Output]"
+                  endId="Package\Process Data\Process RecommendedItemsContext\OLE DB Destination.Inputs[OLE DB Destination Input]"
+                  name="Flat File Source Output"
+                  startId="Package\Process Data\Process RecommendedItemsContext\Flat File Source.Outputs[Flat File Source Output]" />
+              </paths>
+            </pipeline>
           </DTS:ObjectData>
         </DTS:Executable>
         <DTS:Executable
@@ -2736,6 +2998,56 @@ FROM            ETL.Staging_RecommendedItems</property>
     </Properties>
   </PipelineComponentMetadata>
   <TaskHost
+    design-time-name="Package\Process Data\Process RecommendedItemsContext">
+    <LayoutInfo>
+      <GraphLayout
+        Capacity="4" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:assembly="http://schemas.microsoft.com/winfx/2006/xaml">
+        <NodeLayout
+          Size="153,42"
+          Id="Package\Process Data\Process RecommendedItemsContext\Flat File Source"
+          TopLeft="405,86" />
+        <NodeLayout
+          Size="173,42"
+          Id="Package\Process Data\Process RecommendedItemsContext\OLE DB Destination"
+          TopLeft="376,228" />
+        <EdgeLayout
+          Id="Package\Process Data\Process RecommendedItemsContext.Paths[Flat File Source Output]"
+          TopLeft="481.5,128">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="-19,100"
+              Start="0,0"
+              End="-19,92.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,46" />
+                  <mssgle:CubicBezierSegment
+                    Point1="0,46"
+                    Point2="0,50"
+                    Point3="-4,50" />
+                  <mssgle:LineSegment
+                    End="-15,50" />
+                  <mssgle:CubicBezierSegment
+                    Point1="-15,50"
+                    Point2="-19,50"
+                    Point3="-19,54" />
+                  <mssgle:LineSegment
+                    End="-19,92.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+      </GraphLayout>
+    </LayoutInfo>
+  </TaskHost>
+  <TaskHost
     design-time-name="Package\Process Files\Process RecommendedItems File">
     <LayoutInfo>
       <GraphLayout
@@ -2830,6 +3142,19 @@ FROM            ETL.Staging_RecommendedItems</property>
   </TaskHost>
   <PipelineComponentMetadata
     design-time-name="Package\Process Files\Process RecommendedItemsContext File\OLE DB Destination">
+    <Properties>
+      <Property>
+        <Name>DataSourceViewID</Name>
+      </Property>
+      <Property>
+        <Name>TableInfoObjectType</Name>
+        <Value
+          type="q2:string">Table</Value>
+      </Property>
+    </Properties>
+  </PipelineComponentMetadata>
+  <PipelineComponentMetadata
+    design-time-name="Package\Process Data\Process RecommendedItemsContext\OLE DB Destination">
     <Properties>
       <Property>
         <Name>DataSourceViewID</Name>
