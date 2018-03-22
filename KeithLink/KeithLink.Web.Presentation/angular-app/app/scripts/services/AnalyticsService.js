@@ -84,17 +84,20 @@ angular.module('bekApp')
                                            Constants.checkoutSteps.SubmitCart, 
                                            '');
 
-                Analytics.set('dimension8', itemCount.toString());
-                Analytics.set('dimension9', pieceCount.toString());
-
-                Analytics.set('dimension7', customerNumber);
-                Analytics.set('dimension6', customerBranch);
-
                 Analytics.trackEvent('Process', 
                                      'TH', 
                                      '', 
                                      '0', 
-                                     true);
+                                     true,
+                                     {
+                                        userId: SessionService.userProfile.displayRole + 
+                                                '.' + 
+                                                SessionService.userProfile.userid,
+                                        dimension6: customerBranch,
+                                        dimension7: customerNumber,
+                                        dimension8: itemCount.toString(),
+                                        dimension9: pieceCount.toString()
+                                     });
             }
         },
         
@@ -135,7 +138,12 @@ angular.module('bekApp')
                                  'TC', 
                                  step, 
                                  0, 
-                                 true);
+                                 true,
+                                 {
+                                    userId: SessionService.userProfile.displayRole + 
+                                            '.' + 
+                                            SessionService.userProfile.userid
+                                 });
         },
         
         recordAddToCart: function(item, customerNumber, branchId){
@@ -162,6 +170,9 @@ angular.module('bekApp')
             // inject customernumber and branch into detail hit
             Analytics.set('dimension7', customerNumber);
             Analytics.set('dimension6', branchId);
+            Analytics.set('userId', SessionService.userProfile.displayRole + 
+                                    '.' + 
+                                    SessionService.userProfile.userid);
 
             // Create Cart Record
             Analytics.trackCart('add', addedFrom);
@@ -184,6 +195,9 @@ angular.module('bekApp')
             // inject customernumber and branch into detail hit
             Analytics.set('dimension7', customerNumber);
             Analytics.set('dimension6', branchId);
+            Analytics.set('userId', SessionService.userProfile.displayRole + 
+                                    '.' + 
+                                    SessionService.userProfile.userid);
 
             // Create Cart Record
             Analytics.trackCart('remove', removedFrom);
@@ -211,6 +225,9 @@ angular.module('bekApp')
             // inject customernumber and branch into detail hit
             Analytics.set('dimension7', customerNumber);
             Analytics.set('dimension6', branchId);
+            Analytics.set('userId', SessionService.userProfile.displayRole + 
+                                    '.' + 
+                                    SessionService.userProfile.userid);
             
             Analytics.productClick(whatList);
         },
@@ -237,6 +254,9 @@ angular.module('bekApp')
             // inject customernumber and branch into detail hit
             Analytics.set('dimension7', customerNumber);
             Analytics.set('dimension6', branchId);
+            Analytics.set('userId', SessionService.userProfile.displayRole + 
+                                    '.' + 
+                                    SessionService.userProfile.userid);
               
             Analytics.trackDetail();
             Analytics.set('list', whatList);
@@ -265,7 +285,10 @@ angular.module('bekApp')
                                        true, 
                                        {
                                           dimension6: branchId,
-                                          dimension7: customerNumber
+                                          dimension7: customerNumber,
+                                          userId: SessionService.userProfile.displayRole + 
+                                                  '.' + 
+                                                  SessionService.userProfile.userid
                                        })
                   renderedIndex=0;
             }
@@ -277,7 +300,10 @@ angular.module('bekApp')
                                true, 
                                {
                                   dimension6: branchId,
-                                  dimension7: customerNumber
+                                  dimension7: customerNumber,
+                                  userId: SessionService.userProfile.displayRole + 
+                                          '.' + 
+                                          SessionService.userProfile.userid
                                })
         },
         
@@ -298,7 +324,10 @@ angular.module('bekApp')
                                {
                                   'nonInteraction': 1,
                                   dimension6: branchId,
-                                  dimension7: customerNumber
+                                  dimension7: customerNumber,
+                                  userId: SessionService.userProfile.displayRole + 
+                                          '.' + 
+                                          SessionService.userProfile.userid
                                });
         },
         
@@ -310,6 +339,9 @@ angular.module('bekApp')
             // inject customernumber and branch into detail hit
             Analytics.set('dimension7', customerNumber);
             Analytics.set('dimension6', branchId);
+            Analytics.set('userId', SessionService.userProfile.displayRole + 
+                                    '.' + 
+                                    SessionService.userProfile.userid);
             
             Analytics.promoClick(name);
         }
