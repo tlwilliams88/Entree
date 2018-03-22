@@ -36,7 +36,7 @@ namespace KeithLink.Svc.Impl.Repository.Lists {
             DynamicParameters parms = new DynamicParameters();
             parms.Add(PARMNAME_HEADERID, headerId);
 
-            return Read<RecentlyViewedListDetail>(SPNAME_GET, parms);
+            return ReadSP<RecentlyViewedListDetail>(SPNAME_GET, parms);
         }
 
         public long Save(RecentlyViewedListDetail details) {
@@ -50,7 +50,7 @@ namespace KeithLink.Svc.Impl.Repository.Lists {
 
             parms.Add(PARMNAME_RETURNVALUE, 0, dbType: DbType.Int64, direction: ParameterDirection.Output);
 
-            ExecuteCommand(SPNAME_SAVE, parms);
+            ExecuteSPCommand(SPNAME_SAVE, parms);
 
             return parms.Get<long>(PARMNAME_RETURNVALUE);
         }
@@ -59,7 +59,7 @@ namespace KeithLink.Svc.Impl.Repository.Lists {
             DynamicParameters parms = new DynamicParameters();
             parms.Add(PARMNAME_ID, detailId);
 
-            ExecuteCommand(SPNAME_DELETE, parms);
+            ExecuteSPCommand(SPNAME_DELETE, parms);
         }
 
         public void DeleteOldRecentlyViewed(long headerId, int numberToKeep = 7) {
@@ -67,7 +67,7 @@ namespace KeithLink.Svc.Impl.Repository.Lists {
             parms.Add(PARMNAME_HEADERID, headerId);
             parms.Add(PARMNAME_NUMBERTOKEEP, numberToKeep);
 
-            ExecuteCommand(SPNAME_DELETE_OLD, parms);
+            ExecuteSPCommand(SPNAME_DELETE_OLD, parms);
         }
         #endregion
     }

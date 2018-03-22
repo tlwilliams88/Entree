@@ -38,11 +38,11 @@ namespace KeithLink.Svc.Impl.Repository.Lists
         #region methods
 
         public void DeleteCustomListShares(long id) {
-            ExecuteCommand(SPNAME_DELETE, PARMNAME_ID, id);
+            ExecuteSPCommand(SPNAME_DELETE, PARMNAME_ID, id);
         }
 
         public CustomListShare GetCustomListShare(long id) {
-            return ReadOne<CustomListShare>(SPNAME_GETONE, PARMNAME_ID, id);
+            return ReadOneSP<CustomListShare>(SPNAME_GETONE, PARMNAME_ID, id);
         }
 
         public List<CustomListShare> GetCustomListSharesByCustomer(UserSelectedContext catalogInfo) {
@@ -50,11 +50,11 @@ namespace KeithLink.Svc.Impl.Repository.Lists
             parms.Add(PARMNAME_BRANCH, catalogInfo.BranchId);
             parms.Add(PARMNAME_CUSTNUM, catalogInfo.CustomerId);
 
-            return Read<CustomListShare>(SPNAME_GETBYCUST, parms);
+            return ReadSP<CustomListShare>(SPNAME_GETBYCUST, parms);
         }
 
         public List<CustomListShare> GetCustomListSharesByHeaderId(long parentId) {
-            return Read<CustomListShare>(SPNAME_GETBYHEADER, PARMNAME_HEADERID, parentId);
+            return ReadSP<CustomListShare>(SPNAME_GETBYHEADER, PARMNAME_HEADERID, parentId);
         }
 
         public long SaveCustomListShare(CustomListShare model) {
@@ -64,7 +64,7 @@ namespace KeithLink.Svc.Impl.Repository.Lists
             parms.Add(PARMNAME_HEADERID, model.HeaderId);
             parms.Add(PARMNAME_RETVAL, dbType: DbType.Int64, direction: ParameterDirection.Output);
 
-            ExecuteCommand(SPNAME_SAVE, parms);
+            ExecuteSPCommand(SPNAME_SAVE, parms);
 
             return parms.Get<long>(PARMNAME_RETVAL);
         }

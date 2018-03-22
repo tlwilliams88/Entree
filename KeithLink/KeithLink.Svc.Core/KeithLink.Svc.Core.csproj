@@ -222,6 +222,7 @@
     <Compile Include="Extensions\SettingsExtensions.cs" />
     <Compile Include="Interface\Configurations\IExportSettingLogic.cs" />
     <Compile Include="Interface\Customers\IInternalUserAccessRepository.cs" />
+    <Compile Include="Interface\Customers\IRecommendedItemsRepository.cs" />
     <Compile Include="Interface\ElasticSearch\IESItem.cs" />
     <Compile Include="Interface\ETL\ICustomerLogic.cs" />
     <Compile Include="Enumerations\Order.cs" />
@@ -387,6 +388,8 @@
     <Compile Include="Models\Customers\EF\InternalUserAccess.cs" />
     <Compile Include="Models\Customers\EF\ItemHistory.cs" />
     <Compile Include="Models\Customers\ItemHistoryModel.cs" />
+    <Compile Include="Models\Customers\RecommendedItemsModel.cs" />
+    <Compile Include="Models\Customers\RecommendedItemsParametersModel.cs" />
     <Compile Include="Models\EF\CustomInventoryItem .cs" />
     <Compile Include="Models\EF\Dsr.cs" />
     <Compile Include="Models\EF\ListShare.cs" />

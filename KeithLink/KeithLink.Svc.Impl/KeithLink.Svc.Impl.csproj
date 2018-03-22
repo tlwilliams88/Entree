@@ -391,6 +391,7 @@
       <DependentUpon>PricingRequest.xsd</DependentUpon>
     </Compile>
     <Compile Include="Repository\Customers\InternalUserAccessRepository.cs" />
+    <Compile Include="Repository\Customers\RecommendedItemsRepositoryImpl.cs" />
     <Compile Include="Repository\DataConnection\DapperDatabaseConnection.cs" />
     <Compile Include="Repository\EF\Migrations\201604072024418_Create_Internal_User_Access_Migration.cs" />
     <Compile Include="Repository\EF\Migrations\201604072024418_Create_Internal_User_Access_Migration.Designer.cs">

@@ -51,7 +51,7 @@ namespace KeithLink.Svc.Impl.ETL
 		}
 
         /// <summary>
-        /// Read customer item history
+        /// ReadSP customer item history
         /// </summary>
         /// <returns></returns>
         public void ProcessItemHistoryData(int numWeeks) {
@@ -210,7 +210,7 @@ namespace KeithLink.Svc.Impl.ETL
         }
 
         /// <summary>
-        /// Read all branches
+        /// ReadSP all branches
         /// </summary>
         /// <returns></returns>
         public DataTable ReadAllBranches()
@@ -223,7 +223,7 @@ namespace KeithLink.Svc.Impl.ETL
         }
 
         /// <summary>
-        /// Read brand control labels
+        /// ReadSP brand control labels
         /// </summary>
         /// <returns></returns>
         public DataTable ReadBrandControlLabels()
@@ -232,7 +232,7 @@ namespace KeithLink.Svc.Impl.ETL
         }
 
         /// <summary>
-        /// Read contract items
+        /// ReadSP contract items
         /// </summary>
         /// <param name="customerNumber"></param>
         /// <param name="divisionName"></param>
@@ -271,7 +271,7 @@ namespace KeithLink.Svc.Impl.ETL
         }
 
         /// <summary>
-        /// Read commerce server users
+        /// ReadSP commerce server users
         /// </summary>
         /// <returns></returns>
         public DataTable ReadCSUsers()
@@ -280,7 +280,7 @@ namespace KeithLink.Svc.Impl.ETL
         }
 
         /// <summary>
-        /// Read customers
+        /// ReadSP customers
         /// </summary>
         /// <returns></returns>
         public DataTable ReadCustomers()
@@ -289,7 +289,7 @@ namespace KeithLink.Svc.Impl.ETL
         }
 
         /// <summary>
-        /// Read Categories from Department Table
+        /// ReadSP Categories from Department Table
         /// </summary>
         /// <returns></returns>
         public DataTable ReadDepartmentCategories()
@@ -298,7 +298,7 @@ namespace KeithLink.Svc.Impl.ETL
         }
 
         /// <summary>
-        /// Read DSR Images
+        /// ReadSP DSR Images
         /// </summary>
         /// <returns></returns>
         public DataTable ReadDsrImages() {
@@ -306,7 +306,7 @@ namespace KeithLink.Svc.Impl.ETL
         }
 
         /// <summary>
-        /// Read DSR info
+        /// ReadSP DSR info
         /// </summary>
         /// <returns></returns>
         public DataTable ReadDsrInfo()
@@ -315,7 +315,7 @@ namespace KeithLink.Svc.Impl.ETL
         }
 
         /// <summary>
-        /// Read full item for ElasticSearch
+        /// ReadSP full item for ElasticSearch
         /// </summary>
         /// <param name="branchId">the specific branch to load</param>
         /// <returns></returns>
@@ -326,7 +326,7 @@ namespace KeithLink.Svc.Impl.ETL
         }
 
         /// <summary>
-        /// Read nutritional information for items
+        /// ReadSP nutritional information for items
         /// </summary>
         /// <returns></returns>
         public DataSet ReadGSDataForItems()
@@ -352,7 +352,7 @@ namespace KeithLink.Svc.Impl.ETL
         }
 
         /// <summary>
-        /// Read items
+        /// ReadSP items
         /// </summary>
         /// <param name="branchId"></param>
         /// <returns></returns>
@@ -403,7 +403,7 @@ namespace KeithLink.Svc.Impl.ETL
 
 
         /// <summary>
-        /// Read parent categories
+        /// ReadSP parent categories
         /// </summary>
         /// <returns></returns>
         public DataTable ReadParentCategories()
@@ -414,7 +414,7 @@ namespace KeithLink.Svc.Impl.ETL
         
 
         /// <summary>
-        /// Read proprietary items
+        /// ReadSP proprietary items
         /// </summary>
         /// <returns></returns>
 		public DataTable ReadProprietaryItems()
@@ -424,7 +424,7 @@ namespace KeithLink.Svc.Impl.ETL
 
 
         /// <summary>
-        /// Read sub categories
+        /// ReadSP sub categories
         /// </summary>
         /// <returns></returns>
         public DataTable ReadSubCategories()
@@ -433,7 +433,7 @@ namespace KeithLink.Svc.Impl.ETL
         }
 
 		/// <summary>
-		/// Read parent categories
+		/// ReadSP parent categories
 		/// </summary>
 		/// <returns></returns>
 		public DataTable ReadUnfiCategories()
@@ -442,7 +442,7 @@ namespace KeithLink.Svc.Impl.ETL
 		}
 
 		/// <summary>
-		/// Read proprietary items
+		/// ReadSP proprietary items
 		/// </summary>
 		/// <returns></returns>
 		public DataTable ReadUnfiSubCategories()
@@ -451,7 +451,7 @@ namespace KeithLink.Svc.Impl.ETL
 		}
 
         /// <summary>
-        /// Read worksheet items
+        /// ReadSP worksheet items
         /// </summary>
         /// <param name="customerNumber"></param>
         /// <param name="divisionName"></param>

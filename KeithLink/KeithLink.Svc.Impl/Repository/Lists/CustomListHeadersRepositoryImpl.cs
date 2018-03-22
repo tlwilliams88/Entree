@@ -40,7 +40,7 @@ namespace KeithLink.Svc.Impl.Repository.Lists
 
         #region methods
         public CustomListHeader GetCustomListHeader(long Id) {
-            return ReadOne<CustomListHeader>(SPNAME_GETONE, PARMNAME_ID, Id);
+            return ReadOneSP<CustomListHeader>(SPNAME_GETONE, PARMNAME_ID, Id);
         }
 
         public List<CustomListHeader> GetCustomListHeadersByCustomer(UserSelectedContext catalogInfo) {
@@ -48,7 +48,7 @@ namespace KeithLink.Svc.Impl.Repository.Lists
             parms.Add(PARMNAME_BRANCH, catalogInfo.BranchId);
             parms.Add(PARMNAME_CUSTNUM, catalogInfo.CustomerId);
 
-            return Read<CustomListHeader>(SPNAME_GETBYCUST, parms);
+            return ReadSP<CustomListHeader>(SPNAME_GETBYCUST, parms);
         }
 
         public long SaveCustomListHeader(CustomListHeader model) {
@@ -61,7 +61,7 @@ namespace KeithLink.Svc.Impl.Repository.Lists
             parms.Add(PARMNAME_USERID, model.UserId);
             parms.Add(PARMNAME_RETVAL, direction: ParameterDirection.Output, dbType: DbType.Int64);
 
-            ExecuteCommand(SPNAME_SAVE, parms);
+            ExecuteSPCommand(SPNAME_SAVE, parms);
 
             return parms.Get<long>(PARMNAME_RETVAL);
         }

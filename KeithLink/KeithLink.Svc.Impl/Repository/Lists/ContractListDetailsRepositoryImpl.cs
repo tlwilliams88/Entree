@@ -20,7 +20,7 @@ namespace KeithLink.Svc.Impl.Repository.Lists
 
         #region methods
         public List<ContractListDetail> GetContractListDetails(long parentHeaderId) {
-            return Read<ContractListDetail>(SPNAME_GET, PARMNAME_HEADERID, parentHeaderId);
+            return ReadSP<ContractListDetail>(SPNAME_GET, PARMNAME_HEADERID, parentHeaderId);
         }
         #endregion
 
