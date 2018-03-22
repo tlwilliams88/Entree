@@ -21,42 +21,38 @@ namespace KeithLink.Svc.Impl.Repository.Customers
         #endregion
 
         #region methods
-        public List<RecommendedItemsModel> GetRecommendedItemsForCustomer(RecommendedItemsParametersModel parameters,
+        public List<RecommendedItemsModel> GetRecommendedItemsForCustomer(string customernumber, 
+                                                                          string branchId, 
+                                                                          List<string> cartItemNumbers = null,
                                                                           int numberItems = 4) {
 
-            List<RecommendedItemsModel> list = new List<RecommendedItemsModel>();
-
-            if (parameters == null || (parameters.CustomerNumber == null | parameters.BranchId == null)) {
+            if (customernumber == null | branchId == null) {
                 return null;
             }
 
-            //var parameters = new RecommendedItemsParametersModel() {
-            //    CustomerNumber = customernumber,
-            //    BranchId = branch,
-            //    CartItemsList = (cartItems != null) ? cartItems.Select(c => c.ItemNumber).ToList() : new List<string>()
-            //};
-
-            List<RecommendedItemsModel> recommended = QueryRecommended(parameters);
-
-            list = recommended.Take(numberItems)
-                              .ToList();
+            List<RecommendedItemsModel> list = QueryRecommended(numberItems, customernumber, branchId, cartItemNumbers);
 
             return list;
         }
 
-        private List<RecommendedItemsModel> QueryRecommended(RecommendedItemsParametersModel parameters) {
+        private List<RecommendedItemsModel> QueryRecommended(int size, string customernumber, string branchId, List<string> cartItemNumbers ) {
             var recommended = this.Query<RecommendedItemsModel>(
-                                                                      "SELECT " +
-                                                                      "TOP 40 * " +
-                                                                      "FROM Customers.RecommendedItems ri " +
-                                                                      "INNER JOIN Customers.RecommendedItemContexts ric ON ric.ContextKey=ri.ContextDescription " +
-                                                                      "INNER JOIN Customers.SICMap map ON map.SIC=ric.SIC " +
-                                                                      "WHERE map.CustomerNumber=@CustomerNumber " +
-                                                                      "AND map.BranchId=@BranchId " +
-                                                                      "AND ri.ItemNumber NOT IN (@CartItemsList) " +
-                                                                      "AND ri.RecommendedItem NOT IN (@CartItemsList) " +
-                                                                      "ORDER BY ri.Confidence DESC ",
-                                                                      parameters)
+                                                                @"SELECT 
+                                                                      TOP (@Size) * 
+                                                                      FROM Customers.RecommendedItems ri 
+                                                                      INNER JOIN Customers.RecommendedItemContexts ric ON ric.ContextKey=ri.ContextDescription 
+                                                                      INNER JOIN Customers.SICMap map ON map.SIC=ric.SIC 
+                                                                      WHERE map.CustomerNumber=@CustomerNumber 
+                                                                      AND map.BranchId=@BranchId 
+                                                                      AND ri.ItemNumber NOT IN (@CartItemsList) 
+                                                                      AND ri.RecommendedItem NOT IN (@CartItemsList) 
+                                                                      ORDER BY ri.Confidence DESC ",
+                                                                  new {
+                                                                      Size = size,
+                                                                      CustomerNumber = customernumber,
+                                                                      BranchId = branchId,
+                                                                      CartItemsList = (cartItemNumbers!=null) ? cartItemNumbers : new List<string>()
+                                                                  })
                                   .ToList();
             return recommended;
         }

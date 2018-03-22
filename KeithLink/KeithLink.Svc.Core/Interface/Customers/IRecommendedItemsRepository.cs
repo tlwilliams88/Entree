@@ -10,7 +10,9 @@ using KeithLink.Svc.Core.Models.ShoppingCart;
 namespace KeithLink.Svc.Core.Interface.Customers
 {
     public interface IRecommendedItemsRepository {
-        List<RecommendedItemsModel> GetRecommendedItemsForCustomer(RecommendedItemsParametersModel parameters,
-                                                                   int numberItems = 4);
+        List<RecommendedItemsModel> GetRecommendedItemsForCustomer(string customernumber,
+                                                                          string branchId,
+                                                                          List<string> cartItemNumbers = null,
+                                                                          int numberItems = 4);
     }
 }
