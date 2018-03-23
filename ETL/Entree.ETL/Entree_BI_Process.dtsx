@@ -12,8 +12,8 @@
   DTS:LocaleID="1033"
   DTS:ObjectName="Entree_BI_Process"
   DTS:PackageType="5"
-  DTS:VersionBuild="15"
-  DTS:VersionGUID="{019D14AF-D0F9-4FBF-8FEE-37A4D85CCB38}">
+  DTS:VersionBuild="18"
+  DTS:VersionGUID="{87E247DD-DD2C-4EEB-88AC-DB00EF0713B3}">
   <DTS:Property
     DTS:Name="PackageFormatVersion">8</DTS:Property>
   <DTS:ConnectionManagers>
@@ -28,7 +28,7 @@
           <DTS:Password
             DTS:Name="Password"
             Sensitive="1"
-            Encrypted="1">AQAAANCMnd8BFdERjHoAwE/Cl+sBAAAAdq0bywyxk0SYGUE7Fv2fUwAAAAAIAAAARABUAFMAAAADZgAAwAAAABAAAACwl2nzJHcY9EpI7f5H34c3AAAAAASAAACgAAAAEAAAAKo/wuc34h8QlKuqP3Cf6DgIAAAASPLvq8dwBRcUAAAAOAqt04W0P0JotpUE1Sc8UiBapzM</DTS:Password>
+            Encrypted="1">AQAAANCMnd8BFdERjHoAwE/Cl+sBAAAAdq0bywyxk0SYGUE7Fv2fUwAAAAAIAAAARABUAFMAAAADZgAAwAAAABAAAABRnfk1CM3QP6xv7OoK/vFUAAAAAASAAACgAAAAEAAAAMBBlMJ+HU52LhMo/URH5gcIAAAAEY36S9m4dFkUAAAAlxDHgYZ9SX/DOZksQrRPEkryqc4</DTS:Password>
         </DTS:ConnectionManager>
       </DTS:ObjectData>
     </DTS:ConnectionManager>
@@ -43,7 +43,7 @@
           <DTS:Password
             DTS:Name="Password"
             Sensitive="1"
-            Encrypted="1">AQAAANCMnd8BFdERjHoAwE/Cl+sBAAAAdq0bywyxk0SYGUE7Fv2fUwAAAAAIAAAARABUAFMAAAADZgAAwAAAABAAAADwpMDvKvCS/06/Yh6hDn1vAAAAAASAAACgAAAAEAAAADZa1oNSklh0AOnGjL8EqbgIAAAAWqqzKUGmPC4UAAAARMftErkgz2Fkam0CG8ECaRMZVmk</DTS:Password>
+            Encrypted="1">AQAAANCMnd8BFdERjHoAwE/Cl+sBAAAAdq0bywyxk0SYGUE7Fv2fUwAAAAAIAAAARABUAFMAAAADZgAAwAAAABAAAABEeh3rlgPS6OXQTLsEQ21zAAAAAASAAACgAAAAEAAAANVJKNlSigprdIfeUssQ9KgIAAAAJzw9kAmLXXIUAAAAcAwhpmDPKabsfaGou1dbdoFZ4kA</DTS:Password>
         </DTS:ConnectionManager>
       </DTS:ObjectData>
     </DTS:ConnectionManager>
@@ -66,11 +66,11 @@
             <DTS:FlatFileColumn
               DTS:ColumnType="Delimited"
               DTS:ColumnDelimiter="_x002C_"
-              DTS:MaximumWidth="100"
+              DTS:MaximumWidth="50"
               DTS:DataType="129"
               DTS:TextQualified="True"
               DTS:ObjectName="Context_Attribute"
-              DTS:DTSID="{ACB8777C-41AD-46F4-B537-2B7AD14A6FFA}"
+              DTS:DTSID="{999AD74A-78B9-4EFE-A8CD-58F512E5A867}"
               DTS:CreationName="" />
             <DTS:FlatFileColumn
               DTS:ColumnType="Delimited"
@@ -79,7 +79,7 @@
               DTS:DataType="129"
               DTS:TextQualified="True"
               DTS:ObjectName="Primary_Product"
-              DTS:DTSID="{373BFC81-FD4D-4591-AA94-97F40E2ED6AB}"
+              DTS:DTSID="{542A7804-4938-4CEC-8236-1869836DC364}"
               DTS:CreationName="" />
             <DTS:FlatFileColumn
               DTS:ColumnType="Delimited"
@@ -88,7 +88,7 @@
               DTS:DataType="129"
               DTS:TextQualified="True"
               DTS:ObjectName="Primary_PriceListCode"
-              DTS:DTSID="{9CEA5E26-E1E4-49C7-9115-CA403D10A3F0}"
+              DTS:DTSID="{64960774-48E6-4F4B-8022-40E5461B1DE1}"
               DTS:CreationName="" />
             <DTS:FlatFileColumn
               DTS:ColumnType="Delimited"
@@ -97,7 +97,7 @@
               DTS:DataType="129"
               DTS:TextQualified="True"
               DTS:ObjectName="Primary_PriceListSubCode"
-              DTS:DTSID="{40A31448-1422-4F99-8568-0A59D73BE15C}"
+              DTS:DTSID="{CDB6F7AF-DA7C-41F3-BF85-8FED7CBBC2B1}"
               DTS:CreationName="" />
             <DTS:FlatFileColumn
               DTS:ColumnType="Delimited"
@@ -106,7 +106,7 @@
               DTS:DataType="129"
               DTS:TextQualified="True"
               DTS:ObjectName="Secondry_Product"
-              DTS:DTSID="{CA530C3A-D41D-49E6-AF75-BFFDC64E1CD2}"
+              DTS:DTSID="{91801191-4DBD-4B00-A837-5C82DF7A6628}"
               DTS:CreationName="" />
             <DTS:FlatFileColumn
               DTS:ColumnType="Delimited"
@@ -115,7 +115,7 @@
               DTS:DataType="129"
               DTS:TextQualified="True"
               DTS:ObjectName="Secondry_PriceListCode"
-              DTS:DTSID="{10A2F0DE-103B-48A3-9C15-94E5E0242CFE}"
+              DTS:DTSID="{2058718D-92D0-498E-B512-06218069F548}"
               DTS:CreationName="" />
             <DTS:FlatFileColumn
               DTS:ColumnType="Delimited"
@@ -124,25 +124,25 @@
               DTS:DataType="129"
               DTS:TextQualified="True"
               DTS:ObjectName="Secondry_PriceListSubCode"
-              DTS:DTSID="{1AACB24E-91AF-46F8-9B17-31F581F57CFC}"
+              DTS:DTSID="{F6FCBCE4-1642-4B80-8F65-617A54BBC7A9}"
               DTS:CreationName="" />
             <DTS:FlatFileColumn
               DTS:ColumnType="Delimited"
               DTS:ColumnDelimiter="_x002C_"
-              DTS:MaximumWidth="25"
+              DTS:MaximumWidth="23"
               DTS:DataType="129"
               DTS:TextQualified="True"
               DTS:ObjectName="Support"
-              DTS:DTSID="{EBB28A08-4F77-44AE-95EA-94DE169CF6BC}"
+              DTS:DTSID="{A415398E-3278-4B46-9B28-92E996AE9A9A}"
               DTS:CreationName="" />
             <DTS:FlatFileColumn
               DTS:ColumnType="Delimited"
               DTS:ColumnDelimiter="_x000D__x000A_"
-              DTS:MaximumWidth="17"
+              DTS:MaximumWidth="50"
               DTS:DataType="129"
               DTS:TextQualified="True"
               DTS:ObjectName="Confidence"
-              DTS:DTSID="{A11B9592-EFFD-4D2B-8CBC-3B0C67E3852D}"
+              DTS:DTSID="{0DCCF30B-C2B1-4309-9A6D-D8658674ED46}"
               DTS:CreationName="" />
           </DTS:FlatFileColumns>
         </DTS:ConnectionManager>
@@ -167,20 +167,29 @@
             <DTS:FlatFileColumn
               DTS:ColumnType="Delimited"
               DTS:ColumnDelimiter="_x002C_"
-              DTS:MaximumWidth="100"
+              DTS:MaximumWidth="50"
               DTS:DataType="129"
               DTS:TextQualified="True"
               DTS:ObjectName="Context_Attribute"
-              DTS:DTSID="{3FAD2B6C-17D4-4ED1-AEFF-76672E19693E}"
+              DTS:DTSID="{BEAFB6D1-3D67-4880-ADC6-759E1E761B2D}"
               DTS:CreationName="" />
             <DTS:FlatFileColumn
               DTS:ColumnType="Delimited"
-              DTS:ColumnDelimiter="_x000D__x000A_"
+              DTS:ColumnDelimiter="_x002C_"
               DTS:MaximumWidth="4"
               DTS:DataType="129"
               DTS:TextQualified="True"
               DTS:ObjectName="IndSegment"
-              DTS:DTSID="{854C2937-C61F-4F0D-AE0C-6AAC727226C6}"
+              DTS:DTSID="{7DB91F0F-FCAE-46D5-AFB5-3249E17081EC}"
+              DTS:CreationName="" />
+            <DTS:FlatFileColumn
+              DTS:ColumnType="Delimited"
+              DTS:ColumnDelimiter="_x000D__x000A_"
+              DTS:MaximumWidth="50"
+              DTS:DataType="129"
+              DTS:TextQualified="True"
+              DTS:ObjectName="Context_Attribute_Description"
+              DTS:DTSID="{9F82095F-D38F-4CAF-BFAE-CDACE6E5E927}"
               DTS:CreationName="" />
           </DTS:FlatFileColumns>
         </DTS:ConnectionManager>
@@ -244,14 +253,35 @@
           VSTAMinorVersion="0"
           Language="CSharp">
           <ProjectItem
-            Name="Properties\Settings.settings"
-            Encoding="UTF8"><![CDATA[<?xml version='1.0' encoding='iso-8859-1'?>
-<SettingsFile xmlns="uri:settings" CurrentProfile="(Default)">
-  <Profiles>
-    <Profile Name="(Default)" />
-  </Profiles>
-  <Settings />
-</SettingsFile>]]></ProjectItem>
+            Name="Properties\AssemblyInfo.cs"
+            Encoding="UTF8"><![CDATA[using System.Reflection;
+using System.Runtime.CompilerServices;
+
+//
+// General Information about an assembly is controlled through the following 
+// set of attributes. Change these attribute values to modify the information
+// associated with an assembly.
+//
+[assembly: AssemblyTitle("ST_a3cb36deba6c4e9d8df747c9ca448544")]
+[assembly: AssemblyDescription("")]
+[assembly: AssemblyConfiguration("")]
+[assembly: AssemblyCompany("Microsoft")]
+[assembly: AssemblyProduct("ST_a3cb36deba6c4e9d8df747c9ca448544")]
+[assembly: AssemblyCopyright("Copyright @ Microsoft 2018")]
+[assembly: AssemblyTrademark("")]
+[assembly: AssemblyCulture("")]
+//
+// Version information for an assembly consists of the following four values:
+//
+//      Major Version
+//      Minor Version 
+//      Build Number
+//      Revision
+//
+// You can specify all the values or you can default the Revision and Build Numbers 
+// by using the '*' as shown below:
+
+[assembly: AssemblyVersion("1.0.*")]]]></ProjectItem>
           <ProjectItem
             Name="Properties\Resources.resx"
             Encoding="UTF8"><![CDATA[<?xml version="1.0" encoding="utf-8"?>
@@ -634,35 +664,14 @@ namespace ST_a3cb36deba6c4e9d8df747c9ca448544.Properties {
     }
 }]]></ProjectItem>
           <ProjectItem
-            Name="Properties\AssemblyInfo.cs"
-            Encoding="UTF8"><![CDATA[using System.Reflection;
-using System.Runtime.CompilerServices;
-
-//
-// General Information about an assembly is controlled through the following 
-// set of attributes. Change these attribute values to modify the information
-// associated with an assembly.
-//
-[assembly: AssemblyTitle("ST_a3cb36deba6c4e9d8df747c9ca448544")]
-[assembly: AssemblyDescription("")]
-[assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("Microsoft")]
-[assembly: AssemblyProduct("ST_a3cb36deba6c4e9d8df747c9ca448544")]
-[assembly: AssemblyCopyright("Copyright @ Microsoft 2018")]
-[assembly: AssemblyTrademark("")]
-[assembly: AssemblyCulture("")]
-//
-// Version information for an assembly consists of the following four values:
-//
-//      Major Version
-//      Minor Version 
-//      Build Number
-//      Revision
-//
-// You can specify all the values or you can default the Revision and Build Numbers 
-// by using the '*' as shown below:
-
-[assembly: AssemblyVersion("1.0.*")]]]></ProjectItem>
+            Name="Properties\Settings.settings"
+            Encoding="UTF8"><![CDATA[<?xml version='1.0' encoding='iso-8859-1'?>
+<SettingsFile xmlns="uri:settings" CurrentProfile="(Default)">
+  <Profiles>
+    <Profile Name="(Default)" />
+  </Profiles>
+  <Settings />
+</SettingsFile>]]></ProjectItem>
           <ProjectItem
             Name="Properties\Resources.Designer.cs"
             Encoding="UTF8"><![CDATA[//------------------------------------------------------------------------------
@@ -989,13 +998,11 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</BinaryItem>
                           externalMetadataColumnId="Package\Process Data\Process RecommendedItems\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[RecommendedItem]"
                           lineageId="Package\Process Data\Process RecommendedItems\OLE DB Source.Outputs[OLE DB Source Output].Columns[RecommendedItemNumber]" />
                         <inputColumn
-                          refId="Package\Process Data\Process RecommendedItems\OLE DB Destination.Inputs[OLE DB Destination Input].Columns[Context_Attribute]"
-                          cachedCodepage="1252"
-                          cachedDataType="str"
-                          cachedLength="100"
-                          cachedName="Context_Attribute"
-                          externalMetadataColumnId="Package\Process Data\Process RecommendedItems\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[ContextDescription]"
-                          lineageId="Package\Process Data\Process RecommendedItems\OLE DB Source.Outputs[OLE DB Source Output].Columns[Context_Attribute]" />
+                          refId="Package\Process Data\Process RecommendedItems\OLE DB Destination.Inputs[OLE DB Destination Input].Columns[Context_Key]"
+                          cachedDataType="i4"
+                          cachedName="Context_Key"
+                          externalMetadataColumnId="Package\Process Data\Process RecommendedItems\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[ContextKey]"
+                          lineageId="Package\Process Data\Process RecommendedItems\OLE DB Source.Outputs[OLE DB Source Output].Columns[Context_Key]" />
                       </inputColumns>
                       <externalMetadataColumns
                         isUsed="True">
@@ -1022,12 +1029,6 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</BinaryItem>
                           precision="17"
                           scale="16" />
                         <externalMetadataColumn
-                          refId="Package\Process Data\Process RecommendedItems\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[ContextDescription]"
-                          codePage="1252"
-                          dataType="str"
-                          length="100"
-                          name="ContextDescription" />
-                        <externalMetadataColumn
                           refId="Package\Process Data\Process RecommendedItems\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[PrimaryPriceListCode]"
                           codePage="1252"
                           dataType="str"
@@ -1039,6 +1040,10 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</BinaryItem>
                           dataType="str"
                           length="5"
                           name="SecondaryPriceListCode" />
+                        <externalMetadataColumn
+                          refId="Package\Process Data\Process RecommendedItems\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[ContextKey]"
+                          dataType="i4"
+                          name="ContextKey" />
                       </externalMetadataColumns>
                     </input>
                   </inputs>
@@ -1092,7 +1097,7 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</BinaryItem>
                       dataType="System.String"
                       description="The SQL command to be executed."
                       name="SqlCommand"
-                      UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor, Microsoft.DataTransformationServices.Controls, Version=13.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91">SELECT        ItemNumber, RecommendedItemNumber, Support, Confidence, Context_Attribute, { fn CONCAT(Primary_PriceListCode, Primary_PriceListSubCode) 
+                      UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor, Microsoft.DataTransformationServices.Controls, Version=13.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91">SELECT        ItemNumber, RecommendedItemNumber, Support, Confidence, Context_Key, { fn CONCAT(Primary_PriceListCode, Primary_PriceListSubCode) 
                          } AS PrimaryPriceListCode, { fn CONCAT(Secondary_PriceListCode, Secondary_PriceListSubCode) } AS SecondaryPriceListCode
 FROM            ETL.Staging_RecommendedItems</property>
                     <property
@@ -1175,17 +1180,6 @@ FROM            ETL.Staging_RecommendedItems</property>
                           scale="16"
                           truncationRowDisposition="FailComponent" />
                         <outputColumn
-                          refId="Package\Process Data\Process RecommendedItems\OLE DB Source.Outputs[OLE DB Source Output].Columns[Context_Attribute]"
-                          codePage="1252"
-                          dataType="str"
-                          errorOrTruncationOperation="Conversion"
-                          errorRowDisposition="FailComponent"
-                          externalMetadataColumnId="Package\Process Data\Process RecommendedItems\OLE DB Source.Outputs[OLE DB Source Output].ExternalColumns[Context_Attribute]"
-                          length="100"
-                          lineageId="Package\Process Data\Process RecommendedItems\OLE DB Source.Outputs[OLE DB Source Output].Columns[Context_Attribute]"
-                          name="Context_Attribute"
-                          truncationRowDisposition="FailComponent" />
-                        <outputColumn
                           refId="Package\Process Data\Process RecommendedItems\OLE DB Source.Outputs[OLE DB Source Output].Columns[PrimaryPriceListCode]"
                           codePage="1252"
                           dataType="str"
@@ -1206,6 +1200,15 @@ FROM            ETL.Staging_RecommendedItems</property>
                           length="5"
                           lineageId="Package\Process Data\Process RecommendedItems\OLE DB Source.Outputs[OLE DB Source Output].Columns[SecondaryPriceListCode]"
                           name="SecondaryPriceListCode"
+                          truncationRowDisposition="FailComponent" />
+                        <outputColumn
+                          refId="Package\Process Data\Process RecommendedItems\OLE DB Source.Outputs[OLE DB Source Output].Columns[Context_Key]"
+                          dataType="i4"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\Process Data\Process RecommendedItems\OLE DB Source.Outputs[OLE DB Source Output].ExternalColumns[Context_Key]"
+                          lineageId="Package\Process Data\Process RecommendedItems\OLE DB Source.Outputs[OLE DB Source Output].Columns[Context_Key]"
+                          name="Context_Key"
                           truncationRowDisposition="FailComponent" />
                       </outputColumns>
                       <externalMetadataColumns
@@ -1235,12 +1238,6 @@ FROM            ETL.Staging_RecommendedItems</property>
                           precision="17"
                           scale="16" />
                         <externalMetadataColumn
-                          refId="Package\Process Data\Process RecommendedItems\OLE DB Source.Outputs[OLE DB Source Output].ExternalColumns[Context_Attribute]"
-                          codePage="1252"
-                          dataType="str"
-                          length="100"
-                          name="Context_Attribute" />
-                        <externalMetadataColumn
                           refId="Package\Process Data\Process RecommendedItems\OLE DB Source.Outputs[OLE DB Source Output].ExternalColumns[PrimaryPriceListCode]"
                           codePage="1252"
                           dataType="str"
@@ -1252,6 +1249,10 @@ FROM            ETL.Staging_RecommendedItems</property>
                           dataType="str"
                           length="5"
                           name="SecondaryPriceListCode" />
+                        <externalMetadataColumn
+                          refId="Package\Process Data\Process RecommendedItems\OLE DB Source.Outputs[OLE DB Source Output].ExternalColumns[Context_Key]"
+                          dataType="i4"
+                          name="Context_Key" />
                       </externalMetadataColumns>
                     </output>
                     <output
@@ -1288,12 +1289,10 @@ FROM            ETL.Staging_RecommendedItems</property>
                           precision="17"
                           scale="16" />
                         <outputColumn
-                          refId="Package\Process Data\Process RecommendedItems\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[Context_Attribute]"
-                          codePage="1252"
-                          dataType="str"
-                          length="100"
-                          lineageId="Package\Process Data\Process RecommendedItems\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[Context_Attribute]"
-                          name="Context_Attribute" />
+                          refId="Package\Process Data\Process RecommendedItems\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[Context_Key]"
+                          dataType="i4"
+                          lineageId="Package\Process Data\Process RecommendedItems\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[Context_Key]"
+                          name="Context_Key" />
                         <outputColumn
                           refId="Package\Process Data\Process RecommendedItems\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[PrimaryPriceListCode]"
                           codePage="1252"
@@ -1388,7 +1387,7 @@ FROM            ETL.Staging_RecommendedItems</property>
                           errorOrTruncationOperation="Conversion"
                           errorRowDisposition="FailComponent"
                           externalMetadataColumnId="Package\Process Data\Process RecommendedItemsContext\Flat File Source.Outputs[Flat File Source Output].ExternalColumns[Context_Attribute]"
-                          length="100"
+                          length="50"
                           lineageId="Package\Process Data\Process RecommendedItemsContext\Flat File Source.Outputs[Flat File Source Output].Columns[Context_Attribute]"
                           name="Context_Attribute"
                           truncationRowDisposition="FailComponent">
@@ -1425,6 +1424,28 @@ FROM            ETL.Staging_RecommendedItems</property>
                               name="UseBinaryFormat">false</property>
                           </properties>
                         </outputColumn>
+                        <outputColumn
+                          refId="Package\Process Data\Process RecommendedItemsContext\Flat File Source.Outputs[Flat File Source Output].Columns[Context_Attribute_Description]"
+                          codePage="1252"
+                          dataType="str"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\Process Data\Process RecommendedItemsContext\Flat File Source.Outputs[Flat File Source Output].ExternalColumns[Context_Attribute_Description]"
+                          length="50"
+                          lineageId="Package\Process Data\Process RecommendedItemsContext\Flat File Source.Outputs[Flat File Source Output].Columns[Context_Attribute_Description]"
+                          name="Context_Attribute_Description"
+                          truncationRowDisposition="FailComponent">
+                          <properties>
+                            <property
+                              dataType="System.Boolean"
+                              description="Indicates whether the column uses the faster, locale-neutral parsing routines."
+                              name="FastParse">false</property>
+                            <property
+                              dataType="System.Boolean"
+                              description="Indicates whether the data is in binary format."
+                              name="UseBinaryFormat">false</property>
+                          </properties>
+                        </outputColumn>
                       </outputColumns>
                       <externalMetadataColumns
                         isUsed="True">
@@ -1432,7 +1453,7 @@ FROM            ETL.Staging_RecommendedItems</property>
                           refId="Package\Process Data\Process RecommendedItemsContext\Flat File Source.Outputs[Flat File Source Output].ExternalColumns[Context_Attribute]"
                           codePage="1252"
                           dataType="str"
-                          length="100"
+                          length="50"
                           name="Context_Attribute" />
                         <externalMetadataColumn
                           refId="Package\Process Data\Process RecommendedItemsContext\Flat File Source.Outputs[Flat File Source Output].ExternalColumns[IndSegment]"
@@ -1440,6 +1461,12 @@ FROM            ETL.Staging_RecommendedItems</property>
                           dataType="str"
                           length="4"
                           name="IndSegment" />
+                        <externalMetadataColumn
+                          refId="Package\Process Data\Process RecommendedItemsContext\Flat File Source.Outputs[Flat File Source Output].ExternalColumns[Context_Attribute_Description]"
+                          codePage="1252"
+                          dataType="str"
+                          length="50"
+                          name="Context_Attribute_Description" />
                       </externalMetadataColumns>
                     </output>
                     <output
@@ -1547,7 +1574,7 @@ FROM            ETL.Staging_RecommendedItems</property>
                           refId="Package\Process Data\Process RecommendedItemsContext\OLE DB Destination.Inputs[OLE DB Destination Input].Columns[Context_Attribute]"
                           cachedCodepage="1252"
                           cachedDataType="str"
-                          cachedLength="100"
+                          cachedLength="50"
                           cachedName="Context_Attribute"
                           externalMetadataColumnId="Package\Process Data\Process RecommendedItemsContext\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[ContextKey]"
                           lineageId="Package\Process Data\Process RecommendedItemsContext\Flat File Source.Outputs[Flat File Source Output].Columns[Context_Attribute]" />
@@ -1559,14 +1586,20 @@ FROM            ETL.Staging_RecommendedItems</property>
                           cachedName="IndSegment"
                           externalMetadataColumnId="Package\Process Data\Process RecommendedItemsContext\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[SIC]"
                           lineageId="Package\Process Data\Process RecommendedItemsContext\Flat File Source.Outputs[Flat File Source Output].Columns[IndSegment]" />
+                        <inputColumn
+                          refId="Package\Process Data\Process RecommendedItemsContext\OLE DB Destination.Inputs[OLE DB Destination Input].Columns[Context_Attribute_Description]"
+                          cachedCodepage="1252"
+                          cachedDataType="str"
+                          cachedLength="50"
+                          cachedName="Context_Attribute_Description"
+                          externalMetadataColumnId="Package\Process Data\Process RecommendedItemsContext\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[ContextDescription]"
+                          lineageId="Package\Process Data\Process RecommendedItemsContext\Flat File Source.Outputs[Flat File Source Output].Columns[Context_Attribute_Description]" />
                       </inputColumns>
                       <externalMetadataColumns
                         isUsed="True">
                         <externalMetadataColumn
                           refId="Package\Process Data\Process RecommendedItemsContext\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[ContextKey]"
-                          codePage="1252"
-                          dataType="str"
-                          length="100"
+                          dataType="i4"
                           name="ContextKey" />
                         <externalMetadataColumn
                           refId="Package\Process Data\Process RecommendedItemsContext\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[SIC]"
@@ -1574,6 +1607,12 @@ FROM            ETL.Staging_RecommendedItems</property>
                           dataType="str"
                           length="4"
                           name="SIC" />
+                        <externalMetadataColumn
+                          refId="Package\Process Data\Process RecommendedItemsContext\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[ContextDescription]"
+                          codePage="1252"
+                          dataType="str"
+                          length="100"
+                          name="ContextDescription" />
                       </externalMetadataColumns>
                     </input>
                   </inputs>
@@ -1755,7 +1794,7 @@ FROM            ETL.Staging_RecommendedItems</property>
                           errorOrTruncationOperation="Conversion"
                           errorRowDisposition="FailComponent"
                           externalMetadataColumnId="Package\Process Files\Process RecommendedItems File\Flat File Source.Outputs[Flat File Source Output].ExternalColumns[Support]"
-                          length="25"
+                          length="23"
                           lineageId="Package\Process Files\Process RecommendedItems File\Flat File Source.Outputs[Flat File Source Output].Columns[Support]"
                           name="Support"
                           truncationRowDisposition="FailComponent">
@@ -1777,7 +1816,7 @@ FROM            ETL.Staging_RecommendedItems</property>
                           errorOrTruncationOperation="Conversion"
                           errorRowDisposition="FailComponent"
                           externalMetadataColumnId="Package\Process Files\Process RecommendedItems File\Flat File Source.Outputs[Flat File Source Output].ExternalColumns[Confidence]"
-                          length="17"
+                          length="50"
                           lineageId="Package\Process Files\Process RecommendedItems File\Flat File Source.Outputs[Flat File Source Output].Columns[Confidence]"
                           name="Confidence"
                           truncationRowDisposition="FailComponent">
@@ -1799,7 +1838,7 @@ FROM            ETL.Staging_RecommendedItems</property>
                           errorOrTruncationOperation="Conversion"
                           errorRowDisposition="FailComponent"
                           externalMetadataColumnId="Package\Process Files\Process RecommendedItems File\Flat File Source.Outputs[Flat File Source Output].ExternalColumns[Context_Attribute]"
-                          length="100"
+                          length="50"
                           lineageId="Package\Process Files\Process RecommendedItems File\Flat File Source.Outputs[Flat File Source Output].Columns[Context_Attribute]"
                           name="Context_Attribute"
                           truncationRowDisposition="FailComponent">
@@ -1921,19 +1960,19 @@ FROM            ETL.Staging_RecommendedItems</property>
                           refId="Package\Process Files\Process RecommendedItems File\Flat File Source.Outputs[Flat File Source Output].ExternalColumns[Support]"
                           codePage="1252"
                           dataType="str"
-                          length="25"
+                          length="23"
                           name="Support" />
                         <externalMetadataColumn
                           refId="Package\Process Files\Process RecommendedItems File\Flat File Source.Outputs[Flat File Source Output].ExternalColumns[Confidence]"
                           codePage="1252"
                           dataType="str"
-                          length="17"
+                          length="50"
                           name="Confidence" />
                         <externalMetadataColumn
                           refId="Package\Process Files\Process RecommendedItems File\Flat File Source.Outputs[Flat File Source Output].ExternalColumns[Context_Attribute]"
                           codePage="1252"
                           dataType="str"
-                          length="100"
+                          length="50"
                           name="Context_Attribute" />
                         <externalMetadataColumn
                           refId="Package\Process Files\Process RecommendedItems File\Flat File Source.Outputs[Flat File Source Output].ExternalColumns[Primary_PriceListCode]"
@@ -2066,7 +2105,7 @@ FROM            ETL.Staging_RecommendedItems</property>
                           refId="Package\Process Files\Process RecommendedItems File\OLE DB Destination.Inputs[OLE DB Destination Input].Columns[Support]"
                           cachedCodepage="1252"
                           cachedDataType="str"
-                          cachedLength="25"
+                          cachedLength="23"
                           cachedName="Support"
                           externalMetadataColumnId="Package\Process Files\Process RecommendedItems File\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[Support]"
                           lineageId="Package\Process Files\Process RecommendedItems File\Flat File Source.Outputs[Flat File Source Output].Columns[Support]" />
@@ -2074,18 +2113,10 @@ FROM            ETL.Staging_RecommendedItems</property>
                           refId="Package\Process Files\Process RecommendedItems File\OLE DB Destination.Inputs[OLE DB Destination Input].Columns[Confidence]"
                           cachedCodepage="1252"
                           cachedDataType="str"
-                          cachedLength="17"
+                          cachedLength="50"
                           cachedName="Confidence"
                           externalMetadataColumnId="Package\Process Files\Process RecommendedItems File\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[Confidence]"
                           lineageId="Package\Process Files\Process RecommendedItems File\Flat File Source.Outputs[Flat File Source Output].Columns[Confidence]" />
-                        <inputColumn
-                          refId="Package\Process Files\Process RecommendedItems File\OLE DB Destination.Inputs[OLE DB Destination Input].Columns[Context_Attribute]"
-                          cachedCodepage="1252"
-                          cachedDataType="str"
-                          cachedLength="100"
-                          cachedName="Context_Attribute"
-                          externalMetadataColumnId="Package\Process Files\Process RecommendedItems File\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[Context_Attribute]"
-                          lineageId="Package\Process Files\Process RecommendedItems File\Flat File Source.Outputs[Flat File Source Output].Columns[Context_Attribute]" />
                         <inputColumn
                           refId="Package\Process Files\Process RecommendedItems File\OLE DB Destination.Inputs[OLE DB Destination Input].Columns[Primary_PriceListCode]"
                           cachedCodepage="1252"
@@ -2134,6 +2165,14 @@ FROM            ETL.Staging_RecommendedItems</property>
                           cachedName="Secondry_PriceListSubCode"
                           externalMetadataColumnId="Package\Process Files\Process RecommendedItems File\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[Secondary_PriceListSubCode]"
                           lineageId="Package\Process Files\Process RecommendedItems File\Flat File Source.Outputs[Flat File Source Output].Columns[Secondry_PriceListSubCode]" />
+                        <inputColumn
+                          refId="Package\Process Files\Process RecommendedItems File\OLE DB Destination.Inputs[OLE DB Destination Input].Columns[Context_Attribute]"
+                          cachedCodepage="1252"
+                          cachedDataType="str"
+                          cachedLength="50"
+                          cachedName="Context_Attribute"
+                          externalMetadataColumnId="Package\Process Files\Process RecommendedItems File\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[Context_Key]"
+                          lineageId="Package\Process Files\Process RecommendedItems File\Flat File Source.Outputs[Flat File Source Output].Columns[Context_Attribute]" />
                       </inputColumns>
                       <externalMetadataColumns
                         isUsed="True">
@@ -2162,12 +2201,6 @@ FROM            ETL.Staging_RecommendedItems</property>
                           precision="17"
                           scale="16" />
                         <externalMetadataColumn
-                          refId="Package\Process Files\Process RecommendedItems File\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[Context_Attribute]"
-                          codePage="1252"
-                          dataType="str"
-                          length="100"
-                          name="Context_Attribute" />
-                        <externalMetadataColumn
                           refId="Package\Process Files\Process RecommendedItems File\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[Primary_PriceListCode]"
                           codePage="1252"
                           dataType="str"
@@ -2191,6 +2224,10 @@ FROM            ETL.Staging_RecommendedItems</property>
                           dataType="str"
                           length="3"
                           name="Secondary_PriceListSubCode" />
+                        <externalMetadataColumn
+                          refId="Package\Process Files\Process RecommendedItems File\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[Context_Key]"
+                          dataType="i4"
+                          name="Context_Key" />
                       </externalMetadataColumns>
                     </input>
                   </inputs>
@@ -2282,7 +2319,7 @@ FROM            ETL.Staging_RecommendedItems</property>
                           errorOrTruncationOperation="Conversion"
                           errorRowDisposition="FailComponent"
                           externalMetadataColumnId="Package\Process Files\Process RecommendedItemsContext File\Flat File Source.Outputs[Flat File Source Output].ExternalColumns[Context_Attribute]"
-                          length="100"
+                          length="50"
                           lineageId="Package\Process Files\Process RecommendedItemsContext File\Flat File Source.Outputs[Flat File Source Output].Columns[Context_Attribute]"
                           name="Context_Attribute"
                           truncationRowDisposition="FailComponent">
@@ -2319,6 +2356,28 @@ FROM            ETL.Staging_RecommendedItems</property>
                               name="UseBinaryFormat">false</property>
                           </properties>
                         </outputColumn>
+                        <outputColumn
+                          refId="Package\Process Files\Process RecommendedItemsContext File\Flat File Source.Outputs[Flat File Source Output].Columns[Context_Attribute_Description]"
+                          codePage="1252"
+                          dataType="str"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\Process Files\Process RecommendedItemsContext File\Flat File Source.Outputs[Flat File Source Output].ExternalColumns[Context_Attribute_Description]"
+                          length="50"
+                          lineageId="Package\Process Files\Process RecommendedItemsContext File\Flat File Source.Outputs[Flat File Source Output].Columns[Context_Attribute_Description]"
+                          name="Context_Attribute_Description"
+                          truncationRowDisposition="FailComponent">
+                          <properties>
+                            <property
+                              dataType="System.Boolean"
+                              description="Indicates whether the column uses the faster, locale-neutral parsing routines."
+                              name="FastParse">false</property>
+                            <property
+                              dataType="System.Boolean"
+                              description="Indicates whether the data is in binary format."
+                              name="UseBinaryFormat">false</property>
+                          </properties>
+                        </outputColumn>
                       </outputColumns>
                       <externalMetadataColumns
                         isUsed="True">
@@ -2326,7 +2385,7 @@ FROM            ETL.Staging_RecommendedItems</property>
                           refId="Package\Process Files\Process RecommendedItemsContext File\Flat File Source.Outputs[Flat File Source Output].ExternalColumns[Context_Attribute]"
                           codePage="1252"
                           dataType="str"
-                          length="100"
+                          length="50"
                           name="Context_Attribute" />
                         <externalMetadataColumn
                           refId="Package\Process Files\Process RecommendedItemsContext File\Flat File Source.Outputs[Flat File Source Output].ExternalColumns[IndSegment]"
@@ -2334,6 +2393,12 @@ FROM            ETL.Staging_RecommendedItems</property>
                           dataType="str"
                           length="4"
                           name="IndSegment" />
+                        <externalMetadataColumn
+                          refId="Package\Process Files\Process RecommendedItemsContext File\Flat File Source.Outputs[Flat File Source Output].ExternalColumns[Context_Attribute_Description]"
+                          codePage="1252"
+                          dataType="str"
+                          length="50"
+                          name="Context_Attribute_Description" />
                       </externalMetadataColumns>
                     </output>
                     <output
@@ -2438,14 +2503,6 @@ FROM            ETL.Staging_RecommendedItems</property>
                       name="OLE DB Destination Input">
                       <inputColumns>
                         <inputColumn
-                          refId="Package\Process Files\Process RecommendedItemsContext File\OLE DB Destination.Inputs[OLE DB Destination Input].Columns[Context_Attribute]"
-                          cachedCodepage="1252"
-                          cachedDataType="str"
-                          cachedLength="100"
-                          cachedName="Context_Attribute"
-                          externalMetadataColumnId="Package\Process Files\Process RecommendedItemsContext File\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[Context]"
-                          lineageId="Package\Process Files\Process RecommendedItemsContext File\Flat File Source.Outputs[Flat File Source Output].Columns[Context_Attribute]" />
-                        <inputColumn
                           refId="Package\Process Files\Process RecommendedItemsContext File\OLE DB Destination.Inputs[OLE DB Destination Input].Columns[IndSegment]"
                           cachedCodepage="1252"
                           cachedDataType="str"
@@ -2453,21 +2510,41 @@ FROM            ETL.Staging_RecommendedItems</property>
                           cachedName="IndSegment"
                           externalMetadataColumnId="Package\Process Files\Process RecommendedItemsContext File\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[SIC_Code]"
                           lineageId="Package\Process Files\Process RecommendedItemsContext File\Flat File Source.Outputs[Flat File Source Output].Columns[IndSegment]" />
+                        <inputColumn
+                          refId="Package\Process Files\Process RecommendedItemsContext File\OLE DB Destination.Inputs[OLE DB Destination Input].Columns[Context_Attribute]"
+                          cachedCodepage="1252"
+                          cachedDataType="str"
+                          cachedLength="50"
+                          cachedName="Context_Attribute"
+                          externalMetadataColumnId="Package\Process Files\Process RecommendedItemsContext File\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[ContextKey]"
+                          lineageId="Package\Process Files\Process RecommendedItemsContext File\Flat File Source.Outputs[Flat File Source Output].Columns[Context_Attribute]" />
+                        <inputColumn
+                          refId="Package\Process Files\Process RecommendedItemsContext File\OLE DB Destination.Inputs[OLE DB Destination Input].Columns[Context_Attribute_Description]"
+                          cachedCodepage="1252"
+                          cachedDataType="str"
+                          cachedLength="50"
+                          cachedName="Context_Attribute_Description"
+                          externalMetadataColumnId="Package\Process Files\Process RecommendedItemsContext File\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[ContextDescription]"
+                          lineageId="Package\Process Files\Process RecommendedItemsContext File\Flat File Source.Outputs[Flat File Source Output].Columns[Context_Attribute_Description]" />
                       </inputColumns>
                       <externalMetadataColumns
                         isUsed="True">
-                        <externalMetadataColumn
-                          refId="Package\Process Files\Process RecommendedItemsContext File\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[Context]"
-                          codePage="1252"
-                          dataType="str"
-                          length="100"
-                          name="Context" />
                         <externalMetadataColumn
                           refId="Package\Process Files\Process RecommendedItemsContext File\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[SIC_Code]"
                           codePage="1252"
                           dataType="str"
                           length="4"
                           name="SIC_Code" />
+                        <externalMetadataColumn
+                          refId="Package\Process Files\Process RecommendedItemsContext File\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[ContextKey]"
+                          dataType="i4"
+                          name="ContextKey" />
+                        <externalMetadataColumn
+                          refId="Package\Process Files\Process RecommendedItemsContext File\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[ContextDescription]"
+                          codePage="1252"
+                          dataType="str"
+                          length="100"
+                          name="ContextDescription" />
                       </externalMetadataColumns>
                     </input>
                   </inputs>
@@ -3003,13 +3080,13 @@ FROM            ETL.Staging_RecommendedItems</property>
       <GraphLayout
         Capacity="4" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:assembly="http://schemas.microsoft.com/winfx/2006/xaml">
         <NodeLayout
-          Size="153,42"
-          Id="Package\Process Data\Process RecommendedItemsContext\Flat File Source"
-          TopLeft="405,86" />
-        <NodeLayout
           Size="173,42"
           Id="Package\Process Data\Process RecommendedItemsContext\OLE DB Destination"
           TopLeft="376,228" />
+        <NodeLayout
+          Size="153,42"
+          Id="Package\Process Data\Process RecommendedItemsContext\Flat File Source"
+          TopLeft="405,86" />
         <EdgeLayout
           Id="Package\Process Data\Process RecommendedItemsContext.Paths[Flat File Source Output]"
           TopLeft="481.5,128">
@@ -3047,11 +3124,24 @@ FROM            ETL.Staging_RecommendedItems</property>
       </GraphLayout>
     </LayoutInfo>
   </TaskHost>
+  <PipelineComponentMetadata
+    design-time-name="Package\Process Data\Process RecommendedItemsContext\OLE DB Destination">
+    <Properties>
+      <Property>
+        <Name>DataSourceViewID</Name>
+      </Property>
+      <Property>
+        <Name>TableInfoObjectType</Name>
+        <Value
+          type="q2:string">Table</Value>
+      </Property>
+    </Properties>
+  </PipelineComponentMetadata>
   <TaskHost
     design-time-name="Package\Process Files\Process RecommendedItems File">
     <LayoutInfo>
       <GraphLayout
-        Capacity="4" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:assembly="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:mssgm="clr-namespace:Microsoft.SqlServer.Graph.Model;assembly=Microsoft.SqlServer.Graph">
+        Capacity="4" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:assembly="http://schemas.microsoft.com/winfx/2006/xaml">
         <NodeLayout
           Size="173,42"
           Id="Package\Process Files\Process RecommendedItems File\OLE DB Destination"
@@ -3079,9 +3169,7 @@ FROM            ETL.Staging_RecommendedItems</property>
             </mssgle:Curve>
           </EdgeLayout.Curve>
           <EdgeLayout.Labels>
-            <mssgm:EdgeLabel
-              BoundingBox="0,0,0,0"
-              RelativePosition="Any" />
+            <EdgeLabelCollection />
           </EdgeLayout.Labels>
         </EdgeLayout>
       </GraphLayout>
@@ -3104,7 +3192,7 @@ FROM            ETL.Staging_RecommendedItems</property>
     design-time-name="Package\Process Files\Process RecommendedItemsContext File">
     <LayoutInfo>
       <GraphLayout
-        Capacity="4" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:assembly="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:mssgm="clr-namespace:Microsoft.SqlServer.Graph.Model;assembly=Microsoft.SqlServer.Graph">
+        Capacity="4" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:assembly="http://schemas.microsoft.com/winfx/2006/xaml">
         <NodeLayout
           Size="173,42"
           Id="Package\Process Files\Process RecommendedItemsContext File\OLE DB Destination"
@@ -3132,9 +3220,7 @@ FROM            ETL.Staging_RecommendedItems</property>
             </mssgle:Curve>
           </EdgeLayout.Curve>
           <EdgeLayout.Labels>
-            <mssgm:EdgeLabel
-              BoundingBox="0,0,0,0"
-              RelativePosition="Any" />
+            <EdgeLabelCollection />
           </EdgeLayout.Labels>
         </EdgeLayout>
       </GraphLayout>
@@ -3142,19 +3228,6 @@ FROM            ETL.Staging_RecommendedItems</property>
   </TaskHost>
   <PipelineComponentMetadata
     design-time-name="Package\Process Files\Process RecommendedItemsContext File\OLE DB Destination">
-    <Properties>
-      <Property>
-        <Name>DataSourceViewID</Name>
-      </Property>
-      <Property>
-        <Name>TableInfoObjectType</Name>
-        <Value
-          type="q2:string">Table</Value>
-      </Property>
-    </Properties>
-  </PipelineComponentMetadata>
-  <PipelineComponentMetadata
-    design-time-name="Package\Process Data\Process RecommendedItemsContext\OLE DB Destination">
     <Properties>
       <Property>
         <Name>DataSourceViewID</Name>

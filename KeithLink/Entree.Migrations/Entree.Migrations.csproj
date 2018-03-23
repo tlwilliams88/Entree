@@ -342,10 +342,22 @@
     <Content Include="Scripts\AppData\Customers\Tables\ItemHistory\ItemHistory_0001_0001.11.00_up.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="Scripts\AppData\Customers\Tables\RecommendedItemContexts\Indexes\IX_RecommendedItemContexts_0067_2018.04.00_down.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Scripts\AppData\Customers\Tables\RecommendedItemContexts\Indexes\IX_RecommendedItemContexts_0067_2018.04.00_up.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="Scripts\AppData\Customers\Tables\RecommendedItemContexts\RecommendedItemContexts_0067_2018.04.00_down.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Scripts\AppData\Customers\Tables\RecommendedItemContexts\RecommendedItemContexts_0067_2018.04.00_up.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Scripts\AppData\Customers\Tables\RecommendedItems\Indexes\IX_RecommendedItems_0067_2018.04.00_down.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Scripts\AppData\Customers\Tables\RecommendedItems\Indexes\IX_RecommendedItems_0067_2018.04.00_up.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Scripts\AppData\Customers\Tables\RecommendedItems\RecommendedItems_0067_2018.04.00_down.sql">

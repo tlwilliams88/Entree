@@ -1,5 +1,6 @@
 CREATE TABLE [Customers].[RecommendedItemContexts](
-    [ContextKey] VARCHAR(100) NOT NULL,
+    [ContextKey] INT NOT NULL,
+    [ContextDescription] VARCHAR(100) NULL,
     [SIC] VARCHAR(4) NOT NULL,
 )
 GO

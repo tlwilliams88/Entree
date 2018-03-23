@@ -9,7 +9,7 @@ CREATE TABLE [ETL].[Staging_RecommendedItems](
     [RecommendedItemNumber] VARCHAR(6) NOT NULL,
     [Support] VARCHAR(25) NOT NULL,
     [Confidence] DECIMAL(17,16) NOT NULL,
-    [Context_Attribute] VARCHAR(100) NOT NULL,
+    [Context_Key] INT NOT NULL,
     [Primary_PriceListCode] VARCHAR(2) NOT NULL,
     [Primary_PriceListSubCode] VARCHAR(3) NOT NULL,
     [Secondary_PriceListCode] VARCHAR(2) NOT NULL,

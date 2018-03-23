@@ -29,6 +29,7 @@ using System.Web.Http.Cors;
 using System.IO;
 using KeithLink.Common.Core.Interfaces.Logging;
 using KeithLink.Svc.Core.Models.Lists;
+using KeithLink.Svc.Core.Models.Orders;
 
 namespace KeithLink.Svc.WebApi.Controllers {
     /// <summary>
@@ -383,6 +384,15 @@ namespace KeithLink.Svc.WebApi.Controllers {
                 _elRepo.WriteErrorLog("GetProductsSearch", ex);
             }
             return ret;
+        }
+
+        [HttpPost]
+        [ApiKeyedRoute("catalog/recommended")]
+        public ProductsReturn GetRecommendedItemsByCart(Order order) {
+            List<string> itemNumbers = order.Items.Select(x => x.ItemNumber)
+                                            .ToList();
+
+            return _catalogService.GetRecommendedItemsForCart(this.SelectedUserContext, itemNumbers, this.AuthenticatedUser);
         }
 
         /// <summary>
