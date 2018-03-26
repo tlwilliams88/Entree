@@ -37,23 +37,24 @@ namespace KeithLink.Svc.Impl.Repository.Customers
 
         private List<RecommendedItemsModel> QueryRecommended(int size, string customernumber, string branchId, List<string> cartItemNumbers ) {
             var recommended = this.Query<RecommendedItemsModel>(
-                                                                @"SELECT 
-                                                                      TOP (@Size) * 
-                                                                      FROM Customers.RecommendedItems ri 
-                                                                      INNER JOIN Customers.RecommendedItemContexts ric ON ric.ContextKey=ri.ContextDescription 
+                                                                @"SELECT TOP (@Size)
+                                                                      ri.* 
+                                                                  FROM Customers.RecommendedItems ri 
+                                                                      INNER JOIN Customers.RecommendedItemContexts ric ON ric.ContextKey=ri.ContextKey 
                                                                       INNER JOIN Customers.SICMap map ON map.SIC=ric.SIC 
-                                                                      WHERE map.CustomerNumber=@CustomerNumber 
+                                                                  WHERE map.CustomerNumber=@CustomerNumber 
                                                                       AND map.BranchId=@BranchId 
-                                                                      AND ri.ItemNumber NOT IN (@CartItemsList) 
-                                                                      AND ri.RecommendedItem NOT IN (@CartItemsList) 
-                                                                      ORDER BY ri.Confidence DESC ",
+                                                                      AND ri.ItemNumber IN @CartItemsList 
+                                                                      AND ri.RecommendedItem NOT IN @CartItemsList
+                                                                      AND ri.PrimaryPriceListCode != ri.SecondaryPriceListCode
+                                                                  ORDER BY ri.Confidence DESC ",
                                                                   new {
                                                                       Size = size,
                                                                       CustomerNumber = customernumber,
                                                                       BranchId = branchId,
-                                                                      CartItemsList = (cartItemNumbers!=null) ? cartItemNumbers : new List<string>()
-                                                                  })
-                                  .ToList();
+                                                                      CartItemsList = cartItemNumbers
+                                                                  }).ToList();
+
             return recommended;
         }
         #endregion

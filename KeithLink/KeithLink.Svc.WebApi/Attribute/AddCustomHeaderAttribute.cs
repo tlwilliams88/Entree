@@ -19,10 +19,10 @@ namespace KeithLink.Svc.WebApi.Attribute
 		public override void OnActionExecuted(HttpActionExecutedContext actionExecutedContext)
 		{
 			if(Configuration.AddServerNameToHeader)
-				try
-				{
-					actionExecutedContext.Response.Content.Headers.Add("serverName", System.Environment.MachineName.ToString());
-				}catch{}
+			    try {
+			        actionExecutedContext.Response.Content.Headers.Add("serverName", System.Environment.MachineName.ToString());
+			    } catch {
+			    }
 			try
 			{
 				actionExecutedContext.Response.Headers.CacheControl = new System.Net.Http.Headers.CacheControlHeaderValue()
