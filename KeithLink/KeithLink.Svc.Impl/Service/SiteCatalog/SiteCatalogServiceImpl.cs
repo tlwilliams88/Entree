@@ -195,29 +195,12 @@ namespace KeithLink.Svc.Impl.Service.SiteCatalog
 
         #region recommended items
         public ProductsReturn GetRecommendedItemsForCart(UserSelectedContext catalogInfo, List<string> cartItems, UserProfile profile) {
-            System.Diagnostics.Stopwatch t = EntreeStopWatchHelper.GetStopWatch(true);
-
-            t.Start();
             List<RecommendedItemsModel> recommendedItems = _recommendedItemsRepository.GetRecommendedItemsForCustomer(catalogInfo.CustomerId, catalogInfo.BranchId, cartItems, 50);
-            t.Stop();
 
-            var rectime = t.ElapsedMilliseconds;
-            t.Reset();
-
-            t.Start();
             ProductsReturn products = _catalogRepository.GetProductsByIds(catalogInfo.BranchId, recommendedItems.Select(x => x.RecommendedItem).ToList());
-            t.Stop();
-            var ptime = t.ElapsedMilliseconds;
-            t.Reset();
 
-            t.Start();
             AddPricingInfo(products, catalogInfo);
             GetAdditionalProductInfo(profile, products, catalogInfo);
-            t.Stop();
-            var additionaltime = t.ElapsedMilliseconds;
-            t.Reset();
-
-            _log.WriteInformationLog(string.Format("Query: {0} \r\n ESQuery: {1} \r\n Additional: {2}", rectime, ptime, additionaltime));
 
             return products;
         }

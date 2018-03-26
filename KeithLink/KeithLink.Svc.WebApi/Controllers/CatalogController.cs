@@ -388,10 +388,7 @@ namespace KeithLink.Svc.WebApi.Controllers {
 
         [HttpPost]
         [ApiKeyedRoute("catalog/recommended")]
-        public ProductsReturn GetRecommendedItemsByCart(Order order) {
-            List<string> itemNumbers = order.Items.Select(x => x.ItemNumber)
-                                            .ToList();
-
+        public ProductsReturn GetRecommendedItemsByCart(List<string> itemNumbers) {
             return _catalogService.GetRecommendedItemsForCart(this.SelectedUserContext, itemNumbers, this.AuthenticatedUser);
         }
 

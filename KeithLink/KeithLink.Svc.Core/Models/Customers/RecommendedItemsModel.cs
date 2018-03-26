@@ -14,7 +14,7 @@ namespace KeithLink.Svc.Core.Models.Customers
 
         public decimal Confidence { get; set; }
 
-        public string ContextDescription { get; set; }
+        public int ContextKey { get; set; }
 
         public string PrimaryPriceListCode { get; set; }
 

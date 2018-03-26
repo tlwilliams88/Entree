@@ -293,6 +293,10 @@ namespace KeithLink.Svc.Impl.Repository.DataConnection
              return Connection.Query<T>(sql, parms);
         }
 
+        public IEnumerable<dynamic> Query(string sql, object parms = null) {
+            return Connection.Query(sql, parms);
+        }
+
         public T ReadOne<T>(string sql, object parms = null)
         {
             return Connection.QuerySingle(sql, parms);

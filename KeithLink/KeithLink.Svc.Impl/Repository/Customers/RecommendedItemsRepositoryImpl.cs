@@ -53,8 +53,8 @@ namespace KeithLink.Svc.Impl.Repository.Customers
                                                                       CustomerNumber = customernumber,
                                                                       BranchId = branchId,
                                                                       CartItemsList = cartItemNumbers
-                                                                  })
-                                  .ToList();
+                                                                  }).ToList();
+
             return recommended;
         }
         #endregion
