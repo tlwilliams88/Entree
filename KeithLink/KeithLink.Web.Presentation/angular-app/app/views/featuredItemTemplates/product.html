@@ -1,8 +1,7 @@
 <div class="col-xs-4 no-padding text-left" analytics-on analytics-category="Homepage-Recently-Viewed-Items-Mobile" analytics-event="Recently Viewed Items" analytics-label="{{item.itemnumber}}">
-  <img ng-if="item.productimages.length > 0" class="hand" style="height: 84px; max-width: 100%;" ui-sref="menu.catalog.products.details({ itemNumber: item.itemnumber })" ng-src="{{item.productimages[0].url}}" alt="product image">
-  <img ng-if="item.productimages.length === 0" class="product-placeholder-image" style="height: 84px; max-width: 100%;" src="images/bek-logo.png" alt="default product image">
+  <img ng-if="item.category_image.url" class="hand" style="height: 84px; max-width: 100%;" ui-sref="menu.catalog.products.list({ type: 'category', id: item.search_name, category: item.name})" ng-src="{{item.category_image.url}}" alt="product image">
+  <img ng-if="!item.category_image.url" class="product-placeholder-image" style="height: 84px; max-width: 100%;" src="images/bek-logo.png" alt="default product image">
 </div>
-<div class="col-xs-8 no-padding featured-item-mobile__detail" analytics-on analytics-category="Homepage-Recently-Viewed-Items-Mobile" analytics-event="Recently Viewed Items" analytics-label="{{item.itemnumber}}">
-  {{item.name}}<br />
-  <a ui-sref="menu.catalog.products.details({ itemNumber: item.itemnumber })" class="text-uppercase"># {{item.itemnumber}}</a>
+<div class="col-xs-8 no-padding featured-item-mobile__detail" analytics-on analytics-category="Homepage-Recently-Viewed-Items-Mobile" analytics-event="Recently Viewed Items" analytics-label="{{item.name}}">
+  <a ui-sref="menu.catalog.products.details({ itemNumber: item.itemnumber, recommended: true })" class="text-uppercase">{{item.name}}</a>
 </div>

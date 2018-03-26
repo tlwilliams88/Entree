@@ -81,9 +81,9 @@
     <div class="col-md-8 col-md-pull-4" style="padding-top: 10px; padding-right: 0;">
 
         <div class="row" ng-if="canCreateOrders && cartHeaders && cartHeaders.length > 0 || canViewOrders && orders && orders.length > 0">
-            <div class="col-lg-12">
+            <div class="col-lg-12" style="padding-bottom: 4px;">
               <tabset class="tabset tab-border">
-                <tab heading="Pending Orders" ng-if="canCreateOrders && cartHeaders && cartHeaders.length > 0" class="text-center">
+                <tab heading="Pending Orders" ng-if="canCreateOrders && cartHeaders && cartHeaders.length > 0" class="text-center" analytics-on analytics-category="Homepage-Pending-Orders-Tab" analytics-event="Pending Orders Tab">
                   <h3 class="visible-print-block hidden-xs hidden-sm hidden-md hidden-lg">Pending Orders</h3>
                     <table class="table item-details__table table-striped-rows no-margin" style="table-layout: fixed;">
                       <tbody>
@@ -94,7 +94,7 @@
                           <th>Item Count</th>
                           <th>Subtotal</th>
                         </tr>
-                        <tr ng-repeat="cart in cartHeaders | orderBy:'createddate':true | limitTo: numCartsToDisplay">
+                        <tr ng-repeat="cart in cartHeaders | orderBy:'createddate':true | limitTo: numCartsToDisplay" analytics-on analytics-category="Homepage-Pending-Orders" analytics-event="Pending Orders">
                             <td><a ui-sref="menu.cart.items({cartId: cart.id})" class="order-col__number">{{cart.name}}</a></td>
                             <td class="hidden-xs">{{cart.createddate | formatDateWithTimezone}}</td>
                             <td>{{(cart.requestedshipdate || 'N/A') | formatDate}}</td>
@@ -103,16 +103,8 @@
                         </tr>
                       </tbody>
                     </table>
-                    <div style="margin: 0 auto; width: 100px;">
-                      <a ui-sref="menu.order" 
-                      class="btn btn-default pull-right btn-sm"  
-                      ng-hide="loadingCarts || cartMessage || cartHeaders.length === 0"
-                      ng-if="cartHeaders.length > numCartsToDisplay" 
-                      analytics-on analytics-category="Homepage-Pending-Orders-Desktop" 
-                      analytics-event="Pending Orders View All">View All</a>
-                    </div>
                 </tab>
-                <tab heading="Confirmed Orders" ng-if="canViewOrders && orders && orders.length > 0" class="text-center">
+                <tab heading="Confirmed Orders" ng-if="canViewOrders && orders && orders.length > 0" class="text-center" analytics-on analytics-category="Homepage-Confirmed-Orders-Tab" analytics-event="Confirmed Orders Tab">
                   <h3 class="visible-print-block hidden-xs hidden-sm hidden-md hidden-lg">Confirmed Orders</h3>
                     <table class="table item-details__table table-striped-rows no-margin" style="table-layout: fixed;">
                       <tbody>
@@ -159,19 +151,11 @@
                         </tr>
                       </tbody>
                     </table>
-                    <div style="margin: 0 auto; width: 100px;">
-                        <a ui-sref="menu.order" 
-                          class="btn btn-default pull-right btn-sm"  
-                          ng-hide="loadingOrders || ordersMessage || orders.length === 0"
-                          ng-if="orders.length > numOrdersToDisplay"
-                          analytics-on 
-                          analytics-category="Homepage-Confirmed-Orders-Mobile" 
-                          analytics-event="Confirmed Orders View All">
-                          View All
-                        </a>
-                    </div>
                 </tab>
               </tabset>
+            </div>
+            <div class="text-center" ng-hide="loadingCarts || cartMessage || cartHeaders.length === 0">
+              <a class="view-all" style="padding-bottom: 5px; padding-top: 5px; border-top: none;" ui-sref="menu.order" analytics-on analytics-category="Homepage-Pending-Orders-Desktop" analytics-event="Pending Orders View All">View All</a>
             </div>
           </div>
       
@@ -207,7 +191,7 @@
             </li>
           </ul>
 
-          <div featured-item-carousel="recommendedItems" catalog="true" template="{{'views/featuredItemTemplates/product.html'}}"></div>
+          <div featured-item-carousel="recommendedItems" catalog="true" template="{{'views/featuredItemTemplates/category.html'}}"></div>
         </div>
         <h4 ng-if="recommendedItems == null || recommendedItems.length === 0">No recommended items to display.</h4>
     </div>

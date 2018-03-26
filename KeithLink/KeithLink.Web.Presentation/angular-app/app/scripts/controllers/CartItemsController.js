@@ -306,6 +306,17 @@ angular.module('bekApp')
       return invalidItemFound;
    }
 
+   $scope.addItemToCart = function(item) {
+    item.quantity = item.newQuantity;
+
+    delete item.newQuantity;
+
+    $scope.currentCart.items.push(item);
+
+
+    $scope.saveCart($scope.currentCart);
+   };
+
     processingSaveCart = false;
 
     $scope.saveCart = function(cart) {

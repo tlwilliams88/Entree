@@ -58,11 +58,6 @@
           </div>
         </div>
         <div ng-if="(canManageLists || canCreateOrders || canSubmitOrders) && canOrderItemInd" class="hidden-print sub-content">
-          <div class="context-menu-template btn-primary btn btn-lg" context-menu context-menu-template>
-            Add To...
-            <span class="icon-arrow-down6"></span>
-          </div>
-
           <form name="orderForm" style="display: inline-block;">
             <div counter allowDropdown="true" size="large" ng-model="item.quantity" min="0"></div>
             <span ng-if="packagePriceInd">Order By Package             
@@ -71,6 +66,11 @@
               </ng-form>
             </span>
           </form>
+
+          <div class="context-menu-template btn-primary btn btn-lg" context-menu context-menu-template>
+            Add To...
+            <span class="icon-arrow-down6"></span>
+          </div>
         </div>
      </div>
     </div>
@@ -104,9 +104,10 @@
                   <p>{{recommendedItem.each ? recommendedItem.packageprice : recommendedItem.caseprice | currency}} - {{recommendedItem.packsize}}</p>
                 </div>
     
-                <div class="pull-right" style="padding-top: 10px; padding-right: 10px;">
-                    <div class="hidden-print sub-content">
+                <div class="pull-right" style="padding-top: 8px; padding-right: 10px;">
+                    <div class="hidden-print">
               
+                      <div ng-if="(canManageLists || canCreateOrders || canSubmitOrders) && canOrderItemInd" class="hidden-print sub-content">
                         <form name="orderForm" style="display: inline-block;">
                           <div counter allowDropdown="true" size="large" ng-model="item.quantity" min="0"></div>
                           <span ng-if="packagePriceInd">Order By Package             
@@ -115,10 +116,13 @@
                             </ng-form>
                           </span>
                         </form>
+
+                        <div class="context-menu-template btn-primary btn btn-lg" context-menu context-menu-template noLists="true">
+                          Add To...
+                          <span class="icon-arrow-down6"></span>
+                        </div>
+                      </div>
     
-                        <div class="btn-primary btn btn-lg">
-                            Add To Cart
-                          </div>
                       </div>
                   </div>
     
@@ -135,8 +139,8 @@
             </div>
           </div>
       <tabset class="tabset tab-border">
-        <tab heading="Item Specifications">
-          <h3 class="visible-print-block hidden-xs hidden-sm hidden-md hidden-lg">Item Specifications</h3>
+        <tab heading="Item Specs">
+          <h3 class="visible-print-block hidden-xs hidden-sm hidden-md hidden-lg">Item Specs</h3>
             <table class="table item-details__table table-striped-rows no-margin">
               <colgroup>
                 <col style="width: 25%">
@@ -215,8 +219,8 @@
               </tbody>
             </table>
         </tab>
-        <tab ng-if="::item.is_specialty_catalog && isInternalUser" heading="UNFI Specifications">
-          <h3 class="visible-print-block hidden-xs hidden-sm hidden-md hidden-lg">UNFI Specifications</h3>
+        <tab ng-if="::item.is_specialty_catalog && isInternalUser" heading="UNFI Specs">
+          <h3 class="visible-print-block hidden-xs hidden-sm hidden-md hidden-lg">UNFI Specs</h3>
             <table class="table item-details__table table-striped-rows no-margin">
               <colgroup>
                 <col style="width: 25%">
@@ -340,9 +344,9 @@
               </tbody>
             </table>
         </tab>
-        <tab heading="Dietary Specifications"
+        <tab heading="Dietary Specs"
              ng-show = "item.nutritional != null">
-          <h3 class="visible-print-block hidden-xs hidden-sm hidden-md hidden-lg">Dietary Specifications</h3>
+          <h3 class="visible-print-block hidden-xs hidden-sm hidden-md hidden-lg">Dietary Specs</h3>
             <table class="table item-details__table table-striped-rows no-margin">
               <colgroup>
                 <col style="width: 15%">
@@ -409,9 +413,9 @@
               </tbody>
             </table>
         </tab>
-        <tab heading="Order History"
+        <tab heading="History"
              ng-show = "item.orderhistory != null">
-          <h3 class="visible-print-block hidden-xs hidden-sm hidden-md hidden-lg">Order History</h3>
+          <h3 class="visible-print-block hidden-xs hidden-sm hidden-md hidden-lg">History</h3>
             <table class="table item-details__table table-striped-rows no-margin">
               <colgroup>
                 <col style="width: 30%">
@@ -455,6 +459,7 @@
                     <th>Item Name</th>
                     <th>Brand</th>
                     <th>Price</th>
+                    <th></th>
 
                   </tr>
                   <tr ng-repeat="recommendedItem in recommendedItems" ng-class="{ odd : $odd }">
@@ -462,7 +467,9 @@
                       <td>{{recommendedItem.name}}</td>
                       <td>{{recommendedItem.brand_extended_description}}</td>
                       <td>{{recommendedItem.each ? recommendedItem.packageprice : recommendedItem.caseprice | currency}} - {{recommendedItem.packsize}}</td>
-
+                      <td class="hand-pointer">
+                        <span context-menu-template class="context-menu-template context-menu__in-list hidden-print pull-right"><a class="icon-plus2" style="padding-right:10px;"></a></span>
+                      </td>
                   </tr>
 
                 </tbody>

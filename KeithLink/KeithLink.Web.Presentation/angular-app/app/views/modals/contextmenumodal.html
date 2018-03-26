@@ -16,7 +16,7 @@
     </ul>
   </div>
   
-  <div>
+  <div ng-if="showLists">
     <h3>Lists</h3>
     <ul class="list-group">
       <li ng-repeat="list in lists | sortLists" ng-if="list.permissions.canAddItems && !list.permissions.specialDisplay" ng-click="addItemToList(item, list)" class="hand list-group-item">{{list.name}}</li>
