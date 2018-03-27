@@ -48,9 +48,15 @@ angular.module('bekApp')
         getRecommendedItems: function(items) {
 
           var cartItems = [];
-          items.forEach(function(item) {
-            cartItems.push(item.itemnumber);
-          });
+
+          if(Array.isArray(items)) {
+            items.forEach(function(item) {
+              cartItems.push(item.itemnumber);
+            });
+          } else {
+            cartItems.push(items);
+          }
+
 
           var recommendedItems = [];
           return $http.post('/catalog/recommended', cartItems).then(function(resp) {

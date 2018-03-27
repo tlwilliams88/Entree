@@ -61,11 +61,7 @@ angular.module('bekApp')
       originalBasket.items =  OrderService.filterDeletedOrderItems(originalBasket);
     }
     $scope.currentCart = angular.copy(originalBasket);
-    var cartItems = [];
-    $scope.currentCart.items.forEach(function(item) {
-      cartItems.push(item.itemnumber);
-    });
-    ProductService.getRecommendedItems(cartItems).then(function(resp) {
+    ProductService.getRecommendedItems($scope.currentCart.items).then(function(resp) {
       $scope.recommendedItems = resp;
     });
     $scope.currentCart.isRenaming = false;
@@ -226,6 +222,9 @@ angular.module('bekApp')
 
     $scope.currentCart.items.push(item);
 
+    ProductService.getRecommendedItems($scope.currentCart.items).then(function(resp) {
+      $scope.recommendedItems = resp;
+    });
 
     $scope.saveCart($scope.currentCart);
    };
