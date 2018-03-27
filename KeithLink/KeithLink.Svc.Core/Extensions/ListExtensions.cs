@@ -15,7 +15,6 @@ using KeithLink.Svc.Core.Models.SiteCatalog;
 using KeithLink.Svc.Core.Models.Lists.MandatoryItem;
 using KeithLink.Svc.Core.Models.Lists.RecentlyViewed;
 using KeithLink.Svc.Core.Models.Lists.RecentlyOrdered;
-using KeithLink.Svc.Core.Models.Lists.RecommendedItems;
 
 namespace KeithLink.Svc.Core.Extensions
 {

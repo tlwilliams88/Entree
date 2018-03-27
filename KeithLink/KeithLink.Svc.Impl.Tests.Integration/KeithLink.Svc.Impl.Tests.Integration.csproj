@@ -91,6 +91,7 @@
   <ItemGroup>
     <Compile Include="Migrator.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Repository\Customers\RecommendedItemRepositoryTests.cs" />
     <Compile Include="Repository\Lists\ContractChangesRepositoryTests.cs" />
     <Compile Include="Repository\Lists\ContractListDetailRepositoryTests.cs" />
     <Compile Include="Repository\Lists\ContractListHeaderRepositoryTests.cs" />
@@ -110,10 +111,8 @@
     <Compile Include="Repository\Lists\RecentlyViewedDetailRepositoryTests.cs" />
     <Compile Include="Repository\Lists\RecentlyOrderedDetailRepositoryTests.cs" />
     <Compile Include="Repository\Lists\RecentlyViewedHeaderRepositoryTests.cs" />
-    <Compile Include="Repository\Lists\RecommendedListDetailsRepositoryTests.cs" />
     <Compile Include="Repository\Lists\ReminderListDetailsRepositoryTests.cs" />
     <Compile Include="Repository\Lists\RecentlyOrderedHeaderRepositoryTests.cs" />
-    <Compile Include="Repository\Lists\RecommendedListHeaderRepositoryTests.cs" />
     <Compile Include="Repository\Lists\ReminderListHeaderRepositoryTests.cs" />
     <Compile Include="Repository\Marketing\CampaignCustomerRepositoryTests.cs" />
     <Compile Include="Repository\Marketing\CatalogCampaignHeaderRepositoryTests.cs" />
@@ -129,7 +128,6 @@
     <Folder Include="Repository\Cache\" />
     <Folder Include="Repository\Configurations\" />
     <Folder Include="Repository\ContentManagement\" />
-    <Folder Include="Repository\Customers\" />
     <Folder Include="Repository\DataConnections\" />
     <Folder Include="Repository\EF\" />
     <Folder Include="Repository\Email\" />

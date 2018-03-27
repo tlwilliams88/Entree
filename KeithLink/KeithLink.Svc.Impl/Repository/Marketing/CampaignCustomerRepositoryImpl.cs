@@ -21,7 +21,7 @@ namespace KeithLink.Svc.Impl.Repository.Marketing {
 
         #region methods        
         public List<CampaignCustomer> GetAllCustomersByCampaign(long campaignId) {
-            return base.Read<CampaignCustomer>(SPNAME_GETALLCUSTOMES, PARMNAME_CAMPAIGNID, campaignId);
+            return base.ReadSP<CampaignCustomer>(SPNAME_GETALLCUSTOMES, PARMNAME_CAMPAIGNID, campaignId);
         }
         #endregion
     }

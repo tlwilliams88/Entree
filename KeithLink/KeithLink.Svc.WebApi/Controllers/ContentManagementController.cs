@@ -38,7 +38,7 @@ namespace KeithLink.Svc.WebApi.Controllers {
 
         #region methods
 		/// <summary>
-        /// Read marketing content from the external CMS
+        /// ReadSP marketing content from the external CMS
         /// </summary>
         /// <param name="branchId">the branch being viewed</param>
         /// <returns>a number of content items based on settings in the configuration</returns>

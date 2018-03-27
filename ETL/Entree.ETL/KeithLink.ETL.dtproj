@@ -39,6 +39,11 @@
           <References />
         </DtsPackage>
         <DtsPackage FormatVersion="8">
+          <Name>Entree_BI_Process.dtsx</Name>
+          <FullPath>Entree_BI_Process.dtsx</FullPath>
+          <References />
+        </DtsPackage>
+        <DtsPackage FormatVersion="8">
           <Name>UNFIETLProcess_BETA.dtsx</Name>
           <FullPath>UNFIETLProcess_BETA.dtsx</FullPath>
           <References />

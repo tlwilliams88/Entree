@@ -48,6 +48,7 @@ angular
 
   AnalyticsProvider.setAccount(ENV.googleAnalytics);
   AnalyticsProvider.useECommerce(true, true);
+  AnalyticsProvider.setHybridMobileSupport(true);
 
   // configure loading bar
   cfpLoadingBarProvider.includeSpinner = false;
