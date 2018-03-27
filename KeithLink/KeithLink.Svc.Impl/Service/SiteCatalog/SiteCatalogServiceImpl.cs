@@ -23,6 +23,7 @@ using KeithLink.Svc.Core.Extensions;
 // Core
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -196,7 +197,6 @@ namespace KeithLink.Svc.Impl.Service.SiteCatalog
         #region recommended items
         public ProductsReturn GetRecommendedItemsForCart(UserSelectedContext catalogInfo, List<string> cartItems, UserProfile profile) {
             List<RecommendedItemsModel> recommendedItems = _recommendedItemsRepository.GetRecommendedItemsForCustomer(catalogInfo.CustomerId, catalogInfo.BranchId, cartItems, 50);
-
             ProductsReturn products = _catalogRepository.GetProductsByIds(catalogInfo.BranchId, recommendedItems.Select(x => x.RecommendedItem).ToList());
 
             AddPricingInfo(products, catalogInfo);
