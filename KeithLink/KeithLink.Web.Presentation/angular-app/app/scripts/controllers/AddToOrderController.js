@@ -2,16 +2,9 @@
 
 angular.module('bekApp')
   .controller('AddToOrderController', ['$rootScope', '$scope', '$state', '$modal', '$q', '$stateParams', '$filter', '$timeout', 'blockUI', 
-   'lists', 'selectedList', 'selectedCart', 'Constants', 'CartService', 'ListService', 'OrderService', 'UtilityService', 'DateService', 'PricingService', 'ListPagingModel', 'LocalStorage', '$analytics', 'toaster', 'ENV', 'AnalyticsService', 'SessionService',
+   'lists', 'selectedList', 'selectedCart', 'Constants', 'CartService', 'ListService', 'OrderService', 'UtilityService', 'DateService', 'PricingService', 'ListPagingModel', 'LocalStorage', '$analytics', 'toaster', 'ENV', 'SessionService', 'ProductService',
     function ($rootScope, $scope, $state, $modal, $q, $stateParams, $filter, $timeout, blockUI, lists, selectedList, selectedCart, Constants,
-     CartService, ListService, OrderService, UtilityService, DateService, PricingService, ListPagingModel, LocalStorage, $analytics, toaster, ENV, AnalyticsService, SessionService) {
-
-         $scope.selectedList = selectedList;
-         $scope.selectedCart = selectedCart;
-         
-         $scope.selectedCart.items.forEach(function(item) {
-             item.extPrice = PricingService.getPriceForItem(item);
-         });
+     CartService, ListService, OrderService, UtilityService, DateService, PricingService, ListPagingModel, LocalStorage, $analytics, toaster, ENV, SessionService, ProductService) {
 
          $scope.$on('$stateChangeStart', function(event, toState, toParams, fromState, fromParams){
              var toCart = (toState.name == 'menu.cart.items' || fromState.name == 'menu.cart.items'),
@@ -41,13 +34,6 @@ angular.module('bekApp')
              }
              guiders.hideAll();
          });
-
-    var isMobile = UtilityService.isMobileDevice();
-    var isMobileApp = ENV.mobileApp;
-
-    $scope.recommendedItems = [
-      {"listitemid": "12345", "ext_description":"","caseaverage":0,"packageaverage":0,"detail":"Chili Homestyle No Beans / 546709 / CHILI BOWL / Other Food / 6 / 5 LB","category":"Other Food","productimages":[{"fileName":"546709-4.jpg","url":"http://shopqa.benekeith.com/multidocsurl/ItemImage/GetFile/?ImageName=546709-4.jpg","width":"324","height":"273"}],"isproprietary":false,"orderhistory":{"03/08/2018":1,"02/22/2018":1,"02/08/2018":1,"01/29/2018":1,"01/08/2018":1},"inhistory":true,"itemnumber":"546709","isvalid":true,"description":"","nonstock":"N","status1":"","caseprice":"60.08","caseonly":true,"unitprice":1.0728571428571428571428571429,"packageprice":"0.00","replacementitem":"000000","replaceditem":"000000","childnutrition":"N","brand":"CHILIBWL","brand_extended_description":"CHILI BOWL","brand_control_label":"","name":"Chili Homestyle No Beans","favorite":true,"sellsheet":"Y","deviatedcost":"N","temp_zone":"F","categorycode":"34","subcategorycode":"34","categoryname":"Beef & Pork Value Added","class":"Center Of Plate","vendor_num":"049801","upc":"60073041483066","size":"5 LB","pack":"6","packsize":"6 / 5 LB","cases":"194","nutritional":{"diets":[],"brandowner":"Ajinomoto Windsor, Inc.","countryoforigin":"US","grossweight":"32.000","handlinginstruction":"Store Product for no longer than 365 days after production at a temperature between -10 and 15 degrees","ingredients":"Ingredients: Beef, Water, Seasoning (Chili Powder [Chili Pepper, Spices, Salt, Garlic Powder, Silicon Dioxide], Food Starch-Modified, Salt, Spices, Paprika [Color], Dehydrated Onion, Garlic Powder), Tomato Paste (Tomatoes, Citric Acid), Seasoning (Water, Beef Flavor Base [Salt, Autolyzed Yeast Extract, Sugar, Dried Onion, Natural Flavors, Corn Oil, Silicon Dioxide, Caramel Color, Disodium Inosinate and Guanylate]), Textured Vegetable Protein Product (Soy Flour, Zinc Oxide, Niacinamide, Ferrous Sulfate, Copper Gluconate, Vitamin A Palmitate, Calcium Pantothenate, Thiamine Mononitrate, Pyridoxine Hydrochloride, Riboflavin, Cyanocobalamin), Whole Grain Rolled Oats,  Contains less than 2% of: Dehydrated Onion, Salt, Caramel Color.Contains: Soy","marketingmessage":"Easy to Prepare. Thaw, heat and serve.  Please Also check out our AjiWin Foodservice Tools site here---> www.ajinomotowindsortools.com and our AjiWin Prep School Training Videos here---> https://www.youtube.com/channel/UCShyQaOoe3ov1Qei-oSrcMg.","moreinformation":"www.windsorfoods.com 1-800-548-6363","servingsize":"242.000","servingsizeuom":"GRM","servingsperpack":"56","servingsuggestion":null,"shelf":"365","storagetemp":"-10 FAH / 15 FAH","unitmeasure":"30.000","unitspercase":"0","volume":"1.059","height":"8.188","length":"18.063","width":"12.375","nutrition":[{"dailyvalue":"20","measurementvalue":"5.000","measurementtypeid":"GRM","nutrienttypecode":"FIBTSW","nutrienttype":"Dietary Fiber"},{"dailyvalue":"50","measurementvalue":"0.000","measurementtypeid":"","nutrienttypecode":"VITA-","nutrienttype":"Vitamin A"},{"dailyvalue":"8","measurementvalue":"0.000","measurementtypeid":"","nutrienttypecode":"CA","nutrienttype":"Calcium"},{"dailyvalue":"28","measurementvalue":"84.000","measurementtypeid":"MGM","nutrienttypecode":"CHOL-","nutrienttype":"Cholesterol"},{"dailyvalue":"66","measurementvalue":"43.000","measurementtypeid":"GRM","nutrienttypecode":"FAT","nutrienttype":"Fat, total"},{"dailyvalue":"6","measurementvalue":"18.000","measurementtypeid":"GRM","nutrienttypecode":"CHO-","nutrienttype":"Carbohydrate Total"},{"dailyvalue":"20","measurementvalue":"0.000","measurementtypeid":"","nutrienttypecode":"FE","nutrienttype":"Iron"},{"dailyvalue":"15","measurementvalue":"0.000","measurementtypeid":"","nutrienttypecode":"VITC-","nutrienttype":"Vitamin C"},{"dailyvalue":"48","measurementvalue":"1150.000","measurementtypeid":"MGM","nutrienttypecode":"NA","nutrienttype":"Sodium"},{"dailyvalue":"80","measurementvalue":"16.000","measurementtypeid":"GRM","nutrienttypecode":"FASAT","nutrienttype":"Saturated Fat"}],"diet":[],"allergens":{"freefrom":["fish","nuts","crustaceans","peanuts","eggs","milk","sesame seeds","shellfish"],"maycontain":["Mustard"],"contains":["Soybeans","Gluten(Other)","Wheat","Sulphur Dioxide"]}},"kosher":"N","manufacturer_number":"48306","manufacturer_name":"AJINOMOTO WINDSOR","average_weight":30.0,"catalog_id":"fsa","is_specialty_catalog":false,"specialtyitemcost":0.0,"marketing_name":null,"marketing_description":null,"marketing_brand":null,"marketing_manufacturer":null}
-    ];
 
     // Tutorial -- Tutorial Ignored 09/25
     // var hideTutorial = LocalStorage.getHideTutorialAddToOrder() || isMobileApp || isMobile,
@@ -106,24 +92,57 @@ angular.module('bekApp')
     $scope.visitedPages = [];
     $scope.canSaveCart = false;
     $scope.setOrderCanceled = false;
+    $scope.filteredCartItems = [];
 
     $scope.removeRowHighlightParLevel = function(){
       $('.ATOrowHighlight').removeClass('ATOrowHighlight');
+
+      $scope.useParlevel = !$scope.useParlevel;
+    
     };
 
-    $scope.onItemQuantityChanged = function(list, itemUpdated, oldVal) {
-      var idx = list.indexOf(itemUpdated);
-      var item = list[idx];
-      var oldVal = oldVal != undefined ? oldVal : '';
+    function onItemQuantityChanged(newVal, oldVal) {
+      var changedExpression = this.exp; // jshint ignore:line
+      var idx = changedExpression.substr(changedExpression.indexOf('[') + 1, changedExpression.indexOf(']') - changedExpression.indexOf('[') - 1);
+      var object = changedExpression.substr(0, changedExpression.indexOf('.'));
+      var item = $scope[object].items[idx];
 
-      if(item && item.quantity != oldVal){
+      if(newVal !== oldVal && item){
        refreshSubtotal($scope.selectedCart.items, $scope.selectedList.items);
        calculatePieces($scope.combinedItems);
        $scope.itemCount = $scope.combinedItems.length;
-       
-       item.extPrice = PricingService.getPriceForItem(item);
+      }
+      if(item !== undefined){
+        item.extPrice = PricingService.getPriceForItem(item);
       }
     }
+
+    var watches = [];
+    $scope.addItemWatches = function(startingIndex, endingIndex) {
+      watches = [];
+      endingIndex = ($scope.selectedList.itemCount < (startingIndex + (endingIndex - startingIndex))) ? $scope.selectedList.itemCount : endingIndex;
+      for (var i = startingIndex; i < endingIndex; i++) {
+        watches.push($scope.$watch('selectedList.items[' + i + '].quantity', onItemQuantityChanged));
+        watches.push($scope.$watch('selectedList.items[' + i + '].each', onItemQuantityChanged));
+      }
+    };
+
+    function clearItemWatches(watchers) {
+      watchers.forEach(function(watch) {
+        watch();
+      });
+      watchers = [];
+    }
+
+    var cartWatches = [];
+    $scope.addCartWatches = function() {
+      if($scope.selectedCart && $scope.selectedCart.items){
+        for (var i = 0; i < $scope.selectedCart.items.length; i++) {
+          cartWatches.push($scope.$watch('selectedCart.items[' + i + '].quantity', onItemQuantityChanged));
+          cartWatches.push($scope.$watch('selectedCart.items[' + i + '].each', onItemQuantityChanged));
+        }
+      }
+    };
 
     function getCombinedCartAndListItems(cartItems, listItems) {
       var items = angular.copy(cartItems.concat(listItems));
@@ -246,10 +265,15 @@ angular.module('bekApp')
           else{
             item.isShown = false;
           }
-          $scope.filteredCartItems = $filter('filter')($scope.selectedList.items, {isShown: true});
-      });
+        });
+
+        filterItems();
       }
     };
+
+    function filterItems() {
+      $scope.filteredCartItems = $filter('filter')($scope.selectedCart.items, {isShown:'!true'});
+    }
 
   $scope.pagingPageSize = LocalStorage.getPageSize();
   $scope.pageChanged = function(page, visited) {
@@ -268,6 +292,7 @@ angular.module('bekApp')
           $scope.startingPoint = index;
           $scope.endPoint = angular.copy($scope.startingPoint + parseInt($scope.pagingPageSize));
           foundStartPoint = true;
+          $scope.addItemWatches($scope.startingPoint, $scope.endPoint);
           $scope.setCartItemsDisplayFlag();
         }
       });
@@ -307,7 +332,7 @@ angular.module('bekApp')
     function setSelectedCart(cart) {
       $scope.selectedCart = cart;
 
-      // $scope.addCartWatches();
+      $scope.addCartWatches();
     }
 
     function setSelectedList(list) {
@@ -343,7 +368,8 @@ angular.module('bekApp')
        $stateParams.listItems = undefined;
       }
       $scope.setCartItemsDisplayFlag();
-      // getCombinedCartAndListItems($scope.selectedCart.items, $scope.selectedList.items);
+      getCombinedCartAndListItems($scope.selectedCart.items, $scope.selectedList.items);
+      $scope.addItemWatches($scope.startingPoint, $scope.endPoint);
     }
 
     function appendListItems(list) {
@@ -390,7 +416,8 @@ angular.module('bekApp')
       $scope.appendingList = true;
       $scope.appendedItems = list.items;
       flagDuplicateCartItems($scope.selectedCart.items, $scope.selectedList.items);
-      // getCombinedCartAndListItems($scope.selectedCart.items, $scope.selectedList.items);
+      getCombinedCartAndListItems($scope.selectedCart.items, $scope.selectedList.items);
+      $scope.addItemWatches($scope.startingPoint, $scope.endPoint);
     }
 
     function startLoading() {
@@ -400,6 +427,12 @@ angular.module('bekApp')
     function stopLoading() {
       $scope.loadingResults = false;
        blockUI.stop();
+    }
+
+    $scope.updateRecommendedItems = function(items) {
+      ProductService.getRecommendedItems(items).then(function(resp) {
+        $scope.recommendedItems = resp;
+      });
     }
 
     function init() {
@@ -418,6 +451,7 @@ angular.module('bekApp')
                $scope.openErrorMessageModal('The ship date requested for this order has expired. Select Cancel to return to the home screen without making changes. Select Accept to update to the next available ship date.');
               selectedCart.requestedshipdate = $scope.shipDates[0].shipdate;
             }
+
           } else {
             // create new cart if no cart was selected
             $scope.generateNewCartForDisplay();
@@ -475,7 +509,7 @@ angular.module('bekApp')
     $scope.postPageLoadInit = function(){
       $scope.clearedWhilePristine = false;
       flagDuplicateCartItems($scope.selectedCart.items, $scope.selectedList.items);
-      // getCombinedCartAndListItems($scope.selectedCart.items, $scope.selectedList.items);
+      getCombinedCartAndListItems($scope.selectedCart.items, $scope.selectedList.items);
       $timeout(function() {
         $('#rowForFocus').find('input:first').focus();
       }, 100);
@@ -489,6 +523,7 @@ angular.module('bekApp')
         $scope.visitedPages = [];
         listPagingModel.filterListItems(searchTerm);
         $stateParams.searchTerm = '';
+        clearItemWatches(watches);
       }
       else{
         $scope.fromFilterItems = true;
@@ -499,6 +534,7 @@ angular.module('bekApp')
               $scope.visitedPages = [];
               $scope.addToOrderForm.$setPristine();
               listPagingModel.filterListItems(searchTerm);
+              clearItemWatches(watches);
             }
           });
       }
@@ -587,6 +623,7 @@ angular.module('bekApp')
           field: sortBy,
           order: sortOrder
         }];
+        clearItemWatches(watches);
         $stateParams.listItems = undefined;
         listPagingModel.sortListItems($scope.sort);
         $scope.addToOrderForm.$setPristine();
@@ -786,9 +823,7 @@ angular.module('bekApp')
     }
 
     /*******************************
-
       Cancel Changes And Delete Cart
-
     ********************************/
 
     $scope.cancelChanges = function(cartid) {
@@ -813,11 +848,11 @@ angular.module('bekApp')
               });
 
               $scope.lastDuplicateItem.quantity = itemInCart.quantity;
-              $scope.lastDuplicateItem.extPrice = PricingService.getPriceForItem($scope.lastDuplicateItem);
+              $scope.lastDuplicateItem.extprice = PricingService.getPriceForItem($scope.lastDuplicateItem);
               $scope.lastDuplicateItem.each = itemInCart.each;
             } else {
               listitem.quantity = itemInCart.quantity;
-              listitem.extPrice = PricingService.getPriceForItem(listitem);
+              listitem.extprice = PricingService.getPriceForItem(listitem);
               listitem.each = itemInCart.each;
             }
 
@@ -921,6 +956,24 @@ angular.module('bekApp')
 
     };
 
+    $scope.updateCartWithRecommendedItems = function(item) {
+      item.extPrice = PricingService.getPriceForItem(item);
+      
+      item.recommended = true;
+
+      if($filter('filter')($scope.selectedCart.items, {itemnumber: item.itemnumber, recommended: item.recommended}).length > 0) {
+        var itemIdx = $scope.selectedCart.items.indexOf(item);
+        $scope.selectedCart.items[itemIdx].quantity = item.quantity;
+      } else {
+        $scope.selectedCart.items.push(item);
+      }
+
+      refreshSubtotal($scope.selectedCart.items, $scope.selectedList.items);
+
+      calculatePieces($scope.selectedCart.items);
+      
+    }
+
     //Function includes support for saving items while filtering and saving cart when changing ship date
     $scope.saveAndRetainQuantity = function(noParentFunction) {
       if($scope.selectedList && $scope.selectedList.items){
@@ -957,7 +1010,7 @@ angular.module('bekApp')
     };
 
     $scope.updateOrderClick = function(list, cart) {
-      // clearItemWatches(cartWatches);
+      clearItemWatches(cartWatches);
       var cartItems = getCombinedCartAndListItems(cart.items, list.items);
       UtilityService.deleteFieldFromObjects(cartItems, ['listitemid']);
 
@@ -1043,24 +1096,6 @@ angular.module('bekApp')
       });
     };
 
-    $scope.updateCartWithRecommendedItems = function(item) {
-      item.extPrice = PricingService.getPriceForItem(item);
-      
-      item.recommended = true;
-
-      if($filter('filter')($scope.selectedCart.items, {itemnumber: item.itemnumber, recommended: item.recommended}).length > 0) {
-        var itemIdx = $scope.selectedCart.items.indexOf(item);
-        $scope.selectedCart.items[itemIdx].quantity = item.quantity;
-      } else {
-        $scope.selectedCart.items.push(item);
-      }
-
-      refreshSubtotal($scope.selectedCart.items, $scope.selectedList.items);
-
-      calculatePieces($scope.selectedCart.items);
-      
-    }
-
     $scope.$on('QuickAddUpdate', function(event, origCartItems, newItems) {
       $scope.fromQuickAdd = true;
       newItems.forEach(function(item){
@@ -1126,7 +1161,7 @@ angular.module('bekApp')
 
     $scope.openErrorMessageModal = function(message) {
       var modalInstance = $modal.open({
-        templateUrl: 'shared/modals/errormessagemodal.html',
+        templateUrl: 'views/modals/errormessagemodal.html',
         controller: 'ErrorMessageModalController',
         scope: $scope,
         backdrop:'static',
@@ -1149,10 +1184,6 @@ angular.module('bekApp')
           }
       });
     };
-
-    AnalyticsService.recordCheckout(null, 
-                                    Constants.checkoutSteps.EnterAddToOrder, // step
-                                    ""); //option
 
     init();
 

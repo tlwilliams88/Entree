@@ -601,7 +601,7 @@
       <div sticky offset="230" class="row hidden-xs hidden-sm hidden-md col-6" style="margin-top: 12px; padding-left: 15px;">
           <h3>Recommendations Based On Your Cart</h3>
 
-            <div style="border: 2px solid #C4BC9E; border-radius: 5px; height: 100px; margin-top: 10px; margin-bottom: 10px;" ng-repeat="recommendedItem in recommendedItems | limitTo: 5">
+            <div style="border: 2px solid #C4BC9E; border-radius: 5px; height: 100px; margin-top: 10px; margin-bottom: 10px;" ng-if="recommendedItem.productimages[0]" ng-repeat="recommendedItem in recommendedItems | limitTo: 5">
               
               <div>
                   <img 
