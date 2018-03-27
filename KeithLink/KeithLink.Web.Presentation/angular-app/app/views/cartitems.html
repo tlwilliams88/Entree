@@ -287,7 +287,7 @@
         <div class="col-xs-12 col-lg-8" style="margin-top: 15px; padding-left: 0; padding-bottom: 10px;">
           <form name="cartForm">
           <tabset class="tabset tab-border pull-left" style="width: 100%;">
-            <tab ng-if="canCreateOrders && cartHeaders && cartHeaders.length > 0" class="text-center" active="currentCart.active">
+            <tab class="text-center" active="currentCart.active" ng-init="currentCart.active = true">
                 <tab-heading><span class="icon-cart" style="padding-right: 5px; color: #3E9DCD"></span>Cart</tab-heading>
                 <h3 class="visible-print-block hidden-xs hidden-sm hidden-md hidden-lg"><span class="icon-cart" style="padding-right: 5px;"></span>Cart</h3>
                 <table class="table item-details__table table-striped-rows no-margin" style="width: 100%; padding-bottom: 10px;">
@@ -450,7 +450,7 @@
                         {{item.qtyInCart}}
                       </td>
                       <td>
-                          <a class="pull-right" ng-click="addSelectedToCart(mandatoryItems[$index])"><span class="icon-plus3 large-icon" tooltip="Add item to cart" style="padding: 10px;"></span></a>
+                          <a class="pull-right" ng-click="addSelectedToCart(mandatoryItems[$index]); mandatoryItems.active = true;"><span class="icon-plus3 large-icon" tooltip="Add item to cart" style="padding: 10px;"></span></a>
                       </td>
                     </tr>
                   </tbody>
@@ -491,7 +491,7 @@
                         {{item.name}}
                       </td>
                       <td>
-                          <a class="pull-right" ng-click="addSelectedToCart(mandatoryItems[$index])"><span class="icon-plus3 large-icon" tooltip="Add item to cart" style="padding: 10px;"></span></a>
+                          <a class="pull-right" ng-click="addSelectedToCart(reminderItems[$index]); reminderItems.active = true;"><span class="icon-plus3 large-icon" tooltip="Add item to cart" style="padding: 10px;"></span></a>
                       </td>
                     </tr>
                   </tbody>
@@ -504,6 +504,45 @@
                   </tfoot>
                 </table>
               </tab>
+              <tab ng-show="recommendedItems && recommendedItems.length > 0" active="recommendedItems.active" class="text-center hidden-lg">
+                  <tab-heading><span class="icon-thumbsup" style="padding-right: 5px; color: #319CCB;"></span>Recommended Items<span class="icon-help" style="padding-left: 5px; padding-top: 2px;" tooltip="Recommended Items are based on what is currently in your cart."></span></tab-heading>
+                  <table class="table table-striped-rows table-narrow" style="width: 100%;">
+                    <thead>
+                      <tr>
+                        <th class="sort-col-header" ng-click="reminderSortBy='itemnumber';reminderSortOrder=!reminderSortOrder;">
+                          Item
+                          <span># <span sort-icons field="'itemnumber'" sortorder="reminderSortOrder" sortby="reminderSortBy"></span></span>
+                        </th>
+                        <th class="sort-col-header" ng-click="reminderSortBy='name';reminderSortOrder=!reminderSortOrder;">
+                          <span>Name <span sort-icons field="'name'" sortorder="reminderSortOrder" sortby="reminderSortBy"></span></span>
+                        </th>
+                        <th>
+                            <a class="pull-right" ng-show="reminderItems && reminderItems.length > 0" ng-click="addSelectedToCart(reminderItems)"> Add All</a>
+                        </th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr ng-repeat="recommendedItem in recommendedItems"  ng-class="{ odd : $odd, even: $even, 'item-selected': recommendedItem.isSelected }">
+                        <td>
+                          <a ui-sref="menu.catalog.products.details({itemNumber: item.itemnumber})">{{recommendedItem.itemnumber}}</a>
+                        </td>
+                        <td>
+                          {{recommendedItem.name}}
+                        </td>
+                        <td>
+                            <a class="pull-right" ng-click="addItemToCart(recommendedItem); recommendedItems.active = true;"><span class="icon-plus3 large-icon" tooltip="Add item to cart" style="padding: 10px;"></span></a>
+                        </td>
+                      </tr>
+                    </tbody>
+                    <tfoot ng-show="recommendedItems.active && recommendedItems.length === 0">
+                      <tr>
+                        <td colspan="12">
+                          There are no missing reminder items for this cart.
+                        </td>
+                      </tr>
+                    </tfoot>
+                  </table>
+                </tab>
           </tabset>
         </form>
         </div>
