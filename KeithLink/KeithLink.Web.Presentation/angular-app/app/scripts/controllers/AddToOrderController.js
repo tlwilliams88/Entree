@@ -2,9 +2,9 @@
 
 angular.module('bekApp')
   .controller('AddToOrderController', ['$rootScope', '$scope', '$state', '$modal', '$q', '$stateParams', '$filter', '$timeout', 'blockUI', 
-   'lists', 'selectedList', 'selectedCart', 'Constants', 'CartService', 'ListService', 'OrderService', 'UtilityService', 'DateService', 'PricingService', 'ListPagingModel', 'LocalStorage', '$analytics', 'toaster', 'ENV', 'SessionService',
+   'lists', 'selectedList', 'selectedCart', 'Constants', 'CartService', 'ListService', 'OrderService', 'UtilityService', 'DateService', 'PricingService', 'ListPagingModel', 'LocalStorage', '$analytics', 'toaster', 'ENV', 'SessionService', 'ProductService',
     function ($rootScope, $scope, $state, $modal, $q, $stateParams, $filter, $timeout, blockUI, lists, selectedList, selectedCart, Constants,
-     CartService, ListService, OrderService, UtilityService, DateService, PricingService, ListPagingModel, LocalStorage, $analytics, toaster, ENV, SessionService) {
+     CartService, ListService, OrderService, UtilityService, DateService, PricingService, ListPagingModel, LocalStorage, $analytics, toaster, ENV, SessionService, ProductService) {
 
          $scope.$on('$stateChangeStart', function(event, toState, toParams, fromState, fromParams){
              var toCart = (toState.name == 'menu.cart.items' || fromState.name == 'menu.cart.items'),
@@ -34,9 +34,6 @@ angular.module('bekApp')
              }
              guiders.hideAll();
          });
-
-    var isMobile = UtilityService.isMobileDevice();
-    var isMobileApp = ENV.mobileApp;
 
     // Tutorial -- Tutorial Ignored 09/25
     // var hideTutorial = LocalStorage.getHideTutorialAddToOrder() || isMobileApp || isMobile,
@@ -95,9 +92,13 @@ angular.module('bekApp')
     $scope.visitedPages = [];
     $scope.canSaveCart = false;
     $scope.setOrderCanceled = false;
+    $scope.filteredCartItems = [];
 
     $scope.removeRowHighlightParLevel = function(){
       $('.ATOrowHighlight').removeClass('ATOrowHighlight');
+
+      $scope.useParlevel = !$scope.useParlevel;
+    
     };
 
     function onItemQuantityChanged(newVal, oldVal) {
@@ -264,9 +265,15 @@ angular.module('bekApp')
           else{
             item.isShown = false;
           }
-      });
+        });
+
+        filterItems();
       }
     };
+
+    function filterItems() {
+      $scope.filteredCartItems = $filter('filter')($scope.selectedCart.items, {isShown:'!true'});
+    }
 
   $scope.pagingPageSize = LocalStorage.getPageSize();
   $scope.pageChanged = function(page, visited) {
@@ -422,6 +429,12 @@ angular.module('bekApp')
        blockUI.stop();
     }
 
+    $scope.updateRecommendedItems = function(items) {
+      ProductService.getRecommendedItems(items).then(function(resp) {
+        $scope.recommendedItems = resp;
+      });
+    }
+
     function init() {
       $scope.lists = lists;
 
@@ -438,6 +451,7 @@ angular.module('bekApp')
                $scope.openErrorMessageModal('The ship date requested for this order has expired. Select Cancel to return to the home screen without making changes. Select Accept to update to the next available ship date.');
               selectedCart.requestedshipdate = $scope.shipDates[0].shipdate;
             }
+
           } else {
             // create new cart if no cart was selected
             $scope.generateNewCartForDisplay();
@@ -809,9 +823,7 @@ angular.module('bekApp')
     }
 
     /*******************************
-
       Cancel Changes And Delete Cart
-
     ********************************/
 
     $scope.cancelChanges = function(cartid) {
@@ -943,6 +955,24 @@ angular.module('bekApp')
       }
 
     };
+
+    $scope.updateCartWithRecommendedItems = function(item) {
+      item.extPrice = PricingService.getPriceForItem(item);
+      
+      item.recommended = true;
+
+      if($filter('filter')($scope.selectedCart.items, {itemnumber: item.itemnumber, recommended: item.recommended}).length > 0) {
+        var itemIdx = $scope.selectedCart.items.indexOf(item);
+        $scope.selectedCart.items[itemIdx].quantity = item.quantity;
+      } else {
+        $scope.selectedCart.items.push(item);
+      }
+
+      refreshSubtotal($scope.selectedCart.items, $scope.selectedList.items);
+
+      calculatePieces($scope.selectedCart.items);
+      
+    }
 
     //Function includes support for saving items while filtering and saving cart when changing ship date
     $scope.saveAndRetainQuantity = function(noParentFunction) {

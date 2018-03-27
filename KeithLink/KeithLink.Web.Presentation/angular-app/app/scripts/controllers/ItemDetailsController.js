@@ -19,6 +19,10 @@ angular.module('bekApp')
     $scope.item = item;
     $scope.item.quantity = 1;
 
+    ProductService.getRecommendedItems($scope.item.itemnumber).then(function(resp) {
+      $scope.recommendedItems = resp;
+    });
+
     $scope.item.orderHistoryKeys = Object.keys(item.orderhistory);
 
     $scope.canOrderItemInd = PricingService.canOrderItem(item);

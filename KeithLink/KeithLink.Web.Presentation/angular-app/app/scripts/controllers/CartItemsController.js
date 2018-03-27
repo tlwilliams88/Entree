@@ -9,9 +9,9 @@
  */
 angular.module('bekApp')
   .controller('CartItemsController', ['$scope', '$state', '$stateParams', '$filter', '$modal', '$q', 'ENV', 'Constants', 'LocalStorage',
-   'CartService', 'OrderService', 'UtilityService', 'PricingService', 'DateService', 'changeOrders', 'originalBasket', 'criticalItemsLists', 'AnalyticsService',
+   'CartService', 'OrderService', 'UtilityService', 'PricingService', 'DateService', 'changeOrders', 'originalBasket', 'criticalItemsLists', 'AnalyticsService', 'ProductService',
     function($scope, $state, $stateParams, $filter, $modal, $q, ENV, Constants, LocalStorage, CartService, OrderService, UtilityService,
-     PricingService, DateService, changeOrders, originalBasket, criticalItemsLists, AnalyticsService) {
+     PricingService, DateService, changeOrders, originalBasket, criticalItemsLists, AnalyticsService, ProductService) {
 
     // redirect to url with correct ID as a param
     var basketId = originalBasket.id || originalBasket.ordernumber;
@@ -29,6 +29,8 @@ angular.module('bekApp')
       var item = $scope.currentCart.items[idx];
       if (item) {
         item.extPrice = PricingService.getPriceForItem(item);
+
+        calculatePieces($scope.currentCart.items);
       }
 
       $scope.currentCart.subtotal = PricingService.getSubtotalForItemsWithPrice($scope.currentCart.items);
@@ -59,6 +61,10 @@ angular.module('bekApp')
       originalBasket.items =  OrderService.filterDeletedOrderItems(originalBasket);
     }
     $scope.currentCart = angular.copy(originalBasket);
+    ProductService.getRecommendedItems($scope.currentCart.items).then(function(resp) {
+      $scope.recommendedItems = resp;
+    });
+    $scope.currentCart.isRenaming = false;
     $scope.selectedShipDate = CartService.findCutoffDate($scope.currentCart);
     $scope.isMobile = ENV.mobileApp;
     $scope.invalidSelectedDate = false;
@@ -208,6 +214,20 @@ angular.module('bekApp')
       });
       return invalidItemFound;
    }
+
+   $scope.addItemToCart = function(item) {
+    item.quantity = item.newQuantity;
+
+    delete item.newQuantity;
+
+    $scope.currentCart.items.push(item);
+
+    ProductService.getRecommendedItems($scope.currentCart.items).then(function(resp) {
+      $scope.recommendedItems = resp;
+    });
+
+    $scope.saveCart($scope.currentCart);
+   };
 
     processingSaveCart = false;
 
@@ -543,8 +563,23 @@ angular.module('bekApp')
     };
 
     $scope.addSelectedToCart = function(items) {
+
+      // add watches to new items to update price
+      var originalItemCount = $scope.currentCart.items.length;
+      $scope.currentCart.items = $scope.currentCart.items.concat(items);
+      addItemWatches(originalItemCount);
+      $scope.resetSubmitDisableFlag(true);
+      $scope.cartForm.$setDirty();
+      if ($scope.reminderList.active) {
+        $scope.reminderList.allSelected = false;
+      }
+      if ($scope.mandatoryList.active) {
+        $scope.mandatoryList.allSelected = false;
+      }
+      // $scope.changeAllSelectedItems(items, false);
+
       if (items && items.length > 0) {
-        items = $filter('filter')(items, {isSelected: true});
+        // items = $filter('filter')(items, {isSelected: true});
 
         // set quantity
         items.forEach(function(item) {
@@ -556,21 +591,26 @@ angular.module('bekApp')
 
         });
 
-        // add watches to new items to update price
-        var originalItemCount = $scope.currentCart.items.length;
-        $scope.currentCart.items = $scope.currentCart.items.concat(items);
-        addItemWatches(originalItemCount);
-        $scope.resetSubmitDisableFlag(true);
-        $scope.cartForm.$setDirty();
-        if ($scope.reminderList) {
-          $scope.reminderList.allSelected = false;
+      } else {
+        items.quantity = Math.ceil(items.parlevel - items.qtyInCart) || 1;
+
+        if ($scope.isChangeOrder) {
+          items.price = items.each ? items.packageprice : items.caseprice;
         }
-        if ($scope.mandatoryList) {
-          $scope.mandatoryList.allSelected = false;
-        }
-        $scope.changeAllSelectedItems(items, false);
       }
     };
+
+    function calculatePieces(items){
+      //total piece count for cart info box
+
+      $scope.itemCount = $filter('filter')($scope.currentCart.items, {quantity: '!0'})
+      $scope.piecesCount = 0;
+        items.forEach(function(item){
+          if(item.quantity){
+            $scope.piecesCount = $scope.piecesCount + parseInt(item.quantity);
+          }
+        });
+    }
 
     $scope.openErrorMessageModal = function(message) {
       var modalInstance = $modal.open({
