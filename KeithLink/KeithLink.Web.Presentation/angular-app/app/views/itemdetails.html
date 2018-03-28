@@ -84,398 +84,398 @@
 
   <div class="row sub-content">
     <div class="col-lg-12">
-        <div style="height: 150px; background-color: #F3F1EC; margin-bottom: 20px;" class="hidden-xs hidden-sm hidden-md">
-          <h3 style="padding-top: 5px; padding-left: 10px;">Recommendations based on your cart</h3>
-          <div style="display: inline-flex; padding-left: 10px;">
-          
-          
-              <div style="border: 2px solid #C4BC9E; border-radius: 5px; height: 100px; display: inline-flex; margin-right: 5px; background-color: #FFFF;" ng-repeat="recommendedItem in recommendedItems | limitTo: 2">
-                
-                <div>
-                    <img 
-                    class="hand items pull-left"
-                    style="padding: 0; height: 96px;"
-                    ng-src="{{recommendedItem.productimages[0].url}}" />
-                </div>
-    
-    
-                <div class="pull-left" style="padding-top: 25px; padding-left: 10px; padding-right: 10px;">
-                  <p>{{recommendedItem.name}}</p>
-                  <p>{{recommendedItem.each ? recommendedItem.packageprice : recommendedItem.caseprice | currency}} - {{recommendedItem.packsize}}</p>
-                </div>
-    
-                <div class="pull-right" style="padding-top: 8px; padding-right: 10px;">
-                    <div class="hidden-print">
-              
-                      <div ng-if="(canManageLists || canCreateOrders || canSubmitOrders) && canOrderItemInd" class="hidden-print sub-content">
-                        <form name="orderForm" style="display: inline-block;">
-                          <div counter allowDropdown="true" size="large" ng-model="item.quantity" min="0"></div>
-                          <span ng-if="packagePriceInd">Order By Package             
-                            <ng-form name="eachForm_mobile">
-                              <input type="checkbox" ng-model="item.each" id="each" name="each" />
-                            </ng-form>
-                          </span>
-                        </form>
-
-                        <div class="context-menu-template btn-primary btn btn-lg" context-menu context-menu-template noLists="true">
-                          Add To...
-                          <span class="icon-arrow-down6"></span>
-                        </div>
-                      </div>
-    
-                      </div>
-                  </div>
-    
-              </div>
-      
-              <!-- <div style="border: 2px solid #C4BC9E; border-radius: 5px; height: 100px; padding: 10px; margin-top: 10px;"></div>
-      
-              <div style="border: 2px solid #C4BC9E; border-radius: 5px; height: 100px; padding: 10px; margin-top: 10px;"></div>
-      
-              <div style="border: 2px solid #C4BC9E; border-radius: 5px; height: 100px; padding: 10px; margin-top: 10px;"></div>
-      
-              <div style="border: 2px solid #C4BC9E; border-radius: 5px; height: 100px; padding: 10px; margin-top: 10px; margin-bottom: 10px;"></div> -->
+      <div ng-if="recommendedItems.length > 0" style="height: 150px; background-color: #F3F1EC; margin-bottom: 20px;" class="hidden-xs hidden-sm hidden-md">
+        <h3 style="padding-top: 5px; padding-left: 10px;">Recommended Items</h3>
+        <div style="display: inline-flex; padding-left: 10px;">
         
-            </div>
-          </div>
-      <tabset class="tabset tab-border">
-        <tab heading="Item Specs">
-          <h3 class="visible-print-block hidden-xs hidden-sm hidden-md hidden-lg">Item Specs</h3>
-            <table class="table item-details__table table-striped-rows no-margin">
-              <colgroup>
-                <col style="width: 25%">
-                <col style="width: 75%">
-              </colgroup>
-              <tbody>
-                <tr>
-                  <th>Specification</th>
-                  <th>Details</th>
-                </tr>
-                <tr class="odd">
-                  <td>Item #</td>
-                  <td>{{item.itemnumber}}</td>
-                </tr>
-                <tr class="even">
-                  <td>GTIN</td>
-                  <td>{{item.upc}}</td>
-                </tr>
-                <tr class="odd">
-                  <td>Servings / Case</td>
-                  <td>{{item.nutritional.servingsperpack}}</td>
-                </tr>
-                <tr class="even">
-                  <td>Portion Cost</td>
-                  <td>{{item.unitprice | currency}}</td>
-                </tr>
-                <tr class="odd">
-                  <td>Portion Size</td>
-                  <td>{{item.nutritional.servingsize}} {{item.nutritional.servingsizeuom}}</td>
-                </tr>
-                <!-- Always null
-                <tr>
-                  <td>Portion Size</td>
-                  <td>{{item.nutritional.servingsuggestion}}</td>
-                </tr> -->
-                <!-- <tr class="even">
-                  <td>Previous Orders</td>
-                  <td></td>
-                </tr> -->
-                <tr class="even">
-                  <td>Manufacturer</td>
-                  <td><span ng-if="!item.marketing_manufacturer">{{item.manufacturer_name}}</span><span ng-if="item.marketing_manufacturer">{{item.marketing_manufacturer}}</span></td>
-                </tr>
-                <tr class="odd">
-                  <td>Manufacturer Brand</td>
-                  <td>{{item.manufacturer_brand}}</td>
-                </tr>
-                <tr class="even">
-                  <td>Vendor</td>
-                  <td>{{item.vendor_num}}</td>
-                </tr>
-                <tr class="odd">
-                  <td>Vendor Item #</td>
-                  <td>{{item.manufacturer_number}}</td>
-                </tr>
-                <tr class="even">
-                  <td>Category</td>
-                  <td>{{item.class}}</td>
-                </tr>
-                <tr class="odd">
-                  <td>Sub-Category</td>
-                  <td>{{item.categoryname}}</td>
-                </tr>
-                <tr class="even">
-                  <td>Storage Instructions</td>
-                  <td>{{item.nutritional.storagetemp}}</td>
-                </tr>
-                <tr class="odd">
-                  <td>Gross Wt</td>
-                  <td>{{item.nutritional.grossweight}}</td>
-                </tr>
-                <tr class="even">
-                  <td>Case Cube</td>
-                  <td>{{item.icube}}</td>
-                </tr>
-              </tbody>
-            </table>
-        </tab>
-        <tab ng-if="::item.is_specialty_catalog && isInternalUser" heading="UNFI Specs">
-          <h3 class="visible-print-block hidden-xs hidden-sm hidden-md hidden-lg">UNFI Specs</h3>
-            <table class="table item-details__table table-striped-rows no-margin">
-              <colgroup>
-                <col style="width: 25%">
-                <col style="width: 75%">
-              </colgroup>
-              <tbody>
-                <tr>
-                  <th>Specification</th>
-                  <th>Details</th>
-                </tr>
-                <tr class="odd">
-                  <td>Case Cost</td>
-                  <td>{{item.unfi.caseprice}}</td>
-                </tr>
-                <tr class="even">
-                  <td>Case Length</td>
-                  <td>{{item.unfi.caselength}}</td>
-                </tr>
-                <tr class="odd">
-                  <td>Case Height</td>
-                  <td>{{item.unfi.caseheight}}</td>
-                </tr>
-                <tr class="even">
-                  <td>Case Width</td>
-                  <td>{{item.unfi.casewidth}}</td>
-                </tr>
-                <tr class="odd">
-                  <td>Package Cost</td>
-                  <td>{{item.unfi.packageprice}}</td>
-                </tr>
+        
+            <div style="border: 2px solid #C4BC9E; border-radius: 5px; height: 100px; display: inline-flex; margin-right: 5px; background-color: #FFFF;" ng-repeat="recommendedItem in recommendedItems | limitTo: 2">
+              
+              <div>
+                  <img 
+                  class="hand items pull-left"
+                  style="padding: 0; height: 96px;"
+                  ng-src="{{recommendedItem.productimages[0].url}}" />
+              </div>
+  
+  
+              <div class="pull-left" style="padding-top: 25px; padding-left: 10px; padding-right: 10px;">
+                <p>{{recommendedItem.name}}</p>
+                <p>{{recommendedItem.each ? recommendedItem.packageprice : recommendedItem.caseprice | currency}} - {{recommendedItem.packsize}}</p>
+              </div>
+  
+              <div class="pull-right" style="padding-top: 8px; padding-right: 10px;">
+                  <div class="hidden-print">
+            
+                    <div ng-if="(canManageLists || canCreateOrders || canSubmitOrders) && canOrderItemInd" class="hidden-print sub-content">
+                      <form name="orderForm" style="display: inline-block;">
+                        <div counter allowDropdown="true" size="large" ng-model="item.quantity" min="0"></div>
+                        <span ng-if="packagePriceInd">Order By Package             
+                          <ng-form name="eachForm_mobile">
+                            <input type="checkbox" ng-model="item.each" id="each" name="each" />
+                          </ng-form>
+                        </span>
+                      </form>
 
-                <!-- Always null
-                <tr>
-                  <td>Portion Size</td>
-                  <td>{{item.nutritional.servingsuggestion}}</td>
-                </tr> -->
-                <!-- <tr class="even">
-                  <td>Previous Orders</td>
-                  <td></td>
-                </tr> -->
-                <tr class="even">
-                  <td>Package Length</td>
-                  <td>{{item.unfi.packagelength}}</td>
-                </tr>
-                <tr class="odd">
-                  <td>Package Height</td>
-                  <td>{{item.unfi.packageheight}}</td>
-                </tr>
-                <tr class="even">
-                  <td>Package Width</td>
-                  <td>{{item.unfi.packagewidth}}</td>
-                </tr>
-                <tr class="odd">
-                  <td>Unit of Sale</td>
-                  <td>{{item.unfi.unitofsale}}</td>
-                </tr>
-                <tr class="even">
-                  <td>Weight</td>
-                  <td>{{item.unfi.weight}}</td>
-                </tr>
-                <tr class="odd">
-                  <td>Catalog Dept.</td>
-                  <td>{{item.unfi.catalogdept}}</td>
-                </tr>
-                <tr class="even">
-                  <td>Ship Min. Expire</td>
-                  <td>{{item.unfi.shipinexpire}}</td>
-                </tr>
-                <tr class="odd">
-                  <td>Min. Order</td>
-                  <td>{{item.unfi.minorder}}</td>
-                </tr>
-                <tr class="even">
-                  <td>Case Qty.</td>
-                  <td>{{item.unfi.casequantity}}</td>
-                </tr>
-                <tr class="odd">
-                  <td>Put Up</td>
-                  <td>{{item.unfi.putup}}</td>
-                </tr>
-                <tr class="even">
-                  <td>Cont. Unit</td>
-                  <td>{{item.unfi.contunit}}</td>
-                </tr>
-                <tr class="odd">
-                  <td>Tcs Code</td>
-                  <td>{{item.unfi.tcscode}}</td>
-                </tr>
-                <tr class="even">
-                  <td>Case UPC</td>
-                  <td>{{item.unfi.caseupc}}</td>
-                </tr>
-                <tr class="odd">
-                  <td>Status</td>
-                  <td>{{item.unfi.status}}</td>
-                </tr>
-                <tr class="even">
-                  <td>Flag 1</td>
-                  <td>{{item.unfi.flag1}}</td>
-                </tr>
-                <tr class="odd">
-                  <td>Flag 2</td>
-                  <td>{{item.unfi.flag2}}</td>
-                </tr>
-                <tr class="even">
-                  <td>Flag 3</td>
-                  <td>{{item.unfi.flag3}}</td>
-                </tr>
-                <tr class="odd">
-                  <td>Flag 4</td>
-                  <td>{{item.unfi.flag4}}</td>
-                </tr>
-                <tr class="even">
-                  <td>On Hand Qty.</td>
-                  <td>{{item.unfi.onhandqty}}</td>
-                </tr>
-                <tr class="odd">
-                  <td>Vendor</td>
-                  <td>{{item.unfi.vendor}}</td>
-                </tr>
-              </tbody>
-            </table>
-        </tab>
-        <tab heading="Dietary Specs"
-             ng-show = "item.nutritional != null">
-          <h3 class="visible-print-block hidden-xs hidden-sm hidden-md hidden-lg">Dietary Specs</h3>
-            <table class="table item-details__table table-striped-rows no-margin">
-              <colgroup>
-                <col style="width: 15%">
-                <col style="width: 85%">
-              </colgroup>
-              <tbody>
-                <tr class="even">
-                  <td><strong>Diet Types</strong></td>
-                  <td ng-if="item.nutritional.diet.length > 0" class="text-capitalize">
-                    <span ng-repeat-start="diet in item.nutritional.diet">{{diet.diettype}}</span>
-                    <span ng-repeat-end ng-if="!$last">, </span>
-                  </td>
-                  <td ng-if="!item.nutritional.diet.length > 0">Not Tested</td>
-                </tr>
-                <tr class="odd">
-                  <td><strong>Contains</strong></td>
-                  <td ng-if="item.nutritional.allergens.contains.length > 0">{{item.nutritional.allergens.contains.join(', ')}}</td>
-                  <td ng-if="!item.nutritional.allergens.contains.length > 0">Not Tested</td>
-                </tr>
-                <tr class="even">
-                  <td><strong>May Contain</strong></td>
-                  <td ng-if="item.nutritional.allergens.maycontain.length > 0">{{item.nutritional.allergens.maycontain.join(', ')}}</td>
-                  <td ng-if="!item.nutritional.allergens.maycontain.length > 0">Not Tested</td>
-                </tr>
-                <tr class="odd">
-                  <td><strong>Free From</strong></td>
-                  <td ng-if="item.nutritional.allergens.freefrom.length > 0">{{item.nutritional.allergens.freefrom.join(', ')}}</td>
-                  <td ng-if="!item.nutritional.allergens.freefrom.length > 0">Not Tested</td>
-                </tr>
-                <tr class="even">
-                  <td><strong>Ingredients</strong></td>
-                  <td>{{item.nutritional.ingredients}}</td>
-                </tr>
-              </tbody>
-            </table>
-        </tab>
-        <tab heading="Nutrition"
-             ng-show = "item.nutritional != null">
-          <h3 class="visible-print-block hidden-xs hidden-sm hidden-md hidden-lg">Nutrition</h3>
-            <table class="table item-details__table table-striped-rows no-margin">
-              <colgroup>
-                <col style="width: 20%">
-                <col style="width: 20%">
-                <col style="width: 20%">
-                <col style="width: 20%">
-                <col style="width: 20%">
-              </colgroup>
-              <tbody>
-                <tr class="even">
-                  <th>Nutrient Type</th>
-                  <th>Nutrient Type Code</th>
-                  <th>Daily Value</th>
-                  <th>MS. Type ID</th>
-                  <th>MS. Value</th>
-                </tr>
-                <tr ng-repeat="nutrition in item.nutritional.nutrition" ng-class="{ even : $odd, odd: $even }">
-                  <td>{{nutrition.nutrienttype}}</td>
-                  <td>{{nutrition.nutrienttypecode}}</td>
-                  <td>{{nutrition.dailyvalue}}</td>
-                  <td>{{nutrition.measurementtypeid}}</td>
-                  <td>{{nutrition.measurementvalue}}</td>
-                </tr>
-                <tr class="odd" ng-if="!item.nutritional.nutrition || item.nutritional.nutrition.length === 0"><td colspan="5">Not Tested</td></tr>
-              </tbody>
-            </table>
-        </tab>
-        <tab heading="History"
-             ng-show = "item.orderhistory != null">
-          <h3 class="visible-print-block hidden-xs hidden-sm hidden-md hidden-lg">History</h3>
-            <table class="table item-details__table table-striped-rows no-margin">
-              <colgroup>
-                <col style="width: 30%">
-                <col style="width: 30%">
-                <col style="width: 10%">
-                <col style="width: 10%">
-                <col style="width: 20%">
-              </colgroup>
-              <tbody>
-                <tr class="even">
-                  <th>Date</th>
-                  <th># Ordered</th>
-                  <th></th>
-                  <th></th>
-                  <th></th>
-                </tr>
-                <tr ng-repeat="(key, value) in item.orderhistory" ng-class="{ even : $odd, odd: $even }">
-                  <td>{{key}}</td>
-                  <td>{{value}}</td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                </tr>
-              </tbody>
-            </table>
-        </tab>
-        <tab heading="Images" ng-show="item.productimages.length > 0">
-          <div class="hidden-print item-details__images">
-              <a ng-click="openExternalLink(image.url)" ng-repeat="image in item.productimages">
-                  <img ng-src="{{image.url}}" alt="" style="height:200px;" border="0"/>
-              </a>
-              <br />
+                      <div class="context-menu-template btn-primary btn btn-lg" context-menu context-menu-template noLists="true">
+                        Add To...
+                        <span class="icon-arrow-down6"></span>
+                      </div>
+                    </div>
+  
+                    </div>
+                </div>
+  
+            </div>
+    
+            <!-- <div style="border: 2px solid #C4BC9E; border-radius: 5px; height: 100px; padding: 10px; margin-top: 10px;"></div>
+    
+            <div style="border: 2px solid #C4BC9E; border-radius: 5px; height: 100px; padding: 10px; margin-top: 10px;"></div>
+    
+            <div style="border: 2px solid #C4BC9E; border-radius: 5px; height: 100px; padding: 10px; margin-top: 10px;"></div>
+    
+            <div style="border: 2px solid #C4BC9E; border-radius: 5px; height: 100px; padding: 10px; margin-top: 10px; margin-bottom: 10px;"></div> -->
+      
           </div>
-        </tab>
-        <tab heading="Recommendations" class="hidden-lg">
-            <h3 class="visible-print-block hidden-xs hidden-sm hidden-md hidden-lg">Recommendations</h3>
-              <table class="table item-details__table table-striped-rows no-margin hidden-lg" style="table-layout: fixed">
+        </div>
+        <tabset class="tabset tab-border">
+          <tab heading="Item Specs">
+            <h3 class="visible-print-block hidden-xs hidden-sm hidden-md hidden-lg">Item Specs</h3>
+              <table class="table item-details__table table-striped-rows no-margin">
+                <colgroup>
+                  <col style="width: 25%">
+                  <col style="width: 75%">
+                </colgroup>
                 <tbody>
                   <tr>
-                    <th>Item #</th>
-                    <th>Item Name</th>
-                    <th>Brand</th>
-                    <th>Price</th>
-                    <th></th>
-
+                    <th>Specification</th>
+                    <th>Details</th>
                   </tr>
-                  <tr ng-repeat="recommendedItem in recommendedItems" ng-class="{ odd : $odd }">
-                      <td>{{recommendedItem.itemnumber}}</td>
-                      <td>{{recommendedItem.name}}</td>
-                      <td>{{recommendedItem.brand_extended_description}}</td>
-                      <td>{{recommendedItem.each ? recommendedItem.packageprice : recommendedItem.caseprice | currency}} - {{recommendedItem.packsize}}</td>
-                      <td class="hand-pointer">
-                        <span context-menu-template class="context-menu-template context-menu__in-list hidden-print pull-right"><a class="icon-plus2" style="padding-right:10px;"></a></span>
-                      </td>
+                  <tr class="odd">
+                    <td>Item #</td>
+                    <td>{{item.itemnumber}}</td>
                   </tr>
-
+                  <tr class="even">
+                    <td>GTIN</td>
+                    <td>{{item.upc}}</td>
+                  </tr>
+                  <tr class="odd">
+                    <td>Servings / Case</td>
+                    <td>{{item.nutritional.servingsperpack}}</td>
+                  </tr>
+                  <tr class="even">
+                    <td>Portion Cost</td>
+                    <td>{{item.unitprice | currency}}</td>
+                  </tr>
+                  <tr class="odd">
+                    <td>Portion Size</td>
+                    <td>{{item.nutritional.servingsize}} {{item.nutritional.servingsizeuom}}</td>
+                  </tr>
+                  <!-- Always null
+                  <tr>
+                    <td>Portion Size</td>
+                    <td>{{item.nutritional.servingsuggestion}}</td>
+                  </tr> -->
+                  <!-- <tr class="even">
+                    <td>Previous Orders</td>
+                    <td></td>
+                  </tr> -->
+                  <tr class="even">
+                    <td>Manufacturer</td>
+                    <td><span ng-if="!item.marketing_manufacturer">{{item.manufacturer_name}}</span><span ng-if="item.marketing_manufacturer">{{item.marketing_manufacturer}}</span></td>
+                  </tr>
+                  <tr class="odd">
+                    <td>Manufacturer Brand</td>
+                    <td>{{item.manufacturer_brand}}</td>
+                  </tr>
+                  <tr class="even">
+                    <td>Vendor</td>
+                    <td>{{item.vendor_num}}</td>
+                  </tr>
+                  <tr class="odd">
+                    <td>Vendor Item #</td>
+                    <td>{{item.manufacturer_number}}</td>
+                  </tr>
+                  <tr class="even">
+                    <td>Category</td>
+                    <td>{{item.class}}</td>
+                  </tr>
+                  <tr class="odd">
+                    <td>Sub-Category</td>
+                    <td>{{item.categoryname}}</td>
+                  </tr>
+                  <tr class="even">
+                    <td>Storage Instructions</td>
+                    <td>{{item.nutritional.storagetemp}}</td>
+                  </tr>
+                  <tr class="odd">
+                    <td>Gross Wt</td>
+                    <td>{{item.nutritional.grossweight}}</td>
+                  </tr>
+                  <tr class="even">
+                    <td>Case Cube</td>
+                    <td>{{item.icube}}</td>
+                  </tr>
                 </tbody>
               </table>
           </tab>
-      </tabset>
+          <tab ng-if="::item.is_specialty_catalog && isInternalUser" heading="UNFI Specs">
+            <h3 class="visible-print-block hidden-xs hidden-sm hidden-md hidden-lg">UNFI Specs</h3>
+              <table class="table item-details__table table-striped-rows no-margin">
+                <colgroup>
+                  <col style="width: 25%">
+                  <col style="width: 75%">
+                </colgroup>
+                <tbody>
+                  <tr>
+                    <th>Specification</th>
+                    <th>Details</th>
+                  </tr>
+                  <tr class="odd">
+                    <td>Case Cost</td>
+                    <td>{{item.unfi.caseprice}}</td>
+                  </tr>
+                  <tr class="even">
+                    <td>Case Length</td>
+                    <td>{{item.unfi.caselength}}</td>
+                  </tr>
+                  <tr class="odd">
+                    <td>Case Height</td>
+                    <td>{{item.unfi.caseheight}}</td>
+                  </tr>
+                  <tr class="even">
+                    <td>Case Width</td>
+                    <td>{{item.unfi.casewidth}}</td>
+                  </tr>
+                  <tr class="odd">
+                    <td>Package Cost</td>
+                    <td>{{item.unfi.packageprice}}</td>
+                  </tr>
+
+                  <!-- Always null
+                  <tr>
+                    <td>Portion Size</td>
+                    <td>{{item.nutritional.servingsuggestion}}</td>
+                  </tr> -->
+                  <!-- <tr class="even">
+                    <td>Previous Orders</td>
+                    <td></td>
+                  </tr> -->
+                  <tr class="even">
+                    <td>Package Length</td>
+                    <td>{{item.unfi.packagelength}}</td>
+                  </tr>
+                  <tr class="odd">
+                    <td>Package Height</td>
+                    <td>{{item.unfi.packageheight}}</td>
+                  </tr>
+                  <tr class="even">
+                    <td>Package Width</td>
+                    <td>{{item.unfi.packagewidth}}</td>
+                  </tr>
+                  <tr class="odd">
+                    <td>Unit of Sale</td>
+                    <td>{{item.unfi.unitofsale}}</td>
+                  </tr>
+                  <tr class="even">
+                    <td>Weight</td>
+                    <td>{{item.unfi.weight}}</td>
+                  </tr>
+                  <tr class="odd">
+                    <td>Catalog Dept.</td>
+                    <td>{{item.unfi.catalogdept}}</td>
+                  </tr>
+                  <tr class="even">
+                    <td>Ship Min. Expire</td>
+                    <td>{{item.unfi.shipinexpire}}</td>
+                  </tr>
+                  <tr class="odd">
+                    <td>Min. Order</td>
+                    <td>{{item.unfi.minorder}}</td>
+                  </tr>
+                  <tr class="even">
+                    <td>Case Qty.</td>
+                    <td>{{item.unfi.casequantity}}</td>
+                  </tr>
+                  <tr class="odd">
+                    <td>Put Up</td>
+                    <td>{{item.unfi.putup}}</td>
+                  </tr>
+                  <tr class="even">
+                    <td>Cont. Unit</td>
+                    <td>{{item.unfi.contunit}}</td>
+                  </tr>
+                  <tr class="odd">
+                    <td>Tcs Code</td>
+                    <td>{{item.unfi.tcscode}}</td>
+                  </tr>
+                  <tr class="even">
+                    <td>Case UPC</td>
+                    <td>{{item.unfi.caseupc}}</td>
+                  </tr>
+                  <tr class="odd">
+                    <td>Status</td>
+                    <td>{{item.unfi.status}}</td>
+                  </tr>
+                  <tr class="even">
+                    <td>Flag 1</td>
+                    <td>{{item.unfi.flag1}}</td>
+                  </tr>
+                  <tr class="odd">
+                    <td>Flag 2</td>
+                    <td>{{item.unfi.flag2}}</td>
+                  </tr>
+                  <tr class="even">
+                    <td>Flag 3</td>
+                    <td>{{item.unfi.flag3}}</td>
+                  </tr>
+                  <tr class="odd">
+                    <td>Flag 4</td>
+                    <td>{{item.unfi.flag4}}</td>
+                  </tr>
+                  <tr class="even">
+                    <td>On Hand Qty.</td>
+                    <td>{{item.unfi.onhandqty}}</td>
+                  </tr>
+                  <tr class="odd">
+                    <td>Vendor</td>
+                    <td>{{item.unfi.vendor}}</td>
+                  </tr>
+                </tbody>
+              </table>
+          </tab>
+          <tab heading="Dietary Specs"
+              ng-show = "item.nutritional != null">
+            <h3 class="visible-print-block hidden-xs hidden-sm hidden-md hidden-lg">Dietary Specs</h3>
+              <table class="table item-details__table table-striped-rows no-margin">
+                <colgroup>
+                  <col style="width: 15%">
+                  <col style="width: 85%">
+                </colgroup>
+                <tbody>
+                  <tr class="even">
+                    <td><strong>Diet Types</strong></td>
+                    <td ng-if="item.nutritional.diet.length > 0" class="text-capitalize">
+                      <span ng-repeat-start="diet in item.nutritional.diet">{{diet.diettype}}</span>
+                      <span ng-repeat-end ng-if="!$last">, </span>
+                    </td>
+                    <td ng-if="!item.nutritional.diet.length > 0">Not Tested</td>
+                  </tr>
+                  <tr class="odd">
+                    <td><strong>Contains</strong></td>
+                    <td ng-if="item.nutritional.allergens.contains.length > 0">{{item.nutritional.allergens.contains.join(', ')}}</td>
+                    <td ng-if="!item.nutritional.allergens.contains.length > 0">Not Tested</td>
+                  </tr>
+                  <tr class="even">
+                    <td><strong>May Contain</strong></td>
+                    <td ng-if="item.nutritional.allergens.maycontain.length > 0">{{item.nutritional.allergens.maycontain.join(', ')}}</td>
+                    <td ng-if="!item.nutritional.allergens.maycontain.length > 0">Not Tested</td>
+                  </tr>
+                  <tr class="odd">
+                    <td><strong>Free From</strong></td>
+                    <td ng-if="item.nutritional.allergens.freefrom.length > 0">{{item.nutritional.allergens.freefrom.join(', ')}}</td>
+                    <td ng-if="!item.nutritional.allergens.freefrom.length > 0">Not Tested</td>
+                  </tr>
+                  <tr class="even">
+                    <td><strong>Ingredients</strong></td>
+                    <td>{{item.nutritional.ingredients}}</td>
+                  </tr>
+                </tbody>
+              </table>
+          </tab>
+          <tab heading="Nutrition"
+              ng-show = "item.nutritional != null">
+            <h3 class="visible-print-block hidden-xs hidden-sm hidden-md hidden-lg">Nutrition</h3>
+              <table class="table item-details__table table-striped-rows no-margin">
+                <colgroup>
+                  <col style="width: 20%">
+                  <col style="width: 20%">
+                  <col style="width: 20%">
+                  <col style="width: 20%">
+                  <col style="width: 20%">
+                </colgroup>
+                <tbody>
+                  <tr class="even">
+                    <th>Nutrient Type</th>
+                    <th>Nutrient Type Code</th>
+                    <th>Daily Value</th>
+                    <th>MS. Type ID</th>
+                    <th>MS. Value</th>
+                  </tr>
+                  <tr ng-repeat="nutrition in item.nutritional.nutrition" ng-class="{ even : $odd, odd: $even }">
+                    <td>{{nutrition.nutrienttype}}</td>
+                    <td>{{nutrition.nutrienttypecode}}</td>
+                    <td>{{nutrition.dailyvalue}}</td>
+                    <td>{{nutrition.measurementtypeid}}</td>
+                    <td>{{nutrition.measurementvalue}}</td>
+                  </tr>
+                  <tr class="odd" ng-if="!item.nutritional.nutrition || item.nutritional.nutrition.length === 0"><td colspan="5">Not Tested</td></tr>
+                </tbody>
+              </table>
+          </tab>
+          <tab heading="History"
+              ng-show = "item.orderhistory != null">
+            <h3 class="visible-print-block hidden-xs hidden-sm hidden-md hidden-lg">History</h3>
+              <table class="table item-details__table table-striped-rows no-margin">
+                <colgroup>
+                  <col style="width: 30%">
+                  <col style="width: 30%">
+                  <col style="width: 10%">
+                  <col style="width: 10%">
+                  <col style="width: 20%">
+                </colgroup>
+                <tbody>
+                  <tr class="even">
+                    <th>Date</th>
+                    <th># Ordered</th>
+                    <th></th>
+                    <th></th>
+                    <th></th>
+                  </tr>
+                  <tr ng-repeat="(key, value) in item.orderhistory" ng-class="{ even : $odd, odd: $even }">
+                    <td>{{key}}</td>
+                    <td>{{value}}</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+          </tab>
+          <tab heading="Images" ng-show="item.productimages.length > 0">
+            <div class="hidden-print item-details__images">
+                <a ng-click="openExternalLink(image.url)" ng-repeat="image in item.productimages">
+                    <img ng-src="{{image.url}}" alt="" style="height:200px;" border="0"/>
+                </a>
+                <br />
+            </div>
+          </tab>
+          <tab heading="Recommendations" class="hidden-lg">
+              <h3 class="visible-print-block hidden-xs hidden-sm hidden-md hidden-lg">Recommendations</h3>
+                <table class="table item-details__table table-striped-rows no-margin hidden-lg" style="table-layout: fixed">
+                  <tbody>
+                    <tr>
+                      <th>Item #</th>
+                      <th>Item Name</th>
+                      <th>Brand</th>
+                      <th>Price</th>
+                      <th></th>
+
+                    </tr>
+                    <tr ng-repeat="recommendedItem in recommendedItems" ng-class="{ odd : $odd }">
+                        <td>{{recommendedItem.itemnumber}}</td>
+                        <td>{{recommendedItem.name}}</td>
+                        <td>{{recommendedItem.brand_extended_description}}</td>
+                        <td>{{recommendedItem.each ? recommendedItem.packageprice : recommendedItem.caseprice | currency}} - {{recommendedItem.packsize}}</td>
+                        <td class="hand-pointer">
+                          <span context-menu-template class="context-menu-template context-menu__in-list hidden-print pull-right"><a class="icon-plus2" style="padding-right:10px;"></a></span>
+                        </td>
+                    </tr>
+
+                  </tbody>
+                </table>
+            </tab>
+        </tabset>
+      </div>
     </div>
   </div>
-</div>

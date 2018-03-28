@@ -61,9 +61,7 @@ angular.module('bekApp')
       originalBasket.items =  OrderService.filterDeletedOrderItems(originalBasket);
     }
     $scope.currentCart = angular.copy(originalBasket);
-    ProductService.getRecommendedItems($scope.currentCart.items).then(function(resp) {
-      $scope.recommendedItems = resp;
-    });
+    updateRecommendedItems();
     $scope.currentCart.isRenaming = false;
     $scope.selectedShipDate = CartService.findCutoffDate($scope.currentCart);
     $scope.isMobile = ENV.mobileApp;
@@ -121,6 +119,12 @@ angular.module('bekApp')
       }
     }
     setMandatoryAndReminder($scope.currentCart);
+
+    function updateRecommendedItems(){
+      ProductService.getRecommendedItems($scope.currentCart.items).then(function(resp) {
+        $scope.recommendedItems = resp;
+      });
+    }
 
     $scope.resetSubmitDisableFlag = function(checkForm){
       $scope.disableSubmitButtons = ((!$scope.currentCart.items || $scope.currentCart.items.length === 0) || $scope.isOffline || $scope.invalidSelectedDate);
@@ -401,6 +405,7 @@ angular.module('bekApp')
 
         var idx = $scope.currentCart.items.indexOf(item);
         $scope.currentCart.items.splice(idx, 1);
+        updateRecommendedItems();
         $scope.resetSubmitDisableFlag(true);
         $scope.cartForm.$setDirty();
     };
@@ -598,6 +603,8 @@ angular.module('bekApp')
           items.price = items.each ? items.packageprice : items.caseprice;
         }
       }
+
+      updateRecommendedItems();
     };
 
     function calculatePieces(items){
