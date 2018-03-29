@@ -108,7 +108,8 @@ namespace KeithLink.Svc.Impl.Logic
 			if (existingItem.Any())
 			{
 				existingItem.First().Quantity += newItem.Quantity;
-				basketRepository.UpdateItem(basket.UserId.ToGuid(), cartId, existingItem.First());
+                existingItem.First().CatalogName += newItem.CatalogId.ToUpper();
+                basketRepository.UpdateItem(basket.UserId.ToGuid(), cartId, existingItem.First());
 				return existingItem.First().Id.ToGuid();
 			}
             newItem.Position = basket.LineItems.Count;
@@ -569,7 +570,7 @@ namespace KeithLink.Svc.Impl.Logic
             {
                 var shoppingCart = new ShoppingCart()
                 {
-                    Name = "Split " + catalogId,
+                    Name = "Split " + catalogId.ToUpper(),
                     RequestedShipDate = basket.RequestedShipDate,
                     Active = false,
                     PONumber = basket.PONumber,
@@ -584,12 +585,12 @@ namespace KeithLink.Svc.Impl.Logic
                                         Quantity = l.Quantity.HasValue ? l.Quantity.Value : 0,
                                         Each = l.Each.HasValue ? l.Each.Value : false,
                                         CreatedDate = new DateTime(),
-                                        CatalogId = l.CatalogName })
+                                        CatalogId = l.CatalogName.ToUpper() })
                                   .ToList()
                 };
                 LookupProductDetails(user, catalogInfo, shoppingCart);
 
-                var newCartId = CreateCart(user, catalogInfo, shoppingCart, catalogId);
+                var newCartId = CreateCart(user, catalogInfo, shoppingCart, catalogId.ToUpper());
                 string orderNumber = null;
                 try
                 {
@@ -757,7 +758,7 @@ namespace KeithLink.Svc.Impl.Logic
                                                         Each = l.Each.HasValue ? l.Each.Value : false,
                                                         Label = l.Label,
                                                         CreatedDate = l.Properties["DateCreated"].ToString().ToDateTime().Value,
-                                                        CatalogId = l.CatalogName
+                                                        CatalogId = l.CatalogName.ToUpper()
                                                     }).ToList() : new List<ShoppingCartItem>()
             };
             foreach (ShoppingCartItem item in sc.Items)

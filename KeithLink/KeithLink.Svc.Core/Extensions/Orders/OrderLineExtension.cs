@@ -47,7 +47,7 @@ namespace KeithLink.Svc.Core.Extensions.Orders {
             retVal.ManufacturerNumber = value.ManufacturerNumber;
             retVal.Nutritional = value.Nutritional;
             retVal.ExtCatchWeight = value.TotalShippedWeight;
-            retVal.CatalogId = value.CatalogId;
+            retVal.CatalogId = value.CatalogId.ToUpper();
 
             return retVal;
         }
