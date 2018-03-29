@@ -88,7 +88,6 @@
         <h3 style="padding-top: 5px; padding-left: 10px;">Recommended Items</h3>
         <div style="display: inline-flex; padding-left: 10px;">
         
-        
             <div style="border: 2px solid #C4BC9E; border-radius: 5px; height: 100px; display: inline-flex; margin-right: 5px; background-color: #FFFF;" ng-repeat="recommendedItem in recommendedItems | limitTo: 2">
               
               <div>
@@ -97,7 +96,6 @@
                   style="padding: 0; height: 96px;"
                   ng-src="{{recommendedItem.productimages[0].url}}" />
               </div>
-  
   
               <div class="pull-left" style="padding-top: 25px; padding-left: 10px; padding-right: 10px;">
                 <p>{{recommendedItem.name}}</p>
@@ -109,15 +107,19 @@
             
                     <div ng-if="(canManageLists || canCreateOrders || canSubmitOrders) && canOrderItemInd" class="hidden-print sub-content">
                       <form name="orderForm" style="display: inline-block;">
-                        <div counter allowDropdown="true" size="large" ng-model="item.quantity" min="0"></div>
+                        <div counter allowDropdown="true" size="large" ng-model="recommendedItem.quantity" min="0"></div>
                         <span ng-if="packagePriceInd">Order By Package             
                           <ng-form name="eachForm_mobile">
-                            <input type="checkbox" ng-model="item.each" id="each" name="each" />
+                            <input type="checkbox" ng-model="recommendedItem.each" id="each" name="each" />
                           </ng-form>
                         </span>
                       </form>
 
-                      <div class="context-menu-template btn-primary btn btn-lg" context-menu context-menu-template noLists="true">
+                      <div 
+                        class="context-menu-template btn-primary btn btn-lg" 
+                        context-menu 
+                        context-menu-template 
+                        noLists="true">
                         Add To...
                         <span class="icon-arrow-down6"></span>
                       </div>
@@ -125,17 +127,7 @@
   
                     </div>
                 </div>
-  
             </div>
-    
-            <!-- <div style="border: 2px solid #C4BC9E; border-radius: 5px; height: 100px; padding: 10px; margin-top: 10px;"></div>
-    
-            <div style="border: 2px solid #C4BC9E; border-radius: 5px; height: 100px; padding: 10px; margin-top: 10px;"></div>
-    
-            <div style="border: 2px solid #C4BC9E; border-radius: 5px; height: 100px; padding: 10px; margin-top: 10px;"></div>
-    
-            <div style="border: 2px solid #C4BC9E; border-radius: 5px; height: 100px; padding: 10px; margin-top: 10px; margin-bottom: 10px;"></div> -->
-      
           </div>
         </div>
         <tabset class="tabset tab-border">
@@ -450,7 +442,12 @@
                 <br />
             </div>
           </tab>
-          <tab heading="Recommendations" class="hidden-lg">
+          <tab 
+            heading="Recommendations" 
+            class="hidden-lg" 
+            analytics-on 
+            analytics-category="RecommendedItem-Item-Details" 
+            analytics-event="Open Recommended Item Tab">
               <h3 class="visible-print-block hidden-xs hidden-sm hidden-md hidden-lg">Recommendations</h3>
                 <table class="table item-details__table table-striped-rows no-margin hidden-lg" style="table-layout: fixed">
                   <tbody>
@@ -468,10 +465,19 @@
                         <td>{{recommendedItem.brand_extended_description}}</td>
                         <td>{{recommendedItem.each ? recommendedItem.packageprice : recommendedItem.caseprice | currency}} - {{recommendedItem.packsize}}</td>
                         <td class="hand-pointer">
-                          <span context-menu-template class="context-menu-template context-menu__in-list hidden-print pull-right"><a class="icon-plus2" style="padding-right:10px;"></a></span>
+                          <span 
+                            context-menu-template 
+                            class="context-menu-template context-menu__in-list hidden-print pull-right">
+                            <a 
+                              class="icon-plus2" 
+                              style="padding-right:10px;"
+                              analytics-on 
+                              analytics-category="RecommendedItem-Item-Details-Mobile" 
+                              analytics-event="Add Recommended Item To Cart">
+                            </a>
+                          </span>
                         </td>
                     </tr>
-
                   </tbody>
                 </table>
             </tab>

@@ -12,8 +12,6 @@ angular.module('bekApp')
     controller: ['$scope', '$rootScope', '$state', '$q', '$modal', 'toaster', 'ListService', 'CartService', 'OrderService', 'ContextMenuService', '$filter', 'AnalyticsService', 'Constants',
     function($scope, $rootScope, $state, $q, $modal, toaster, ListService, CartService, OrderService, ContextMenuService, $filter, AnalyticsService, Constants){
 
-      $scope.showLists = $state.current.name !== 'menu.catalog.products.details' ? true : false;
-
       if ($scope.isOrderEntryCustomer) {
         var cartHeaders = CartService.cartHeaders,
             listHeaders = ListService.listHeaders,
