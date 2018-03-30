@@ -288,7 +288,7 @@
     <div class="col-xs-12 col-lg-8" style="margin-top: 15px; padding-left: 0; padding-bottom: 10px;">
       <form name="cartForm">
         <tabset class="tabset tab-border pull-left" style="width: 100%;">
-          <tab class="text-center" active="currentCart.active" ng-init="currentCart.active = true">
+          <tab class="text-center">
               <tab-heading><span class="icon-cart" style="padding-right: 5px; color: #3E9DCD"></span>Cart</tab-heading>
               <h3 class="visible-print-block hidden-xs hidden-sm hidden-md hidden-lg"><span class="icon-cart" style="padding-right: 5px;"></span>Cart</h3>
               <table class="table item-details__table table-striped-rows no-margin" style="width: 100%; padding-bottom: 10px;">
@@ -404,7 +404,7 @@
               </table>
             </tab>
 
-            <tab heading="Mandatory Items" ng-show="mandatoryList && mandatoryList.items.length > 0" active="mandatoryList.active" class="text-center">
+            <tab heading="Mandatory Items" ng-show="mandatoryList && mandatoryList.items.length > 0" class="text-center">
               <tab-heading><span class="icon-warning" style="padding-right: 5px;" ng-style="mandatoryItems.length > 0 && {'color': 'rgb(226, 38, 44)'}"></span>Mandatory Items</tab-heading>
               <input name="mandatoryItemsCount" type="hidden" ng-model="mandatoryItems.length" mandatory-items-check>
       
@@ -466,8 +466,7 @@
             </tab>
         
             <tab 
-              ng-show="reminderList && reminderList.items.length > 0" 
-              active="reminderList.active" 
+              ng-show="reminderList && reminderList.items.length > 0"
               class="text-center">
               <tab-heading><span class="icon-alarm" style="padding-right: 5px;" ng-style="reminderItems.length > 0 && {'color': 'rgb(180, 180, 18)'}"></span>Reminder Items</tab-heading>
               <table class="table table-striped-rows table-narrow" style="width: 100%;">
