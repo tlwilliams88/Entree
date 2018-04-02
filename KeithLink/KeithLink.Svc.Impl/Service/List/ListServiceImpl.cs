@@ -175,6 +175,25 @@ namespace KeithLink.Svc.Impl.Service.List
 
                     case ListType.InventoryValuation:
                         returnList.TryAddRange(_inventoryValuationLogic.ReadLists(user, catalogInfo, headerOnly));
+
+                        if (headerOnly == false && returnList.Count > 0) {
+                            var contractDict = GetContractInformation(catalogInfo);
+
+                            if (contractDict != null &&
+                                contractDict.Keys.Count > 0) {
+                                foreach (var list in returnList)
+                                {
+                                    foreach (var item in list.Items)
+                                    {
+                                        if (contractDict.ContainsKey(item.ItemNumber)) {
+                                            item.Category = contractDict[item.ItemNumber];
+                                            list.HasContractItems = true;
+                                        }
+                                    }
+                                }
+                            }
+                        }
+
                         break;
 
                     case ListType.RecentlyOrdered:
