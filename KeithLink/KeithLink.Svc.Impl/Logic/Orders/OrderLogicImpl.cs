@@ -882,7 +882,6 @@ namespace KeithLink.Svc.Impl.Logic.Orders {
 
         private OrderLine ToOrderLine(CS.LineItem lineItem) {
             return new OrderLine {
-                CatalogId = lineItem.CatalogName.ToUpper(),
                 ItemNumber = lineItem.ProductId,
                 Quantity = lineItem.Quantity == null ? 0 : (short) lineItem.Quantity,
                 Price = lineItem.PlacedPrice == null ? 0 : (double) lineItem.PlacedPrice,
