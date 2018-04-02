@@ -14,6 +14,11 @@ INSERT INTO @AppSettings (Comment, [Key], Value, [Disabled]) VALUES( 'Site Setti
 INSERT INTO @AppSettings (Comment, [Key], Value, [Disabled]) VALUES( 'Site Settings', 'BrandAssetsUrl', 'http://devkeithlink.bekco.com/assets/brands', 0)
 INSERT INTO @AppSettings (Comment, [Key], Value, [Disabled]) VALUES( 'Site Settings', 'RequireHttps', 'false', 0)
 INSERT INTO @AppSettings (Comment, [Key], Value, [Disabled]) VALUES( 'Site Settings', 'RecentItemsToKeep', '10', 0)
+INSERT 
+	INTO @AppSettings 
+		([Key], [Value], [Comment], [Disabled]) 
+	VALUES 
+		('ShowRecommendedItems', 'false', 'Site Settings', 0)
 INSERT INTO @AppSettings (Comment, [Key], Value, [Disabled]) VALUES( 'Site Settings', 'ListItemDaysNew', '2', 0)
 INSERT INTO @AppSettings (Comment, [Key], Value, [Disabled]) VALUES( 'Site Settings', 'RunInternalServiceQueues', 'true', 0)
 INSERT INTO @AppSettings (Comment, [Key], Value, [Disabled]) VALUES( 'Site Settings', 'TokenDuration', '7', 0)
