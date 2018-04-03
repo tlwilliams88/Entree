@@ -180,6 +180,11 @@ INSERT @AppSettings ([Key], [Value], [Comment], [Disabled]) VALUES ('RecentItems
 INSERT @AppSettings ([Key], [Value], [Comment], [Disabled]) VALUES ('RequireHttps', 'false', 'Site Settings', 0)
 INSERT @AppSettings ([Key], [Value], [Comment], [Disabled]) VALUES ('RunInternalServiceQueues', 'true', 'Site Settings', 0)
 INSERT @AppSettings ([Key], [Value], [Comment], [Disabled]) VALUES ('ServiceEmailAddress', 'noreply@credera.com', 'Email Settings', 0)
+INSERT 
+	INTO @AppSettings 
+		([Key], [Value], [Comment], [Disabled]) 
+	VALUES 
+		('ShowRecommendedItems', 'false', 'Feature Flags', 0)
 INSERT @AppSettings ([Key], [Value], [Comment], [Disabled]) VALUES ('SMTPHostName', 'localhost', 'Email Settings', 0)
 INSERT @AppSettings ([Key], [Value], [Comment], [Disabled]) VALUES ('SMTPPassword', '0', 'Site Settings', 0)
 INSERT @AppSettings ([Key], [Value], [Comment], [Disabled]) VALUES ('SMTPSendPort', '0', 'Site Settings', 0)
