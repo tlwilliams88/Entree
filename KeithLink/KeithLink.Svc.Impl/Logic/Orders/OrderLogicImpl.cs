@@ -916,6 +916,7 @@ namespace KeithLink.Svc.Impl.Logic.Orders {
                 OrderLine existingLine = existingOrder.Items.Where(x => x.ItemNumber == newLine.ItemNumber)
                                                       .FirstOrDefault();
                 if (existingLine != null) {
+                    existingLine.CatalogId = newLine.CatalogId.ToUpper();
                     // compare and update if necessary
                     if (existingLine.Quantity != newLine.Quantity ||
                         existingLine.Each != newLine.Each) {
@@ -929,6 +930,7 @@ namespace KeithLink.Svc.Impl.Logic.Orders {
                 } else {
                     // new line
                     existingOrder.Items.Add(new OrderLine {
+                        CatalogId = newLine.CatalogId.ToUpper(),
                         ItemNumber = newLine.ItemNumber,
                         Quantity = newLine.Quantity,
                         Each = newLine.Each,
