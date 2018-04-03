@@ -27,7 +27,7 @@ namespace KeithLink.Common.Impl.Logic.Settings {
         #region methods
         public Setting ReadFeatureFlag(string key) {
             Setting settng = _repo.Read(key);
-            if (settng.Comment == COMMENT_FEATUREFLAG) {
+            if (settng.Disabled == false && settng.Comment == COMMENT_FEATUREFLAG) {
                 return settng;
             }
             return null;
