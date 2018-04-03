@@ -405,7 +405,7 @@
             </tab>
 
             <tab heading="Mandatory Items" ng-show="mandatoryList && mandatoryList.items.length > 0" class="text-center">
-              <tab-heading><span class="icon-warning" style="padding-right: 5px;" ng-style="mandatoryItems.length > 0 && {'color': 'rgb(226, 38, 44)'}"></span>Mandatory Items</tab-heading>
+              <tab-heading ng-style="mandatoryItems.length > 0 && {'color': 'rgb(226, 38, 44)'}"><span class="icon-warning" style="padding-right: 5px;"></span>Mandatory Items</tab-heading>
               <input name="mandatoryItemsCount" type="hidden" ng-model="mandatoryItems.length" mandatory-items-check>
       
               <table class="table table-striped-rows table-narrow" style="width: 100%;">
@@ -445,7 +445,7 @@
                       {{item.name}}
                     </td>
                     <td>
-                      {{item.parlevel}}
+                      {{item.parlevel ? item.parlevel : item.quantity}}
                     </td>
                     <td>
                       {{item.qtyInCart}}
@@ -468,7 +468,7 @@
             <tab 
               ng-show="reminderList && reminderList.items.length > 0"
               class="text-center">
-              <tab-heading><span class="icon-alarm" style="padding-right: 5px;" ng-style="reminderItems.length > 0 && {'color': 'rgb(180, 180, 18)'}"></span>Reminder Items</tab-heading>
+              <tab-heading ng-style="reminderItems.length > 0 && {'color': 'rgb(180, 180, 18)'}"><span class="icon-alarm" style="padding-right: 5px;"></span>Reminder Items</tab-heading>
               <table class="table table-striped-rows table-narrow" style="width: 100%;">
                 <thead>
                   <tr>
@@ -508,7 +508,7 @@
               </table>
             </tab>
             <tab
-              ng-if="recommendedItems && recommendedItems.length > 0 && showRecommendedItems == 'true'"
+              ng-if="recommendedItems && recommendedItems.length > 0"
               active="recommendedItems.active" 
               class="text-center hidden-lg"
               analytics-on 
@@ -619,7 +619,7 @@
         </div>
       </div>
   
-      <div sticky offset="230" ng-if="recommendedItems && recommendedItems.length > 0 && showRecommendedItems == 'true'" class="row hidden-xs hidden-sm hidden-md col-6" style="margin-top: 12px; padding-left: 15px;">
+      <div sticky offset="230" ng-if="recommendedItems && recommendedItems.length > 0" class="row hidden-xs hidden-sm hidden-md col-6" style="margin-top: 12px; padding-left: 15px;">
           <h3>Recommendations Based On Your Cart<span class="icon-help" style="padding-left: 5px; padding-top: 2px;" tooltip="Recommended Items are based on what is currently in your cart."></span></h3>
 
           <p ng-if="recommendedItems.length == 0">No recommendations currently available.</p>

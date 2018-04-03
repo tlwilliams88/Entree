@@ -84,7 +84,7 @@
 
   <div class="row sub-content">
     <div class="col-lg-12">
-      <div ng-if="recommendedItems && recommendedItems.length > 0 && showRecommendedItems == 'true'" style="height: 150px; background-color: #F3F1EC; margin-bottom: 20px; margin-top: 5px;" class="hidden-xs hidden-sm hidden-md">
+      <div ng-if="recommendedItems && recommendedItems.length > 0" style="height: 150px; background-color: #F3F1EC; margin-bottom: 20px; margin-top: 5px;" class="hidden-xs hidden-sm hidden-md">
         <h3 style="padding-top: 5px; padding-left: 10px;">You might also like...</h3>
         <div style="display: inline-flex; padding-left: 10px; width: 100%;">
         
@@ -456,7 +456,7 @@
             analytics-on 
             analytics-category="RecommendedItem-Item-Details" 
             analytics-event="Open Recommended Item Tab"
-            ng-if="recommendedItems.length > 0 && showRecommendedItems == 'true'">
+            ng-if="recommendedItems.length > 0">
             <tab-heading ><span class="icon-thumbsup" style="padding-right: 5px; color: #319CCB;"></span>Recommendations<span class="icon-help" style="padding-left: 5px; padding-top: 2px;" tooltip="Recommended Items are based on what is currently in your cart."></span></tab-heading>
                 <table class="table item-details__table table-striped-rows no-margin hidden-lg" style="table-layout: fixed">
                   <tbody>

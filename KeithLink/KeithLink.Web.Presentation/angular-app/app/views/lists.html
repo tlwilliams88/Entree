@@ -287,7 +287,7 @@
         <p class="text-red" ng-if="listForm.$invalid && listForm.$dirty" >List has some errors. Please fix these before saving.</p>
       </div>
 
-      <form name="listSearchForm" class="hidden-print" ng-hide="(selectedList.items | filter:{isSelected:'true'}).length > 0">
+      <form name="listSearchForm" class="hidden-print">
         <div class="input-group input-group-lg">
           <input
             ng-model="listSearchTerm"
@@ -322,7 +322,7 @@
       </form>
 
       <!-- Multi-select menu -->
-      <div class="hidden-print row" ng-show="(selectedList.items | filter:{isSelected:'true'}).length > 0">
+      <div class="hidden-print row margin-top-10" ng-show="(selectedList.items | filter:{isSelected:'true'}).length > 0">
         <div class="col-xs-12 col-sm-6">
           <div class="btn-group custom-lists__multi-actions">
             <!-- Add to List -->

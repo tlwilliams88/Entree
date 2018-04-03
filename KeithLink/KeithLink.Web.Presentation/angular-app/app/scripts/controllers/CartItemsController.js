@@ -96,8 +96,24 @@ angular.module('bekApp')
     criticalItemsLists.forEach(function(list) {
       if (list.ismandatory) {
         $scope.mandatoryList = list;
+
+        $scope.mandatoryList.items.forEach(function(item) {
+          var idx = $scope.currentCart.items.indexOf(item);
+
+          if(idx > -1) {
+            item.qtyInCart = $scope.currentCart.items[idx].quantity;
+          }
+        })
       } else if (list.isreminder) {
         $scope.reminderList = list;
+
+        $scope.reminderList.items.forEach(function(item) {
+          var idx = $scope.currentCart.items.indexOf(item);
+
+          if(idx > -1) {
+            item.qtyInCart = $scope.currentCart.items[idx].quantity;
+          }
+        })
       }
     });
 
@@ -123,7 +139,7 @@ angular.module('bekApp')
     setMandatoryAndReminder($scope.currentCart);
 
     function updateRecommendedItems(){
-      if($scope.showRecommendedItems == 'true') {
+      if($scope.showRecommendedItems == true) {
         ProductService.getRecommendedItems($scope.currentCart.items).then(function(resp) {
           $scope.recommendedItems = resp;
         });

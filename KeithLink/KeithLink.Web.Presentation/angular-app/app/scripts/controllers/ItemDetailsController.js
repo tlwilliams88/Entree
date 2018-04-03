@@ -21,7 +21,7 @@ angular.module('bekApp')
 
     $scope.showRecommendedItems = ENV.showRecommendedItems;
 
-    if($scope.showRecommendedItems == 'true') {
+    if($scope.showRecommendedItems == true) {
       ProductService.getRecommendedItems($scope.item.itemnumber).then(function(resp) {
         $scope.recommendedItems = resp;
       });
