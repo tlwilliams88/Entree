@@ -6,12 +6,12 @@
 
   <div class="page-header__orders" ng-if="isOrderEntryCustomer && canCreateOrders">
     <div class="btn-group" dropdown is-open="status.cartisopen" style="font-size: 23px; margin-top: 5px;" ng-class="{ 'negative-margin-left-10' : isMobileApp , 'margin-left-15' : !(isMobileApp || isMobile) }">
-      <button class="badge-parent btn-no-style dropdown-toggle btn-small-mobile-truck" analytics-on analytics-category="Menu-Carts-Desktop" analytics-event="Truck Icon">
+      <button class="badge-parent btn-no-style dropdown-toggle btn-small-mobile-truck" ng-disabled="cartHeaders.length == 0 && changeOrders.length == 0" analytics-on analytics-category="Menu-Carts-Desktop" analytics-event="Truck Icon">
         <span title="Carts" class="icon-truck user-bar-buttons"></span>
         <span ng-if="cartsHeaders != null && cartsHeaders.length > 0" class="badge" style="margin-top: -10px; margin-left: -10px;">{{cartsHeaders.length}}</span>
       </button>
       <ul class="dropdown-menu truck-dropdown">
-        <li class="heading"><h3>Current Carts</h3></li>
+        <li class="heading" ng-if="cartsHeaders && cartsHeaders.length > 0"><h3>Current Carts</h3></li>
         <li class="cart" ng-repeat="cart in cartsHeaders | orderBy:'createddate':true | limitTo: 2">
           <div class="cart-dropdown__truck"><span class="icon-truck large-icon text-light"></span></div>
           <div class="cart-dropdown__info">
@@ -33,7 +33,7 @@
             <a ui-sref="menu.order" class="btn btn-primary">View All Carts</a>
           </div>
         </li>
-        <li class="heading"><h3>Current Change Orders</h3></li>
+        <li class="heading" ng-if="changeOrders && changeOrders.length > 0"><h3>Current Change Orders</h3></li>
         <li class="cart" ng-repeat="changeOrder in changeOrders | orderBy:'createddate':true | limitTo: 2">
           <div class="cart-dropdown__truck"><span class="icon-truck large-icon text-light"></span></div>
           <div class="cart-dropdown__info">

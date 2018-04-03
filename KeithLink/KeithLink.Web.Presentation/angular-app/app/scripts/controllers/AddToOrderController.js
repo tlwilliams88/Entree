@@ -6,34 +6,34 @@ angular.module('bekApp')
     function ($rootScope, $scope, $state, $modal, $q, $stateParams, $filter, $timeout, blockUI, lists, selectedList, selectedCart, Constants,
      CartService, ListService, OrderService, UtilityService, DateService, PricingService, ListPagingModel, LocalStorage, $analytics, toaster, ENV, SessionService, ProductService) {
 
-         $scope.$on('$stateChangeStart', function(event, toState, toParams, fromState, fromParams){
-             var toCart = (toState.name == 'menu.cart.items' || fromState.name == 'menu.cart.items'),
-                 toATOOrFromATO = (toState.name == 'menu.addtoorder.items' || fromState.name == 'menu.addtoorder.items'),
-                 toATOAndFromATO = (toState.name == 'menu.addtoorder.items' && fromState.name == 'menu.addtoorder.items'),
-                 toRegister = (toState.name == 'register'),
-                 selectedCart = ($scope.selectedCart != null);
+      $scope.$on('$stateChangeStart', function(event, toState, toParams, fromState, fromParams){
+          var toCart = (toState.name == 'menu.cart.items' || fromState.name == 'menu.cart.items'),
+              toATOOrFromATO = (toState.name == 'menu.addtoorder.items' || fromState.name == 'menu.addtoorder.items'),
+              toATOAndFromATO = (toState.name == 'menu.addtoorder.items' && fromState.name == 'menu.addtoorder.items'),
+              toRegister = (toState.name == 'register'),
+              selectedCart = ($scope.selectedCart != null);
 
-             if(!toCart &&
-                 !toATOAndFromATO &&
-                 !toRegister &&
-                 !$scope.continueToCart &&
-                 !$scope.orderCanceled &&
-                 toATOOrFromATO &&
-                 selectedCart
-             ){
+          if(!toCart &&
+              !toATOAndFromATO &&
+              !toRegister &&
+              !$scope.continueToCart &&
+              !$scope.orderCanceled &&
+              toATOOrFromATO &&
+              selectedCart
+          ){
 
-                 if(!$scope.tempCartName){
-                   $scope.saveAndRetainQuantity();
-                 } else {
-                   if($scope.combinedItems){
-                     $scope.selectedCart.items = $scope.combinedItems;
-                   }
-                   $scope.renameCart($scope.selectedCart.id, $scope.tempCartName);
-                 }
+              if(!$scope.tempCartName){
+                $scope.saveAndRetainQuantity();
+              } else {
+                if($scope.combinedItems){
+                  $scope.selectedCart.items = $scope.combinedItems;
+                }
+                $scope.renameCart($scope.selectedCart.id, $scope.tempCartName);
+              }
 
-             }
-             guiders.hideAll();
-         });
+          }
+          guiders.hideAll();
+      });
 
     // Tutorial -- Tutorial Ignored 09/25
     // var hideTutorial = LocalStorage.getHideTutorialAddToOrder() || isMobileApp || isMobile,
@@ -429,10 +429,14 @@ angular.module('bekApp')
        blockUI.stop();
     }
 
+    $scope.showRecommendedItems = ENV.showRecommendedItems;
+
     $scope.updateRecommendedItems = function(items) {
-      ProductService.getRecommendedItems(items).then(function(resp) {
-        $scope.recommendedItems = resp;
-      });
+      if($scope.showRecommendedItems == true) {
+        ProductService.getRecommendedItems(items).then(function(resp) {
+          $scope.recommendedItems = resp;
+        });
+      }
     }
 
     function init() {
@@ -778,7 +782,6 @@ angular.module('bekApp')
             $scope.addToOrderForm.$setPristine();
           }
 
-
           var newItemCount = updatedCart.items.length - $scope.origItemCount;
           $scope.origItemCount = updatedCart.items.length;
            processingUpdateCart = false;
@@ -958,8 +961,8 @@ angular.module('bekApp')
 
     $scope.updateCartWithRecommendedItems = function(item) {
       item.extPrice = PricingService.getPriceForItem(item);
-      
-      item.recommended = true;
+
+      item.source = "recommended";
 
       if($filter('filter')($scope.selectedCart.items, {itemnumber: item.itemnumber, recommended: item.recommended}).length > 0) {
         var itemIdx = $scope.selectedCart.items.indexOf(item);
@@ -976,6 +979,9 @@ angular.module('bekApp')
 
     //Function includes support for saving items while filtering and saving cart when changing ship date
     $scope.saveAndRetainQuantity = function(noParentFunction) {
+
+      $scope.updateRecommendedItems($scope.selectedCart.items);
+
       if($scope.selectedList && $scope.selectedList.items){
         $stateParams.listItems = $scope.selectedList.items;
       }

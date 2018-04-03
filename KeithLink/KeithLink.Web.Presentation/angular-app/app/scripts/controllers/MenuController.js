@@ -9,18 +9,35 @@
  */
 
 angular.module('bekApp')
-  .controller('MenuController', ['$scope', '$timeout', '$rootScope', '$modalStack', '$state', '$q', '$log', '$window', '$modal', '$filter', 'ENV', 'branches', 'CustomerService', 'AuthenticationService', 'AccessService', 'UtilityService', 'LocalStorage', 'NotificationService', 'ProductService', 'ListService', 'CartService', 'userProfile', 'ApplicationSettingsService', 'OrderService', 'mandatoryMessages', 'localStorageService', 'CategoryService', 'BranchService',
+  .controller('MenuController', ['$scope', 
+  '$timeout', '$rootScope', '$modalStack', 
+  '$state', '$q', '$log', '$window', 
+  '$modal', '$filter', 'ENV', 'branches', 
+  'CustomerService', 'AuthenticationService', 
+  'AccessService', 'UtilityService', 
+  'LocalStorage', 'NotificationService', 
+  'ProductService', 'ListService', 'CartService', 
+  'userProfile', 'ApplicationSettingsService', 
+  'OrderService', 'mandatoryMessages', 
+  'localStorageService', 'CategoryService', 
+  'BranchService', 'ConfigSettingsService',
     function (
       $scope, $timeout, $rootScope, $modalStack, $state, $q, $log, $window,  // built in angular services
       $modal,   // ui-bootstrap library
       $filter,
       ENV,      // environment config, see configenv.js file which is generated from Grunt
       branches, // state resolve
-      CustomerService, AuthenticationService, AccessService, UtilityService, LocalStorage, NotificationService, ProductService, ListService, CartService, userProfile, ApplicationSettingsService, OrderService, // bek custom services
+      CustomerService, AuthenticationService, 
+      AccessService, UtilityService, 
+      LocalStorage, NotificationService, 
+      ProductService, ListService, 
+      CartService, userProfile, 
+      ApplicationSettingsService, OrderService, // bek custom services
       mandatoryMessages,
       localStorageService,
       CategoryService,
-      BranchService
+      BranchService,
+      ConfigSettingsService
     ) {
 
   $scope.$state = $state;
@@ -126,6 +143,7 @@ angular.module('bekApp')
           LocalStorage.setDefaultSort('');
       }
    });
+
   /**********
   PHONEGAP OFFLINE STORAGE
   **********/

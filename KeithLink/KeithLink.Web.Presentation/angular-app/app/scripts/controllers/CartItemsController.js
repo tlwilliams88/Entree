@@ -22,6 +22,8 @@ angular.module('bekApp')
     // update cartHeaders in MenuController
     $scope.$parent.$parent.cartHeaders = CartService.cartHeaders;
 
+    $scope.showRecommendedItems = ENV.showRecommendedItems;
+
     var watches = [];
     function onQuantityChange(newVal, oldVal) {
       var changedExpression = this.exp; // jshint ignore:line
@@ -94,8 +96,24 @@ angular.module('bekApp')
     criticalItemsLists.forEach(function(list) {
       if (list.ismandatory) {
         $scope.mandatoryList = list;
+
+        $scope.mandatoryList.items.forEach(function(item) {
+          var idx = $scope.currentCart.items.indexOf(item);
+
+          if(idx > -1) {
+            item.qtyInCart = $scope.currentCart.items[idx].quantity;
+          }
+        })
       } else if (list.isreminder) {
         $scope.reminderList = list;
+
+        $scope.reminderList.items.forEach(function(item) {
+          var idx = $scope.currentCart.items.indexOf(item);
+
+          if(idx > -1) {
+            item.qtyInCart = $scope.currentCart.items[idx].quantity;
+          }
+        })
       }
     });
 
@@ -121,9 +139,11 @@ angular.module('bekApp')
     setMandatoryAndReminder($scope.currentCart);
 
     function updateRecommendedItems(){
-      ProductService.getRecommendedItems($scope.currentCart.items).then(function(resp) {
-        $scope.recommendedItems = resp;
-      });
+      if($scope.showRecommendedItems == true) {
+        ProductService.getRecommendedItems($scope.currentCart.items).then(function(resp) {
+          $scope.recommendedItems = resp;
+        });
+      }
     }
 
     $scope.resetSubmitDisableFlag = function(checkForm){
@@ -221,6 +241,7 @@ angular.module('bekApp')
 
    $scope.addItemToCart = function(item) {
     item.quantity = item.newQuantity;
+    item.source = "recommended";
 
     delete item.newQuantity;
 
