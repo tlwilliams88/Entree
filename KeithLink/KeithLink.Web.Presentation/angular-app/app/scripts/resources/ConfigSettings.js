@@ -9,6 +9,11 @@ angular.module('bekApp')
         method: 'PUT'
       },
 
+      getSetting: {
+        url: '/appsetting/featureflag/:setting',
+        method: 'GET'
+      }
+
     });
 
 }]);

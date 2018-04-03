@@ -45,6 +45,30 @@ angular.module('bekApp')
           });
         },
 
+        getRecommendedItems: function(items) {
+
+          var cartItems = [];
+
+          if(Array.isArray(items)) {
+            items.forEach(function(item) {
+              cartItems.push(item.itemnumber);
+            });
+          } else {
+            cartItems.push(items);
+          }
+
+
+          var recommendedItems = [];
+          return $http.post('/catalog/recommended', cartItems).then(function(resp) {
+            resp.data.products.forEach(function(product) {
+              if(product.productimages && product.productimages.length > 0 && (product.caseprice > '0.00' || product.packageprice > '0.00')) {
+                recommendedItems.push(product);
+              }
+            })
+            return recommendedItems;
+          })
+        },
+
         getFacets: function(brands, manufacturers, dietary, itemspecs, temp_zone, parentcategories, subcategories, specialfilters) {
           var facets = [];
 

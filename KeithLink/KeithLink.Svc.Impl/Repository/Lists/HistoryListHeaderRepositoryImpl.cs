@@ -24,7 +24,7 @@ namespace KeithLink.Svc.Impl.Repository.Lists {
             parms.Add(PARMNAME_BRANCH, customerInfo.BranchId);
             parms.Add(PARMNAME_CUSTNUM, customerInfo.CustomerId);
 
-            return ReadOne<HistoryListHeader>(SPNAME_GETONE, parms);
+            return ReadOneSP<HistoryListHeader>(SPNAME_GETONE, parms);
         }
         #endregion
     }

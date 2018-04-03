@@ -7,7 +7,7 @@
   <div class="pull-right margin-right-10 hidden-xs hidden-sm" ng-hide="invalidParams">
     <button class="btn-lg btn btn-danger pull-right-sm hidden-print" ng-click="cancelChanges();">Cancel</button>
     <button class="btn-lg btn btn-primary pull-right-sm hidden-print" ng-click="saveAndRetainQuantity(true)" ng-disabled="addToOrderForm.$invalid">Save</button>
-    <a class="btn-lg btn btn-default pull-right-sm hidden-print" ng-click="addToOrderForm.$setPristine(); saveAndContinue()">Proceed to Checkout</a>
+    <button class="btn-lg btn btn-primary pull-right-sm hidden-print" style="background-color: #04a773;" ng-click="addToOrderForm.$setPristine(); saveAndContinue()">Proceed to Checkout</button>
     <button title="Print" class="btn btn-default btn-icon" ng-click="saveBeforePrint()">
       <span class="icon-printer"></span>
     </button>
@@ -22,11 +22,11 @@
 
 <div loading-spinner="invalidParams"></div>
 
-<div class="page-content" ng-hide="invalidParams">
+<div ng-hide="invalidParams">
 
-  <a class="btn-lg btn btn-default hidden-md hidden-lg hidden-print" ng-click="addToOrderForm.$setPristine(); saveAndContinue()">Proceed to Checkout</a>
+  <button class="btn-lg btn btn-primary col-xs-12 hidden-md hidden-lg hidden-print" style="margin-left: -7px; background-color: #04a773;" ng-click="addToOrderForm.$setPristine(); saveAndContinue()">Proceed to Checkout</button>
 
-  <div ng-show="selectedList.itemCount > pagingPageSize">
+  <div ng-show="selectedList.itemCount > pagingPageSize  && selectedList.active == true">
    <pagination
     total-items="selectedList.itemCount"
     ng-model="currentPage"
@@ -50,11 +50,11 @@
     </div>
   </div>
    <div class="row">
-    <div class="col-xs-5" >
-      <input id="useParlevel" name="useParlevel" type="checkbox" ng-model="useParlevel" ng-click="removeRowHighlightParLevel()">
+    <div class="col-xs-5" ng-if="selectedList.active == true" style="margin-top: 7px;" >
+      <input id="useParlevel" name="useParlevel" type="checkbox" ng-model="useParlevel" ng-change="removeRowHighlightParLevel();">
       <label for="useParlevel">Use PAR Level</label>
     </div>
-    <div class="col-xs-7 text-right" style="float:right;" >
+    <div class="col-xs-7 text-right" style="float:right; margin-top: 7px;" >
      Showing {{rangeStart}} - {{rangeEnd}} of  {{selectedList.itemCount}} Items
     </div>
 
@@ -62,7 +62,7 @@
 
   <div class="row hidden-print">
     <div class="col-xs-12">
-      <div class="row select-nav-bar no-margin">
+      <div class="row select-nav-bar no-margin" style="border-bottom: 1px solid #c3bc9c; margin-bottom: 10px;">
         <div class="no-border-right-sm info-box col-md-3 col-sm-6 col-xs-12 select-nav btn-group dropdown-toggle hand" dropdown is-open="showLists" ng-disabled="lists.length === 1">
           <span class="nav-description text-light">Select a List</span>
           <span class="nav-title">{{selectedList.name}}</span>
@@ -135,21 +135,6 @@
     <div class="col-xs-2 text-right">{{subtotal | currency}}</div>
   </div>
 
-  <form name="orderSearchForm" class="hidden-print padding-right-15">
-    <div class="input-group input-group-lg">
-      <input
-        id="searchBar"
-        ng-model="orderSearchTerm"
-        type="text"
-        class="form-control mousetrap"
-        placeholder="Search current list by keyword, item # or label" />
-      <span class="input-group-btn">
-        <button type="submit" ng-disabled="!orderSearchTerm || orderSearchTerm.length === 0" ng-click="filterItems(orderSearchTerm)" class="btn btn-default"><span class="icon-search"></span></button>
-        <button type="button" ng-disabled="!orderSearchTerm || orderSearchTerm.length === 0" ng-click="clearFilter()" class="btn btn-default"><span class="glyphicon glyphicon-remove"></span></button>
-      </span>
-    </div>
-  </form>
-
 
   <form
     novalidate
@@ -157,7 +142,43 @@
     class="style-validation-errors padding-right-15"
     autocomplete="off">
     <div class="table-addtoorder">
-      <table
+      <tabset class="tabset tab-border pull-left" style="width: 100%; padding-bottom: 10px;">
+      <tab class="text-center">
+      <tab-heading><span class="icon-text" style="padding-right: 5px; color: #3E9DCD"></span>{{selectedList.name}}</tab-heading>
+        <form name="orderSearchForm" class="hidden-print">
+            <div class="input-group input-group-lg">
+              <input               
+                id="searchBar"
+                ng-model="orderSearchTerm"
+                type="text"
+                class="form-control mousetrap"
+                placeholder="Search current list by keyword, item # or label">
+              <span class="input-group-btn" style="background-color: #F3F1EB; border-radius: 4px;">
+                <button 
+                    class="btn-default btn"
+                    ng-disabled="!orderSearchTerm || orderSearchTerm.length === 0"
+                    ng-click="filterItems(orderSearchTerm)"
+                    type="submit">
+                    <span 
+                      style="font-size: 16px;"
+                      class="icon-search">
+                    </span>
+                </button>
+                  <button 
+                    class="btn-default btn"
+                    ng-disabled="!orderSearchTerm || orderSearchTerm.length === 0"
+                    ng-click="clearFilter()"
+                    type="submit">
+                    <span
+                      style="font-size: 18px;"
+                      class="icon-cross">
+                    </span>
+                </button>
+              </span>
+            </div>
+            <div style="margin-left: 60px;" ng-if="universalSearchForm.$error.searchInputInvalid"><p class="text-red">Invalid Input. No special characters allowed in search terms.</p></div>
+        </form>
+        <table
         class="table table-border"
         navigate-table="lists">
         <thead>
@@ -253,10 +274,10 @@
             </td>
             <td class="hidden-mobile-visible-print" item-icons>
             </td>
-            <td ng-if="useParlevel" class="hidden-mobile">
+            <td ng-if="useParlevel" class="hidden-mobile parLevelField">
               {{::item.parlevel}}
             </td>
-            <td ng-if="useParlevel" class="input-col text-center hidden-mobile" style="max-width:120px;" >
+            <td ng-if="useParlevel" class="input-col text-center hidden-mobile parlevelInput" style="max-width:120px;" >
               <ng-form name="parlevelForm" class="counter-container" style="white-space:nowrap;" ng-if="item.canOrder && item.isvalid">
               <!--  ON HAND AMOUNT -->
               <button type="button" class="btn btn-warning icon-minus3 hidden-lg"  ng-click="item.onhand = item.onhand -1; onItemOnHandAmountChanged(item)"></button>
@@ -425,7 +446,7 @@
             </td>
           </tr>
         </tbody>
-        <tfoot ng-show="(selectedList.items.length === 0 || !selectedList.items) && selectedList">
+        <tfoot ng-show="selectedList.active && (selectedList.items.length === 0 || !selectedList.items)">
           <tr>
             <td colspan="17">
               There are no products to display.
@@ -433,9 +454,367 @@
           </tr>
         </tfoot>
       </table>
-    </div>
+    </tab>
+    <tab class="text-center">
+      <tab-heading><span class="icon-cart" style="padding-right: 5px; color: #3E9DCD"></span>Other Cart Items</tab-heading>
+      <table
+      class="table table-striped-rows table-border"
+      navigate-table="lists">
+      <thead>
+        <tr>
+          <th>Item #</th>
+          <th class="hidden-mobile-visible-print">Notes</th>
+          <th class="hidden-mobile-visible-print">Pack/Size</th>
+          <th class="hidden-mobile-visible-print">Brand</th>
+          <th>Name</th>
+          <th>Qty</th>
+          <th class="hidden-mobile-visible-print">Each</th>
+          <th class="hidden-mobile-visible-print">Price</th>
+          <th class="hidden-mobile-visible-print">Ext Price</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody ng-if="!item.recommended" ng-repeat="item in filteredCartItems |  orderBy:'createddate':false">
+        <tr ng-class="{ odd : $odd, even: $even }">
+          <td>
+            <a ng-if="item.isvalid && item.catalog_id && item.catalog_id.indexOf('unfi') == 0" ui-sref="menu.catalog.products.details({ itemNumber : item.itemnumber, catalogType : 'UNFI' })">{{::item.itemnumber}}</a>
+            <a ng-if="item.isvalid && (!item.catalog_id || item.catalog_id.indexOf('unfi') != 0)" ui-sref="menu.catalog.products.details({ itemNumber : item.itemnumber })">{{::item.itemnumber}}</a>
+            <span ng-if="!item.isvalid" tooltip="Contact your DSR for more info.">{{::item.itemnumber}}</span>
+            <a ng-if="$last || clearedWhilePristine" ng-init="postPageLoadInit();"></a>
+          </td>
+          <td class="hidden-mobile-visible-print notes-col">
+            {{::item.notes}}
+          </td>
+          <td class="hidden-mobile-visible-print">{{item.packsize}}</td>
+          <td class="hidden-mobile-visible-print">{{item.brand}}</td>
+          <td>
+            <span ng-if="item.isvalid">{{::item.name}}</span>
+            <span ng-if="!item.isvalid">Invalid item</span>
+          </td>
+          <td class="input-col nowrap">
+            <ng-form class="hidden-print" name="quantityForm">
+              <div counter ng-model="item.quantity" class="mousetrap" min="0" length="5"></div>
+            </ng-form>
+          </td>
+          <td class="input-col hidden-mobile-visible-print">
+            <ng-form name="eachForm" ng-if="::item.hasPackagePrice">
+              <input type="checkbox" ng-checked = "!item.hasCasePrice || item.each" ng-disabled = "!item.hasCasePrice" class="mousetrap" ng-model="item.each" id="each" name="each" />
+              <label for="each"></label>
+            </ng-form>
+          </td>
+          <td ng-if="::!isChangeOrder" class="hidden-mobile-visible-print" >
+            {{item.each ? item.packageprice : item.caseprice | currency}}
+            <span class="text-small" tooltip="Catch weight pricing" ng-if="::item.catchweight">LB</span>
+          </td>
+          <td ng-if="::isChangeOrder" class="hidden-mobile-visible-print">
+            {{item.price | currency}}
+            <span class="text-small" tooltip="Catch weight pricing" ng-if="::item.catchweight">LB</span>
+          </td>
+          <td class="hidden-mobile-visible-print">
+            {{item.extPrice | currency}}
+          </td>
+          <td class="large-icon icon-col">
+            <a class="hidden-print visible-xs-inline visible-sm-inline" ng-click="showDetails = !showDetails;"><span class="text-light icon-ellipsis"></span></a>
+          </td>
+        </tr>
+        <tr ng-if="showDetails" ng-class="{ odd : $odd, even: $even }" class="mobile-details-row hidden-md hidden-lg">
+          <td colspan="11">
+            <table>
+              <colgroup>
+                <col width="25%" />
+                <col width="75%" />
+              </colgroup>
+              <tr>
+                <td>Notes</td>
+                <td class="notes-col">{{::item.notes}}</td>
+              </tr>
+              <tr>
+                <td>Pack/Size</td>
+                <td>{{::item.packsize}}</td>
+              </tr>
+              <tr>
+                <td>Brand</td>
+                <td>{{::item.brand}}</td>
+              </tr>
+              <tr ng-if="::item.hasPackagePrice">
+                <td>Each</td>
+                <td>
+                  <input type="checkbox" value="" ng-checked = "!item.hasCasePrice || item.each" ng-disabled = "!item.hasCasePrice" class="mousetrap" name="each" id="each" ng-model="item.each">
+                </td>
+              </tr>
+              <tr>
+                <td>Price</td>
+                <td ng-if="::!isChangeOrder">
+                  {{item.each ? item.packageprice : item.caseprice | currency}}
+                  <span class="text-small" tooltip="Catch weight pricing" ng-if="::item.catchweight">LB</span>
+                </td>
+                <td ng-if="::isChangeOrder">
+                  {{item.price | currency}}
+                  <span class="text-small" tooltip="Catch weight pricing" ng-if="::item.catchweight">LB</span>
+                </td>
+              </tr>
+              <tr>
+                <td>Ext Price</td>
+                <td>{{item.extPrice | currency}}</td>
+              </tr>
+            </table>
+          </td>
+        </tr>
+      </tbody>
+      <tfoot ng-show="cartItems.active && filteredCartItems.length == 0">
+          <tr>
+            <td colspan="17">
+              There are no products to display.
+            </td>
+          </tr>
+        </tfoot>
+    </table>
+  </tab>
+  <tab
+      ng-if="showRecommendedItems == true"
+      class="text-center"  
+      ng-click="updateRecommendedItems(selectedCart.items)" 
+      analytics-on 
+      analytics-category="Recommended-Item-Add-To-Order" 
+      analytics-event="Open Recommended Items Tab">
+        <tab-heading><span class="icon-thumbsup" style="padding-right: 5px; color: #3E9DCD"></span>Recommended Items<span class="icon-help" style="padding-left: 5px; padding-top: 2px;" tooltip="Recommended Items are based on what is currently in your cart."></span></tab-heading>
+        <table
+        class="table table-border"
+        navigate-table="lists">
+        <thead>
+          <tr fsm-sticky-header scroll-body="'.table-addtoorder'" scroll-stop="0" current-page="currentPage">
+            <th class="sort-col-header">
+             Item
+              <span># <span></span></span>
+            </th>
+            <th class="hidden-mobile-visible-print sort-col-header">
+              <span>Category <span></span></span>
+            </th>
+            <th class="hidden-mobile-visible-print sort-col-header notes-col">
+              <span>Notes <span></span></span>
+            </th>
+            <th  class="sort-col-header hidden-mobile-visible-print">
+              <span>Label <span></span></span>
+            </th>
+            <th class="hidden-mobile-visible-print">
+              Pack/Size
+            </th>
+            <th class="hidden-mobile-visible-print sort-col-header">
+              <span>Brand <span></span></span>
+            </th>
+            <th class="sort-col-header">
+              <span>Name<span></span></span>
+            </th>
+            <th  class="hidden-mobile-visible-print"></th>
+            <th>
+             Qty
+            </th>
+            <th class="hidden-mobile-visible-print">
+              Each
+            </th>
+            <th class="hidden-mobile-visible-print">
+              Price
+            </th>
+            <th style="text-align:left;" class="hidden-mobile-visible-print">
+            Average Weekly </br> Usage
+            </th>
+            <th class="hidden-mobile-visible-print">
+              Ext Price
+            </th>
+            <th>
+            </th>
+          </tr>
+        </thead>
 
-  <div ng-show="selectedList.itemCount > pagingPageSize">
+        <tbody ng-repeat="item in recommendedItems | limitTo: 10" ng-class="{ oddrow : $odd }">
+
+          <tr id="rowForFocus">
+            <td>
+              <a ng-if="item.isvalid && item.catalog_id && item.catalog_id.indexOf('unfi') == 0" ui-sref="menu.catalog.products.details({ itemNumber : item.itemnumber, catalogType: 'UNFI' })">{{::item.itemnumber}}</a>
+              <a ng-if="item.isvalid && (!item.catalog_id || item.catalog_id.indexOf('unfi') != 0)" ui-sref="menu.catalog.products.details({ itemNumber : item.itemnumber })">{{::item.itemnumber}}</a>
+              <span ng-if="!item.isvalid" tooltip="Contact your DSR for more info.">{{::item.itemnumber}}</span>
+            </td>
+            <td class="hidden-mobile-visible-print">
+              {{::item.class}}
+            </td>
+            <td class="hidden-mobile-visible-print notes-col">
+                {{::item.notes}}
+            </td>
+            <td class="hidden-mobile-visible-print label-col">
+              {{::item.label}}
+            </td>
+            <td class="hidden-mobile-visible-print">
+              {{::item.packsize}}
+            </td>
+            <td class="hidden-mobile-visible-print">
+              {{::item.brand_extended_description}}
+            </td>
+            <td>
+             <span ng-if="item.isvalid">{{::item.name}}</span>
+             <span ng-if="!item.isvalid">Invalid item</span>
+            </td>
+            <td class="hidden-mobile-visible-print" item-icons>
+            </td>
+            <td class="input-col nowrap">
+              <!--  QUANTITY -->
+              <span class="hidden-mobile visible-print">{{::item.quantity}}</span>
+              <ng-form class="hidden-print" name="quantityForm" ng-if="item.isvalid">
+                <div counter ng-hide="!item.canOrder"  ng-if="!useParlevel && item.canOrder" ng-model="item.quantity" function="updateCartWithRecommendedItems(item)" ng-focus="oldVal = item.quantity" min="0" length="5"></div>
+                <span  class="counter-container"  >
+                 <button type="button" class="btn btn-warning icon-minus3 hidden-lg show-mobile" ng-disabled = "item.quantity === 0" ng-if="item.canOrder"  ng-click="item.quantity = item.quantity -1;"></button>
+                  <input
+                  type="tel"
+                  focus-me="$first"
+                  ng-change="updateCartWithRecommendedItems(item); confirmQuantity('quantity', item, item.quantity);"
+                  class="input-number text-right mousetrap"
+                  ng-class="{ tabstop: !useParlevel }"
+                  integer
+                  ng-model="item.quantity"
+                  row-highlight
+                  />
+              <button type="button" class="btn btn-warning icon-plus3 hidden-lg show-mobile" ng-if="useParlevel && item.canOrder" ng-click="item.quantity = item.quantity + 1;"></button>
+              </span>
+              </ng-form>
+            </td>
+            <td class="input-col hidden-mobile-visible-print">
+              <ng-form name="eachForm" ng-if="item.hasPackagePrice && item.isvalid">
+                <input type="checkbox" class="mousetrap" ng-checked = "!item.hasCasePrice || item.each" ng-disabled = "!item.hasCasePrice" ng-model="item.each" id="each" name="each"/>
+                <label for="each"></label>
+              </ng-form>
+            </td>
+            <td class="hidden-mobile-visible-print">
+              <div>
+                {{item.each ? item.packageprice : item.caseprice | currency}}
+                <span class="text-small" tooltip="Catch weight pricing" ng-if="item.catchweight">LB</span>
+              </div>
+            </td>
+            <td  class="hidden-mobile-visible-print text-left" >
+            <div style="max-width:60px;" ng-if="item.itemstatistics.packageaverage || item.itemstatistics.caseaverage ">
+            <a>
+              <div ng-if="item.each && item.itemstatistics.packageaverage"
+                  tooltip="View order history for this item."
+                  ng-click="openItemUsageSummaryModal(item)">
+                    {{item.itemstatistics.packageaverage == 1 ? item.itemstatistics.packageaverage + ' Pack' : item.itemstatistics.packageaverage + ' Packs'}}
+              </div>
+            </a>
+            <a>
+              <div ng-if="!item.each && item.itemstatistics.caseaverage"
+                  tooltip="View order history for this item."
+                  ng-click="openItemUsageSummaryModal(item)">
+                    {{item.itemstatistics.caseaverage == 1 ? item.itemstatistics.caseaverage + ' Case' : item.itemstatistics.caseaverage + ' Cases'}}
+              </div>
+            </a>
+          </div>
+          <div ng-click="openItemUsageSummaryModal(item)" ng-if="(!item.itemstatistics.packageaverage && item.each) || (!item.itemstatistics.caseaverage && !item.each)">
+            None
+          </div>
+           </td>
+            <td class="hidden-mobile-visible-print">
+              <div ng-if="item.canOrder">
+                {{item.extPrice | currency}}
+              </div>
+            </td>
+            <td class="large-icon icon-col">
+              <a class="visible-xs visible-sm"><span class="hidden-print text-light icon-ellipsis" ng-click="item.showDetails = !item.showDetails;"></span></a>
+            </td>
+          </tr>
+          <tr ng-if="item.showDetails" ng-class="{ odd : $odd, even: $even }" class="mobile-details-row hidden-md hidden-lg">
+            <td colspan="7">
+              <table>
+                <colgroup>
+                  <col width="25%" />
+                  <col width="75%" />
+                </colgroup>
+                <tr>
+                  <td>Category</td>
+                  <td>{{::item.class}}</td>
+                </tr>
+                <tr>
+                  <td>Notes</td>
+                  <td class="notes-col">{{::item.notes}}</td>
+                </tr>
+                <tr>
+                  <td>Label</td>
+                  <td class = "label-col">{{::item.label}}</td>
+                </tr>
+                <tr>
+                  <td>Pack/Size</td>
+                  <td>{{::item.packsize}}</td>
+                </tr>
+                <tr>
+                  <td>Brand</td>
+                  <td>{{::item.brand}}</td>
+                </tr>
+                <tr ng-if="selectedList.is_contract_list">
+                  <td>Contract Category</td>
+                  <td>{{::item.category}}</td>
+                </tr>
+                <tr>
+                  <td item-icons></td>
+                </tr>
+                <tr ng-show="useParlevel">
+                  <td>PAR Level</td>
+                  <td>{{::item.parlevel}}</td>
+                </tr>
+                <tr ng-show="useParlevel && item.canOrder && item.isvalid">
+                  <td>On Hand Amount</td>
+                  <td class="input-col">
+                    <ng-form name="parlevelForm_mobile">
+                      <input
+                        type="text"
+                        class="input-number text-right mousetrap"
+                        numeric-validation
+                        ng-model="item.onhand"
+                        ng-change="onItemOnHandAmountChanged(item)">
+                    </ng-form>
+                  </td>
+                </tr>
+                <tr ng-show="item.hasPackagePrice && item.isvalid">
+                  <td>Each</td>
+                  <td>
+                    <ng-form name="eachForm_mobile">
+                      <input type="checkbox" ng-model="item.each" ng-checked = "!item.hasCasePrice || item.each" class="mousetrap" ng-disabled="!item.hasCasePrice" id="each" name="each" />
+                    </ng-form>
+                  </td>
+                </tr>
+                <tr ng-show="item.canOrder">
+                  <td>Price</td>
+                  <td>
+                    {{item.each ? item.packageprice : item.caseprice | currency}}
+                    <span class="text-small" tooltip="Catch weight pricing" ng-if="item.catchweight">LB</span>
+                  </td>
+                </tr>
+                <tr ng-show="item.canOrder">
+                  <td>Average Weekly </br> Usage</td>
+                  <td  ng-click="openItemUsageSummaryModal(item)">
+                    <div ng-if="(item.itemstatistics.packageaverage !== 0 || item.itemstatistics.caseaverage !== 0)">
+                      <a><div ng-show="item.each && item.itemstatistics.packageaverage" tooltip="View order history for this item." class="pull-left" >{{item.itemstatistics.packageaverage}} Packs</div></a>
+                      <a><div ng-show="!item.each && item.itemstatistics.caseaverage" tooltip="View order history for this item." class="pull-left">{{item.itemstatistics.caseaverage}} Cases</div></a>
+                  </div>
+                  <div ng-show="(!item.itemstatistics.packageaverage && item.each) || (!item.itemstatistics.caseaverage && !item.each)">None</div>
+                </td>
+                </tr>
+                <tr ng-show="item.canOrder">
+                  <td>Ext Price</td>
+                  <td>{{item.extPrice | currency}}</td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+        </tbody>
+        <tfoot ng-show="recommendedList.active && recommendedItems.length == 0">
+            <tr>
+              <td colspan="17">
+                There are no recommended items to display.
+              </td>
+            </tr>
+          </tfoot>
+      </table>
+    </tab>
+</tabset>
+</div>
+
+  <div ng-show="selectedList.itemCount > pagingPageSize && selectedList.active == true">
    <pagination
     total-items="selectedList.itemCount"
     ng-model="currentPage"
@@ -447,119 +826,6 @@
     class="pagination">
    </pagination>
   </div>
-
-  <h3>Other Cart Items</h3>
-  <table
-    class="table table-striped-rows table-border"
-    navigate-table="lists">
-    <thead>
-      <tr>
-        <th>Item #</th>
-        <th class="hidden-mobile-visible-print">Notes</th>
-        <th class="hidden-mobile-visible-print">Pack/Size</th>
-        <th class="hidden-mobile-visible-print">Brand</th>
-        <th>Name</th>
-        <th>Qty</th>
-        <th class="hidden-mobile-visible-print">Each</th>
-        <th class="hidden-mobile-visible-print">Price</th>
-        <th class="hidden-mobile-visible-print">Ext Price</th>
-        <th></th>
-      </tr>
-    </thead>
-    <tbody ng-repeat="item in filteredCartItems = (selectedCart.items | filter:{isShown:'!true'} |  orderBy:'createddate':false)">
-      <tr ng-class="{ odd : $odd, even: $even }">
-        <td>
-          <a ng-if="item.isvalid && item.catalog_id && item.catalog_id.indexOf('unfi') == 0" ui-sref="menu.catalog.products.details({ itemNumber : item.itemnumber, catalogType : 'UNFI' })">{{::item.itemnumber}}</a>
-          <a ng-if="item.isvalid && (!item.catalog_id || item.catalog_id.indexOf('unfi') != 0)" ui-sref="menu.catalog.products.details({ itemNumber : item.itemnumber })">{{::item.itemnumber}}</a>
-          <span ng-if="!item.isvalid" tooltip="Contact your DSR for more info.">{{::item.itemnumber}}</span>
-          <a ng-if="$last || clearedWhilePristine" ng-init="postPageLoadInit();"></a>
-        </td>
-        <td class="hidden-mobile-visible-print notes-col">
-          {{::item.notes}}
-        </td>
-        <td class="hidden-mobile-visible-print">{{item.packsize}}</td>
-        <td class="hidden-mobile-visible-print">{{item.brand}}</td>
-        <td>
-          <span ng-if="item.isvalid">{{::item.name}}</span>
-          <span ng-if="!item.isvalid">Invalid item</span>
-        </td>
-        <td class="input-col nowrap">
-          <ng-form class="hidden-print" name="quantityForm">
-            <div counter ng-model="item.quantity" class="mousetrap" min="0" length="5"></div>
-          </ng-form>
-        </td>
-        <td class="input-col hidden-mobile-visible-print">
-          <ng-form name="eachForm" ng-if="::item.hasPackagePrice">
-            <input type="checkbox" ng-checked = "!item.hasCasePrice || item.each" ng-disabled = "!item.hasCasePrice" class="mousetrap" ng-model="item.each" id="each" name="each" />
-            <label for="each"></label>
-          </ng-form>
-        </td>
-        <td ng-if="::!isChangeOrder" class="hidden-mobile-visible-print" >
-          {{item.each ? item.packageprice : item.caseprice | currency}}
-          <span class="text-small" tooltip="Catch weight pricing" ng-if="::item.catchweight">LB</span>
-        </td>
-        <td ng-if="::isChangeOrder" class="hidden-mobile-visible-print">
-          {{item.price | currency}}
-          <span class="text-small" tooltip="Catch weight pricing" ng-if="::item.catchweight">LB</span>
-        </td>
-        <td class="hidden-mobile-visible-print">
-          {{item.extPrice | currency}}
-        </td>
-        <td class="large-icon icon-col">
-          <a class="hidden-print visible-xs-inline visible-sm-inline" ng-click="showDetails = !showDetails;"><span class="text-light icon-ellipsis"></span></a>
-        </td>
-      </tr>
-      <tr ng-if="showDetails" ng-class="{ odd : $odd, even: $even }" class="mobile-details-row hidden-md hidden-lg">
-        <td colspan="11">
-          <table>
-            <colgroup>
-              <col width="25%" />
-              <col width="75%" />
-            </colgroup>
-            <tr>
-              <td>Notes</td>
-              <td class="notes-col">{{::item.notes}}</td>
-            </tr>
-            <tr>
-              <td>Pack/Size</td>
-              <td>{{::item.packsize}}</td>
-            </tr>
-            <tr>
-              <td>Brand</td>
-              <td>{{::item.brand}}</td>
-            </tr>
-            <tr ng-if="::item.hasPackagePrice">
-              <td>Each</td>
-              <td>
-                <input type="checkbox" value="" ng-checked = "!item.hasCasePrice || item.each" ng-disabled = "!item.hasCasePrice" class="mousetrap" name="each" id="each" ng-model="item.each">
-              </td>
-            </tr>
-            <tr>
-              <td>Price</td>
-              <td ng-if="::!isChangeOrder">
-                {{item.each ? item.packageprice : item.caseprice | currency}}
-                <span class="text-small" tooltip="Catch weight pricing" ng-if="::item.catchweight">LB</span>
-              </td>
-              <td ng-if="::isChangeOrder">
-                {{item.price | currency}}
-                <span class="text-small" tooltip="Catch weight pricing" ng-if="::item.catchweight">LB</span>
-              </td>
-            </tr>
-            <tr>
-              <td>Ext Price</td>
-              <td>{{item.extPrice | currency}}</td>
-            </tr>
-          </table>
-        </td>
-      </tr>
-    </tbody>
-    <tfoot ng-if="filteredCartItems.length === 0 || !filteredCartItems">
-        <tr>
-          <td colspan="11">
-            There are no products to display.
-          </td>
-        </tr>
-      </tfoot>
-  </table>
+  
   </form>
 </div>

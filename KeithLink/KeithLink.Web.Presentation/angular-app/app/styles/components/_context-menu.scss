@@ -19,7 +19,6 @@
   z-index: 3;
   font-family: 'Open Sans', sans-serif;
   position: absolute;
-  margin: -120px 0 0 0;
 
   &.open {
     display: block;
@@ -73,10 +72,6 @@
 
 .context-menu__in-list {
  position: relative;   
-  .context-menu {    
-    right: 80%;    
-    margin-top: -10px;   
-  }
   .dropdown-menu {
     left: -250px;
       .btn{

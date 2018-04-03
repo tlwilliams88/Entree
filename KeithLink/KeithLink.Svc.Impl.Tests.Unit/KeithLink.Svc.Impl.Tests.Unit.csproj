@@ -109,7 +109,6 @@
     <Compile Include="Logic\Lists\NotesListLogicTests.cs" />
     <Compile Include="Logic\Lists\RecentlyOrderedListLogicTests.cs" />
     <Compile Include="Logic\Lists\RecentlyViewedListLogicTests.cs" />
-    <Compile Include="Logic\Lists\RecommendedItemsListLogicTests.cs" />
     <Compile Include="Logic\Lists\ReminderItemsListLogicTests.cs" />
     <Compile Include="Logic\OnlinePayments\OnlinePaymentLogicTests.cs" />
     <Compile Include="Logic\Orders\OrderLogicTests.cs" />

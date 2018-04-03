@@ -23,12 +23,17 @@ using KeithLink.Svc.Core.Extensions;
 // Core
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+
+using KeithLink.Common.Core.Interfaces.Logging;
 using KeithLink.Svc.Impl.Helpers;
 using KeithLink.Svc.Core.Enumerations.List;
+using KeithLink.Svc.Core.Interface.Customers;
 using KeithLink.Svc.Core.Interface.Profile;
+using KeithLink.Svc.Core.Models.Customers;
 using KeithLink.Svc.Core.Models.Customers.EF;
 
 namespace KeithLink.Svc.Impl.Service.SiteCatalog
@@ -45,6 +50,8 @@ namespace KeithLink.Svc.Impl.Service.SiteCatalog
         private readonly IHistoryListLogic _historyLogic;
         private readonly IItemHistoryRepository _itemHistoryRepo;
         private readonly INotesListLogic _notesLogic;
+        private readonly IRecommendedItemsRepository _recommendedItemsRepository;
+        private readonly IEventLogRepository _log;
 
         protected string CACHE_GROUPNAME { get { return "Catalog"; } }
         protected string CACHE_NAME { get { return "Catalog"; } }
@@ -56,7 +63,7 @@ namespace KeithLink.Svc.Impl.Service.SiteCatalog
                                       , ICatalogRepository catalogRepository, IPriceLogic priceLogic
                                       , IListRepository listRepo, IFavoritesListLogic favoritesLogic
                                       , IHistoryListLogic historyLogic, INotesListLogic notesLogic
-                                      , IItemHistoryRepository itemHistoryRepo)
+                                      , IItemHistoryRepository itemHistoryRepo, IRecommendedItemsRepository recommendedItemsRepository, IEventLogRepository logRepo)
         {
             _catalogCacheRepository = catalogCacheRepository;
             _catalogLogic = catalogLogic;
@@ -67,6 +74,8 @@ namespace KeithLink.Svc.Impl.Service.SiteCatalog
             _historyLogic = historyLogic;
             _itemHistoryRepo = itemHistoryRepo;
             _notesLogic = notesLogic;
+            _recommendedItemsRepository = recommendedItemsRepository;
+            _log = logRepo;
         }
         #endregion
 
@@ -185,6 +194,18 @@ namespace KeithLink.Svc.Impl.Service.SiteCatalog
 
         #endregion
 
+        #region recommended items
+        public ProductsReturn GetRecommendedItemsForCart(UserSelectedContext catalogInfo, List<string> cartItems, UserProfile profile) {
+            List<RecommendedItemsModel> recommendedItems = _recommendedItemsRepository.GetRecommendedItemsForCustomer(catalogInfo.CustomerId, catalogInfo.BranchId, cartItems, 50);
+            ProductsReturn products = _catalogRepository.GetProductsByIds(catalogInfo.BranchId, recommendedItems.Select(x => x.RecommendedItem).ToList());
+
+            AddPricingInfo(products, catalogInfo);
+            GetAdditionalProductInfo(profile, products, catalogInfo);
+
+            return products;
+        }
+        #endregion
+
         #region by house products
         public ProductsReturn GetHouseProductsByBranch(UserSelectedContext catalogInfo, 
                                                        string brandControlLabel, 
@@ -296,7 +317,8 @@ namespace KeithLink.Svc.Impl.Service.SiteCatalog
             if (prods.Products.Count > 0 && _catalogLogic.IsSpecialtyCatalog(null, prods.Products[0].CatalogId))
             {
                 string source = _catalogLogic.GetCatalogTypeFromCatalogId(prods.Products[0].CatalogId);
-                pricingInfo = _priceLogic.GetNonBekItemPrices("fdf", context.CustomerId, source, DateTime.Now.AddDays(1), prods.Products);
+                // we use FDF as the default here for external catalog pricing
+                pricingInfo = _priceLogic.GetNonBekItemPrices(Constants.BRANCH_FDF, context.CustomerId, source, DateTime.Now.AddDays(1), prods.Products);
             }
             else
             {
@@ -306,7 +328,7 @@ namespace KeithLink.Svc.Impl.Service.SiteCatalog
             return pricingInfo;
         }
 
-        public void AddPricingInfo(ProductsReturn prods, UserSelectedContext context, SearchInputModel searchModel)
+        public void AddPricingInfo(ProductsReturn prods, UserSelectedContext context, SearchInputModel searchModel = null)
         {
             if (context == null || String.IsNullOrEmpty(context.CustomerId))
                 return;
@@ -315,7 +337,9 @@ namespace KeithLink.Svc.Impl.Service.SiteCatalog
 
             AddPricingInfoToProducts(prods, pricingInfo);
 
-            AddSortForPricingWhenApplicable(prods, searchModel);
+            if (searchModel != null) {
+                AddSortForPricingWhenApplicable(prods, searchModel);
+            }
         }
 
         private void AddPricingInfoToProducts(ProductsReturn prods, PriceReturn pricingInfo)

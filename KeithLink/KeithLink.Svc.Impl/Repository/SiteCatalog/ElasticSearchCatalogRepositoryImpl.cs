@@ -1449,6 +1449,7 @@ namespace KeithLink.Svc.Impl.Repository.SiteCatalog
             p.MarketingManufacturer = oProd._source.marketing_manufacturer;
             p.MarketingName = oProd._source.marketing_name;
             p.Status1 = oProd._source.status1;
+            p.PriceListCode = oProd._source.pricelistcode;
         }
 
         private void SetWorkingCatalog(string catalogId)

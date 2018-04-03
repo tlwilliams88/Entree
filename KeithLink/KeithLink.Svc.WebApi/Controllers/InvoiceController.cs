@@ -130,7 +130,7 @@ namespace KeithLink.Svc.WebApi.Controllers {
         }
 
         /// <summary>
-        /// Read a paged list of invoices
+        /// ReadSP a paged list of invoices
         /// </summary>
         /// <param name="paging">Paging options</param>
         /// <param name="forAllCustomers">Invoices for all customers?</param>

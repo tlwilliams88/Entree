@@ -36,7 +36,7 @@ namespace KeithLink.Svc.Impl.Repository.Lists
 
         #region methods
         public InventoryValuationListHeader GetInventoryValuationListHeader(long id) {
-            return ReadOne<InventoryValuationListHeader>(SPNAME_GETONE, PARMNAME_ID, id);
+            return ReadOneSP<InventoryValuationListHeader>(SPNAME_GETONE, PARMNAME_ID, id);
         }
 
         public List<InventoryValuationListHeader> GetInventoryValuationListHeaders(UserSelectedContext catalogInfo) {
@@ -44,7 +44,7 @@ namespace KeithLink.Svc.Impl.Repository.Lists
             parms.Add(PARMNAME_BRANCH, catalogInfo.BranchId);
             parms.Add(PARMNAME_CUSTNUM, catalogInfo.CustomerId);
 
-            return Read<InventoryValuationListHeader>(SPNAME_GETALL, parms);
+            return ReadSP<InventoryValuationListHeader>(SPNAME_GETALL, parms);
         }
 
         public long SaveInventoryValuationListHeader(InventoryValuationListHeader model) {
@@ -56,7 +56,7 @@ namespace KeithLink.Svc.Impl.Repository.Lists
             parms.Add(PARMNAME_ACTIVE, model.Active);
             parms.Add(PARMNAME_RETVAL, 0, dbType: DbType.Int64, direction: ParameterDirection.Output);
 
-            ExecuteCommand(SPNAME_SAVE, parms);
+            ExecuteSPCommand(SPNAME_SAVE, parms);
 
             return parms.Get<long>(PARMNAME_RETVAL);
         }

@@ -13,6 +13,7 @@ namespace KeithLink.Common.Impl.Logic.Settings {
         #region attributes
         private const string KEY_UPDATEFLAG = "DBChangeValue";
         private const string COMMENT_UPDATEFLAG = "DB Has Changed (change this to make clients reset)";
+        private const string COMMENT_FEATUREFLAG = "Feature Flags";
 
         private readonly IDBAppSettingsRepository   _repo;
         #endregion
@@ -24,6 +25,14 @@ namespace KeithLink.Common.Impl.Logic.Settings {
         #endregion
 
         #region methods
+        public Setting ReadFeatureFlag(string key) {
+            Setting settng = _repo.Read(key);
+            if (settng.Disabled == false && settng.Comment == COMMENT_FEATUREFLAG) {
+                return settng;
+            }
+            return null;
+        }
+
         public List<Setting> ReadAllSettings() {
             return _repo.ReadAll()
                         .Where(s => s.Key.Equals(KEY_UPDATEFLAG, StringComparison.InvariantCultureIgnoreCase) == false)

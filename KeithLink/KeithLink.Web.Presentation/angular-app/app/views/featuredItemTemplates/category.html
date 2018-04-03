@@ -1,6 +1,32 @@
-<div ng-show="item.category_image.url" class="col-xs-4 no-padding text-left" analytics-on analytics-category="Homepage-Categories-Mobile" analytics-event="Categories" analytics-label="{{item.name}}">
-  <img style="height: 84px; max-width: 100%;" ng-src="{{item.category_image.url}}">
-</div>
-<div class="col-xs-8 no-padding featured-item-mobile__detail" analytics-on analytics-category="Homepage-Categories-Mobile" analytics-event="Categories" analytics-label="{{item.name}}">
-  <a ui-sref="menu.catalog.products.list({ type: 'category', id: item.search_name, category: item.name})" >{{item.name}}</a>
-</div>
+<div class="col-xs-4 no-padding text-left"
+    ng-show="item.category_image.url"
+    analytics-on 
+    analytics-category="Homepage-Categories-Mobile" 
+    analytics-event="Categories" 
+    analytics-label="{{item.name}}">
+    <img 
+      ng-if="item.category_image.url" 
+      class="hand" 
+      style="height: 84px; max-width: 100%;" 
+      ui-sref="menu.catalog.products.list({ type: 'category', id: item.search_name, category: item.name})" 
+      ng-src="{{item.category_image.url}}" 
+      alt="product image">
+    <img 
+      ng-if="!item.category_image.url" 
+      class="product-placeholder-image" 
+      style="height: 84px; max-width: 100%;" 
+      src="images/bek-logo.png" 
+      alt="default product image">
+  </div>
+  <div 
+    class="col-xs-8 no-padding featured-item-mobile__detail" 
+    analytics-on 
+    analytics-category="Homepage-Categories-Mobile" 
+    analytics-event="Categories" 
+    analytics-label="{{item.name}}">
+    <a 
+      ui-sref="menu.catalog.products.list({ type: 'category', id: item.search_name, category: item.name})"
+      class="text-uppercase">
+        {{item.name}}
+    </a>
+  </div>

@@ -18,3 +18,9 @@
 .ico-blue {
 	color: #489ECF;
 }
+
+@media print {
+  a[href]:after {
+    content: none !important;
+  }
+}

@@ -47,3 +47,15 @@
         display:none;
     }
 }
+
+@media (max-width: 1342px) {
+  .max-width-25 {
+    width: 24%;
+  }
+}
+
+@media (min-width: 1343px) {
+  .min-width-33 {
+    width: 33%;
+  }
+}

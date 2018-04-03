@@ -28,7 +28,7 @@ namespace KeithLink.Svc.Impl.Repository.Lists {
             parms.Add(PARMNAME_CUSTID, catalogInfo.CustomerId);
             parms.Add(PARMNAME_USERID, userId);
 
-            return ReadOne<FavoritesListHeader>(SPNAME_GETHEADER, parms);
+            return ReadOneSP<FavoritesListHeader>(SPNAME_GETHEADER, parms);
         }
 
         public long SaveFavoriteListHeader(FavoritesListHeader model) {
@@ -37,7 +37,7 @@ namespace KeithLink.Svc.Impl.Repository.Lists {
             parms.Add(PARMNAME_CUSTID, model.CustomerNumber);
             parms.Add(PARMNAME_USERID, model.UserId);
 
-            return ExecuteScalarCommand<long>(SPNAME_SAVE, parms);
+            return ExecuteScalarSPCommand<long>(SPNAME_SAVE, parms);
         }
         #endregion
     }

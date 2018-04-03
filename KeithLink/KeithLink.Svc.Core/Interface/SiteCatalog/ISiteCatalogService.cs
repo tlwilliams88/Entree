@@ -24,5 +24,9 @@ namespace KeithLink.Svc.Core.Interface.SiteCatalog
                                                 string brandControlLabel,
                                                 SearchInputModel searchModel,
                                                 UserProfile profile);
+
+        ProductsReturn GetRecommendedItemsForCart(UserSelectedContext catalogInfo,
+                                                  List<string> cartItems,
+                                                  UserProfile profile);
     }
 }

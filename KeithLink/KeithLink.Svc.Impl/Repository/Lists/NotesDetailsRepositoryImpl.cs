@@ -40,14 +40,14 @@ namespace KeithLink.Svc.Impl.Repository.Lists {
             parms.Add(PARMNAME_HEADERID, parentHeaderId);
             parms.Add(PARMNAME_ITEMNUMBER, itemNumber);
 
-            return ReadOne<NotesListDetail>(SPNAME_GET, parms);
+            return ReadOneSP<NotesListDetail>(SPNAME_GET, parms);
         }
 
         public List<NotesListDetail> GetAll(long parentHeaderId) {
             DynamicParameters parms = new DynamicParameters();
             parms.Add(PARMNAME_HEADERID, parentHeaderId);
 
-            return Read<NotesListDetail>(SPNAME_GETALL, parms);
+            return ReadSP<NotesListDetail>(SPNAME_GETALL, parms);
         }
         
         public long Save(NotesListDetail detail) { 
@@ -62,7 +62,7 @@ namespace KeithLink.Svc.Impl.Repository.Lists {
 
             parms.Add(PARMNAME_RETURNVALUE, direction:ParameterDirection.Output, dbType: DbType.Int64);
 
-            ExecuteCommand(SPNAME_SAVE, parms);
+            ExecuteSPCommand(SPNAME_SAVE, parms);
 
             return parms.Get<long>(PARMNAME_RETURNVALUE);
         }

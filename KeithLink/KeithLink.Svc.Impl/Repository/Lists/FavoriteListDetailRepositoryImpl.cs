@@ -35,15 +35,15 @@ namespace KeithLink.Svc.Impl.Repository.Lists {
         #region methods
 
         public void DeleteFavoriteListDetail(long id) {
-            ExecuteCommand(SPNAME_DELETE, PARMNAME_ID, id);
+            ExecuteSPCommand(SPNAME_DELETE, PARMNAME_ID, id);
         }
 
         public FavoritesListDetail GetFavoriteDetail(long id) {
-            return ReadOne<FavoritesListDetail>(SPNAME_GETONE, PARMNAME_ID, id);
+            return ReadOneSP<FavoritesListDetail>(SPNAME_GETONE, PARMNAME_ID, id);
         }
 
         public List<FavoritesListDetail> GetFavoritesListDetails(long headerId) {
-            return Read<FavoritesListDetail>(SPNAME_GETALL, PARMNAME_HEADERID, headerId);
+            return ReadSP<FavoritesListDetail>(SPNAME_GETALL, PARMNAME_HEADERID, headerId);
         }
 
         public long SaveFavoriteListDetail(FavoritesListDetail model) {
@@ -58,7 +58,7 @@ namespace KeithLink.Svc.Impl.Repository.Lists {
             parms.Add(PARMNAME_LABEL, model.Label);
             parms.Add(PARMNAME_RETVAL, dbType: DbType.Int64, direction: ParameterDirection.Output);
 
-            ExecuteCommand(SPNAME_SAVE, parms);
+            ExecuteSPCommand(SPNAME_SAVE, parms);
 
             return parms.Get<long>(PARMNAME_RETVAL);
         }

@@ -42,7 +42,7 @@ namespace KeithLink.Svc.Impl.Repository.Lists
             DynamicParameters parms = new DynamicParameters();
             parms.Add(PARMNAME_PARENT_MANDATORY_ITEMS_HEADER_ID, parentHeaderId);
 
-            return Read<MandatoryItemsListDetail>(SPNAME_GET, parms);
+            return ReadSP<MandatoryItemsListDetail>(SPNAME_GET, parms);
         }
 
         public long Save(MandatoryItemsListDetail model) {
@@ -58,7 +58,7 @@ namespace KeithLink.Svc.Impl.Repository.Lists
 
             parms.Add(PARMNAME_RETURNVALUE, direction: ParameterDirection.Output, dbType: DbType.Int64);
 
-            ExecuteCommand(SPNAME_SAVE, parms);
+            ExecuteSPCommand(SPNAME_SAVE, parms);
 
             return parms.Get<long>(PARMNAME_RETURNVALUE);
         }
@@ -67,7 +67,7 @@ namespace KeithLink.Svc.Impl.Repository.Lists
             DynamicParameters parms = new DynamicParameters();
             parms.Add(PARMNAME_ID, id);
 
-            ExecuteCommand(SPNAME_DELETE, parms);
+            ExecuteSPCommand(SPNAME_DELETE, parms);
         }
         #endregion
     }

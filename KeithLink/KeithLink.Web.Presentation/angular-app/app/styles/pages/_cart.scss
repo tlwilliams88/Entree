@@ -15,8 +15,13 @@
   }
 
   .tab-content {
-    @include scroll-div-vertical(225px);
+    @include scroll-div-vertical(475px);
+    padding-bottom: 10px;
   }
+}
+
+.tab-content {
+  padding-bottom: 10px;
 }
 
 .cart-items-form .button-row{
@@ -41,4 +46,19 @@
     font-size: 16px;
   }
 }
-  
+
+.submitOrderBtn:disabled {
+  opacity: .4;
+}
+
+.submitButton {
+  background-color: #04a773; 
+  border: none; 
+  padding-top: 15px; 
+  padding-bottom: 15px;
+}
+
+.mandatoryitems {
+  border: '2px solid rgb(226, 38, 44)';
+  margin-right : '0';
+}
