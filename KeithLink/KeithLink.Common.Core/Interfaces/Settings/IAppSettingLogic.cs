@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 
 namespace KeithLink.Common.Core.Interfaces.Settings {
     public interface IAppSettingLogic {
+        Setting ReadFeatureFlag(string key);
         List<Setting> ReadAllSettings();
         SettingUpdate SaveSetting(string key, string value);
         List<SettingUpdate> SaveSettings(List<Setting> settings);

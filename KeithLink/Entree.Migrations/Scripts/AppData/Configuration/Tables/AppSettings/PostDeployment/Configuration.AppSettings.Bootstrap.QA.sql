@@ -18,7 +18,7 @@ INSERT
 	INTO @AppSettings 
 		([Key], [Value], [Comment], [Disabled]) 
 	VALUES 
-		('ShowRecommendedItems', 'false', 'Site Settings', 0)
+		('ShowRecommendedItems', 'false', 'Feature Flags', 0)
 INSERT INTO @AppSettings (Comment, [Key], Value, [Disabled]) VALUES( 'Site Settings', 'ListItemDaysNew', '2', 0)
 INSERT INTO @AppSettings (Comment, [Key], Value, [Disabled]) VALUES( 'Site Settings', 'RunInternalServiceQueues', 'true', 0)
 INSERT INTO @AppSettings (Comment, [Key], Value, [Disabled]) VALUES( 'Site Settings', 'TokenDuration', '7', 0)

@@ -184,7 +184,7 @@ INSERT
 	INTO @AppSettings 
 		([Key], [Value], [Comment], [Disabled]) 
 	VALUES 
-		('ShowRecommendedItems', 'false', 'Site Settings', 0)
+		('ShowRecommendedItems', 'false', 'Feature Flags', 0)
 INSERT @AppSettings ([Key], [Value], [Comment], [Disabled]) VALUES ('SMTPHostName', 'localhost', 'Email Settings', 0)
 INSERT @AppSettings ([Key], [Value], [Comment], [Disabled]) VALUES ('SMTPPassword', '0', 'Site Settings', 0)
 INSERT @AppSettings ([Key], [Value], [Comment], [Disabled]) VALUES ('SMTPSendPort', '0', 'Site Settings', 0)
