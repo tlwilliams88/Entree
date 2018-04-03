@@ -88,8 +88,12 @@ angular
     }
   };
 }])
-.run(['$rootScope', '$state', '$log', 'toaster', 'ENV', 'AccessService', 'NotificationService', 'ListService', 'CartService', 'UserProfileService', '$window', '$location', 'PhonegapServices', 'PhonegapPushService', 'localStorageService', 'Analytics', 'OrderService',
-  function($rootScope, $state, $log, toaster, ENV, AccessService, NotificationService, ListService, CartService, UserProfileService, $window, $location, PhonegapServices, PhonegapPushService, localStorageService, Analytics, OrderService) {
+.run(['$rootScope', '$state', '$log', 'toaster', 'ENV', 'AccessService', 'NotificationService', 'ListService', 'CartService', 'UserProfileService', '$window', '$location', 'PhonegapServices', 'PhonegapPushService', 'localStorageService', 'Analytics', 'OrderService', 'ConfigSettingsService', '$filter',
+  function($rootScope, $state, $log, toaster, ENV, AccessService, NotificationService, ListService, CartService, UserProfileService, $window, $location, PhonegapServices, PhonegapPushService, localStorageService, Analytics, OrderService, ConfigSettingsService, $filter) {
+
+    ConfigSettingsService.getAppSettings().then(function(config) {
+      ENV.showRecommendedItems = $filter('filter')(config, {key: 'showRecommendedItems'})[0].value;
+    })
 
   // helper method to display toaster popup message
   // takes 'success', 'error' types and message as a string

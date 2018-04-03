@@ -507,14 +507,14 @@
                 </tfoot>
               </table>
             </tab>
-            <tab 
-              ng-show="recommendedItems && recommendedItems.length > 0" 
+            <tab
+              ng-if="recommendedItems && recommendedItems.length > 0 && showRecommendedItems == 'true'"
               active="recommendedItems.active" 
               class="text-center hidden-lg"
               analytics-on 
               analytics-category="Recommended-Item-Cart-Details" 
               analytics-event="Open Recommended Item Tab">
-                <tab-heading><span class="icon-thumbsup" style="padding-right: 5px; color: #319CCB;"></span>Recommended Items<span class="icon-help" style="padding-left: 5px; padding-top: 2px;" tooltip="Recommended Items are based on what is currently in your cart."></span></tab-heading>
+                <tab-heading><span class="icon-thumbsup" style="padding-right: 5px; color: #319CCB;"></span>Recommendations<span class="icon-help" style="padding-left: 5px; padding-top: 2px;" tooltip="Recommended Items are based on what is currently in your cart."></span></tab-heading>
                 <table class="table table-striped-rows table-narrow" style="width: 100%;">
                   <thead>
                     <tr>
@@ -535,8 +535,8 @@
                       <td>
                         <a ui-sref="menu.catalog.products.details({itemNumber: item.itemnumber})">{{recommendedItem.itemnumber}}</a>
                       </td>
-                      <td>
-                        {{recommendedItem.name}}
+                      <td ui-sref="menu.catalog.products.details({ itemNumber : recommendedItem.itemnumber })">
+                        <a>{{recommendedItem.name}}</a>
                       </td>
                       <td>
                           <a 
@@ -619,27 +619,31 @@
         </div>
       </div>
   
-      <div sticky offset="230" class="row hidden-xs hidden-sm hidden-md col-6" style="margin-top: 12px; padding-left: 15px;">
+      <div sticky offset="230" ng-if="recommendedItems && recommendedItems.length > 0 && showRecommendedItems == 'true'" class="row hidden-xs hidden-sm hidden-md col-6" style="margin-top: 12px; padding-left: 15px;">
           <h3>Recommendations Based On Your Cart<span class="icon-help" style="padding-left: 5px; padding-top: 2px;" tooltip="Recommended Items are based on what is currently in your cart."></span></h3>
 
           <p ng-if="recommendedItems.length == 0">No recommendations currently available.</p>
             <div style="border: 2px solid #C4BC9E; border-radius: 5px; height: 100px; margin-top: 10px; margin-bottom: 10px;" ng-if="recommendedItem.productimages[0]" ng-repeat="recommendedItem in recommendedItems | limitTo: 5">
-              <div>
+              <div >
                   <img 
                   class="hand items pull-left"
                   style="padding: 0; height: 96px;"
-                  ng-src="{{recommendedItem.productimages[0].url}}" />
+                  ng-src="{{recommendedItem.productimages[0].url}}"
+                  ui-sref="menu.catalog.products.details({ itemNumber : recommendedItem.itemnumber })" />
               </div>
   
               <div class="pull-left" style="padding-top: 25px; padding-left: 10px; padding-right: 10px; width: 28%;">
-                <p style= "overflow: hidden; white-space: nowrap; text-overflow: ellipsis;">{{recommendedItem.name}}</p>
+                <p style= "overflow: hidden; white-space: nowrap; text-overflow: ellipsis;" 
+                ui-sref="menu.catalog.products.details({ itemNumber : recommendedItem.itemnumber })">
+                <a>{{recommendedItem.name}}</a>
+              </p>
                 <p>{{recommendedItem.each ? recommendedItem.packageprice : recommendedItem.caseprice | currency}} / Case</p>
               </div>
   
               <div class="pull-right" style="padding-top: 5px; padding-right: 10px;">
                 <div class="hidden-print sub-content">
                     <form name="orderForm" style="display: inline-block;">
-                      <div counter allowDropdown="true" size="large" ng-model="recommendedItem.newQuantity" min="0"></div>
+                      <div counter allowDropdown="true" size="large" ng-model="recommendedItem.newQuantity" ng-init="recommendedItem.newQuantity = 1;" min="0"></div>
                       <span ng-if="packagePriceInd">Order By Package             
                         <ng-form name="eachForm_mobile">
                           <input type="checkbox" ng-model="recommendedItem.each" id="each" name="each" />
@@ -649,6 +653,7 @@
                     <div 
                       class="btn-primary btn btn-lg" 
                       ng-click="addItemToCart(recommendedItem)"
+                      ng-disabled="!recommendedItem.newQuantity"
                       analytics-on 
                       analytics-category="Recommended-Item-Cart-Details-Desktop" 
                       analytics-event="Add Recommended Item To Cart">

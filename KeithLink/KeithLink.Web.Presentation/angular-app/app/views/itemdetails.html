@@ -67,7 +67,7 @@
             </span>
           </form>
 
-          <div class="context-menu-template btn-primary btn btn-lg" context-menu context-menu-template>
+          <div class="context-menu-template btn-primary btn btn-lg" context-menu context-menu-template ng-disabled="!item.quantity">
             Add To...
             <span class="icon-arrow-down6"></span>
           </div>
@@ -84,30 +84,33 @@
 
   <div class="row sub-content">
     <div class="col-lg-12">
-      <div ng-if="recommendedItems.length > 0" style="height: 150px; background-color: #F3F1EC; margin-bottom: 20px;" class="hidden-xs hidden-sm hidden-md">
-        <h3 style="padding-top: 5px; padding-left: 10px;">Recommended Items</h3>
-        <div style="display: inline-flex; padding-left: 10px;">
+      <div ng-if="recommendedItems && recommendedItems.length > 0 && showRecommendedItems == 'true'" style="height: 150px; background-color: #F3F1EC; margin-bottom: 20px; margin-top: 5px;" class="hidden-xs hidden-sm hidden-md">
+        <h3 style="padding-top: 5px; padding-left: 10px;">You might also like...</h3>
+        <div style="display: inline-flex; padding-left: 10px; width: 100%;">
         
-            <div style="border: 2px solid #C4BC9E; border-radius: 5px; height: 100px; display: inline-flex; margin-right: 5px; background-color: #FFFF;" ng-repeat="recommendedItem in recommendedItems | limitTo: 2">
+            <div class="col-xs-4" 
+              style="border: 2px solid #C4BC9E; border-radius: 5px; height: 100px; display: block; margin-right: 5px; background-color: #FFFF; padding-right: 0; padding-left: 0;" 
+              ng-repeat="recommendedItem in recommendedItems | limitTo: 3">
               
               <div>
                   <img 
                   class="hand items pull-left"
                   style="padding: 0; height: 96px;"
-                  ng-src="{{recommendedItem.productimages[0].url}}" />
+                  ng-src="{{recommendedItem.productimages[0].url}}"
+                  ui-sref="menu.catalog.products.details({ itemNumber : recommendedItem.itemnumber })" />
               </div>
   
-              <div class="pull-left" style="padding-top: 25px; padding-left: 10px; padding-right: 10px;">
-                <p>{{recommendedItem.name}}</p>
+              <div class="pull-left max-width-25 min-width-33" style="padding-top: 25px; padding-left: 5px;">
+                <p style= "overflow: hidden; white-space: nowrap; text-overflow: ellipsis;" ui-sref="menu.catalog.products.details({ itemNumber : recommendedItem.itemnumber })"><a>{{recommendedItem.name}}</a></p>
                 <p>{{recommendedItem.each ? recommendedItem.packageprice : recommendedItem.caseprice | currency}} - {{recommendedItem.packsize}}</p>
               </div>
   
-              <div class="pull-right" style="padding-top: 8px; padding-right: 10px;">
+              <div class="pull-right" style="padding-top: 8px; padding-right: 5px;">
                   <div class="hidden-print">
             
                     <div ng-if="(canManageLists || canCreateOrders || canSubmitOrders) && canOrderItemInd" class="hidden-print sub-content">
                       <form name="orderForm" style="display: inline-block;">
-                        <div counter allowDropdown="true" size="large" ng-model="recommendedItem.quantity" min="0"></div>
+                        <div counter allowDropdown="true" size="large" ng-model="recommendedItem.quantity" ng-init="recommendedItem.quantity = 1;" min="0"></div>
                         <span ng-if="packagePriceInd">Order By Package             
                           <ng-form name="eachForm_mobile">
                             <input type="checkbox" ng-model="recommendedItem.each" id="each" name="each" />
@@ -116,12 +119,17 @@
                       </form>
 
                       <div 
-                        class="context-menu-template btn-primary btn btn-lg" 
+                        class="context-menu-template context-menu__in-list btn-primary btn btn-lg"
+                        ng-disabled="!recommendedItem.quantity"
                         context-menu 
                         context-menu-template 
                         noLists="true">
-                        Add To...
-                        <span class="icon-arrow-down6"></span>
+                        Add
+                        <span class="icon-arrow-down6 hidden-md"></span>
+                      </div>
+
+                      <div class="hidden-lg">
+                          <span context-menu-template class="context-menu-template context-menu__in-list hidden-print"><a class="icon-plus2" style="padding-right:10px;"></a></span>
                       </div>
                     </div>
   
@@ -447,8 +455,9 @@
             class="hidden-lg" 
             analytics-on 
             analytics-category="RecommendedItem-Item-Details" 
-            analytics-event="Open Recommended Item Tab">
-              <h3 class="visible-print-block hidden-xs hidden-sm hidden-md hidden-lg">Recommendations</h3>
+            analytics-event="Open Recommended Item Tab"
+            ng-if="recommendedItems.length > 0 && showRecommendedItems == 'true'">
+            <tab-heading ><span class="icon-thumbsup" style="padding-right: 5px; color: #319CCB;"></span>Recommendations<span class="icon-help" style="padding-left: 5px; padding-top: 2px;" tooltip="Recommended Items are based on what is currently in your cart."></span></tab-heading>
                 <table class="table item-details__table table-striped-rows no-margin hidden-lg" style="table-layout: fixed">
                   <tbody>
                     <tr>
@@ -460,8 +469,8 @@
 
                     </tr>
                     <tr ng-repeat="recommendedItem in recommendedItems" ng-class="{ odd : $odd }">
-                        <td>{{recommendedItem.itemnumber}}</td>
-                        <td>{{recommendedItem.name}}</td>
+                        <td ui-sref="menu.catalog.products.details({ itemNumber : recommendedItem.itemnumber })"><a>{{recommendedItem.itemnumber}}</a></td>
+                        <td ui-sref="menu.catalog.products.details({ itemNumber : recommendedItem.itemnumber })"><a>{{recommendedItem.name}}</a></td>
                         <td>{{recommendedItem.brand_extended_description}}</td>
                         <td>{{recommendedItem.each ? recommendedItem.packageprice : recommendedItem.caseprice | currency}} - {{recommendedItem.packsize}}</td>
                         <td class="hand-pointer">
