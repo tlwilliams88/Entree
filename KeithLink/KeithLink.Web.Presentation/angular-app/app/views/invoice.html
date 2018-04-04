@@ -304,16 +304,17 @@
                     </span>
                     <h5 ng-if="userCanPayInvoice">Bank Account: <span>
                       <div class="btn-group accounts-btn" dropdown is-open="status.isopen" ng-if="invoice.banks.length >= 1 && invoice.statusdescription !== 'Paid'">
-                        <button type="button" class="btn btn-default dropdown-toggle" ng-disabled="invoice.banks.length <= 1 || isInternalAccountAdminUser">
+                        <button type="button" class="btn btn-default dropdown-toggle" ng-disabled="invoice.banks.length <= 1 || isInternalAccountAdminUser || invoice.statusdescription == 'Payment Pending'">
                           <div class = "account-info span3">
                             {{invoice.account}}
                           </div>
                         <span class="icon-arrow-down6 account-info"></span>
                         </button>
-                        <div class="dropdown-menu">
+                        <div class="dropdown-menu" style="padding-left: 5px; padding-right: 5px; cursor: pointer;">
                           <h5 ng-click="selectAccount(invoice, account)" ng-repeat="account in invoice.banks">
                             {{account.name}}<br>
                             {{account.accountNumber}}
+                            <div class="header-div"></div>
                           </h5>
                         </div>
                       </div></span>
@@ -381,16 +382,17 @@
                     </h5>
                     <h5>Bank Account: <span>
                       <div class="btn-group accounts-btn" ng-if="invoice.banks.length >= 1 && invoice.statusdescription !== 'Paid'">
-                        <button type="button" class="btn btn-default dropdown-toggle" ng-disabled="invoice.banks.length <= 1 || isInternalAccountAdminUser">
+                        <button type="button" class="btn btn-default dropdown-toggle" ng-disabled="invoice.banks.length <= 1 || isInternalAccountAdminUser || invoice.statusdescription == 'Payment Pending'">
                           <div class = "account-info span3">
                             {{invoice.account}}
                           </div>
                         <span class="icon-arrow-down6 account-info"></span>
                         </button>
-                        <div class="dropdown-menu">
+                        <div class="dropdown-menu" style="padding-left: 5px; padding-right: 5px; cursor: pointer;">
                           <h5 ng-repeat="account in invoice.banks">
                             {{account.name}}<br>
                             {{account.accountNumber}}
+                            <div class="header-div"></div>
                           </h5>
                         </div>
                       </div></span>
