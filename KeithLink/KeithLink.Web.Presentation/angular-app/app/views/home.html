@@ -58,13 +58,13 @@
       <!-- end Account Summary -->
       <!-- Featured Items -->
       <div ng-if="marketingPromoItems.length > 0">
-        <div class="col-sm-12">
+        <div class="col-sm-12" style="padding-left: 0; padding-right: 0;">
           <h3>Recommended For You</h3>
           <div loading-spinner="loadingPromoItems" ng-show="loadingPromoItems"></div>
 
           <div ng-if="!loadingPromoItems">
 
-            <div class="col-xs-12">
+            <div class="col-xs-12" style="padding-left: 0; padding-right: 0;">
               <div featured-item-carousel="recommendedItems" marketing="true" template="{{'views/featuredItemTemplates/featureditem.html'}}"></div>
             </div>
 

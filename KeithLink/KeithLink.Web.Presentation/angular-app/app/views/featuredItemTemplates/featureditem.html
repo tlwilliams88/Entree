@@ -43,10 +43,12 @@
                 class="item-image featured-item-height-marketing feature-item-marketing"
                 ng-src="{{item.category_image.url}}"
                 alt="image" />
-                <div style="position: absolute">
+                <div style="position: absolute; left: 30px;
+                top: 10px; font-size: 2em; text-decoration: none;">
                         <a 
                         ui-sref="menu.catalog.products.list({ type: 'category', id: item.parent_category, category: item.parent_category, subcategories: item.name})" 
-                        class="featured-item__detail">
+                        class="featured-item__detail"
+                        style="color: white">
                         {{::item.name}}
                       </a>
                 </div>
