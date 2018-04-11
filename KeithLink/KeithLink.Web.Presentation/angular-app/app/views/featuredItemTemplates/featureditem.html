@@ -33,6 +33,7 @@
          -->
         <!-- Secondary Content -->
         <a
+            ng-if="isMarketing"
             ng-href="{{item.targeturl}}"
             target="_blank"
             analytics-on 
@@ -44,7 +45,8 @@
                 ng-src="{{item.category_image.url}}"
                 alt="image" />
                 <div style="position: absolute; left: 30px;
-                top: 10px; font-size: 2em; text-decoration: none;">
+                top: 10px; font-size: 2em; text-decoration: none;"
+                ng-if="isMarketing">
                         <a 
                         ui-sref="menu.catalog.products.list({ type: 'category', id: item.parent_category, category: item.parent_category, subcategories: item.name})" 
                         class="featured-item__detail"
@@ -88,6 +90,7 @@
     
     <!-- Secondary Content -->
     <a
+        ng-if="isMarketing"
         ng-href="{{item.targeturl}}"
         target="_blank"
         analytics-on 
@@ -101,7 +104,8 @@
             alt="image"
             ui-sref="menu.catalog.products.list({ type: 'category', id: item.parent_category, category: item.parent_category, subcategories: item.name})"  />
             <div style="position: absolute; left: 30px;
-            top: 10px; font-size: 2em; text-decoration: none;">
+            top: 10px; font-size: 2em; text-decoration: none;"
+            ng-if="isMarketing">
                     <a 
                     ui-sref="menu.catalog.products.list({ type: 'category', id: item.parent_category, category: item.parent_category, subcategories: item.name})" 
                     class="featured-item__detail"
