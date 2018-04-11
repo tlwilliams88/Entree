@@ -95,9 +95,9 @@ angular.module('bekApp')
     // get promo/marketing items
     $scope.loadingPromoItems = true;
     MarketingService.getPromoItems().then(function(items) {
-      if(items[0].targeturltext != 'Admiral of the Fleet Salmon') { //Added to stop the salmon photo from displaying
+      // if(items[0].targeturltext != 'Admiral of the Fleet Salmon') { //Added to stop the salmon photo from displaying
         $scope.marketingPromoItems = items;
-      }
+      // }
       delete $scope.promoMessage;
     }, function(errorMessage) {
       $scope.promoMessage = errorMessage;
@@ -173,7 +173,15 @@ angular.module('bekApp')
       CategoryService.getCategories($state.params.catalogType).then(function(categories) {
         $scope.showRecommendedItems = ENV.showRecommendedItems;
 
-        $scope.recommendedItems = categories;
+        $scope.recommendedItems = [
+          {"categoryid":"11","name":"Apples,Bananas","search_name":"applesbananas","description":null,"ppicode":null, category_image:{url: "images/ap000.jpg"}, parent_category: "produce"},
+          {"categoryid":"20","name":"Fruit-frozen","search_name":"fruit-frozen","description":null,"ppicode":null, category_image:{url: "images/ff000.jpg"}, parent_category: "frozen_food"},
+          {"categoryid":"30","name":"Beef Commodity","search_name":"beef_commodity","description":null,"ppicode":null, category_image:{url: "images/fm000.jpg"}, parent_category: "center_of_plate"},
+          {"categoryid":"41","name":"Condiments & Dressings","search_name":"condiments_and_dressings","description":null,"ppicode":null, category_image:{url: "images/cx000.jpg"}, parent_category: "grocery"},
+          {"categoryid":"60","name":"Dairy","search_name":"dairy","description":null,"ppicode":null, category_image:{url: "images/ad000.jpg"}, parent_category: "dairy"},
+          {"categoryid":"71","name":"Paper & Plastics","search_name":"paper_and_plastics","description":null,"ppicode":null, category_image:{url: "images/pd000.jpg"}, parent_category: "non-food"},
+          {"categoryid":"85","name":"Restaurant Supply","search_name":"restaurant_supply","description":null,"ppicode":null, category_image:{url: "images/ks000.jpg"}, parent_category: "equip_and_supply"}
+        ];
         $scope.loadingRecommendedItems = false;
         
         $scope.categories = categories;

@@ -12,21 +12,11 @@
 
 <div ng-if="systemUpdates.length > 0" ng-init="showNotification(systemUpdates[0])"></div>
 <!-- <ng-include src="'views/globalmessage.html'"></ng-include> -->
-<div class="page-content">
+<div>
   <div class="row">
     <div class="col-md-4 col-md-push-8">
       <!-- Account Summary -->
-      <div class="info-box" ng-class="{ 'account-summary-info': canViewOrders}" ng-if="canViewInvoices">
-        <a 
-            ng-if="canViewInvoices"
-            ui-sref="menu.invoice" 
-            class="pull-right btn btn-primary btn-lg" 
-            analytics-on 
-            analytics-category="Homepage-Pay-Invoice" 
-            analytics-event="Pay Invoice Button">
-            <span ng-hide="selectedUserContext.customer.balance.totalbalance == 0 || hidePayNowButton">Pay Now</span>
-            <span ng-show="selectedUserContext.customer.balance.totalbalance == 0 || hidePayNowButton" >View Invoices</span>
-        </a>
+      <div class="info-box" ng-class="{ 'account-summary-info': canViewOrders}" style="display: grid; text-align: center;" ng-if="canViewInvoices" ui-sref="menu.invoice">
         <h4><strong>Account Balance</strong></h4>
         <div loading-spinner="loadingAccountBalance"></div>
         <div ng-show="!loadingAccountBalance">
@@ -45,9 +35,19 @@
               </div>
             </div>
           </div>
+          <a 
+            ng-if="canViewInvoices" 
+            class="pull-right btn btn-primary btn-lg"
+            style="margin-top: 10px; width: 100%;"
+            analytics-on 
+            analytics-category="Homepage-Pay-Invoice" 
+            analytics-event="Pay Invoice Button">
+            <span ng-hide="selectedUserContext.customer.balance.totalbalance == 0 || hidePayNowButton">Pay Now</span>
+            <span ng-show="selectedUserContext.customer.balance.totalbalance == 0 || hidePayNowButton" >View Invoices</span>
+          </a>
         </div>
       </div>
-      <div class="info-box account-summary__graph hidden-xs hidden-sm" style="padding-left: 0; padding-bottom: 0;" ng-controller="OrderSummaryGraphController" ng-if="canViewOrders">
+      <div class="info-box account-summary__graph hidden-xs hidden-sm" style="padding-left: 0; padding-bottom: 0;" ng-controller="OrderSummaryGraphController" ng-if="canViewOrders" ui-sref="menu.invoice">
         <div style="margin-left: 15px;">
           <h4 class="no-margin-top"><strong>Order Summary Last 6 Months</strong></h4>
           <div loading-spinner="loadingOrderGraph"></div>
@@ -59,13 +59,13 @@
       <!-- Featured Items -->
       <div ng-if="marketingPromoItems.length > 0">
         <div class="col-sm-12">
-          <h3>Latest From Ben E. Keith</h3>
+          <h3>Recommended For You</h3>
           <div loading-spinner="loadingPromoItems" ng-show="loadingPromoItems"></div>
 
           <div ng-if="!loadingPromoItems">
 
             <div class="col-xs-12">
-              <div featured-item-carousel="marketingPromoItems" marketing="true" template="{{'views/featuredItemTemplates/featureditem.html'}}"></div>
+              <div featured-item-carousel="recommendedItems" marketing="true" template="{{'views/featuredItemTemplates/featureditem.html'}}"></div>
             </div>
 
           </div>
@@ -73,7 +73,7 @@
       </div>
     </div>
 
-    <div class="col-md-8 col-md-pull-4" style="padding-top: 10px; padding-right: 0; padding-left: 0;">
+    <div class="col-md-8 col-md-pull-4" style="padding-right: 0; padding-left: 0;">
       <div class="row" ng-if="canCreateOrders && cartHeaders && cartHeaders.length > 0 || canViewOrders && orders && orders.length > 0" style="padding-left: 15px;">
         <div class="col-lg-12" style="padding-bottom: 4px;">
           <tabset class="tabset tab-border">
@@ -177,12 +177,12 @@
                   analytics-label="{{item.name}}">
                   <img 
                     class="hand" 
-                    ui-sref="menu.catalog.products.list({ type: 'category', id: item.search_name, category: item.name})" 
+                    ui-sref="menu.catalog.products.list({ type: 'category', id: item.parent_category, category: item.parent_category, subcategories: item.name})" 
                     ng-src="{{item.category_image.url}}" 
                     alt="image">
                   <div>
                     <a 
-                      ui-sref="menu.catalog.products.list({ type: 'category', id: item.search_name, category: item.name})" 
+                      ui-sref="menu.catalog.products.list({ type: 'category', id: item.parent_category, category: item.parent_category, subcategories: item.name})" 
                       class="featured-item__detail">
                       {{::item.name}}
                     </a>
