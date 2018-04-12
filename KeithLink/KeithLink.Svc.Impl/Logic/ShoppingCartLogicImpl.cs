@@ -108,7 +108,6 @@ namespace KeithLink.Svc.Impl.Logic
 			if (existingItem.Any())
 			{
 				existingItem.First().Quantity += newItem.Quantity;
-                existingItem.First().CatalogName += newItem.CatalogId.ToUpper();
                 basketRepository.UpdateItem(basket.UserId.ToGuid(), cartId, existingItem.First());
 				return existingItem.First().Id.ToGuid();
 			}
