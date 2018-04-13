@@ -12,10 +12,10 @@
   DTS:LocaleID="1033"
   DTS:ObjectName="ETLProcess_DEV"
   DTS:PackageType="5"
-  DTS:VersionBuild="421"
-  DTS:VersionGUID="{7A03657F-DBDF-4513-AAB1-1CAABD1666CE}"
-  DTS:VersionMajor="2017"
-  DTS:VersionMinor="1">
+  DTS:VersionBuild="1"
+  DTS:VersionGUID="{C2C205DE-75C4-40BB-92BA-20F76E98C681}"
+  DTS:VersionMajor="2018"
+  DTS:VersionMinor="4">
   <DTS:Property
     DTS:Name="PackageFormatVersion">8</DTS:Property>
   <DTS:ConnectionManagers>
@@ -2109,11 +2109,11 @@
             <DTS:Property
               DTS:Name="ServerPassword"
               Sensitive="1"
-              Encrypted="1">AQAAANCMnd8BFdERjHoAwE/Cl+sBAAAAdq0bywyxk0SYGUE7Fv2fUwAAAAAIAAAARABUAFMAAAADZgAAwAAAABAAAACMRiSBDzGqHukZq3yac/qiAAAAAASAAACgAAAAEAAAAIRwab0pOBFFORti+cuTQsMIAAAAzNkK8tpPtIoUAAAAOuoAMR3lNI1m9dvdxKSG5J+sR9Q</DTS:Property>
+              Encrypted="1">AQAAANCMnd8BFdERjHoAwE/Cl+sBAAAAdq0bywyxk0SYGUE7Fv2fUwAAAAAIAAAARABUAFMAAAADZgAAwAAAABAAAAB/f3QHhqzdAMjrdBnSH4TdAAAAAASAAACgAAAAEAAAAPaiZexNXxHOBBrCt80n5EUIAAAAgRISKseL8k4UAAAASZVV04iZ/fRHXl9frdYsU8OK7DI</DTS:Property>
             <DTS:Property
               DTS:Name="ProxyPassword"
               Sensitive="1"
-              Encrypted="1">AQAAANCMnd8BFdERjHoAwE/Cl+sBAAAAdq0bywyxk0SYGUE7Fv2fUwAAAAAIAAAARABUAFMAAAADZgAAwAAAABAAAAAPWY5RQhuzo8r8dj6dxX79AAAAAASAAACgAAAAEAAAAB53pjzBqSmnHZf8e0mpom4IAAAAHkZayvoLoIgUAAAADdmfdDleUUFeUkAqu0E/Kzqn49g</DTS:Property>
+              Encrypted="1">AQAAANCMnd8BFdERjHoAwE/Cl+sBAAAAdq0bywyxk0SYGUE7Fv2fUwAAAAAIAAAARABUAFMAAAADZgAAwAAAABAAAACVe+qaw7kmPABavIlBRnLrAAAAAASAAACgAAAAEAAAAP+K7at6WX+GK5bem1cI6vIIAAAAI5HFJs7YqIsUAAAAsppqCyPZrrcAsFMVj2QaKKE6jAg</DTS:Property>
           </DTS:HttpConnection>
         </DTS:ConnectionManager>
       </DTS:ObjectData>
@@ -2428,13 +2428,12 @@
           DTS:refId="Package\Application Data Processing\Process Catalog Data"
           DTS:CreationName="Microsoft.WebServiceTask"
           DTS:Description="Web Service Task"
-          DTS:Disabled="True"
           DTS:DTSID="{05F31872-A14B-4925-B07C-8B414D0FA9D6}"
           DTS:ExecutableType="Microsoft.WebServiceTask"
           DTS:LocaleID="-1"
           DTS:ObjectName="Process Catalog Data"
           DTS:TaskContact="Web Service Task; Microsoft Corporation; SQL Server 2012; © 2007 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
-          DTS:ThreadHint="1">
+          DTS:ThreadHint="2">
           <DTS:Variables />
           <DTS:LoggingOptions
             DTS:FilterKind="0" />
@@ -2472,13 +2471,12 @@
           DTS:refId="Package\Application Data Processing\Process Contract And Worksheet Data"
           DTS:CreationName="Microsoft.WebServiceTask"
           DTS:Description="Web Service Task"
-          DTS:Disabled="True"
           DTS:DTSID="{8FE95332-29AD-4F54-AE4E-A291D4C91D99}"
           DTS:ExecutableType="Microsoft.WebServiceTask"
           DTS:LocaleID="-1"
           DTS:ObjectName="Process Contract And Worksheet Data"
           DTS:TaskContact="Web Service Task; Microsoft Corporation; SQL Server 2012; © 2007 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
-          DTS:ThreadHint="2">
+          DTS:ThreadHint="3">
           <DTS:Variables />
           <DTS:LoggingOptions
             DTS:FilterKind="0" />
@@ -2516,13 +2514,12 @@
           DTS:refId="Package\Application Data Processing\Process Customer Data"
           DTS:CreationName="Microsoft.WebServiceTask"
           DTS:Description="Web Service Task"
-          DTS:Disabled="True"
           DTS:DTSID="{ED300552-C2EF-4C9A-A68F-5FAB6B7DD5EF}"
           DTS:ExecutableType="Microsoft.WebServiceTask"
           DTS:LocaleID="-1"
           DTS:ObjectName="Process Customer Data"
           DTS:TaskContact="Web Service Task; Microsoft Corporation; SQL Server 2012; © 2007 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
-          DTS:ThreadHint="3">
+          DTS:ThreadHint="4">
           <DTS:Variables />
           <DTS:LoggingOptions
             DTS:FilterKind="0" />
@@ -2560,7 +2557,6 @@
           DTS:refId="Package\Application Data Processing\Process Customer Item History"
           DTS:CreationName="Microsoft.WebServiceTask"
           DTS:Description="Web Service Task"
-          DTS:Disabled="True"
           DTS:DTSID="{E6FE58EF-03AB-453F-A02E-B231EB509C36}"
           DTS:ExecutableType="Microsoft.WebServiceTask"
           DTS:LocaleID="-1"
@@ -2938,13 +2934,12 @@ FROM ETL.Staging_Customer</property>
           DTS:refId="Package\Application Data Processing\Process Elastic Search Data"
           DTS:CreationName="Microsoft.WebServiceTask"
           DTS:Description="Web Service Task"
-          DTS:Disabled="True"
           DTS:DTSID="{10505B52-FF9C-4351-9A0A-AD553449A555}"
           DTS:ExecutableType="Microsoft.WebServiceTask"
           DTS:LocaleID="-1"
           DTS:ObjectName="Process Elastic Search Data"
           DTS:TaskContact="Web Service Task; Microsoft Corporation; SQL Server 2012; © 2007 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
-          DTS:ThreadHint="4">
+          DTS:ThreadHint="1">
           <DTS:Variables />
           <DTS:LoggingOptions
             DTS:FilterKind="0" />
@@ -23360,6 +23355,36 @@ WHERE ControlLabel != ''</property>
           Language="CSharp"
           ReadOnlyVariables="User::ETLProcess_KeithComDir">
           <ProjectItem
+            Name="Properties\AssemblyInfo.cs"
+            Encoding="UTF8"><![CDATA[using System.Reflection;
+using System.Runtime.CompilerServices;
+
+//
+// General Information about an assembly is controlled through the following 
+// set of attributes. Change these attribute values to modify the information
+// associated with an assembly.
+//
+[assembly: AssemblyTitle("ST_8b38e1c04cd142498eb6973136894e60")]
+[assembly: AssemblyDescription("")]
+[assembly: AssemblyConfiguration("")]
+[assembly: AssemblyCompany("")]
+[assembly: AssemblyProduct("ST_8b38e1c04cd142498eb6973136894e60")]
+[assembly: AssemblyCopyright("Copyright @  2014")]
+[assembly: AssemblyTrademark("")]
+[assembly: AssemblyCulture("")]
+//
+// Version information for an assembly consists of the following four values:
+//
+//      Major Version
+//      Minor Version 
+//      Build Number
+//      Revision
+//
+// You can specify all the values or you can default the Revision and Build Numbers 
+// by using the '*' as shown below:
+
+[assembly: AssemblyVersion("1.0.*")]]]></ProjectItem>
+          <ProjectItem
             Name="Properties\Resources.resx"
             Encoding="UTF8"><![CDATA[<?xml version="1.0" encoding="utf-8"?>
 <root>
@@ -23478,35 +23503,6 @@ WHERE ControlLabel != ''</property>
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
 </root>]]></ProjectItem>
-          <ProjectItem
-            Name="Properties\Settings.Designer.cs"
-            Encoding="UTF8"><![CDATA[//------------------------------------------------------------------------------
-// <auto-generated>
-//     This code was generated by a tool.
-//
-//     Changes to this file may cause incorrect behavior and will be lost if
-//     the code is regenerated.
-// </auto-generated>
-//------------------------------------------------------------------------------
-
-[assembly: global::System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode", Scope="member", Target="ST_8b38e1c04cd142498eb6973136894e60.Properties.Settings.get_Default():ST_8b38e1c04cd142498eb6973136894e60.Properties.Sett" +
-    "ings")]
-
-namespace ST_8b38e1c04cd142498eb6973136894e60.Properties {
-    
-    
-    internal sealed partial class Settings : global::System.Configuration.ApplicationSettingsBase {
-        
-        [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-        private static Settings defaultInstance = new Settings();
-        
-        public static Settings Default {
-            get {
-                return defaultInstance;
-            }
-        }
-    }
-}]]></ProjectItem>
           <ProjectItem
             Name="ST_8b38e1c04cd142498eb6973136894e60.csproj"
             Encoding="UTF8"><![CDATA[<?xml version="1.0" encoding="utf-8"?>
@@ -23846,35 +23842,34 @@ namespace ST_8b38e1c04cd142498eb6973136894e60
 	</msb:ItemGroup>
 </c:Project>]]></ProjectItem>
           <ProjectItem
-            Name="Properties\AssemblyInfo.cs"
-            Encoding="UTF8"><![CDATA[using System.Reflection;
-using System.Runtime.CompilerServices;
+            Name="Properties\Settings.Designer.cs"
+            Encoding="UTF8"><![CDATA[//------------------------------------------------------------------------------
+// <auto-generated>
+//     This code was generated by a tool.
+//
+//     Changes to this file may cause incorrect behavior and will be lost if
+//     the code is regenerated.
+// </auto-generated>
+//------------------------------------------------------------------------------
 
-//
-// General Information about an assembly is controlled through the following 
-// set of attributes. Change these attribute values to modify the information
-// associated with an assembly.
-//
-[assembly: AssemblyTitle("ST_8b38e1c04cd142498eb6973136894e60")]
-[assembly: AssemblyDescription("")]
-[assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("ST_8b38e1c04cd142498eb6973136894e60")]
-[assembly: AssemblyCopyright("Copyright @  2014")]
-[assembly: AssemblyTrademark("")]
-[assembly: AssemblyCulture("")]
-//
-// Version information for an assembly consists of the following four values:
-//
-//      Major Version
-//      Minor Version 
-//      Build Number
-//      Revision
-//
-// You can specify all the values or you can default the Revision and Build Numbers 
-// by using the '*' as shown below:
+[assembly: global::System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode", Scope="member", Target="ST_8b38e1c04cd142498eb6973136894e60.Properties.Settings.get_Default():ST_8b38e1c04cd142498eb6973136894e60.Properties.Sett" +
+    "ings")]
 
-[assembly: AssemblyVersion("1.0.*")]]]></ProjectItem>
+namespace ST_8b38e1c04cd142498eb6973136894e60.Properties {
+    
+    
+    internal sealed partial class Settings : global::System.Configuration.ApplicationSettingsBase {
+        
+        [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
+        private static Settings defaultInstance = new Settings();
+        
+        public static Settings Default {
+            get {
+                return defaultInstance;
+            }
+        }
+    }
+}]]></ProjectItem>
           <ProjectItem
             Name="Properties\Settings.settings"
             Encoding="UTF8"><![CDATA[<?xml version='1.0' encoding='iso-8859-1'?>
@@ -24227,13 +24222,13 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==</BinaryItem>
           Id="Package\Application Data Processing\Process Customer Item History"
           TopLeft="15,188" />
         <NodeLayout
-          Size="208,42"
-          Id="Package\Application Data Processing\Process Elastic Search Data"
-          TopLeft="15.5,253" />
-        <NodeLayout
           Size="216,42"
           Id="Package\Application Data Processing\Process Customer SIC Codes"
           TopLeft="20,315" />
+        <NodeLayout
+          Size="208,42"
+          Id="Package\Application Data Processing\Process Elastic Search Data"
+          TopLeft="15.5,253" />
         <ContainerLayout
           HeaderHeight="43"
           IsExpanded="True"
@@ -24972,6 +24967,82 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==</BinaryItem>
       </GraphLayout>
     </LayoutInfo>
   </Package>
+  <TaskHost
+    design-time-name="Package\Application Data Processing\Process Customer SIC Codes">
+    <LayoutInfo>
+      <GraphLayout
+        Capacity="4" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:assembly="http://schemas.microsoft.com/winfx/2006/xaml">
+        <NodeLayout
+          Size="123,42"
+          Id="Package\Application Data Processing\Process Customer SIC Codes\SIC_Map"
+          TopLeft="443,305" />
+        <NodeLayout
+          Size="169,42"
+          Id="Package\Application Data Processing\Process Customer SIC Codes\Customers Staging"
+          TopLeft="430,141" />
+        <EdgeLayout
+          Id="Package\Application Data Processing\Process Customer SIC Codes.Paths[OLE DB Source Output]"
+          TopLeft="514.5,183">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="-10,122"
+              Start="0,0"
+              End="-10,114.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,57" />
+                  <mssgle:CubicBezierSegment
+                    Point1="0,57"
+                    Point2="0,61"
+                    Point3="-4,61" />
+                  <mssgle:LineSegment
+                    End="-6,61" />
+                  <mssgle:CubicBezierSegment
+                    Point1="-6,61"
+                    Point2="-10,61"
+                    Point3="-10,65" />
+                  <mssgle:LineSegment
+                    End="-10,114.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+      </GraphLayout>
+    </LayoutInfo>
+  </TaskHost>
+  <PipelineComponentMetadata
+    design-time-name="Package\Application Data Processing\Process Customer SIC Codes\Customers Staging">
+    <Properties>
+      <Property>
+        <Name>DataSourceViewID</Name>
+      </Property>
+      <Property>
+        <Name>TableInfoObjectType</Name>
+        <Value
+          type="q2:string">Table</Value>
+      </Property>
+    </Properties>
+  </PipelineComponentMetadata>
+  <PipelineComponentMetadata
+    design-time-name="Package\Application Data Processing\Process Customer SIC Codes\SIC_Map">
+    <Properties>
+      <Property>
+        <Name>DataSourceViewID</Name>
+      </Property>
+      <Property>
+        <Name>TableInfoObjectType</Name>
+        <Value
+          type="q2:string">Table</Value>
+      </Property>
+    </Properties>
+  </PipelineComponentMetadata>
   <TaskHost
     design-time-name="Package\Process Data\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Branches">
     <LayoutInfo>
@@ -26262,82 +26333,6 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==</BinaryItem>
   </TaskHost>
   <PipelineComponentMetadata
     design-time-name="Package\Process Data\Reference Tables\SIC Reference Table\OLE DB Destination">
-    <Properties>
-      <Property>
-        <Name>DataSourceViewID</Name>
-      </Property>
-      <Property>
-        <Name>TableInfoObjectType</Name>
-        <Value
-          type="q2:string">Table</Value>
-      </Property>
-    </Properties>
-  </PipelineComponentMetadata>
-  <TaskHost
-    design-time-name="Package\Application Data Processing\Process Customer SIC Codes">
-    <LayoutInfo>
-      <GraphLayout
-        Capacity="4" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:assembly="http://schemas.microsoft.com/winfx/2006/xaml">
-        <NodeLayout
-          Size="123,42"
-          Id="Package\Application Data Processing\Process Customer SIC Codes\SIC_Map"
-          TopLeft="443,305" />
-        <NodeLayout
-          Size="169,42"
-          Id="Package\Application Data Processing\Process Customer SIC Codes\Customers Staging"
-          TopLeft="430,141" />
-        <EdgeLayout
-          Id="Package\Application Data Processing\Process Customer SIC Codes.Paths[OLE DB Source Output]"
-          TopLeft="514.5,183">
-          <EdgeLayout.Curve>
-            <mssgle:Curve
-              StartConnector="{assembly:Null}"
-              EndConnector="-10,122"
-              Start="0,0"
-              End="-10,114.5">
-              <mssgle:Curve.Segments>
-                <mssgle:SegmentCollection
-                  Capacity="5">
-                  <mssgle:LineSegment
-                    End="0,57" />
-                  <mssgle:CubicBezierSegment
-                    Point1="0,57"
-                    Point2="0,61"
-                    Point3="-4,61" />
-                  <mssgle:LineSegment
-                    End="-6,61" />
-                  <mssgle:CubicBezierSegment
-                    Point1="-6,61"
-                    Point2="-10,61"
-                    Point3="-10,65" />
-                  <mssgle:LineSegment
-                    End="-10,114.5" />
-                </mssgle:SegmentCollection>
-              </mssgle:Curve.Segments>
-            </mssgle:Curve>
-          </EdgeLayout.Curve>
-          <EdgeLayout.Labels>
-            <EdgeLabelCollection />
-          </EdgeLayout.Labels>
-        </EdgeLayout>
-      </GraphLayout>
-    </LayoutInfo>
-  </TaskHost>
-  <PipelineComponentMetadata
-    design-time-name="Package\Application Data Processing\Process Customer SIC Codes\SIC_Map">
-    <Properties>
-      <Property>
-        <Name>DataSourceViewID</Name>
-      </Property>
-      <Property>
-        <Name>TableInfoObjectType</Name>
-        <Value
-          type="q2:string">Table</Value>
-      </Property>
-    </Properties>
-  </PipelineComponentMetadata>
-  <PipelineComponentMetadata
-    design-time-name="Package\Application Data Processing\Process Customer SIC Codes\Customers Staging">
     <Properties>
       <Property>
         <Name>DataSourceViewID</Name>
