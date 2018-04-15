@@ -14,7 +14,7 @@
 <!-- <ng-include src="'views/globalmessage.html'"></ng-include> -->
 <div>
   <div class="row">
-    <div class="col-md-5 col-md-push-7">
+    <div class="col-md-5 col-md-push-7 col-lg-4 col-lg-push-8">
       <!-- Account Summary -->
       <div class="info-box" ng-class="{ 'account-summary-info': canViewOrders}" style="display: grid; text-align: center;" ng-if="canViewInvoices" ui-sref="menu.invoice">
         <h4><strong>Account Balance</strong></h4>
@@ -43,32 +43,23 @@
           <div loading-spinner="loadingOrderGraph"></div>
           <span class="text-red" ng-show="ordersGraphMessage">{{ordersGraphMessage}}</span>
         </div>
-        <div id="chart_div" style="height:140px;width:100%;"></div>
-        <a 
-        ng-if="canViewInvoices" 
-        class="btn btn-primary btn-lg"
-        style="margin-top: 10px; width: 50%;"
-        analytics-on 
-        analytics-category="Homepage-Pay-Invoice" 
-        analytics-event="Pay Invoice Button">
-        <span ng-hide="selectedUserContext.customer.balance.totalbalance == 0 || hidePayNowButton">Pay Now</span>
-        <span ng-show="selectedUserContext.customer.balance.totalbalance == 0 || hidePayNowButton" >View Invoices</span>
-      </a>
+        <div id="chart_div" style="height:140px; width:95%;"></div>
+        <div ng-if="canViewInvoices" style="padding-left: 7px; margin-bottom: 10px; margin-top: -20px; text-align: center;">
+          <a 
+            class="btn btn-primary btn-lg"
+            style="width: 50%;"
+            analytics-on 
+            analytics-category="Homepage-Pay-Invoice" 
+            analytics-event="Pay Invoice Button">
+            <span ng-hide="selectedUserContext.customer.balance.totalbalance == 0 || hidePayNowButton">Pay Now</span>
+            <span ng-show="selectedUserContext.customer.balance.totalbalance == 0 || hidePayNowButton" >View Invoices</span>
+          </a>
+        </div>
+
+      
       </div>
       <!-- end Account Summary -->
 
-      <!-- Recommendations -->
-      <div ng-if="isOrderEntryCustomer && showRecommendedItems == true" class="hidden-lg hidden-md">
-          <div class="col-sm-12" style="padding-left: 0; padding-right: 0;">
-            <h3>Recommended For You</h3>
-            <div loading-spinner="loadingRecommendedItems" ng-show="loadingRecommendedItems"></div>
-  
-            <div ng-if="recommendedItems && recommendedItems.length > 0" ng-show="loadingRecommendedItems == false">
-  
-              <div featured-item-carousel="recommendedItems" catalog="true" template="{{'views/featuredItemTemplates/category.html'}}"></div>
-            </div>
-          </div>
-        </div> <!-- end Recommended Items -->
       <!-- Featured Items -->
       <div ng-if="recommendedItems.length > 0" class="hidden-xs hidden-sm">
         <div class="col-sm-12" style="padding-left: 0; padding-right: 0;">
@@ -77,12 +68,12 @@
 
           <div ng-if="!loadingPromoItems">
 
-            <div class="col-xs-12" style="padding-left: 0; padding-right: 0;">
-                <ul class="horizontal-slide" style="white-space: normal;">
+            <div class="col-xs-12" style="padding-left: 0; padding-right: 0; border: 3px solid #837B6A;">
+                <ul class="horizontal-slide" style="white-space: normal; text-align: center; background-color: #F3F1EC; float:right; columns: 2; padding: 8px 8px 2px 8px;">
                     <li 
                       ng-if="item.name != 'All'" 
                       ng-repeat="item in recommendedItems | limitTo: 4" 
-                      class="item-holder" 
+                      class="item-holder"
                       analytics-on 
                       analytics-category="Homepage-Recommended-Items-Desktop" 
                       analytics-event="Recommended Items" 
@@ -92,12 +83,15 @@
                         analytics-on 
                         analytics-category="Homepage-Categories-Desktop" 
                         analytics-event="Categories" 
-                        analytics-label="{{item.name}}">
+                        analytics-label="{{item.name}}"
+                        style="    min-width: 0px;
+                        margin: 0 auto;">
                         <img 
                           class="hand" 
                           ui-sref="menu.catalog.products.list({ type: 'category', id: item.parent_category, category: item.parent_category, subcategories: item.name})" 
-                          src="{{item.category_image.url}}" 
-                          alt="image" />
+                          ng-src="{{item.category_image}}" 
+                          alt="image"
+                          style="width: 100%;" />
                           <div>
                               <a 
                                 ui-sref="menu.catalog.products.list({ type: 'category', id: item.parent_category, category: item.parent_category, subcategories: item.name})" 
@@ -115,134 +109,194 @@
       </div>
     </div>
 
-    <div class="col-md-7 col-md-pull-5" style="padding-right: 0; padding-left: 0;">
-      <div class="row" ng-if="canCreateOrders && cartHeaders && cartHeaders.length > 0 || canViewOrders && orders && orders.length > 0" style="padding-left: 15px;">
-        <div class="col-lg-12" style="padding-bottom: 4px;">
-          <tabset class="tabset tab-border">
-            <tab heading="Pending Orders" ng-if="canCreateOrders && cartHeaders && cartHeaders.length > 0" class="text-center" analytics-on analytics-category="Homepage-Pending-Orders-Tab" analytics-event="Pending Orders Tab">
-              <h3 class="visible-print-block hidden-xs hidden-sm hidden-md hidden-lg">Pending Orders</h3>
-                <table class="table item-details__table table-striped-rows no-margin" style="table-layout: fixed;">
-                  <tbody>
-                    <tr>
-                      <th>Cart ID</th>
-                      <th class="hidden-xs">Cart Created</th>
-                      <th>Ship Date</th>
-                      <th>Item Count</th>
-                      <th>Subtotal</th>
-                    </tr>
-                    <tr ng-repeat="cart in cartHeaders | orderBy:'createddate':true | limitTo: numCartsToDisplay" analytics-on analytics-category="Homepage-Pending-Orders" analytics-event="Pending Orders">
-                        <td><a ui-sref="menu.cart.items({cartId: cart.id})" class="order-col__number">{{cart.name}}</a></td>
-                        <td class="hidden-xs">{{cart.createddate | formatDateWithTimezone}}</td>
-                        <td>{{(cart.requestedshipdate || 'N/A') | formatDate}}</td>
-                        <td>{{cart.itemcount}}</td>
-                        <td>{{cart.subtotal | currency}}</td>
-                    </tr>
-                  </tbody>
-                </table>
-            </tab>
-            <tab heading="Confirmed Orders" ng-if="canViewOrders && orders && orders.length > 0" class="text-center" analytics-on analytics-category="Homepage-Confirmed-Orders-Tab" analytics-event="Confirmed Orders Tab">
-              <h3 class="visible-print-block hidden-xs hidden-sm hidden-md hidden-lg">Confirmed Orders</h3>
-                <table class="table item-details__table table-striped-rows no-margin" style="table-layout: fixed;">
-                  <tbody>
-                    <tr>
-                      <th>Invoice Number</th>
-                      <th class="hidden-xs">Created Date/Time</th>
-                      <th>Delivery Date</th>
-                      <th>Subtotal <span tooltip="This is your order total without taxes, fees, and final catch weight prices." class="glyphicon glyphicon-info-sign ico-blue"></span></th>
-                      <th>Status</th>
-                      <th>Invoice Status</th>
-                    </tr>
-                    <tr ng-repeat="order in orders | orderBy:'createddate':true | limitTo: numOrdersToDisplay | styleOrders" analytics-on analytics-category="Homepage-Confirmed-Orders-Desktop" analytics-event="Confirmed Orders" ng-class="order.highlightClass">
-                        <td order-link></td>
-                        <td class="hidden-xs">
-                            {{order.createddate | formatDateWithTimezone}}
-                        </td>
-                        <td ng-if="order.deliverydate != null"><span >{{order.deliverydate | formatDate}}</span><span ng-if="order.deliverydate == null">TBD</span></td>
-                        <td>{{order.ordertotal | currency}}</td>
-                        <td>{{order.status}}</td>
-                                    <!-- Display order status before ETA info is available -->
-                        <td ng-if="order.scheduleddeliverytime != null
-                        || order.estimateddeliverytime != null
-                        || order. actualdeliverytime != null" style="padding:12px 0">
-                        <span ng-if="order.estimateddeliverytime != null
-                          && order.actualdeliverytime == null
-                          && order.deliveryoutofsequence != true">
-                          <span class="small-icon icon-truck"></span>
-                        <br/>ETA:&nbsp;{{order.estimateddeliverytime | formatDateWithTimezone:'h:mma z'}}
-                        </span>
-                        <span ng-if="order.actualdeliverytime != null">
-                        Delivered<br />{{order.actualdeliverytime | formatDateWithTimezone}}
-                      </span>
-                        <span ng-if="
-                          order.actualdeliverytime == null && (order.estimateddeliverytime == null
-                          || order.deliveryoutofsequence == true)">
+  <div class="col-md-7 col-md-pull-5 col-lg-8 col-lg-pull-4" style="padding-right: 0; padding-left: 0;">
+    <div class="row" ng-if="canCreateOrders && cartHeaders && cartHeaders.length > 0 || canViewOrders && orders && orders.length > 0" style="padding-left: 15px;">
+      <div class="col-lg-12" style="padding-bottom: 4px;">
+        <tabset class="tabset tab-border">
+          <tab heading="Pending Orders" ng-if="canCreateOrders && cartHeaders && cartHeaders.length > 0" class="text-center" analytics-on analytics-category="Homepage-Pending-Orders-Tab" analytics-event="Pending Orders Tab">
+            <h3 class="visible-print-block hidden-xs hidden-sm hidden-md hidden-lg">Pending Orders</h3>
+              <table class="table item-details__table table-striped-rows no-margin" style="table-layout: fixed;">
+                <tbody>
+                  <tr>
+                    <th>Cart ID</th>
+                    <th class="hidden-xs">Cart Created</th>
+                    <th>Ship Date</th>
+                    <th>Item Count</th>
+                    <th>Subtotal</th>
+                  </tr>
+                  <tr ng-repeat="cart in cartHeaders | orderBy:'createddate':true | limitTo: numCartsToDisplay" analytics-on analytics-category="Homepage-Pending-Orders" analytics-event="Pending Orders">
+                      <td><a ui-sref="menu.cart.items({cartId: cart.id})" class="order-col__number">{{cart.name}}</a></td>
+                      <td class="hidden-xs">{{cart.createddate | formatDateWithTimezone}}</td>
+                      <td>{{(cart.requestedshipdate || 'N/A') | formatDate}}</td>
+                      <td>{{cart.itemcount}}</td>
+                      <td>{{cart.subtotal | currency}}</td>
+                  </tr>
+                </tbody>
+              </table>
+          </tab>
+          <tab heading="Confirmed Orders" ng-if="canViewOrders && orders && orders.length > 0" class="text-center" analytics-on analytics-category="Homepage-Confirmed-Orders-Tab" analytics-event="Confirmed Orders Tab">
+            <h3 class="visible-print-block hidden-xs hidden-sm hidden-md hidden-lg">Confirmed Orders</h3>
+              <table class="table item-details__table table-striped-rows no-margin" style="table-layout: fixed;">
+                <tbody>
+                  <tr>
+                    <th>Invoice Number</th>
+                    <th class="hidden-xs">Created Date/Time</th>
+                    <th>Delivery Date</th>
+                    <th>Subtotal <span tooltip="This is your order total without taxes, fees, and final catch weight prices." class="glyphicon glyphicon-info-sign ico-blue"></span></th>
+                    <th>Status</th>
+                    <th>Invoice Status</th>
+                  </tr>
+                  <tr ng-repeat="order in orders | orderBy:'createddate':true | limitTo: numOrdersToDisplay | styleOrders" analytics-on analytics-category="Homepage-Confirmed-Orders-Desktop" analytics-event="Confirmed Orders" ng-class="order.highlightClass">
+                      <td order-link></td>
+                      <td class="hidden-xs">
+                          {{order.createddate | formatDateWithTimezone}}
+                      </td>
+                      <td ng-if="order.deliverydate != null"><span >{{order.deliverydate | formatDate}}</span><span ng-if="order.deliverydate == null">TBD</span></td>
+                      <td>{{order.ordertotal | currency}}</td>
+                      <td>{{order.status}}</td>
+                                  <!-- Display order status before ETA info is available -->
+                      <td ng-if="order.scheduleddeliverytime != null
+                      || order.estimateddeliverytime != null
+                      || order. actualdeliverytime != null" style="padding:12px 0">
+                      <span ng-if="order.estimateddeliverytime != null
+                        && order.actualdeliverytime == null
+                        && order.deliveryoutofsequence != true">
                         <span class="small-icon icon-truck"></span>
-                        <br />Out For Delivery
-                        </span>
-                      </td>
-                      <!-- Display ETA info once it s available -->
-                      <td class="table-col highlight-col">
-                        {{order.invoicestatus || 'N/A'}}
-                      </td>
-                    </tr>
-                  </tbody>
-                </table>
-            </tab>
-          </tabset>
-        </div>
-        <div class="text-center" ng-hide="loadingCarts || cartMessage || cartHeaders.length === 0">
-          <a class="view-all" style="padding-bottom: 5px; padding-top: 5px; border-top: none;" ui-sref="menu.order" analytics-on analytics-category="Homepage-Pending-Orders-Desktop" analytics-event="Pending Orders View All">View All</a>
+                      <br/>ETA:&nbsp;{{order.estimateddeliverytime | formatDateWithTimezone:'h:mma z'}}
+                      </span>
+                      <span ng-if="order.actualdeliverytime != null">
+                      Delivered<br />{{order.actualdeliverytime | formatDateWithTimezone}}
+                    </span>
+                      <span ng-if="
+                        order.actualdeliverytime == null && (order.estimateddeliverytime == null
+                        || order.deliveryoutofsequence == true)">
+                      <span class="small-icon icon-truck"></span>
+                      <br />Out For Delivery
+                      </span>
+                    </td>
+                    <!-- Display ETA info once it s available -->
+                    <td class="table-col highlight-col">
+                      {{order.invoicestatus || 'N/A'}}
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+          </tab>
+        </tabset>
+      </div>
+      <div class="text-center" ng-hide="loadingCarts || cartMessage || cartHeaders.length === 0">
+        <a class="view-all" style="padding-bottom: 5px; padding-top: 5px; border-top: none;" ui-sref="menu.order" analytics-on analytics-category="Homepage-Pending-Orders-Desktop" analytics-event="Pending Orders View All">View All</a>
+      </div>
+    </div>
+
+    <!-- Recommended Items -->
+    <div ng-if="recommendedItems.length > 0" class="hidden-md hidden-lg">
+      <div class="col-sm-12">
+        <h3>Recommended For You</h3>
+        <div loading-spinner="loadingPromoItems" ng-show="loadingPromoItems"></div>
+
+        <div ng-if="!loadingPromoItems">
+
+          <div class="col-xs-12" style="padding-left: 0; padding-right: 0; border: 2px solid #837B6A;">
+            <ul class="horizontal-slide" style="white-space: normal; text-align: center; background-color: #F3F1EC; float:right; columns: 2; padding: 8px 8px 2px 8px;">
+              <li 
+                ng-if="item.name != 'All'" 
+                ng-repeat="item in recommendedItems | limitTo: 4" 
+                class="item-holder"
+                analytics-on 
+                analytics-category="Homepage-Recommended-Items-Desktop" 
+                analytics-event="Recommended Items" 
+                analytics-label="{{item.itemnumber}}">
+                <div 
+                  class="featured-item text-center" 
+                  analytics-on 
+                  analytics-category="Homepage-Categories-Desktop" 
+                  analytics-event="Categories" 
+                  analytics-label="{{item.name}}"
+                  style="    min-width: 0px;
+                  margin: 0 auto;">
+                  <img 
+                    class="hand" 
+                    ui-sref="menu.catalog.products.list({ type: 'category', id: item.parent_category, category: item.parent_category, subcategories: item.name})" 
+                    ng-src="{{item.category_image}}" 
+                    alt="image"
+                    style="width: 100%;" />
+                    <div>
+                      <a 
+                        ui-sref="menu.catalog.products.list({ type: 'category', id: item.parent_category, category: item.parent_category, subcategories: item.name})" 
+                        class="featured-item__detail">
+                        {{::item.name}}
+                      </a>
+                    </div>
+                </div>
+              </li>
+            </ul>
+          </div>
+
         </div>
       </div>
+    </div> <!-- end Recommended Items -->
 
-      <!-- Categories -->
-      <div>
-        <div class="col-sm-12">
-          <h3>Categories</h3>
-          <div loading-spinner="loadingCategories" ng-show="loadingCategories"></div>
-  
-          <div ng-show="!loadingCategories && categories.length > 0">
-              <ul class="horizontal-slide hidden-xs hidden-sm" ng-class="{ 'hidden-md' : isMobile == true }">
-                <li ng-repeat="category in categories | orderBy: ['id']" ng-if="category.name != 'All'" class="item-holder">
-                  <div class="featured-item text-center" analytics-on analytics-category="Homepage-Categories-Desktop" analytics-event="Categories" analytics-label="{{category.name}}">
-                    <img class="hand" ui-sref="menu.catalog.products.list({ type: 'category', id: category.search_name, category: category.name})" ng-src="{{category.category_image.url}}" alt="image">
-                    <div>
-                      <a ui-sref="menu.catalog.products.list({ type: 'category', id: category.search_name, category: category.name})" class="featured-item__detail">{{::category.name}}</a>
-                    </div>
-                  </div>
-                </li>
-              </ul>
-  
-            <div featured-item-carousel="categories" catalog="true" template="{{'views/featuredItemTemplates/category.html'}}"></div>
-          </div>
-        </div>
-      </div> <!-- end Categories -->
+    <!-- Categories -->
+    <div ng-style="isMobile && {'margin-top': '471px'}">
+      <div class="col-sm-12">
+        <h3>Categories</h3>
+        <div loading-spinner="loadingCategories" ng-show="loadingCategories"></div>
 
-            <!-- Brands -->
-            <div ng-hide="brands && brands.length == 0">
-                <div class="col-sm-12">
-                  <h3>Featured Brands</h3>
-                  <div ng-show="loadingBrands" loading-spinner="loadingBrands"></div>
-        
-                  <div ng-show="!loadingBrands && brands.length > 0">
-                    <ul class="horizontal-slide hidden-xs hidden-sm" ng-class="{ 'hidden-md' : isMobile == true }">
-                      <li ng-repeat="brand in brands | orderBy: ['extended_description']" class="item-holder" analytics-on analytics-category="Homepage-Brands-Desktop" analytics-event="Brands" analytics-label="brand.extended_description">
-                        <div class="featured-item text-center">
-                          <img class="hand" ui-sref="menu.catalog.products.list({ type: 'housebrand', id: brand.brand_control_label, brand: brand.extended_description })" ng-src="{{brand.imageurl}}" alt="image">
-                          <div>
-                            <a ui-sref="menu.catalog.products.list({ type: 'housebrand', id: brand.brand_control_label, brand: brand.extended_description })" class="featured-item__detail">{{::brand.extended_description}}</a>
-                          </div>
-                        </div>
-                      </li>
-                    </ul>
-        
-                    <div featured-item-carousel="brands" catalog="true" template="{{'views/featuredItemTemplates/brand.html'}}"></div>
+        <div ng-show="!loadingCategories && categories.length > 0">
+            <ul class="horizontal-slide hidden-xs hidden-sm" ng-class="{ 'hidden-md' : isMobile == true }">
+              <li ng-repeat="category in categories | orderBy: ['id']" ng-if="category.name != 'All'" class="item-holder">
+                <div class="featured-item text-center" analytics-on analytics-category="Homepage-Categories-Desktop" analytics-event="Categories" analytics-label="{{category.name}}">
+                  <img class="hand" ui-sref="menu.catalog.products.list({ type: 'category', id: category.search_name, category: category.name})" ng-src="{{category.category_image.url}}" alt="image">
+                  <div>
+                    <a ui-sref="menu.catalog.products.list({ type: 'category', id: category.search_name, category: category.name})" class="featured-item__detail">{{::category.name}}</a>
                   </div>
                 </div>
-              </div> <!-- end Brands -->
-      
-    </div>
+              </li>
+            </ul>
 
-    <div>
+          <div featured-item-carousel="categories" catalog="true" template="{{'views/featuredItemTemplates/category.html'}}"></div>
+        </div>
+      </div>
+    </div> <!-- end Categories -->
 
+    <!-- Brands -->
+    <div ng-hide="brands && brands.length == 0">
+        <div class="col-sm-12">
+          <h3>Featured Brands</h3>
+          <div ng-show="loadingBrands" loading-spinner="loadingBrands"></div>
+
+          <div ng-show="!loadingBrands && brands.length > 0">
+            <ul class="horizontal-slide hidden-xs hidden-sm" ng-class="{ 'hidden-md' : isMobile == true }">
+              <li 
+              ng-repeat="brand in brands | orderBy: ['extended_description']" 
+              class="item-holder" 
+              analytics-on 
+              analytics-category="Homepage-Brands-Desktop" 
+              analytics-event="Brands" 
+              analytics-label="brand.extended_description"
+              style="height: 246px;">
+                <div class="featured-item text-center">
+                  <img class="hand" ui-sref="menu.catalog.products.list({ type: 'housebrand', id: brand.brand_control_label, brand: brand.extended_description })" ng-src="{{brand.imageurl}}" alt="image">
+                  <div style="height: 70px;">
+                    <a 
+                      ui-sref="menu.catalog.products.list({ type: 'housebrand', id: brand.brand_control_label, brand: brand.extended_description })" 
+                      class="featured-item__detail"
+                      style="white-space: normal; padding-top: 20px;">
+                      {{::brand.extended_description}}
+                    </a>
+                  </div>
+                </div>
+              </li>
+            </ul>
+
+            <div featured-item-carousel="brands" catalog="true" template="{{'views/featuredItemTemplates/brand.html'}}"></div>
+          </div>
+        </div>
+      </div> <!-- end Brands -->
+  
     </div>
+  </div>
+</div>
+  
+

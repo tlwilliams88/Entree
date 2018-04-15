@@ -456,6 +456,8 @@ angular.module('bekApp')
               selectedCart.requestedshipdate = $scope.shipDates[0].shipdate;
             }
 
+            $scope.updateRecommendedItems(selectedCart.items);
+
           } else {
             // create new cart if no cart was selected
             $scope.generateNewCartForDisplay();

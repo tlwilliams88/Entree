@@ -535,12 +535,26 @@
             </tab>
             <tab
               ng-if="recommendedItems && recommendedItems.length > 0"
-              active="recommendedItems.active" 
               class="text-center hidden-lg"
               analytics-on 
               analytics-category="Recommended-Item-Cart-Details" 
               analytics-event="Open Recommended Item Tab">
-                <tab-heading><span class="icon-thumbsup" style="padding-right: 5px; color: #319CCB;"></span>Recommendations<span class="icon-help" style="padding-left: 5px; padding-top: 2px;" tooltip="Recommended Items are based on what is currently in your cart."></span></tab-heading>
+                <tab-heading ng-style="recommendedItems.length > 0 && {'color' : '#3E9DCD'}">
+                  <span 
+                    class="icon-thumbsup" 
+                    style="padding-right: 5px; color: #319CCB;">
+                  </span>
+                    <span></span>Recommendations 
+                  <span 
+                    ng-show="recommendedItems.length > 0">
+                    ({{recommendedItems.length}})
+                  </span>
+                  <span 
+                    class="icon-help" 
+                    style="padding-left: 5px; padding-top: 2px;" 
+                    tooltip="Recommended Items are based on what is currently in your cart.">
+                  </span>
+                </tab-heading>
                 <table class="table table-striped-rows table-narrow" style="width: 100%;">
                   <thead>
                     <tr>
@@ -591,7 +605,7 @@
   
     <div class="col-xs-4 hidden-xs hidden-sm hidden-md container-fluid" style="width: 32%; margin-left: 15px; margin-top: -188px; height: 100%;">
   
-      <div sticky offset="20" style="border: 2px solid #C4BC9E; border-radius: 5px; height: 200px; padding: 5px 10px 10px 20px; width: 100%">
+      <div hl-sticky="" anchor="top" class="simple" style="border: 2px solid #C4BC9E; border-radius: 5px; height: 200px; padding: 5px 10px 10px 20px; width: 100%">
         <h2 style="padding-left: 25px;">Order Summary</h2>
   
         <div class="row" style="padding-left: 25px;">
@@ -645,7 +659,7 @@
         </div>
       </div>
   
-      <div sticky offset="230" ng-if="recommendedItems && recommendedItems.length > 0" class="row hidden-xs hidden-sm hidden-md col-6" style="margin-top: 12px; padding-left: 15px;">
+      <div hl-sticky="" anchor="top" class="simple" ng-if="recommendedItems && recommendedItems.length > 0" class="row hidden-xs hidden-sm hidden-md col-6" style="margin-top: 12px; margin-bottom: 10px;">
           <h3>Recommendations Based On Your Cart<span class="icon-help" style="padding-left: 5px; padding-top: 2px;" tooltip="Recommended Items are based on what is currently in your cart."></span></h3>
 
           <p ng-if="recommendedItems.length == 0">No recommendations currently available.</p>
