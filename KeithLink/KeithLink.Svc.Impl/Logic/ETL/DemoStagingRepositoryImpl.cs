@@ -15,7 +15,7 @@ namespace KeithLink.Svc.Impl.ETL
 	public class DemoStagingRepositoryImpl : IStagingRepository
 	{
         /// <summary>
-        /// Read customer item history
+        /// ReadSP customer item history
         /// </summary>
         /// <returns></returns>
         public void ProcessItemHistoryData(int numDays) {
@@ -88,7 +88,7 @@ namespace KeithLink.Svc.Impl.ETL
 		}
 
         // <summary>
-        /// Read Categories from Department Table
+        /// ReadSP Categories from Department Table
         /// </summary>
         /// <returns></returns>
         public DataTable ReadDepartmentCategories()

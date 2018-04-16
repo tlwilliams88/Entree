@@ -68,7 +68,7 @@ INSERT @AppSettings ([Key], [Value], [Comment], [Disabled]) VALUES ('ElasticSear
 INSERT @AppSettings ([Key], [Value], [Comment], [Disabled]) VALUES ('ElasticSearchURL', 'http://qaes.benekeith.com:9200', 'Elastic Search Settings', 0)
 INSERT @AppSettings ([Key], [Value], [Comment], [Disabled]) VALUES ('EnableEtaForUsers', 'all', 'Site Settings: values are none, internal_only, all', 0)
 INSERT @AppSettings ([Key], [Value], [Comment], [Disabled]) VALUES ('EntreeCollectorType', 'B', 'Mainframe Connection Settings', 0)
-INSERT @AppSettings ([Key], [Value], [Comment], [Disabled]) VALUES ('EntreeSiteURL', 'http://corpmisdev2a.bekco.com:9000', 'Misc Settings', 0)
+INSERT @AppSettings ([Key], [Value], [Comment], [Disabled]) VALUES ('EntreeSiteURL', 'http://corpmisdev2h.bekco.com:9000', 'Misc Settings', 0)
 INSERT @AppSettings ([Key], [Value], [Comment], [Disabled]) VALUES ('FailureEmailAddress', 'bakillins@benekeith.com', 'Email Settings', 0)
 INSERT @AppSettings ([Key], [Value], [Comment], [Disabled]) VALUES ('FAM_ContactEmail', 'amainfo@benekeith.com', 'Email Settings', 0)
 INSERT @AppSettings ([Key], [Value], [Comment], [Disabled]) VALUES ('FAQ_ContactEmail', 'faqinfo@benekeith.com', 'Email Settings', 0)
@@ -96,8 +96,8 @@ INSERT @AppSettings ([Key], [Value], [Comment], [Disabled]) VALUES ('MFOrderHist
 INSERT @AppSettings ([Key], [Value], [Comment], [Disabled]) VALUES ('MfPort', '3011', 'Mainframe Connection Settings', 0)
 INSERT @AppSettings ([Key], [Value], [Comment], [Disabled]) VALUES ('MfTrans', 'OT90', 'Mainframe Connection Settings', 0)
 INSERT @AppSettings ([Key], [Value], [Comment], [Disabled]) VALUES ('MfTransHistory', 'OT96', 'Mainframe Connection Settings', 0)
-INSERT @AppSettings ([Key], [Value], [Comment], [Disabled]) VALUES ('MultiDocsProxyUrl', 'http://testmultidocs.bekco.com/', 'MultiDocs Settings', 0)
-INSERT @AppSettings ([Key], [Value], [Comment], [Disabled]) VALUES ('MultiDocsUrl', 'http://testmultidocs.bekco.com/', 'MultiDocs Settings', 0)
+INSERT @AppSettings ([Key], [Value], [Comment], [Disabled]) VALUES ('MultiDocsProxyUrl', 'http://multidocs.bekco.com/', 'MultiDocs Settings', 0)
+INSERT @AppSettings ([Key], [Value], [Comment], [Disabled]) VALUES ('MultiDocsUrl', 'http://multidocs.bekco.com/', 'MultiDocs Settings', 0)
 INSERT @AppSettings ([Key], [Value], [Comment], [Disabled]) VALUES ('OrderUpdateWatchPath', 'c:\test\entree\orderupdates\', 'Site Settings', 0)
 INSERT @AppSettings ([Key], [Value], [Comment], [Disabled]) VALUES ('PowerMenuAdminPassword', '9M9NC0', 'PowerMenu Settings', 0)
 INSERT @AppSettings ([Key], [Value], [Comment], [Disabled]) VALUES ('PowerMenuAdminUsername', 'pniadmin', 'PowerMenu Settings', 0)
@@ -105,7 +105,7 @@ INSERT @AppSettings ([Key], [Value], [Comment], [Disabled]) VALUES ('PowerMenuGr
 INSERT @AppSettings ([Key], [Value], [Comment], [Disabled]) VALUES ('PowerMenuLoginUrl', 'http://bekpmwsq1.bekco.com:8443/main/Logon.aspx?username={0}&amp;password={1}&amp;path=MAIN&amp;customerlist={2}&amp;order=true&amp;framed=false&amp;lang=ENG&amp;country=USA', 'PowerMenu Settings', 0)
 INSERT @AppSettings ([Key], [Value], [Comment], [Disabled]) VALUES ('PowerMenuPermissionsUrl', 'http://bekpmwsq1.bekco.com:8443/main/Logon.aspx?Adminusername=pniadmin&amp;Adminpassword=9M9NC0N&amp;Username={0}&amp;path=USER', 'PowerMenu Settings', 0)
 INSERT @AppSettings ([Key], [Value], [Comment], [Disabled]) VALUES ('PowerMenuWebServiceUrl', 'http://bekpmwsq1.bekco.com:8443/pmserviceendpoint.asmx', 'PowerMenu Settings', 0)
-INSERT @AppSettings ([Key], [Value], [Comment], [Disabled]) VALUES ('PresentationUrl', 'http://corpmisdev2a.bekco.com:8080/', 'Site Settings', 0)
+INSERT @AppSettings ([Key], [Value], [Comment], [Disabled]) VALUES ('PresentationUrl', 'http://corpmisdev2h.bekco.com:8080/', 'Site Settings', 0)
 INSERT @AppSettings ([Key], [Value], [Comment], [Disabled]) VALUES ('PurchaseOrdersGetLatestHowManyDays', '10', 'Site Settings', 0)
 INSERT @AppSettings ([Key], [Value], [Comment], [Disabled]) VALUES ('RabbitMQAccessConsumerUserName', 'accessclnt', 'RabbitMQ Settings: Credentials', 0)
 INSERT @AppSettings ([Key], [Value], [Comment], [Disabled]) VALUES ('RabbitMQAccessConsumerUserPassword', 'acspassclnt', 'RabbitMQ Settings: Credentials', 0)
@@ -137,6 +137,17 @@ INSERT @AppSettings ([Key], [Value], [Comment], [Disabled]) VALUES ('RabbitMQNot
 INSERT @AppSettings ([Key], [Value], [Comment], [Disabled]) VALUES ('RabbitMQNotificationQueue', 'notifications_v1', 'RabbitMQ Settings: Notifications Queue', 0)
 INSERT @AppSettings ([Key], [Value], [Comment], [Disabled]) VALUES ('RabbitMQOrderConfirmationQueue', 'notifications_v2_bakillins_orderconfirmations', 'RabbitMQ Settings: Notification Queue', 0)
 INSERT @AppSettings ([Key], [Value], [Comment], [Disabled]) VALUES ('RabbitMQPaymentConfirmationQueue', 'notifications_v2_bakillins_paymentconfirmations', 'RabbitMQ Settings: Queue', 0)
+INSERT 
+	INTO @AppSettings 
+		([Key], [Value], [Comment], [Disabled]) 
+	VALUES 
+		('ValidPublicApiTokens', 'db72d0feaf53d708a3f93451bf6dbd1d94a645a7-1e8f-448d-9b76-924dcbea2023', 'Site Settings: Public Api Tokens in CSV format', 0)
+		-- add token for Parscales
+INSERT 
+	INTO @AppSettings 
+		([Key], [Value], [Comment], [Disabled]) 
+	VALUES 
+		('ServePublicApi', 'false', 'Site Settings: true or false as to whether to serve public api', 0)
 
 -- Push Notifications
 INSERT @AppSettings ([Key], [Value], [Comment], [Disabled]) VALUES ('RabbitMQPushMessagesQueue', 'notifications_push_messages_bakillins', 'RabbitMQ Settings: Queue', 0)
@@ -180,6 +191,11 @@ INSERT @AppSettings ([Key], [Value], [Comment], [Disabled]) VALUES ('RecentItems
 INSERT @AppSettings ([Key], [Value], [Comment], [Disabled]) VALUES ('RequireHttps', 'false', 'Site Settings', 0)
 INSERT @AppSettings ([Key], [Value], [Comment], [Disabled]) VALUES ('RunInternalServiceQueues', 'true', 'Site Settings', 0)
 INSERT @AppSettings ([Key], [Value], [Comment], [Disabled]) VALUES ('ServiceEmailAddress', 'noreply@credera.com', 'Email Settings', 0)
+INSERT 
+	INTO @AppSettings 
+		([Key], [Value], [Comment], [Disabled]) 
+	VALUES 
+		('ShowRecommendedItems', 'false', 'Feature Flags', 0)
 INSERT @AppSettings ([Key], [Value], [Comment], [Disabled]) VALUES ('SMTPHostName', 'localhost', 'Email Settings', 0)
 INSERT @AppSettings ([Key], [Value], [Comment], [Disabled]) VALUES ('SMTPPassword', '0', 'Site Settings', 0)
 INSERT @AppSettings ([Key], [Value], [Comment], [Disabled]) VALUES ('SMTPSendPort', '0', 'Site Settings', 0)

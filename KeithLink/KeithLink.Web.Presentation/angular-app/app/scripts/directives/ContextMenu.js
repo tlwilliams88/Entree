@@ -23,8 +23,6 @@ angular.module('bekApp')
           });
       }
 
-        $scope.lists = listHeaders.length > 0 ? listHeaders : ListService.getListHeaders();
-
         if ($scope.canCreateOrders) {
           CartService.getShipDates(); // needed if user creates a cart using the context menu
 

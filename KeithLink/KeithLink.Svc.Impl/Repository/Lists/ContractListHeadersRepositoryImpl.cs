@@ -34,7 +34,7 @@ namespace KeithLink.Svc.Impl.Repository.Lists
             parms.Add(PARMNAME_BRANCHID, catalogInfo.BranchId);
             parms.Add(PARMNAME_CUSTNUM, catalogInfo.CustomerId);
 
-            return ReadOne<ContractListHeader>(SPNAME_GET, parms);
+            return ReadOneSP<ContractListHeader>(SPNAME_GET, parms);
         }
         #endregion
     }

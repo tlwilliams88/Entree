@@ -17,10 +17,6 @@ using System.Web.Http;
 
 namespace KeithLink.Svc.WebApi.Controllers
 {
-    /// <summary>
-    /// end points that are only to be used by sys admins
-    /// </summary>
-    [Authorize(Roles = Constants.ROLE_NAME_SYSADMIN)]
     public class AdminController : BaseController {
         #region attributes
         private readonly IAppSettingLogic            _appSettings;
@@ -42,9 +38,38 @@ namespace KeithLink.Svc.WebApi.Controllers
 
         #region methods
         /// <summary>
+        /// get a specific feature flag's value
+        /// </summary>
+        /// <param name="key"></param>
+        /// <returns></returns>
+        [Authorize]
+        [HttpGet]
+        [ApiKeyedRoute("appsetting/featureflag/{key}")]
+        public OperationReturnModel<bool> ReadFeatureFlag(string key)
+        {
+            OperationReturnModel<bool> retVal = new OperationReturnModel<bool>();
+
+            try
+            {
+                var flag = _appSettings.ReadFeatureFlag(key);
+                retVal.SuccessResponse = bool.Parse(flag.Value);
+                retVal.IsSuccess = true;
+            }
+            catch (Exception ex)
+            {
+                retVal.IsSuccess = false;
+                retVal.ErrorMessage = ex.Message;
+
+                _log.WriteErrorLog("Exception encountered while reading feature flag", ex);
+            }
+
+            return retVal;
+        }
+
+        /// <summary>
         /// return all of the application settings
         /// </summary>
-        /// <returns>list of application settings</returns>
+        [Authorize(Roles = Constants.ROLE_NAME_SYSADMIN)]
         [HttpGet]
         [ApiKeyedRoute("appsettings")]
         public OperationReturnModel<List<Setting>> ReadAllSettings() {
@@ -63,12 +88,12 @@ namespace KeithLink.Svc.WebApi.Controllers
             return retVal;
         }
 
-        
         /// <summary>
         /// Update a list of settings
         /// </summary>
         /// <param name="settings"></param>
         /// <returns></returns>
+        [Authorize(Roles = Constants.ROLE_NAME_SYSADMIN)]
         [HttpPut]
         [ApiKeyedRoute("appsettings")]
         public OperationReturnModel<bool> UpdateSettings(List<Setting> settings)

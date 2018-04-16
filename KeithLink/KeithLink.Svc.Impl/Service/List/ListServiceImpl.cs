@@ -33,7 +33,7 @@ namespace KeithLink.Svc.Impl.Service.List
         public ListServiceImpl(IHistoryListLogic historyListLogic, ICatalogLogic catalogLogic, INotesListLogic notesLogic,
                                IItemHistoryRepository itemHistoryRepo, IFavoritesListLogic favoritesLogic, IPriceLogic priceLogic,
                                IRecentlyViewedListLogic recentlyViewedLogic, IRecentlyOrderedListLogic recentlyOrderedLogic,
-                               IRecommendedItemsListLogic recommendedItemsLogic, IRemindersListLogic reminderItemsLogic,
+                               IRemindersListLogic reminderItemsLogic,
                                IProductImageRepository productImageRepo, IExternalCatalogRepository externalCatalogRepo, IItemBarcodeImageRepository barcodeImageRepo,
                                IMandatoryItemsListLogic mandatoryItemsLogic, IInventoryValuationListLogic inventoryValuationLogic,
                                IContractListLogic contractListLogic, ICustomListLogic customListLogic,
@@ -46,7 +46,6 @@ namespace KeithLink.Svc.Impl.Service.List
             _favoritesLogic = favoritesLogic;
             _recentlyViewedLogic = recentlyViewedLogic;
             _recentlyOrderedLogic = recentlyOrderedLogic;
-            _recommendedItemsLogic = recommendedItemsLogic;
             _reminderItemsLogic = reminderItemsLogic;
             _mandatoryItemsLogic = mandatoryItemsLogic;
             _inventoryValuationLogic = inventoryValuationLogic;
@@ -70,7 +69,6 @@ namespace KeithLink.Svc.Impl.Service.List
         private readonly IFavoritesListLogic _favoritesLogic;
         private readonly IRecentlyViewedListLogic _recentlyViewedLogic;
         private readonly IRecentlyOrderedListLogic _recentlyOrderedLogic;
-        private readonly IRecommendedItemsListLogic _recommendedItemsLogic;
         private readonly IMandatoryItemsListLogic _mandatoryItemsLogic;
         private readonly IInventoryValuationListLogic _inventoryValuationLogic;
         private readonly IRemindersListLogic _reminderItemsLogic;
@@ -175,12 +173,27 @@ namespace KeithLink.Svc.Impl.Service.List
                         returnList.TryAdd(_mandatoryItemsLogic.ReadList(user, catalogInfo, headerOnly));
                         break;
 
-                    case ListType.RecommendedItems:
-                        returnList.TryAdd(_recommendedItemsLogic.ReadList(user, catalogInfo, headerOnly));
-                        break;
-
                     case ListType.InventoryValuation:
                         returnList.TryAddRange(_inventoryValuationLogic.ReadLists(user, catalogInfo, headerOnly));
+
+                        if (headerOnly == false && returnList.Count > 0) {
+                            var contractDict = GetContractInformation(catalogInfo);
+
+                            if (contractDict != null &&
+                                contractDict.Keys.Count > 0) {
+                                foreach (var list in returnList)
+                                {
+                                    foreach (var item in list.Items)
+                                    {
+                                        if (contractDict.ContainsKey(item.ItemNumber)) {
+                                            item.Category = contractDict[item.ItemNumber];
+                                            list.HasContractItems = true;
+                                        }
+                                    }
+                                }
+                            }
+                        }
+
                         break;
 
                     case ListType.RecentlyOrdered:
@@ -269,10 +282,6 @@ namespace KeithLink.Svc.Impl.Service.List
                         tempList = _mandatoryItemsLogic.GetListModel(user, catalogInfo, Id);
                         break;
 
-                    case ListType.RecommendedItems:
-                        tempList = _recommendedItemsLogic.GetListModel(user, catalogInfo, Id);
-                        break;
-
                     case ListType.InventoryValuation:
                         tempList = _inventoryValuationLogic.ReadList(Id, catalogInfo, false);
                         break;
@@ -324,7 +333,6 @@ namespace KeithLink.Svc.Impl.Service.List
                 AddListsIfNotNull(user, catalogInfo, ListType.Contract, list, headerOnly);
                 AddListsIfNotNull(user, catalogInfo, ListType.Favorite, list, headerOnly);
                 AddListsIfNotNull(user, catalogInfo, ListType.Reminder, list, headerOnly);
-                AddListsIfNotNull(user, catalogInfo, ListType.RecommendedItems, list, headerOnly);
                 AddListsIfNotNull(user, catalogInfo, ListType.Mandatory, list, headerOnly);
                 AddListsIfNotNull(user, catalogInfo, ListType.Custom, list, headerOnly);
 
@@ -529,6 +537,18 @@ namespace KeithLink.Svc.Impl.Service.List
 
                     FillOutProducts(user, catalogInfo, retVal, true);
 
+                    var contractDict = GetContractInformation(catalogInfo);
+
+                    if (contractDict != null &&
+                        contractDict.Keys.Count > 0) {
+                        foreach (var item in retVal.Items) {
+                            if (contractDict.ContainsKey(item.ItemNumber)) {
+                                item.Category = contractDict[item.ItemNumber];
+                                retVal.HasContractItems = true;
+                            }
+                        }
+                    }
+
                     break;
                     //case ListType.RecentlyOrdered:
                     //    break;
@@ -568,9 +588,6 @@ namespace KeithLink.Svc.Impl.Service.List
                     break;
                 case ListType.Reminder:
                     _reminderItemsLogic.Save(catalogInfo, item.ToReminderItemsListDetail(headerId));
-                    break;
-                case ListType.RecommendedItems:
-                    _recommendedItemsLogic.SaveDetail(catalogInfo, item.ToRecommendedItemsListDetail(headerId));
                     break;
                 case ListType.Mandatory:
                     _mandatoryItemsLogic.SaveDetail(catalogInfo, item.ToMandatoryItemsListDetail(headerId));
@@ -635,9 +652,6 @@ namespace KeithLink.Svc.Impl.Service.List
             long id = 0;
             switch (type)
             {
-                case ListType.RecommendedItems:
-                    _recommendedItemsLogic.CreateList(catalogInfo);
-                    break;
                 case ListType.Reminder:
                     id = _reminderItemsLogic.SaveList(user, catalogInfo, list)
                                             .ListId;
@@ -1018,29 +1032,6 @@ namespace KeithLink.Svc.Impl.Service.List
                     listItem.DeviatedCost = price.DeviatedCost ? "Y" : "N";
                 }
             });
-        }
-
-        public List<RecommendedItemModel> ReadRecommendedItemsList(UserSelectedContext catalogInfo)
-        {
-            ListModel list = _recommendedItemsLogic.ReadList(new UserProfile(), catalogInfo, false);
-
-            List<RecommendedItemModel> recommended = new List<RecommendedItemModel>();
-
-            if (list != null &&
-                list.Items != null &&
-                list.Items.Count > 0)
-            {
-                recommended = list.Items.Select(i => new RecommendedItemModel
-                {
-                    ItemNumber = i.ItemNumber,
-                    Name = i.Name,
-                    Images = _productImageRepo.GetImageList(i.ItemNumber, true) != null ?
-                                                                              _productImageRepo.GetImageList(i.ItemNumber, true)
-                                                                                               .ProductImages : null
-                })
-                                                             .ToList();
-            }
-            return recommended;
         }
 
         public ListModel MarkFavoritesAndAddNotes(UserProfile user, ListModel list, UserSelectedContext catalogInfo)

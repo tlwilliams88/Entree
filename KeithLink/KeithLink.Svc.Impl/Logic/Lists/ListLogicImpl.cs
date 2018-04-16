@@ -678,7 +678,7 @@ namespace KeithLink.Svc.Impl.Logic.Lists
         //public List<InHistoryReturnModel> ItemsInHistoryList(UserSelectedContext catalogInfo, List<string> itemNumbers) {
         //    var returnModel = new BlockingCollection<InHistoryReturnModel>();
 
-        //    var list = _listRepo.Read(l => l.CustomerId.Equals(catalogInfo.CustomerId) && l.BranchId.Equals(catalogInfo.BranchId, StringComparison.CurrentCultureIgnoreCase) && l.Type == ListType.Worksheet, i => i.Items).FirstOrDefault();
+        //    var list = _listRepo.ReadSP(l => l.CustomerId.Equals(catalogInfo.CustomerId) && l.BranchId.Equals(catalogInfo.BranchId, StringComparison.CurrentCultureIgnoreCase) && l.Type == ListType.Worksheet, i => i.Items).FirstOrDefault();
 
         //    if(list == null)
         //        return itemNumbers.Select(i => new InHistoryReturnModel() { ItemNumber = i, InHistory = false }).ToList();
@@ -961,7 +961,7 @@ namespace KeithLink.Svc.Impl.Logic.Lists
         }
 
         //public List<string> ReadFavorites(UserProfile user, UserSelectedContext catalogInfo) {
-        //    var list = _listRepo.Read(l => l.UserId == user.UserId && l.CustomerId.Equals(catalogInfo.CustomerId) && l.Type == ListType.Favorite, i => i.Items).ToList();
+        //    var list = _listRepo.ReadSP(l => l.UserId == user.UserId && l.CustomerId.Equals(catalogInfo.CustomerId) && l.Type == ListType.Favorite, i => i.Items).ToList();
 
         //    if(list == null)
         //        return null;
@@ -1135,7 +1135,7 @@ namespace KeithLink.Svc.Impl.Logic.Lists
         }
 
         //public List<ListItemModel> ReadNotes(UserProfile user, UserSelectedContext catalogInfo) {
-        //    var notes = _listRepo.Read(l => l.CustomerId.Equals(catalogInfo.CustomerId, StringComparison.CurrentCultureIgnoreCase) && 
+        //    var notes = _listRepo.ReadSP(l => l.CustomerId.Equals(catalogInfo.CustomerId, StringComparison.CurrentCultureIgnoreCase) && 
         //                                    l.BranchId.Equals(catalogInfo.BranchId) && 
         //                                    l.Type == ListType.Notes, 
         //                                i => i.Items)
@@ -1208,7 +1208,7 @@ namespace KeithLink.Svc.Impl.Logic.Lists
             {
                 List list = _listRepo.Read(l => l.Id.Equals(Id), l => l.Items)
                                     .FirstOrDefault(); // Not returned catalog ID here
-                stopWatch.Read(_log, "GetListModel - _listRepo.Read");
+                stopWatch.Read(_log, "GetListModel - _listRepo.ReadSP");
 
                 if (list == null)
                     return null;
@@ -1245,7 +1245,7 @@ namespace KeithLink.Svc.Impl.Logic.Lists
             //    tempList.Items.ForEach
             //        (itm => itm.Category = ContractInformationHelper.AddContractInformationIfInContract
             //                               (contractdictionary, itm));
-            //    stopWatch.Read(_log, "FillOutListModelItems - AddContractInformationIfInContract");
+            //    stopWatch.ReadSP(_log, "FillOutListModelItems - AddContractInformationIfInContract");
             //}
         }
 
@@ -1314,33 +1314,6 @@ namespace KeithLink.Svc.Impl.Logic.Lists
                 _log.WriteInformationLog(" Getting recently ordered items list failed, reset list", ex);
                 return null;
             }
-        }
-
-        public List<RecommendedItemModel> ReadRecommendedItemsList(UserSelectedContext catalogInfo) {
-            var list = _listRepo.Read(l => l.Type == ListType.RecommendedItems && l.CustomerId.Equals(catalogInfo.CustomerId) && l.BranchId.Equals(catalogInfo.BranchId)).FirstOrDefault();
-
-            if (list == null || list.Items == null)
-                return new List<RecommendedItemModel>();
-
-            var returnItems = list.Items.Where(i => (i.FromDate == null || i.FromDate <= DateTime.Now) && (i.ToDate == null || i.ToDate >= DateTime.Now)).Select(r => new RecommendedItemModel() { ItemNumber = r.ItemNumber }).ToList();
-
-            var products = _catalogLogic.GetProductsByIds(catalogInfo.BranchId, returnItems.Select(i => i.ItemNumber).Distinct().ToList());
-
-            returnItems.ForEach(delegate (RecommendedItemModel item)
-            {
-                var product = products.Products.Where(p => p.ItemNumber.Equals(item.ItemNumber)).FirstOrDefault();
-                if (product != null)
-                {
-                    item.Name = product.Name;
-                }
-            });
-
-            returnItems.ForEach(delegate (RecommendedItemModel item)
-            {
-                item.Images = _productImageRepo.GetImageList(item.ItemNumber).ProductImages;
-            });
-
-            return returnItems;
         }
 
         public List<ListModel> ReadReminders(UserProfile user, UserSelectedContext catalogInfo)

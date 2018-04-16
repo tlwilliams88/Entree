@@ -8,8 +8,8 @@
  * Controller of the bekApp
  */
 angular.module('bekApp')
-  .controller('ItemDetailsController', ['$scope', '$state', '$modal', 'item', 'ProductService', 'AccessService', 'PricingService', 'LocalStorage', 'AnalyticsService',
-    function ($scope, $state, $modal, item, ProductService, AccessService, PricingService, LocalStorage, AnalyticsService) {
+  .controller('ItemDetailsController', ['$scope', '$state', '$modal', 'item', 'ProductService', 'AccessService', 'PricingService', 'LocalStorage', 'AnalyticsService', 'ENV',
+    function ($scope, $state, $modal, item, ProductService, AccessService, PricingService, LocalStorage, AnalyticsService, ENV) {
     
     if(!item){
       $state.go('menu.home');
@@ -18,6 +18,14 @@ angular.module('bekApp')
 
     $scope.item = item;
     $scope.item.quantity = 1;
+
+    $scope.showRecommendedItems = ENV.showRecommendedItems;
+
+    if($scope.showRecommendedItems == true) {
+      ProductService.getRecommendedItems($scope.item.itemnumber).then(function(resp) {
+        $scope.recommendedItems = resp;
+      });
+    }
 
     $scope.item.orderHistoryKeys = Object.keys(item.orderhistory);
 

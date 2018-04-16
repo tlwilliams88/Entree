@@ -248,5 +248,8 @@ namespace KeithLink.Svc.Core.Models.SiteCatalog
 
         [DataMember(Name ="marketing_manufacturer")]
         public string MarketingManufacturer { get; set; }
+
+        [DataMember(Name="pricelistcode")]
+        public string PriceListCode { get; set; }
     }
 }

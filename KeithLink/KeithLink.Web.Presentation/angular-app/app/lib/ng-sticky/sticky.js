@@ -256,7 +256,7 @@
 
               $elem
                 .css('z-index', 10)
-                .css('width', initialCSS.width)
+                .css('width', $elem[0].offsetWidth + 'px')
                 .css('top', initialCSS.top)
                 .css('position', initialCSS.position)
                 .css('left', initialCSS.cssLeft)
@@ -271,7 +271,7 @@
 
               $elem
                 .css('z-index', 10)
-                .css('width', initialCSS.width)
+                .css('width', $elem[0].offsetWidth + 'px')
                 .css('top', '')
                 .css('bottom', 0)
                 .css('position', 'absolute')

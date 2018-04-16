@@ -46,7 +46,7 @@ namespace KeithLink.Svc.Impl.Repository.Lists
 
         #region methods
         public List<InventoryValuationListDetail> GetInventoryValuationDetails(long headerId) {
-            return Read<InventoryValuationListDetail>(SPNAME_GETDETAILS, PARMNAME_HEADERID, headerId);
+            return ReadSP<InventoryValuationListDetail>(SPNAME_GETDETAILS, PARMNAME_HEADERID, headerId);
         }
 
         public long SaveInventoryValuationDetail(InventoryValuationListDetail model) {
@@ -64,7 +64,7 @@ namespace KeithLink.Svc.Impl.Repository.Lists
 
             parms.Add(PARMNAME_RETURNVALUE, direction: ParameterDirection.Output, dbType: DbType.Int64);
 
-            ExecuteCommand(SPNAME_SAVE, parms);
+            ExecuteSPCommand(SPNAME_SAVE, parms);
 
             return parms.Get<long>(PARMNAME_RETURNVALUE);
         }

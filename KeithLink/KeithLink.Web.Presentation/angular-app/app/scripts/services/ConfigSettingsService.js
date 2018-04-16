@@ -17,6 +17,12 @@ angular.module('bekApp')
       });
     },
 
+    getSetting: function(setting) {
+      return ConfigSettings.getSetting({setting: setting}).$promise.then(function(resp) {
+        return resp.successResponse;
+      })
+    }
+
   };
 
   return Service;

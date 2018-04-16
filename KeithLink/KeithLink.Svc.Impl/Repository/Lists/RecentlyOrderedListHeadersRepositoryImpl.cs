@@ -34,7 +34,7 @@ namespace KeithLink.Svc.Impl.Repository.Lists {
             parms.Add(PARMNAME_BRANCHID, (catalogInfo.BranchId));
             parms.Add(PARMNAME_CUSTOMERNUMBER, catalogInfo.CustomerId);
 
-            return ReadOne<RecentlyOrderedListHeader>(SPNAME_GET, parms);
+            return ReadOneSP<RecentlyOrderedListHeader>(SPNAME_GET, parms);
         }
 
         public long Save(RecentlyOrderedListHeader header) {
@@ -45,7 +45,7 @@ namespace KeithLink.Svc.Impl.Repository.Lists {
             parms.Add(PARMNAME_CUSTOMERNUMBER, header.CustomerNumber);
             parms.Add(PARMNAME_RETURNVALUE, 0, dbType: DbType.Int64, direction: ParameterDirection.Output);
 
-            ExecuteCommand(SPNAME_SAVE, parms);
+            ExecuteSPCommand(SPNAME_SAVE, parms);
 
             return parms.Get<long>(PARMNAME_RETURNVALUE);
 

@@ -95,7 +95,9 @@ angular.module('bekApp')
     // get promo/marketing items
     $scope.loadingPromoItems = true;
     MarketingService.getPromoItems().then(function(items) {
-      $scope.marketingPromoItems = items;
+      if(items[0].targeturltext != 'Admiral of the Fleet Salmon') { //Added to stop the salmon photo from displaying
+        $scope.marketingPromoItems = items;
+      }
       delete $scope.promoMessage;
     }, function(errorMessage) {
       $scope.promoMessage = errorMessage;
@@ -158,50 +160,28 @@ angular.module('bekApp')
       }]
     };
 
-    // $scope.loadingRecentActivity = true;
-    //   NotificationService.getMessages($scope.notificationParams).then(function(data) {
-    //     var notifications =data.results,
-    //     notificationDates ={},
-    //     dates = [];
-    //     notifications.forEach(function(notification){
-    //      var date = DateService.momentObject(notification.messagecreated).format(Constants.dateFormat.yearMonthDayDashes);
-    //
-    //      if(notificationDates[date]){
-    //       notificationDates[date].push(notification);
-    //       }
-    //       else{
-    //         dates.push(date);
-    //         notificationDates[date] = [notification];
-    //       }
-    //
-    //     });
-    //   $scope.notificationDates = notificationDates;
-    //   $scope.dates = dates;
-    //   $scope.loadingRecentActivity = false;
-    // });
-
     $scope.loadingRecentlyViewedItems = true;
     $scope.loadingrecentlyOrderedUnfiItems = true;
     $scope.loadingCategories = true;
     $scope.loadingBrands = true;
     $scope.loadingRecommendedItems = true;
 
-    ProductService.getRecentlyViewedItems().then(function(items) {
-      $scope.recentlyViewedItems = items;
+    ProductService.getRecentlyViewedItems().then(function(recentitems) {
+      $scope.recentlyViewedItems = recentitems;
       $scope.loadingRecentlyViewedItems = false;
 
-      ListService.getRecommendedItems().then(function(items) {
-        $scope.recommendedItems = items;
+      CategoryService.getCategories($state.params.catalogType).then(function(categories) {
+        $scope.showRecommendedItems = ENV.showRecommendedItems;
+
+        $scope.recommendedItems = categories;
         $scope.loadingRecommendedItems = false;
+        
+        $scope.categories = categories;
+        $scope.loadingCategories = false;
 
-        CategoryService.getCategories($state.params.catalogType).then(function(categories) {
-          $scope.categories = categories;
-          $scope.loadingCategories = false;
-
-          BrandService.getHouseBrands().then(function(data){
-            $scope.brands = data;
-            $scope.loadingBrands = false;
-          });
+        BrandService.getHouseBrands().then(function(brands){
+          $scope.brands = brands;
+          $scope.loadingBrands = false;
         });
       });
     });

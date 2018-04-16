@@ -46,14 +46,14 @@ namespace KeithLink.Svc.Impl.Repository.Orders
             parms.Add(PARMNAME_ITEMNUMBER, orderedItemFromList.ItemNumber);
             parms.Add(PARMNAME_SOURCELIST, orderedItemFromList.SourceList);
 
-            ExecuteCommand(STOREDPROC_WRITE_ONE, parms);
+            ExecuteSPCommand(STOREDPROC_WRITE_ONE, parms);
         }
 
         public void Purge(int PurgeDays)
         {
             if (PurgeDays < 0)
             {
-                ExecuteCommand(STOREDPROC_PURGE_BY_DAYS, "@PurgeDays", PurgeDays);
+                ExecuteSPCommand(STOREDPROC_PURGE_BY_DAYS, "@PurgeDays", PurgeDays);
             }
         }
     }

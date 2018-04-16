@@ -40,14 +40,14 @@ namespace KeithLink.Svc.Impl.Repository.Lists
             parms.Add("@Sent", Sent);
             parms.Add("@Id", Id);
 
-            ExecuteCommand(STOREDPROC_UPDATE_SENT_ON_SET, parms);
+            ExecuteSPCommand(STOREDPROC_UPDATE_SENT_ON_SET, parms);
         }
 
         public void Purge(int PurgeDays)
         {
             if (PurgeDays < 0)
             {
-                ExecuteCommand(STOREDPROC_PURGE, "@PurgeDays", PurgeDays);
+                ExecuteSPCommand(STOREDPROC_PURGE, "@PurgeDays", PurgeDays);
             }
         }
     }
