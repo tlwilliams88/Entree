@@ -24,7 +24,7 @@
               <Width>0.42372in</Width>
             </TablixColumn>
             <TablixColumn>
-              <Width>1.44166in</Width>
+              <Width>1.22846in</Width>
             </TablixColumn>
             <TablixColumn>
               <Width>0.35in</Width>
@@ -561,7 +561,7 @@
         <Top>0.04229in</Top>
         <Left>0.00917in</Left>
         <Height>0.45833in</Height>
-        <Width>8.03358in</Width>
+        <Width>7.82038in</Width>
         <Style>
           <Border>
             <Style>None</Style>
@@ -576,7 +576,7 @@
       </Border>
     </Style>
   </Body>
-  <Width>8.21579in</Width>
+  <Width>7.91371in</Width>
   <Page>
     <PageHeader>
       <Height>0.80305in</Height>
@@ -620,7 +620,7 @@
           <Top>0.01958in</Top>
           <Left>0.00917in</Left>
           <Height>0.25in</Height>
-          <Width>8.00874in</Width>
+          <Width>7.20666in</Width>
           <Style>
             <Border>
               <Style>None</Style>
@@ -973,7 +973,7 @@
           </Paragraphs>
           <rd:DefaultName>Textbox63</rd:DefaultName>
           <Top>0.32514in</Top>
-          <Left>7.34275in</Left>
+          <Left>7.124in</Left>
           <Height>0.47791in</Height>
           <Width>0.7in</Width>
           <ZIndex>8</ZIndex>
@@ -1028,7 +1028,7 @@
           </Paragraphs>
           <rd:DefaultName>Textbox3</rd:DefaultName>
           <Top>0.26041in</Top>
-          <Left>7.15386in</Left>
+          <Left>6.82955in</Left>
           <Height>0.25in</Height>
           <Width>1in</Width>
           <Style>
