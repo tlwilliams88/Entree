@@ -292,7 +292,7 @@
               <tab-heading><span class="icon-cart" style="padding-right: 5px; color: #3E9DCD"></span>Cart</tab-heading>
               <h3 class="visible-print-block hidden-xs hidden-sm hidden-md hidden-lg"><span class="icon-cart" style="padding-right: 5px;"></span>Cart</h3>
               <table class="table item-details__table table-striped-rows no-margin" style="width: 100%; padding-bottom: 10px;">
-                <tbody>
+                <tbody infinite-scroll="infiniteScrollLoadMore()" infinite-scroll-distance="2">
                   <tr>
                     <th class="sort-col-header" ng-click="sortBy='itemnumber';sortOrder=!sortOrder;">
                         Item
