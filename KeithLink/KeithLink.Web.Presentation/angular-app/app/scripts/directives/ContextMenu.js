@@ -116,16 +116,16 @@ angular.module('bekApp')
             customList = $filter('filter')($scope.lists, { type: 0 }),
             listToBeUsed = {};
 
-        if(contractList.length > 0){
+        if(contractList && contractList.length > 0){
           listToBeUsed = contractList[0];
         }
-        else if(historyList.length > 0){
+        else if(historyList && historyList.length > 0){
           listToBeUsed = historyList[0];
         }
-        else if(favoritesList.length > 0){
+        else if(favoritesList && favoritesList.length > 0){
           listToBeUsed = favoritesList[0];
         }
-        else if(customList.length > 0){
+        else if(customList && customList.length > 0){
           listToBeUsed = customList[0];
         }
         
