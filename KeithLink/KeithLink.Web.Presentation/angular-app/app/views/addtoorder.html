@@ -44,20 +44,20 @@
       <span>Your form has some errors. Please fix these before adding items to an order.</span>
     </div>
   </div>
+  
   <div class="row" ng-if="invalidValue">
     <div class="col-xs-12 text-red">
       <span>Please enter a quantity no greater than 999</span>
     </div>
   </div>
-   <div class="row">
-    <div class="col-xs-5" ng-if="selectedList.active == true" style="margin-top: 7px;" >
+  <div class="row" ng-show="showingPagination == 'true'">
+    <div class="col-xs-5" style="margin-top: 7px;" >
       <input id="useParlevel" name="useParlevel" type="checkbox" ng-model="useParlevel" ng-change="removeRowHighlightParLevel();">
       <label for="useParlevel">Use PAR Level</label>
     </div>
     <div class="col-xs-7 text-right" style="float:right; margin-top: 7px;" >
-     Showing {{rangeStart}} - {{rangeEnd}} of  {{selectedList.itemCount}} Items
+      Showing {{rangeStart}} - {{rangeEnd}} of  {{selectedList.itemCount}} Items
     </div>
-
   </div>
 
   <div class="row hidden-print">

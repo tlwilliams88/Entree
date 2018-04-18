@@ -102,9 +102,6 @@ angular.module('bekApp')
 
     $scope.removeRowHighlightParLevel = function(){
       $('.ATOrowHighlight').removeClass('ATOrowHighlight');
-
-      $scope.useParlevel = !$scope.useParlevel;
-    
     };
 
     function onItemQuantityChanged(newVal, oldVal) {
