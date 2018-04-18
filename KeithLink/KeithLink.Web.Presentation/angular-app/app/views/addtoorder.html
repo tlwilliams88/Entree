@@ -44,7 +44,7 @@
       <span>Your form has some errors. Please fix these before adding items to an order.</span>
     </div>
   </div>
-  
+
   <div class="row" ng-if="invalidValue">
     <div class="col-xs-12 text-red">
       <span>Please enter a quantity no greater than 999</span>
@@ -445,7 +445,7 @@
             </td>
           </tr>
         </tbody>
-        <tfoot ng-show="selectedList.active && (selectedList.items.length === 0 || !selectedList.items)">
+        <tfoot ng-show="showingPagination == 'true' && (selectedList.items.length === 0 || !selectedList.items)">
           <tr>
             <td colspan="17">
               There are no products to display.
