@@ -55,7 +55,15 @@ angular.module('bekApp')
         mandatoryMessages: ['NotificationService', function(NotificationService) {
           return NotificationService.mandatoryMessages;
         }],
-        isHomePage: ['$stateParams', function($stateParams) {
+        isHomePage: ['$stateParams', 'ConfigSettingsService', 'ENV', function($stateParams, ConfigSettingsService, ENV) {
+          ConfigSettingsService.getSetting('ShowRecommendedItems').then(function(setting) {
+            ENV.showRecommendedItems = setting;
+          },
+            function(data) {
+              console.log(data);
+            }
+          )
+
           return $stateParams.isHomePage = false;
         }]
       }
