@@ -66,39 +66,32 @@ angular.module('bekApp')
                                      '', 
                                      tranPosition);
 
-                var fromlist = item.sourceProductList;
-                if(fromlist == null){
-                  fromlist = "";
-                }
-
-                // create tracker for each product (since they come from seperate lists)
-                Analytics.trackTransaction(orderNumber + '.' +
-                                             (tranPosition).toLocaleString('en-US', {minimumIntegerDigits: 2, useGrouping:false}) + '.' +
-                                             item.itemnumber, 
-                                           orderNumber, 
-                                           item.extPrice, 
-                                           '', 
-                                           '', 
-                                           '', 
-                                           fromlist, 
-                                           Constants.checkoutSteps.SubmitCart, 
-                                           '');
-
-                Analytics.trackEvent('Process', 
-                                     'TH', 
-                                     '', 
-                                     '0', 
-                                     true,
-                                     {
-                                        userId: SessionService.userProfile.displayRole + 
-                                                '.' + 
-                                                SessionService.userProfile.userid,
-                                        dimension6: customerBranch,
-                                        dimension7: customerNumber,
-                                        dimension8: itemCount.toString(),
-                                        dimension9: pieceCount.toString()
-                                     });
             }
+
+            Analytics.trackTransaction(orderNumber, 
+                                       null, 
+                                       null, 
+                                       '', 
+                                       '', 
+                                       '', 
+                                       null, 
+                                       Constants.checkoutSteps.SubmitCart, 
+                                       '');
+
+            Analytics.trackEvent('Process', 
+                                 'TH', 
+                                 '', 
+                                 '0', 
+                                 true,
+                                 {
+                                    userId: SessionService.userProfile.displayRole + 
+                                            '.' + 
+                                            SessionService.userProfile.userid,
+                                    dimension6: customerBranch,
+                                    dimension7: customerNumber,
+                                    dimension8: itemCount.toString(),
+                                    dimension9: pieceCount.toString()
+                                 });
         },
         
         recordCheckout: function(cart, step, option){

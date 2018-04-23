@@ -35,6 +35,12 @@ angular.module('bekApp')
           guiders.hideAll();
       });
 
+      $scope.showPagination = function(status) {
+        
+        $scope.showingPagination = status;
+      
+      };
+
     // Tutorial -- Tutorial Ignored 09/25
     // var hideTutorial = LocalStorage.getHideTutorialAddToOrder() || isMobileApp || isMobile,
     //     runTutorial =  hideTutorial || isMobileApp || isMobile ? false : true;
@@ -96,9 +102,6 @@ angular.module('bekApp')
 
     $scope.removeRowHighlightParLevel = function(){
       $('.ATOrowHighlight').removeClass('ATOrowHighlight');
-
-      $scope.useParlevel = !$scope.useParlevel;
-    
     };
 
     function onItemQuantityChanged(newVal, oldVal) {
@@ -547,6 +550,7 @@ angular.module('bekApp')
     };
 
     $scope.clearFilter = function(){
+      $scope.selectedList.active = true;
       $scope.orderSearchTerm = '';
       $stateParams.searchTerm = '';
       if($scope.addToOrderForm.$pristine){
@@ -562,7 +566,6 @@ angular.module('bekApp')
         });
       }
       $scope.setCurrentPageAfterRedirect(1);
-      $scope.orderSearchForm.$setPristine();
     };
 
 

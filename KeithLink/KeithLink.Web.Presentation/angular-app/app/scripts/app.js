@@ -137,10 +137,6 @@ angular
       $rootScope.returnToStateItemNumber = toParams.itemNumber;
     }
 
-    ConfigSettingsService.getSetting('ShowRecommendedItems').then(function(setting) {
-      ENV.showRecommendedItems = setting;
-    })
-
     function isStateRestricted(stateData) {
       return stateData && stateData.authorize;
     }

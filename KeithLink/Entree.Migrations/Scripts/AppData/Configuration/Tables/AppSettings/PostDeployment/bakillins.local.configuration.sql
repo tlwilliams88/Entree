@@ -137,6 +137,17 @@ INSERT @AppSettings ([Key], [Value], [Comment], [Disabled]) VALUES ('RabbitMQNot
 INSERT @AppSettings ([Key], [Value], [Comment], [Disabled]) VALUES ('RabbitMQNotificationQueue', 'notifications_v1', 'RabbitMQ Settings: Notifications Queue', 0)
 INSERT @AppSettings ([Key], [Value], [Comment], [Disabled]) VALUES ('RabbitMQOrderConfirmationQueue', 'notifications_v2_bakillins_orderconfirmations', 'RabbitMQ Settings: Notification Queue', 0)
 INSERT @AppSettings ([Key], [Value], [Comment], [Disabled]) VALUES ('RabbitMQPaymentConfirmationQueue', 'notifications_v2_bakillins_paymentconfirmations', 'RabbitMQ Settings: Queue', 0)
+INSERT 
+	INTO @AppSettings 
+		([Key], [Value], [Comment], [Disabled]) 
+	VALUES 
+		('ValidPublicApiTokens', 'db72d0feaf53d708a3f93451bf6dbd1d94a645a7-1e8f-448d-9b76-924dcbea2023', 'Site Settings: Public Api Tokens in CSV format', 0)
+		-- add token for Parscales
+INSERT 
+	INTO @AppSettings 
+		([Key], [Value], [Comment], [Disabled]) 
+	VALUES 
+		('ServePublicApi', 'false', 'Site Settings: true or false as to whether to serve public api', 0)
 
 -- Push Notifications
 INSERT @AppSettings ([Key], [Value], [Comment], [Disabled]) VALUES ('RabbitMQPushMessagesQueue', 'notifications_push_messages_bakillins', 'RabbitMQ Settings: Queue', 0)
@@ -180,6 +191,11 @@ INSERT @AppSettings ([Key], [Value], [Comment], [Disabled]) VALUES ('RecentItems
 INSERT @AppSettings ([Key], [Value], [Comment], [Disabled]) VALUES ('RequireHttps', 'false', 'Site Settings', 0)
 INSERT @AppSettings ([Key], [Value], [Comment], [Disabled]) VALUES ('RunInternalServiceQueues', 'true', 'Site Settings', 0)
 INSERT @AppSettings ([Key], [Value], [Comment], [Disabled]) VALUES ('ServiceEmailAddress', 'noreply@credera.com', 'Email Settings', 0)
+INSERT 
+	INTO @AppSettings 
+		([Key], [Value], [Comment], [Disabled]) 
+	VALUES 
+		('ShowRecommendedItems', 'false', 'Feature Flags', 0)
 INSERT @AppSettings ([Key], [Value], [Comment], [Disabled]) VALUES ('SMTPHostName', 'localhost', 'Email Settings', 0)
 INSERT @AppSettings ([Key], [Value], [Comment], [Disabled]) VALUES ('SMTPPassword', '0', 'Site Settings', 0)
 INSERT @AppSettings ([Key], [Value], [Comment], [Disabled]) VALUES ('SMTPSendPort', '0', 'Site Settings', 0)
