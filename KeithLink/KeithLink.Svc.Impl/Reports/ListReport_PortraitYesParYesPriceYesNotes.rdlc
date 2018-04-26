@@ -572,7 +572,7 @@
       </Border>
     </Style>
   </Body>
-  <Width>8.60873in</Width>
+  <Width>8.0254in</Width>
   <Page>
     <PageHeader>
       <Height>0.83145in</Height>
@@ -1070,7 +1070,7 @@
           </Paragraphs>
           <rd:DefaultName>Textbox3</rd:DefaultName>
           <Top>0.26041in</Top>
-          <Left>7.15386in</Left>
+          <Left>7.01791in</Left>
           <Height>0.25in</Height>
           <Width>1in</Width>
           <Style>
