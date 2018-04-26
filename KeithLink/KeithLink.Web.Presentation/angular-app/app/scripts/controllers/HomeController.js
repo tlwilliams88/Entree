@@ -20,6 +20,8 @@ angular.module('bekApp')
 
     $scope.isHomePage = isHomePage;
 
+    $scope.showRecommendedItems = ENV.showRecommendedItems;
+
     $scope.$on('$stateChangeStart',
       function(){
         guiders.hideAll();

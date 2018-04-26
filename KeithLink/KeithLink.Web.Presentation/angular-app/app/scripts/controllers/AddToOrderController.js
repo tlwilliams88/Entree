@@ -108,6 +108,20 @@ angular.module('bekApp')
       var changedExpression = this.exp; // jshint ignore:line
       var idx = changedExpression.substr(changedExpression.indexOf('[') + 1, changedExpression.indexOf(']') - changedExpression.indexOf('[') - 1);
       var object = changedExpression.substr(0, changedExpression.indexOf('.'));
+
+
+      var listItem;
+      var listIdx;
+      if(object == 'selectedCart') {
+        listItem = $filter('filter')($scope.selectedList.items, function(item) {
+                return (item.itemnumber == $scope[object].items[idx].itemnumber && item.quantity > 0)
+        });
+        listIdx = $scope.selectedList.items.indexOf(listItem[0]);
+        if(listIdx > -1 && $scope.selectedList.items[listIdx].quantity > 0) {
+          $scope.selectedList.items[listIdx].quantity = $scope[object].items[idx].quantity;
+        }
+      }
+
       var item = $scope[object].items[idx];
 
       if(newVal !== oldVal && item){

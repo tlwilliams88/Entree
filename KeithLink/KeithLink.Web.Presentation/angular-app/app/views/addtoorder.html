@@ -448,14 +448,14 @@
         <tfoot ng-show="showingPagination == 'true' && (selectedList.items.length === 0 || !selectedList.items)">
           <tr>
             <td colspan="17">
-              There are no products to display.
+              There are no list items to display.
             </td>
           </tr>
         </tfoot>
       </table>
     </tab>
     <tab class="text-center" ng-click="showPagination('false')" active="cartItems.active">
-      <tab-heading><span class="icon-cart" style="padding-right: 5px; color: #3E9DCD"></span>Other Cart Items</tab-heading>
+      <tab-heading><span class="icon-cart" style="padding-right: 5px;" ng-style="selectedCart.items.length > 0 && { 'color': '#3E9DCD' }"></span>Cart <span class="glyphicon glyphicon-info-sign" tooltip="Displays all current items in cart"</span></tab-heading>
       <table
       class="table table-striped-rows table-border"
       navigate-table="lists">
@@ -473,7 +473,7 @@
           <th></th>
         </tr>
       </thead>
-      <tbody ng-if="!item.recommended" ng-repeat="item in filteredCartItems |  orderBy:'createddate':false">
+      <tbody ng-if="!item.recommended" ng-repeat="item in selectedCart.items |  orderBy:'createddate':false">
         <tr ng-class="{ odd : $odd, even: $even }">
           <td>
             <a ng-if="item.isvalid && item.catalog_id && item.catalog_id.indexOf('unfi') == 0" ui-sref="menu.catalog.products.details({ itemNumber : item.itemnumber, catalogType : 'UNFI' })">{{::item.itemnumber}}</a>
@@ -560,10 +560,10 @@
           </td>
         </tr>
       </tbody>
-      <tfoot ng-show="cartItems.active && filteredCartItems.length == 0">
+      <tfoot ng-show="cartItems.active && selectedCart.items.length == 0">
           <tr>
             <td colspan="17">
-              There are no products to display.
+              There are no cart items to display.
             </td>
           </tr>
         </tfoot>
@@ -576,7 +576,7 @@
       analytics-on 
       analytics-category="Recommended-Item-Add-To-Order" 
       analytics-event="Open Recommended Items Tab">
-        <tab-heading ng-style="recommendedItems.length > 0 && {'color' : '#3E9DCD'}"><span class="icon-thumbsup" style="padding-right: 5px;"></span>Recommended Items <span ng-show="recommendedItems.length > 0">({{recommendedItems.length}})</span><span class="icon-help" style="padding-left: 5px; padding-top: 2px;" tooltip="Recommended Items are based on what is currently in your cart."></span></tab-heading>
+        <tab-heading ng-style="recommendedItems.length > 0 && {'color' : '#3E9DCD'}"><span class="icon-thumbsup" style="padding-right: 5px;"></span>Recommended Items <span ng-show="recommendedItems.length > 0">({{recommendedItems.length}})</span><span class="glyphicon glyphicon-info-sign" style="padding-left: 5px; padding-top: 2px; color:black;" tooltip="Recommended Items are based on what is currently in your cart."></span></tab-heading>
         <table
         class="table table-border"
         navigate-table="lists">
@@ -801,7 +801,7 @@
             </td>
           </tr>
         </tbody>
-        <tfoot ng-show="recommendedList.active && recommendedItems.length == 0">
+        <tfoot ng-show="recommendedItems.length == 0">
             <tr>
               <td colspan="17">
                 There are no recommended items to display.

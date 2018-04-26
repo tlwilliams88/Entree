@@ -14,7 +14,7 @@
 <!-- <ng-include src="'views/globalmessage.html'"></ng-include> -->
 <div>
   <div class="row">
-    <div class="col-md-5 col-md-push-7 col-lg-4 col-lg-push-8">
+    <div class="col-md-5 col-md-push-7 col-lg-4 col-lg-push-8" style="margin-bottom: 5px;">
       <!-- Account Summary -->
       <div class="info-box" ng-class="{ 'account-summary-info': canViewOrders}" style="display: grid; text-align: center;" ng-if="canViewInvoices" ui-sref="menu.invoice">
         <h4><strong>Account Balance</strong></h4>
@@ -60,8 +60,8 @@
       </div>
       <!-- end Account Summary -->
 
-      <!-- Featured Items -->
-      <div ng-if="recommendedItems.length > 0" class="hidden-xs hidden-sm">
+      <!-- Recommended Items -->
+      <div ng-if="recommendedItems && recommendedItems.length > 0 && showRecommendedItems == true" class="hidden-xs hidden-sm">
         <div class="col-sm-12" style="padding-left: 0; padding-right: 0;">
           <h3>Recommended For You</h3>
           <div loading-spinner="loadingPromoItems" ng-show="loadingPromoItems"></div>
@@ -69,7 +69,7 @@
           <div ng-if="!loadingPromoItems">
 
             <div class="col-xs-12" style="padding-left: 0; padding-right: 0; border: 3px solid #837B6A;">
-                <ul class="horizontal-slide" style="white-space: normal; text-align: center; background-color: #F3F1EC; float:right; columns: 2; padding: 8px 8px 2px 8px;">
+                <ul class="horizontal-slide" style="white-space: normal; text-align: center; background-color: #F3F1EC; float:right; columns: 2; padding: 8px 8px 3px 8px;">
                     <li 
                       ng-if="item.name != 'All'" 
                       ng-repeat="item in recommendedItems | limitTo: 4" 
@@ -238,7 +238,7 @@
     </div> <!-- end Recommended Items -->
 
     <!-- Categories -->
-    <div ng-style="isMobile && {'margin-top': '471px'}">
+    <div style="margin-top: 20px;">
       <div class="col-sm-12">
         <h3>Categories</h3>
         <div loading-spinner="loadingCategories" ng-show="loadingCategories"></div>
