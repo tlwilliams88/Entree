@@ -426,6 +426,7 @@ angular.module('bekApp')
 
         var idx = $scope.currentCart.items.indexOf(item);
         $scope.currentCart.items.splice(idx, 1);
+        calculatePieces($scope.currentCart.items);
         updateRecommendedItems();
         $scope.resetSubmitDisableFlag(true);
         $scope.cartForm.$setDirty();
@@ -589,23 +590,8 @@ angular.module('bekApp')
     };
 
     $scope.addSelectedToCart = function(items) {
-
-      // add watches to new items to update price
-      var originalItemCount = $scope.currentCart.items.length;
-      $scope.currentCart.items = $scope.currentCart.items.concat(items);
-      addItemWatches(originalItemCount);
-      $scope.resetSubmitDisableFlag(true);
-      $scope.cartForm.$setDirty();
-      if ($scope.reminderList.active) {
-        $scope.reminderList.allSelected = false;
-      }
-      if ($scope.mandatoryList.active) {
-        $scope.mandatoryList.allSelected = false;
-      }
-      // $scope.changeAllSelectedItems(items, false);
-
       if (items && items.length > 0) {
-        // items = $filter('filter')(items, {isSelected: true});
+        items = $filter('filter')(items, {isSelected: true});
 
         // set quantity
         items.forEach(function(item) {
@@ -617,14 +603,21 @@ angular.module('bekApp')
 
         });
 
-      } else {
-        items.quantity = Math.ceil(items.parlevel - items.qtyInCart) || 1;
-
-        if ($scope.isChangeOrder) {
-          items.price = items.each ? items.packageprice : items.caseprice;
+        // add watches to new items to update price
+        var originalItemCount = $scope.currentCart.items.length;
+        $scope.currentCart.items = $scope.currentCart.items.concat(items);
+        addItemWatches(originalItemCount);
+        $scope.resetSubmitDisableFlag(true);
+        $scope.cartForm.$setDirty();
+        if ($scope.reminderList) {
+          $scope.reminderList.allSelected = false;
         }
+        if ($scope.mandatoryList) {
+          $scope.mandatoryList.allSelected = false;
+        }
+        $scope.changeAllSelectedItems(items, false);
       }
-
+      
       updateRecommendedItems();
     };
 

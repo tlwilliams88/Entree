@@ -26,7 +26,7 @@
 
   <button class="btn-lg btn btn-primary col-xs-12 hidden-md hidden-lg hidden-print" style="margin-left: -7px; background-color: #04a773;" ng-click="addToOrderForm.$setPristine(); saveAndContinue()">Proceed to Checkout</button>
 
-  <div ng-show="selectedList.itemCount > pagingPageSize  && selectedList.active == true">
+  <div ng-show="selectedList.itemCount > pagingPageSize && showingPagination == 'true'">
    <pagination
     total-items="selectedList.itemCount"
     ng-model="currentPage"
@@ -44,20 +44,20 @@
       <span>Your form has some errors. Please fix these before adding items to an order.</span>
     </div>
   </div>
+
   <div class="row" ng-if="invalidValue">
     <div class="col-xs-12 text-red">
       <span>Please enter a quantity no greater than 999</span>
     </div>
   </div>
-   <div class="row">
-    <div class="col-xs-5" ng-if="selectedList.active == true" style="margin-top: 7px;" >
+  <div class="row" ng-show="showingPagination == 'true'">
+    <div class="col-xs-5" style="margin-top: 7px;" >
       <input id="useParlevel" name="useParlevel" type="checkbox" ng-model="useParlevel" ng-change="removeRowHighlightParLevel();">
       <label for="useParlevel">Use PAR Level</label>
     </div>
     <div class="col-xs-7 text-right" style="float:right; margin-top: 7px;" >
-     Showing {{rangeStart}} - {{rangeEnd}} of  {{selectedList.itemCount}} Items
+      Showing {{rangeStart}} - {{rangeEnd}} of  {{selectedList.itemCount}} Items
     </div>
-
   </div>
 
   <div class="row hidden-print">
@@ -135,7 +135,6 @@
     <div class="col-xs-2 text-right">{{subtotal | currency}}</div>
   </div>
 
-
   <form
     novalidate
     name="addToOrderForm"
@@ -143,7 +142,7 @@
     autocomplete="off">
     <div class="table-addtoorder">
       <tabset class="tabset tab-border pull-left" style="width: 100%; padding-bottom: 10px;">
-      <tab class="text-center" active="selectedList.active">
+      <tab class="text-center" ng-init="showPagination('true')" ng-click="showPagination('true')">
       <tab-heading><span class="icon-text" style="padding-right: 5px; color: #3E9DCD"></span>{{selectedList.name}}</tab-heading>
         <form name="orderSearchForm" class="hidden-print">
             <div class="input-group input-group-lg">
@@ -167,7 +166,7 @@
                   <button 
                     class="btn-default btn"
                     ng-disabled="!orderSearchTerm || orderSearchTerm.length === 0"
-                    ng-click="clearFilter()"
+                    ng-click="clearFilter(); orderSearchTerm = ''"
                     type="submit">
                     <span
                       style="font-size: 18px;"
@@ -446,7 +445,7 @@
             </td>
           </tr>
         </tbody>
-        <tfoot ng-show="selectedList.active && (selectedList.items.length === 0 || !selectedList.items)">
+        <tfoot ng-show="showingPagination == 'true' && (selectedList.items.length === 0 || !selectedList.items)">
           <tr>
             <td colspan="17">
               There are no products to display.
@@ -455,7 +454,7 @@
         </tfoot>
       </table>
     </tab>
-    <tab class="text-center">
+    <tab class="text-center" ng-click="showPagination('false')" active="cartItems.active">
       <tab-heading><span class="icon-cart" style="padding-right: 5px; color: #3E9DCD"></span>Other Cart Items</tab-heading>
       <table
       class="table table-striped-rows table-border"
@@ -573,10 +572,11 @@
   <tab
       ng-if="showRecommendedItems == true"
       class="text-center"  
-      ng-click="updateRecommendedItems(selectedCart.items)" 
+      ng-click="updateRecommendedItems(selectedCart.items); showPagination('false');"
       analytics-on 
       analytics-category="Recommended-Item-Add-To-Order" 
-      analytics-event="Open Recommended Items Tab">
+      analytics-event="Open Recommended Items Tab"
+      active="recommendedList.active">
         <tab-heading><span class="icon-thumbsup" style="padding-right: 5px; color: #3E9DCD"></span>Recommended Items<span class="icon-help" style="padding-left: 5px; padding-top: 2px;" tooltip="Recommended Items are based on what is currently in your cart."></span></tab-heading>
         <table
         class="table table-border"
@@ -814,7 +814,7 @@
 </tabset>
 </div>
 
-  <div ng-show="selectedList.itemCount > pagingPageSize && selectedList.active == true">
+  <div ng-show="selectedList.itemCount > pagingPageSize && showingPagination == 'true'">
    <pagination
     total-items="selectedList.itemCount"
     ng-model="currentPage"
