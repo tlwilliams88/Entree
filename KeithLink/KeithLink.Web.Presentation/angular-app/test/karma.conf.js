@@ -40,6 +40,7 @@ module.exports = function(config) {
       'app/lib/angular-fast-repeat/fastRepeat.js',
       'app/lib/angular-google-analytics/angular-google-analytics.js',
       'app/lib/angular-truncate/ng-text-truncate.js',
+      'app/lib/angular-sticky/angular-sticky.js',
 
       'app/scripts/*.js',
       'app/scripts/**/*.js',

@@ -25,15 +25,15 @@
                 ng-src="{{item.image_mobile}}"
                 alt="image" />
         </a>
-        <img
+        <!-- <img
             class="featured-item-height product-placeholder-image"
             ng-if="!item.imageurl"
             src="images/bek-logo.png"
             alt="default product image" />
-        
+         -->
         <!-- Secondary Content -->
         <a
-            ng-if="item.imageurl && !item.targetType && isMarketing"
+            ng-if="isMarketing"
             ng-href="{{item.targeturl}}"
             target="_blank"
             analytics-on 
@@ -41,9 +41,20 @@
             analytics-event="Secondary Marketing Content" 
             analytics-label="{{item.name}}">
             <img
-                class="item-image featured-item-height-marketing"
-                ng-src="{{item.imageurl}}"
+                class="item-image featured-item-height-marketing feature-item-marketing"
+                ng-src="{{item.category_image.url}}"
                 alt="image" />
+                <div style="position: absolute; left: 30px;
+                top: 10px; font-size: 2em; text-decoration: none;"
+                ng-if="isMarketing">
+                        <a 
+                        ui-sref="menu.catalog.products.list({ type: 'category', id: item.parent_category, category: item.parent_category, subcategories: item.name})" 
+                        class="featured-item__detail"
+                        style="color: white">
+                        {{::item.name}}
+                      </a>
+                </div>
+
         </a>
     </div>
 </div>
@@ -52,7 +63,7 @@
     class="text-center box visible-lg" 
     ng-click="storePromoItemInformation(item.name, item.name)" 
     style="background:transparent;">
-  <div style="display:inline-block">
+  <div style="display:inline-block; width: 100%;">
     <img
         class="item-image featured-item-height"
         ng-if="item.image_desktop && item.link_to_url == null"
@@ -79,24 +90,36 @@
     
     <!-- Secondary Content -->
     <a
-        ng-if="item.imageurl && !item.targetType && isMarketing"
+        ng-if="isMarketing"
         ng-href="{{item.targeturl}}"
         target="_blank"
         analytics-on 
         analytics-category="Homepage-Marketing-Content-Secondary-Desktop" 
         analytics-event="Secondary Marketing Content" 
-        analytics-label="{{item.targeturltext}}">
+        analytics-label="{{item.targeturltext}}"
+        style="object-fit: fill">
         <img
             class="item-image featured-item-height-marketing"
-            ng-src="{{item.imageurl}}"
-            alt="image" />
+            src="{{item.category_image.url}}"
+            alt="image"
+            ui-sref="menu.catalog.products.list({ type: 'category', id: item.parent_category, category: item.parent_category, subcategories: item.name})"  />
+            <div style="position: absolute; left: 30px;
+            top: 10px; font-size: 2em; text-decoration: none;"
+            ng-if="isMarketing">
+                    <a 
+                    ui-sref="menu.catalog.products.list({ type: 'category', id: item.parent_category, category: item.parent_category, subcategories: item.name})" 
+                    class="featured-item__detail"
+                    style="color: white">
+                    {{::item.name}}
+                  </a>
+            </div>
     </a>
     
     <!-- No Image -->
-    <img 
+    <!-- <img 
         class="item-image featured-item-height-marketing" 
         ng-if="!item.image_desktop" 
         src="images/bek-logo.png" 
-        alt="default product image" />
+        alt="default product image" /> -->
   </div>
 </div>

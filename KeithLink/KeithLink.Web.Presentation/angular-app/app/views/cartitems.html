@@ -531,65 +531,79 @@
           </tab>
 
           <!-- Recommended Items -->
-          <tab
-            ng-if="recommendedItems && recommendedItems.length > 0"
-            active="recommendedItems.active" 
-            class="text-center hidden-lg"
-            analytics-on 
-            analytics-category="Recommended-Item-Cart-Details" 
-            analytics-event="Open Recommended Item Tab">
-              <tab-heading><span class="icon-thumbsup" style="padding-right: 5px; color: #319CCB;"></span>Recommendations<span class="icon-help" style="padding-left: 5px; padding-top: 2px;" tooltip="Recommended Items are based on what is currently in your cart."></span></tab-heading>
-              <table class="table table-striped-rows table-narrow" style="width: 100%;">
-                <thead>
-                  <tr>
-                    <th class="sort-col-header" ng-click="reminderSortBy='itemnumber';reminderSortOrder=!reminderSortOrder;">
-                      Item
-                      <span># <span sort-icons field="'itemnumber'" sortorder="reminderSortOrder" sortby="reminderSortBy"></span></span>
-                    </th>
-                    <th class="sort-col-header" ng-click="reminderSortBy='name';reminderSortOrder=!reminderSortOrder;">
-                      <span>Name <span sort-icons field="'name'" sortorder="reminderSortOrder" sortby="reminderSortBy"></span></span>
-                    </th>
-                    <th>
-                        <a class="pull-right" ng-show="reminderItems && reminderItems.length > 0" ng-click="addSelectedToCart(reminderItems)"> Add All</a>
-                    </th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr ng-repeat="recommendedItem in recommendedItems"  ng-class="{ odd : $odd, even: $even, 'item-selected': recommendedItem.isSelected }">
-                    <td>
-                      <a ui-sref="menu.catalog.products.details({itemNumber: item.itemnumber})">{{recommendedItem.itemnumber}}</a>
-                    </td>
-                    <td ui-sref="menu.catalog.products.details({ itemNumber : recommendedItem.itemnumber })">
-                      <a>{{recommendedItem.name}}</a>
-                    </td>
-                    <td>
-                        <a 
-                          class="pull-right" 
-                          ng-click="addItemToCart(recommendedItem); recommendedItems.active = true;" 
-                          analytics-on 
-                          analytics-category="Recommended-Item-Cart-Details-Mobile" 
-                          analytics-event="Add Recommended Item To Cart">
-                          <span class="icon-plus3 large-icon" tooltip="Add item to cart" style="padding: 10px;"></span>
-                        </a>
-                    </td>
-                  </tr>
-                </tbody>
-                <tfoot ng-show="recommendedItems.active && recommendedItems.length === 0">
-                  <tr>
-                    <td colspan="12">
-                      There are no missing reminder items for this cart.
-                    </td>
-                  </tr>
-                </tfoot>
-              </table>
-            </tab>
+            <tab
+              ng-if="recommendedItems && recommendedItems.length > 0 && showRecommendedItems == true"
+              class="text-center hidden-lg"
+              analytics-on 
+              analytics-category="Recommended-Item-Cart-Details" 
+              analytics-event="Open Recommended Item Tab">
+                <tab-heading ng-style="recommendedItems.length > 0 && {'color' : '#3E9DCD'}">
+                  <span 
+                    class="icon-thumbsup" 
+                    style="padding-right: 5px; color: #319CCB;">
+                  </span>
+                    <span></span>Recommendations 
+                  <span 
+                    ng-show="recommendedItems.length > 0">
+                    ({{recommendedItems.length}})
+                  </span>
+                  <span 
+                    class="icon-help" 
+                    style="padding-left: 5px; padding-top: 2px;" 
+                    tooltip="Recommended Items are based on what is currently in your cart.">
+                  </span>
+                </tab-heading>
+                <table class="table table-striped-rows table-narrow" style="width: 100%;">
+                  <thead>
+                    <tr>
+                      <th class="sort-col-header" ng-click="reminderSortBy='itemnumber';reminderSortOrder=!reminderSortOrder;">
+                        Item
+                        <span># <span sort-icons field="'itemnumber'" sortorder="reminderSortOrder" sortby="reminderSortBy"></span></span>
+                      </th>
+                      <th class="sort-col-header" ng-click="reminderSortBy='name';reminderSortOrder=!reminderSortOrder;">
+                        <span>Name <span sort-icons field="'name'" sortorder="reminderSortOrder" sortby="reminderSortBy"></span></span>
+                      </th>
+                      <th>
+                          <a class="pull-right" ng-show="reminderItems && reminderItems.length > 0" ng-click="addSelectedToCart(reminderItems)"> Add All</a>
+                      </th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr ng-repeat="recommendedItem in recommendedItems"  ng-class="{ odd : $odd, even: $even, 'item-selected': recommendedItem.isSelected }">
+                      <td>
+                        <a ui-sref="menu.catalog.products.details({itemNumber: item.itemnumber})">{{recommendedItem.itemnumber}}</a>
+                      </td>
+                      <td ui-sref="menu.catalog.products.details({ itemNumber : recommendedItem.itemnumber })">
+                        <a>{{recommendedItem.name}}</a>
+                      </td>
+                      <td>
+                          <a 
+                            class="pull-right" 
+                            ng-click="addItemToCart(recommendedItem); recommendedItems.active = true;" 
+                            analytics-on 
+                            analytics-category="Recommended-Item-Cart-Details-Mobile" 
+                            analytics-event="Add Recommended Item To Cart">
+                            <span class="icon-plus3 large-icon" tooltip="Add item to cart" style="padding: 10px;"></span>
+                          </a>
+                      </td>
+                    </tr>
+                  </tbody>
+                  <tfoot ng-show="recommendedItems.active && recommendedItems.length === 0">
+                    <tr>
+                      <td colspan="12">
+                        There are no missing reminder items for this cart.
+                      </td>
+                    </tr>
+                  </tfoot>
+                </table>
+              </tab>
         </tabset>
       </form>
     </div>
   
     <div class="col-xs-4 hidden-xs hidden-sm hidden-md container-fluid" style="width: 32%; margin-left: 15px; margin-top: -188px; height: 100%;">
   
-      <div sticky offset="20" style="border: 2px solid #C4BC9E; border-radius: 5px; height: 200px; padding: 5px 10px 10px 20px; width: 100%">
+      <div hl-sticky="" anchor="top" class="simple" style="border: 2px solid #C4BC9E; border-radius: 5px; height: 200px; padding: 5px 10px 10px 20px; width: 100%">
         <h2 style="padding-left: 25px;">Order Summary</h2>
   
         <div class="row" style="padding-left: 25px;">
@@ -643,7 +657,7 @@
         </div>
       </div>
   
-      <div sticky offset="230" ng-if="recommendedItems && recommendedItems.length > 0" class="row hidden-xs hidden-sm hidden-md col-6" style="margin-top: 12px; padding-left: 15px;">
+      <div hl-sticky="" anchor="top" class="simple" ng-if="recommendedItems && recommendedItems.length > 0" class="row hidden-xs hidden-sm hidden-md col-6" style="margin-top: 12px; margin-bottom: 10px;">
           <h3>Recommendations Based On Your Cart<span class="icon-help" style="padding-left: 5px; padding-top: 2px;" tooltip="Recommended Items are based on what is currently in your cart."></span></h3>
 
           <p ng-if="recommendedItems.length == 0">No recommendations currently available.</p>
