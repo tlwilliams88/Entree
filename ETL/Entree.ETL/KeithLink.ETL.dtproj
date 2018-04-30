@@ -19,6 +19,11 @@
           <References />
         </DtsPackage>
         <DtsPackage FormatVersion="8">
+          <Name>Entree_BI_Process.dtsx</Name>
+          <FullPath>Entree_BI_Process.dtsx</FullPath>
+          <References />
+        </DtsPackage>
+        <DtsPackage FormatVersion="8">
           <Name>ETLProcess_BETA.dtsx</Name>
           <FullPath>ETLProcess_BETA.dtsx</FullPath>
           <References />
@@ -36,11 +41,6 @@
         <DtsPackage FormatVersion="8">
           <Name>ETLProcess_RELEASE.dtsx</Name>
           <FullPath>ETLProcess_RELEASE.dtsx</FullPath>
-          <References />
-        </DtsPackage>
-        <DtsPackage FormatVersion="8">
-          <Name>Entree_BI_Process.dtsx</Name>
-          <FullPath>Entree_BI_Process.dtsx</FullPath>
           <References />
         </DtsPackage>
         <DtsPackage FormatVersion="8">
