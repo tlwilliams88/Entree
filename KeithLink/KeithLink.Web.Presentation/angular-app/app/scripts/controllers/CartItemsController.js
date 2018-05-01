@@ -241,7 +241,6 @@ angular.module('bekApp')
 
    $scope.addItemToCart = function(item) {
     item.quantity = item.newQuantity;
-    item.source = "recommended";
 
     delete item.newQuantity;
 
