@@ -338,6 +338,12 @@
     <Content Include="Scripts\AppData\Customers\Customers_0001_0001.11.00_up.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="Scripts\AppData\Customers\Tables\GrowthAndRecoveries\Indexes\IX_GrowthAndRecoveries_0070_2018.06.00_down.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Scripts\AppData\Customers\Tables\GrowthAndRecoveries\Indexes\IX_GrowthAndRecoveries_0070_2018.06.00_up.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="Scripts\AppData\Customers\Tables\GrowthAndRecoveryTypes\PostDeployment\GrowthAndRecoverySeed_0070_2018.05.00_down.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
