@@ -93,6 +93,15 @@ angular.module('bekApp')
             resolve: {
               item: function() {
                 return $scope.item; // directive inherits $scope.item from html where the directive is located
+              },
+              lists: function() {
+                return $scope.lists;
+              },
+              carts: function() {
+                return $scope.carts;
+              },
+              changeOrders: function() {
+                return $scope.changeOrders;
               }
             }
           });
