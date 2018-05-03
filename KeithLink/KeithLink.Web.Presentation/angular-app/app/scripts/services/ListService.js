@@ -51,21 +51,20 @@ angular.module('bekApp')
           getCurrentUserProfile();
         }
 
-        // FAVORITES - RECOMMENDED - MANDATORY FOR INTERNAL USE - REMINDER
-        if (list.isfavorite || list.isrecommended || (list.ismandatory && Service.isInternalUser) || list.isreminder) {
+        // FAVORITES - MANDATORY FOR INTERNAL USE - REMINDER
+        if (list.isfavorite || (list.ismandatory && Service.isInternalUser) || list.isreminder) {
           permissions.canEditList = true;
           permissions.canDeleteItems = true;
           permissions.canAddItems = true;
           permissions.canReorderItems = true;
           permissions.canAddNonBEKItems = false;
-          if(list.isrecommended && list.ismandatory) {
+          if(list.ismandatory) {
             permissions.canDeleteList = true;
-          } else if(list.isfavorite) {
-            permissions.specialDisplay = true;
-          } else if(list.ismandatory) {
             permissions.canEditQtylevel = true;
             permissions.canSeeQtylevel = true;
             permissions.alternativeParHeader = 'Required Qty';
+          } else if(list.isfavorite) {
+            permissions.specialDisplay = true;
           }
         // CONTRACT, WORKSHEET / HISTORY
         } else if (list.is_contract_list || list.isworksheet) {
@@ -542,9 +541,7 @@ angular.module('bekApp')
 
           if (params.type === 9) {
             newList.name = 'Mandatory';
-          } else if (params.type === 10) {
-            newList.name = 'Recommended';
-        } else if (params.type === 8) {
+          } else if (params.type === 8) {
             newList.name = 'Reminder';
         } else if (params.name && params.name !== null) {
             newList.name = params.name;
@@ -557,7 +554,7 @@ angular.module('bekApp')
         },
 
         // items: accepts null, item object, or array of item objects
-        // params: type (recommendedItems, Mandatory, InventoryValuation)
+        // params: type (Mandatory, InventoryValuation)
         // returns promise and new item listitemid
         createList: function(items, params) {
           var newList = Service.beforeCreateList(items, params);
@@ -568,7 +565,7 @@ angular.module('bekApp')
           newList.message = 'Creating list...';
           return List.save(params, newList).$promise.then(function(response) {
             var newList = response.successResponse,
-                isCustomList = !(newList.isfavorite || newList.ismandatory || newList.isrecommended || newList.isreminder);
+                isCustomList = !(newList.isfavorite || newList.ismandatory || newList.isreminder);
             Service.renameList = isCustomList ? true : false;
             toaster.pop('success', null, 'Successfully created list.');
             newList = updateListPermissions(newList);
@@ -864,32 +861,6 @@ angular.module('bekApp')
 
         findMandatoryList: function() {
           return UtilityService.findObjectByField(Service.lists, 'ismandatory', true);
-        },
-
-        /**********************
-        RECOMMENDED ITEMS LISTS
-        ***********************/
-
-        createRecommendedList: function(items) {
-          // Type = 10 - Recommended list type that needs to be passed in
-          var params = { type: 10 };
-          if(items == undefined){
-              items = [];
-          }
-          items.forEach(function(item){
-              item.active = true;
-          })
-          return Service.createList(items, params);
-        },
-
-        getRecommendedItems: function() {
-          return List.getRecommendedItems().$promise.then(function(response){
-            return response.successResponse;
-          });
-        },
-
-        findRecommendedList: function() {
-          return UtilityService.findObjectByField(Service.lists, 'isrecommended', true);
         },
         
         /**********************

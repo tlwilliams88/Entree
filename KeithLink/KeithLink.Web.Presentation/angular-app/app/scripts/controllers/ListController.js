@@ -148,9 +148,6 @@ angular.module('bekApp')
     if (ListService.findMandatoryList()) {
       $scope.hideMandatoryListCreateButton = true;
     }
-    if (ListService.findRecommendedList()) {
-      $scope.hideRecommendedListCreateButton = true;
-    }
     if (ListService.findReminderList()) {
       $scope.hideReminderListCreateButton = true;
     }
@@ -477,7 +474,7 @@ angular.module('bekApp')
     function applyNewList(){
         originalList = $scope.selectedList;
         resetPage($scope.selectedList);
-        var isCustomList = !($scope.selectedList.isfavorite || $scope.selectedList.ismandatory || $scope.selectedList.isrecommended || $scope.selectedList.isreminder);
+        var isCustomList = !($scope.selectedList.isfavorite || $scope.selectedList.ismandatory || $scope.selectedList.isreminder);
         $scope.selectedList.isRenaming = isCustomList ? true : false;
 
         setLastList($scope.selectedList)
@@ -542,24 +539,6 @@ angular.module('bekApp')
       var dragSelection = getSelectedItemsFromDrag(helper);
       $scope.createMandatoryList(dragSelection);
     };
-
-    /**********
-    CREATE RECOMMENDED LIST
-    **********/
-
-    $scope.createRecommendedList = function(items) {
-        ListService.createRecommendedList(items).then(function(list) {
-            setLastList(list);
-            $scope.hideRecommendedListCreateButton = true;
-            $scope.selectedList = list;
-            applyNewList();
-        });
-    };
-
-    $scope.createRecommendedListFromDrag = function(event, helper) {
-      var dragSelection = getSelectedItemsFromDrag(helper);
-      $scope.createRecommendedList(dragSelection);
-    };
     
     /**********
     CREATE REMINDER LIST
@@ -568,7 +547,6 @@ angular.module('bekApp')
     $scope.createReminderList = function(items) {
         ListService.createReminderList(items).then(function(list) {
             setLastList(list);
-            $scope.hideRecommendedListCreateButton = true;
             $scope.selectedList = list;
             applyNewList();
         });

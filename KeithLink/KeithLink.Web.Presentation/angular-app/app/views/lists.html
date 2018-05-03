@@ -148,8 +148,6 @@
       <li><a ng-click="createList()">Create a List...</a></li>
 
       <li ng-if="isInternalAccountAdminUser && !hideMandatoryListCreateButton"><a ng-click="createMandatoryList()">Create Mandatory List...</a></li>
-      <li ng-if="isInternalAccountAdminUser && !hideRecommendedListCreateButton"><a ng-click="createRecommendedList()">Create Recommended List...</a></li>
-
     </ul>
   </div>
 </div>
@@ -234,19 +232,6 @@
                 title="Create Mandatory Items List for Customer">
                 Create <br>Mandatory...
               </button>
-
-              <button
-                type="button"
-                ng-click="createRecommendedList()"
-                data-drop="isDragging"
-                data-jqyoui-options="{hoverClass:'bek-drag-hover',tolerance:'pointer',activeClass:'bek-drag-active'}"
-                jqyoui-droppable="{onDrop: 'createRecommendedListFromDrag()'}"
-                class="btn btn-default btn-list text-left text-light btn-lg"
-                ng-if="isInternalAccountAdminUser && !hideRecommendedListCreateButton"
-                title="Create Recommended Items List for Customer">
-                Create <br>Recommended...
-              </button>
-              
               
               <button
                 type="button"
