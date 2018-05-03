@@ -13,7 +13,7 @@
   DTS:ObjectName="Entree_BI_Process"
   DTS:PackageType="5"
   DTS:VersionBuild="91"
-  DTS:VersionGUID="{C2E6C94F-DCE0-4A6C-94FD-2293EBD00127}"
+  DTS:VersionGUID="{636578E4-64DC-47EE-A968-4241E1391E5E}"
   DTS:VersionMajor="2018"
   DTS:VersionMinor="4">
   <DTS:Property
