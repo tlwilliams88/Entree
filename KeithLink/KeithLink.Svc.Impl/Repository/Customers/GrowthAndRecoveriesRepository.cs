@@ -27,7 +27,8 @@ namespace KeithLink.Svc.Impl.Repository.Customers
 	                g.Amount,
 	                g.GrowthAndRecoveryProductGroup,
 	                g.GrowthAndRecoveryTypeKey,
-	                pg.Code
+	                pg.Code,
+                    pg.Description
                 FROM Customers.GrowthAndRecoveries g
                 LEFT JOIN Customers.GrowthAndRecoveryProductGroups pg ON pg.GrowthAndRecoveryProductGroup = g.GrowthAndRecoveryProductGroup
                 WHERE 

@@ -17,6 +17,8 @@ namespace KeithLink.Svc.Core.Models.Customers
         public string BranchId { get; set; }
         public decimal Amount { get; set; }
         public int GrowthAndRecoveryProductGroup { get; set; }
+        public string GroupingCode { get; set; }
+        public string GroupingDescription { get; set; }
         public GrowthAndRecoveryType GrowthAndReccoveryTypeKey { get; set; }
     }
 }
