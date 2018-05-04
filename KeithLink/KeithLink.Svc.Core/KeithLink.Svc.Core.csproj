@@ -115,6 +115,10 @@
     <Reference Include="CommerceServerContrib.Web">
       <HintPath>..\packages\CommerceServerContrib.Library.1.0.184.0\lib\Net35\CommerceServerContrib.Web.dll</HintPath>
     </Reference>
+    <Reference Include="Dapper, Version=1.50.2.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Dapper.1.50.2\lib\net45\Dapper.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="DocumentFormat.OpenXml, Version=2.7.2.0, Culture=neutral, PublicKeyToken=8fb06cb64d019a17, processorArchitecture=MSIL">
       <HintPath>..\packages\DocumentFormat.OpenXml.2.7.2\lib\net40\DocumentFormat.OpenXml.dll</HintPath>
       <Private>True</Private>
@@ -214,6 +218,7 @@
     <Compile Include="Interface\ApplicationHealth\IApplicationHealthLogic.cs" />
     <Compile Include="Interface\Cache\ICacheListLogic.cs" />
     <Compile Include="Interface\Cart\IShoppingCartService.cs" />
+    <Compile Include="Interface\DataConnection\IDapperDatabaseConnection.cs" />
     <Compile Include="Interface\Common\IGenericSubscriptionQueueRepository.cs" />
     <Compile Include="Interface\Configurations\IExternalCatalogRepository.cs" />
     <Compile Include="Extensions\ShoppingCart\ShoppingCartExtensions.cs" />
@@ -221,6 +226,7 @@
     <Compile Include="Helpers\PricingHelper.cs" />
     <Compile Include="Extensions\SettingsExtensions.cs" />
     <Compile Include="Interface\Configurations\IExportSettingLogic.cs" />
+    <Compile Include="Interface\Customers\IGrowthAndRecoveriesRepository.cs" />
     <Compile Include="Interface\Customers\IInternalUserAccessRepository.cs" />
     <Compile Include="Interface\Customers\IRecommendedItemsRepository.cs" />
     <Compile Include="Interface\ElasticSearch\IESItem.cs" />
@@ -387,6 +393,7 @@
     <Compile Include="Models\ContentManagement\ExpressEngine\Product.cs" />
     <Compile Include="Models\Customers\EF\InternalUserAccess.cs" />
     <Compile Include="Models\Customers\EF\ItemHistory.cs" />
+    <Compile Include="Models\Customers\GrowthAndRecoveriesModel.cs" />
     <Compile Include="Models\Customers\ItemHistoryModel.cs" />
     <Compile Include="Models\Customers\RecommendedItemsModel.cs" />
     <Compile Include="Models\Customers\RecommendedItemsParametersModel.cs" />

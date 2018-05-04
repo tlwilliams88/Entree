@@ -390,6 +390,7 @@
     <Compile Include="Models\SiteCatalog\Schemas\PricingRequest.cs">
       <DependentUpon>PricingRequest.xsd</DependentUpon>
     </Compile>
+    <Compile Include="Repository\Customers\GrowthAndRecoveriesRepository.cs" />
     <Compile Include="Repository\Customers\InternalUserAccessRepository.cs" />
     <Compile Include="Repository\Customers\RecommendedItemsRepositoryImpl.cs" />
     <Compile Include="Repository\DataConnection\DapperDatabaseConnection.cs" />
