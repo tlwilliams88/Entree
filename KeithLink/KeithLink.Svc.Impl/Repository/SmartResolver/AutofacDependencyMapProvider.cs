@@ -98,12 +98,14 @@ using System;
 using KeithLink.Svc.Core.Enumerations.Dependencies;
 using KeithLink.Svc.Impl.Logic.SiteCatalog.Images.External;
 using KeithLink.Svc.Core.Interface.ApplicationHealth;
+using KeithLink.Svc.Core.Interface.DataConnection;
 using KeithLink.Svc.Core.Interface.Import;
 using KeithLink.Svc.Impl.Logic.ApplicationHealth;
 using KeithLink.Svc.Impl.Repository.Templates;
 using KeithLink.Svc.Core.Interface.Templates;
 using KeithLink.Svc.Impl.Helpers;
 using KeithLink.Svc.Impl.Logic.Cache;
+using KeithLink.Svc.Impl.Repository.DataConnection;
 using KeithLink.Svc.Impl.Service.Invoices;
 using KeithLink.Svc.Impl.Service.SiteCatalog;
 using KeithLink.Svc.Impl.Service.List;
@@ -116,6 +118,11 @@ namespace KeithLink.Svc.Impl.Repository.SmartResolver
             ///////////////////////////////////////////////////////////////////////////////
             // Repositories
             ///////////////////////////////////////////////////////////////////////////////
+            
+            // Dapper connection
+            builder.Register(ctx => new DapperDatabaseConnection(Configuration.BEKDBConnectionString))
+                   .As<IDapperDatabaseConnection>()
+                   .InstancePerRequest();
 
             // cart
             builder.RegisterType<BasketRepositoryImpl>().As<IBasketRepository>();
@@ -139,6 +146,7 @@ namespace KeithLink.Svc.Impl.Repository.SmartResolver
             builder.RegisterType<CustomerRepository>().As<ICustomerRepository>();
             builder.RegisterType<InternalUserAccessRepository>().As<IInternalUserAccessRepository>();
             builder.RegisterType<RecommendedItemsRepositoryImpl>().As<IRecommendedItemsRepository>();
+            builder.RegisterType<GrowthAndRecoveriesRepository>().As<IGrowthAndRecoveriesRepository>();
 
             // division
             builder.RegisterType<DivisionRepositoryImpl>().As<IDivisionRepository>();

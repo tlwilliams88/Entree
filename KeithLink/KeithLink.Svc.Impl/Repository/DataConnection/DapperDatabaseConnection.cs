@@ -7,9 +7,11 @@ using System.Data.SqlClient;
 using System.Linq;
 using System.Threading.Tasks;
 
+using KeithLink.Svc.Core.Interface.DataConnection;
+
 namespace KeithLink.Svc.Impl.Repository.DataConnection
 {
-    public class DapperDatabaseConnection
+    public class DapperDatabaseConnection : IDapperDatabaseConnection
     {
         #region ctor
         public DapperDatabaseConnection(string connectionString)

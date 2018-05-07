@@ -64,7 +64,9 @@
     <Compile Include="Migrations\Data\IntegrationTests\Configuration\AppSettings.cs" />
     <Compile Include="Migrations\Data\AppSettings.cs" />
     <Compile Include="Migrations\Data\Baseline_Data.cs" />
+    <Compile Include="Migrations\Data\IntegrationTests\Customers\GrowthAndRecoveryProductGroups.cs" />
     <Compile Include="Migrations\Data\IntegrationTests\Customers\RecommendedItemContexts.cs" />
+    <Compile Include="Migrations\Data\IntegrationTests\Customers\GrowthAndRecoveries.cs" />
     <Compile Include="Migrations\Data\IntegrationTests\Customers\SICMap.cs" />
     <Compile Include="Migrations\Data\IntegrationTests\Customers\RecommendedItems.cs" />
     <Compile Include="Migrations\Data\IntegrationTests\Lists\ListItemsDelta.cs" />
