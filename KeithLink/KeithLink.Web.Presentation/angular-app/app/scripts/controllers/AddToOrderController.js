@@ -981,7 +981,7 @@ angular.module('bekApp')
     $scope.updateCartWithRecommendedItems = function(item) {
       item.extPrice = PricingService.getPriceForItem(item);
 
-      item.source = "recommended";
+      item.orderedfromsource = "CartIQ";
 
       if($filter('filter')($scope.selectedCart.items, {itemnumber: item.itemnumber, recommended: item.recommended}).length > 0) {
         var itemIdx = $scope.selectedCart.items.indexOf(item);
