@@ -201,6 +201,7 @@ namespace KeithLink.Svc.Impl.Service.SiteCatalog
 
             AddPricingInfo(products, catalogInfo);
             GetAdditionalProductInfo(profile, products, catalogInfo);
+            ApplyRecommendedTagging(products);
 
             return products;
         }
@@ -398,6 +399,12 @@ namespace KeithLink.Svc.Impl.Service.SiteCatalog
                     _catalogLogic.AddProductImageInfo(prod);
                 });
             }
+        }
+
+        private void ApplyRecommendedTagging(ProductsReturn ret) {
+            ret.Products.ForEach(delegate (Product prod) {
+                                     prod.OrderedFromSource = Constants.RECOMMENDED_CART_ITEM;
+                                 });
         }
 
         private void GetPreviouslyOrderedProductInfo(UserProfile profile, ProductsReturn ret, UserSelectedContext catalogInfo)
