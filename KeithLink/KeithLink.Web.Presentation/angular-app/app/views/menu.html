@@ -6,7 +6,8 @@
 /* CSS to disable the Google Translate "original text" pop-up */
 .goog-tooltip{ display: none !important;}
 .goog-tooltip:hover{ display: none !important;}
-.goog-text-highlight{ background-color: transparent !important; border: none !important; box-shadow: none !important;}></style>
+.goog-text-highlight{ background-color: transparent !important; border: none !important; box-shadow: none !important;} 
+</style>
 <!-- End CSS -->
 
 <div ng-swipe-left="isSidebarOpen = false" ng-swipe-right="isSidebarOpen = true" ng-swipe-disable-mouse class="sidebar-menu-wrapper">
@@ -412,7 +413,8 @@
                 temp_zones: undefined,
                 specialfilters: undefined,
                 startingPoint: undefined,
-                currentPage: undefined})">
+                currentPage: undefined,
+                recommendationType: undefined})">
                 {{department.name}}
               </a>
             </li>
@@ -451,7 +453,8 @@
                         temp_zones: undefined,
                         specialfilters: undefined,
                         startingPoint: undefined,
-                        currentPage: undefined })" ng-disabled="universalSearchForm.$invalid || !userBar.universalSearchTerm" class="btn-default btn" type="submit"><span class="icon-search"></span></button>
+                        currentPage: undefined,
+                        recommendationType: undefined })" ng-disabled="universalSearchForm.$invalid || !userBar.universalSearchTerm" class="btn-default btn" type="submit"><span class="icon-search"></span></button>
                 <button ng-if="::isMobileApp" class="btn btn-default" type="button" ng-click="scanBarcode()"><span class="icon-camera"></span></button>
               </span>
             </div>

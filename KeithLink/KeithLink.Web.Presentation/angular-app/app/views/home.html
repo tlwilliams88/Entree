@@ -75,26 +75,26 @@
                       ng-repeat="item in recommendedItems | limitTo: 4" 
                       class="item-holder"
                       analytics-on 
-                      analytics-category="Homepage-Recommended-Items-Desktop" 
-                      analytics-event="Recommended Items" 
+                      analytics-category="SalesIQ-Recommended-Items-Homepage-Desktop" 
+                      analytics-event="SalesIQ Recommended Items Clicked" 
                       analytics-label="{{item.itemnumber}}">
                       <div 
                         class="featured-item text-center" 
                         analytics-on 
-                        analytics-category="Homepage-Categories-Desktop" 
-                        analytics-event="Categories" 
+                        analytics-category="SalesIQ-Recommended-Items-Homepage-Desktop" 
+                        analytics-event="SalesIQ Recommended Items Clicked" 
                         analytics-label="{{item.name}}"
                         style="    min-width: 0px;
                         margin: 0 auto;">
                         <img 
                           class="hand" 
-                          ui-sref="menu.catalog.products.list({ type: 'category', id: item.parent_category, category: item.parent_category, subcategories: item.name})" 
+                          ui-sref="menu.catalog.products.list({ type: 'category', id: item.parent_category, category: item.parent_category, subcategories: item.name, recommendationType: 'salesIQ'})" 
                           ng-src="{{item.category_image}}" 
                           alt="image"
                           style="width: 100%;" />
                           <div>
                               <a 
-                                ui-sref="menu.catalog.products.list({ type: 'category', id: item.parent_category, category: item.parent_category, subcategories: item.name})" 
+                                ui-sref="menu.catalog.products.list({ type: 'category', id: item.parent_category, category: item.parent_category, subcategories: item.name, recommendationType: 'salesIQ'})" 
                                 class="featured-item__detail">
                                 {{::item.name}}
                               </a>
@@ -190,7 +190,7 @@
     </div>
 
     <!-- Recommended Items -->
-    <div ng-if="recommendedItems.length > 0" class="hidden-md hidden-lg">
+    <div ng-if="recommendedItems.length > 0" class="hidden-md hidden-lg" style="margin-bottom: 10px;">
       <div class="col-sm-12">
         <h3>Recommended For You</h3>
         <div loading-spinner="loadingPromoItems" ng-show="loadingPromoItems"></div>
@@ -204,26 +204,26 @@
                 ng-repeat="item in recommendedItems | limitTo: 4" 
                 class="item-holder"
                 analytics-on 
-                analytics-category="Homepage-Recommended-Items-Desktop" 
-                analytics-event="Recommended Items" 
+                analytics-category="SalesIQ-Recommended-Items-Homepage-Mobile" 
+                analytics-event="SalesIQ Recommended Items Clicked" 
                 analytics-label="{{item.itemnumber}}">
                 <div 
                   class="featured-item text-center" 
                   analytics-on 
-                  analytics-category="Homepage-Categories-Desktop" 
-                  analytics-event="Categories" 
+                  analytics-category="SalesIQ-Recommended-Items-Homepage-Mobile"  
+                  analytics-event="SalesIQ Recommended Items Clicked" 
                   analytics-label="{{item.name}}"
                   style="    min-width: 0px;
                   margin: 0 auto;">
                   <img 
                     class="hand" 
-                    ui-sref="menu.catalog.products.list({ type: 'category', id: item.parent_category, category: item.parent_category, subcategories: item.name})" 
+                    ui-sref="menu.catalog.products.list({ type: 'category', id: item.parent_category, category: item.parent_category, subcategories: item.name, recommendationType: 'salesIQ'})" 
                     ng-src="{{item.category_image}}" 
                     alt="image"
                     style="width: 100%;" />
                     <div>
                       <a 
-                        ui-sref="menu.catalog.products.list({ type: 'category', id: item.parent_category, category: item.parent_category, subcategories: item.name})" 
+                        ui-sref="menu.catalog.products.list({ type: 'category', id: item.parent_category, category: item.parent_category, subcategories: item.name, recommendationType: 'salesIQ'})" 
                         class="featured-item__detail">
                         {{::item.name}}
                       </a>
