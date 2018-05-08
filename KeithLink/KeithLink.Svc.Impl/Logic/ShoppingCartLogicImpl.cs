@@ -115,8 +115,19 @@ namespace KeithLink.Svc.Impl.Logic
 				return existingItem.First().Id.ToGuid();
 			}
             newItem.Position = basket.LineItems.Count;
-						
-			return basketRepository.AddItem(cartId, newItem.ToLineItem(), basket);
+
+		    if (newItem.OrderedFromSource != null &&
+		        newItem.OrderedFromSource.Length > 0) {
+		        try {
+		            _orderedItemsFromListRepository.Write(new OrderedItemFromList() {
+		                ControlNumber = cartId.ToString(),
+		                ItemNumber = newItem.ItemNumber,
+		                SourceList = newItem.OrderedFromSource
+		            });
+		        } catch {}
+		    }
+
+		    return basketRepository.AddItem(cartId, newItem.ToLineItem(), basket);
 		}
 
 		private string CartName(string name, UserSelectedContext catalogInfo)
