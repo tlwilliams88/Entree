@@ -343,6 +343,7 @@
     <Compile Include="Interface\Orders\IOrderedItemsFromListRepository.cs" />
     <Compile Include="Interface\Orders\IOrderedFromListRepository.cs" />
     <Compile Include="Interface\Orders\IOrderHistoryWriter.cs" />
+    <Compile Include="Interface\Orders\IRecommendedItemsOrderedAnalyticsRepository.cs" />
     <Compile Include="Interface\Orders\ISpecialOrderLogic.cs" />
     <Compile Include="Interface\Orders\ISpecialOrderRepository.cs" />
     <Compile Include="Interface\Orders\History\IOrderHistoryRequestLogic.cs" />

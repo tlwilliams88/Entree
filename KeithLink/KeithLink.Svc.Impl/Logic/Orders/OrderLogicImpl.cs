@@ -50,13 +50,16 @@ namespace KeithLink.Svc.Impl.Logic.Orders {
                               IOrderQueueLogic orderQueueLogic, IPriceLogic priceLogic, IEventLogRepository eventLogRepository, IShipDateRepository shipRepo,
                               ICustomerRepository customerRepository, IOrderHistoryHeaderRepsitory orderHistoryRepository,
                               IKPayInvoiceRepository kpayInvoiceRepository,
-                              IOrderedFromListRepository order2ListRepo) {
+                              IOrderedFromListRepository order2ListRepo, IOrderedItemsFromListRepository orderedItemsFromListRepository,
+                              IRecommendedItemsOrderedAnalyticsRepository recommendedItemsOrderedAnalyticsRepository) {
             _cache = cache;
             _catalogLogic = catalogLogic;
             _customerRepository = customerRepository;
             _log = eventLogRepository;
             _notesLogic = notesLogic;
             _order2ListRepo = order2ListRepo;
+            _orderedItemsFromListRepository = orderedItemsFromListRepository;
+            _recommendedItemsOrderedAnalyticsRepository = recommendedItemsOrderedAnalyticsRepository;
             _historyHeaderRepo = orderHistoryRepository;
             _invoiceRepository = kpayInvoiceRepository;
             _orderQueueLogic = orderQueueLogic;
@@ -79,6 +82,8 @@ namespace KeithLink.Svc.Impl.Logic.Orders {
         private readonly IPurchaseOrderRepository _poRepo;
         private readonly IShipDateRepository _shipRepo;
         private readonly IOrderedFromListRepository _order2ListRepo;
+        private readonly IOrderedItemsFromListRepository _orderedItemsFromListRepository;
+        private readonly IRecommendedItemsOrderedAnalyticsRepository _recommendedItemsOrderedAnalyticsRepository;
         #endregion
 
         #region methods
@@ -734,6 +739,15 @@ namespace KeithLink.Svc.Impl.Logic.Orders {
 
             LookupProductDetails(userProfile, catalogInfo, returnOrder, notes);
 
+            foreach (var item in returnOrder.Items)
+            {
+                var sourceList = _orderedItemsFromListRepository.Read(returnOrder.OrderNumber, item.ItemNumber);
+                if (sourceList != null)
+                {
+                    item.OrderedFromSource = sourceList.SourceList;
+                }
+            }
+
             // handel special change order logic to hide deleted line items
             if (returnOrder.IsChangeOrderAllowed && omitDeletedItems) // change order eligible - remove lines marked as 'deleted'
             {
@@ -810,6 +824,22 @@ namespace KeithLink.Svc.Impl.Logic.Orders {
             if (items == null ||
                 items.Count == 0) {
                 throw new ApplicationException("Cannot submit order with 0 line items");
+            } else {
+                foreach (var item in items)
+                {
+                    var source = _orderedItemsFromListRepository.Read(orderNumber, item.ItemNumber);
+                    if (source != null && source.SourceList != null)
+                    {
+                        var sources = _recommendedItemsOrderedAnalyticsRepository.GetOrderSources();
+                        if (sources.Contains(source.SourceList))
+                        {
+                            _recommendedItemsOrderedAnalyticsRepository.Add(orderNumber,
+                                item.ItemNumber,
+                                item.Each == false ? 'C' : 'P',
+                                source.SourceList);
+                        }
+                    }
+                }
             }
 
             BEKFoundationServiceClient client = new BEKFoundationServiceClient();
@@ -997,6 +1027,29 @@ namespace KeithLink.Svc.Impl.Logic.Orders {
                     CatchWeight = line.CatchWeight
                 });
             }
+
+            foreach (OrderLine line in order.Items)
+            {
+                if (line.OrderedFromSource != null &&
+                    line.OrderedFromSource.Length > 0)
+                {
+                    try
+                    {
+                        var sourceList = _orderedItemsFromListRepository.Read(order.OrderNumber, line.ItemNumber);
+                        if (sourceList == null || line.OrderedFromSource.Equals(sourceList.SourceList) == false)
+                        {
+                            _orderedItemsFromListRepository.Write(new OrderedItemFromList()
+                            {
+                                ControlNumber = order.OrderNumber,
+                                ItemNumber = line.ItemNumber,
+                                SourceList = line.OrderedFromSource
+                            });
+                        }
+                    }
+                    catch { }
+                }
+            }
+
             string orderNumber = client.UpdatePurchaseOrder(customer.CustomerId, existingOrder.CommerceId, order.RequestedShipDate, itemUpdates.ToArray());
 
             return ReadOrder(user, catalogInfo, order.OrderNumber);

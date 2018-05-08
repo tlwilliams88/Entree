@@ -459,6 +459,7 @@
     <Compile Include="Repository\Marketing\CatalogCampaignItemsRepositoryImpl.cs" />
     <Compile Include="Repository\Orders\OrderedItemsFromListRepositoryImpl.cs" />
     <Compile Include="Repository\Orders\OrderedFromListRepositoryImpl.cs" />
+    <Compile Include="Repository\Orders\RecommendedItemsOrderedAnalyticsRepositoryImpl.cs" />
     <Compile Include="Repository\Queue\GenericSubscriptionQueueRepositoryImpl.cs" />
     <Compile Include="Repository\SiteCatalog\ItemBarcodeImageRepositoryImpl.cs" />
     <Compile Include="Repository\SmartResolver\AutofacDependencyMapProvider.cs" />
