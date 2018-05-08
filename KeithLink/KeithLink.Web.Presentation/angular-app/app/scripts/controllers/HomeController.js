@@ -169,20 +169,17 @@ angular.module('bekApp')
     ProductService.getRecentlyViewedItems().then(function(recentitems) {
       $scope.recentlyViewedItems = recentitems;
       $scope.loadingRecentlyViewedItems = false;
+      $scope.showRecommendedItems = ENV.showRecommendedItems;
 
-      CategoryService.getCategories($state.params.catalogType).then(function(categories) {
-        $scope.showRecommendedItems = ENV.showRecommendedItems;
+      $scope.recommendedItems = CategoryService.categories;
+      $scope.loadingRecommendedItems = false;
+      
+      $scope.categories = CategoryService.categories;
+      $scope.loadingCategories = false;
 
-        $scope.recommendedItems = categories;
-        $scope.loadingRecommendedItems = false;
-        
-        $scope.categories = categories;
-        $scope.loadingCategories = false;
-
-        BrandService.getHouseBrands().then(function(brands){
-          $scope.brands = brands;
-          $scope.loadingBrands = false;
-        });
+      BrandService.getHouseBrands().then(function(brands){
+        $scope.brands = brands;
+        $scope.loadingBrands = false;
       });
     });
 

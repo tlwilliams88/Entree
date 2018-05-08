@@ -16,6 +16,7 @@ angular.module('bekApp')
       getCategories: function(catalogType) {
         if (!categories.hasOwnProperty(catalogType)) {
            categories[catalogType] = $http.get('/catalog/' + catalogType + '/categories').then(function (response) {
+              Service.categories = response.data.successResponse.categories;
               return response.data.successResponse.categories;
           });
         }
