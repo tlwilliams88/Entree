@@ -831,7 +831,7 @@ namespace KeithLink.Svc.Impl.Logic.Orders {
                     if (source != null && source.SourceList != null)
                     {
                         var sources = _recommendedItemsOrderedAnalyticsRepository.GetOrderSources();
-                        if (sources.Contains(source.SourceList))
+                        if (sources.Contains(source.SourceList, StringComparer.CurrentCultureIgnoreCase))
                         {
                             _recommendedItemsOrderedAnalyticsRepository.Add(orderNumber,
                                 item.ItemNumber,
