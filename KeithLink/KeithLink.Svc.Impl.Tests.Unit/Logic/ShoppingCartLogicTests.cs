@@ -517,7 +517,7 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic {
                         new ShoppingCartItem {
                             ItemNumber = "123456",
                             CatalogId = "FUT",
-                            SourceProductList = "Test List"
+                            OrderedFromSource = "Test List"
                         }
                     }
                 };
@@ -552,7 +552,7 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic {
                         new ShoppingCartItem {
                             ItemNumber = "123456",
                             CatalogId = "FUT",
-                            SourceProductList = "Test List"
+                            OrderedFromSource = "Test List"
                         }
                     }
                 };
@@ -587,7 +587,7 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic {
                         new ShoppingCartItem {
                             ItemNumber = "123456",
                             CatalogId = "FUT",
-                            SourceProductList = "Test List"
+                            OrderedFromSource = "Test List"
                         }
                     }
                 };
@@ -1041,7 +1041,7 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic {
                                                                        mockDependents.CustomerRepository.Object,
                                                                        mockDependents.AuditLogRepository.Object, mockDependents.NotesListLogic.Object, mockDependents.UserActiveCartLogic.Object,
                                                                        mockDependents.ExternalCatalogRepository.Object, mockDependents.CacheRepository.Object, mockDependents.EventLogRepository.Object,
-                                                                       mockDependents.OrderedFromListRepository.Object);
+                                                                       mockDependents.OrderedFromListRepository.Object, null);
             return testunit;
         }
         #endregion Setup

@@ -7,6 +7,17 @@ declare @AppSettings as TABLE
     PRIMARY KEY CLUSTERED ([Key] ASC)
 )
 
+INSERT 
+	INTO @AppSettings 
+		([Key], [Value], [Comment], [Disabled]) 
+	VALUES 
+		('ValidPublicApiTokens', '', 'Site Settings: Public Api Tokens in CSV format', 0)
+		-- add token for Parscales
+INSERT 
+	INTO @AppSettings 
+		([Key], [Value], [Comment], [Disabled]) 
+	VALUES 
+		('ServePublicApi', 'false', 'Site Settings: true or false as to whether to serve public api', 0)
 INSERT INTO @AppSettings (Comment, [Key], Value, [Disabled]) VALUES( 'Site Settings', 'AppName', 'Entree', 0)
 INSERT INTO @AppSettings (Comment, [Key], Value, [Disabled]) VALUES('Site Settings', 'CartOrOrder2ListIdPurgeDays', '-7', 0)
 INSERT INTO @AppSettings (Comment, [Key], Value, [Disabled]) VALUES( 'Site Settings', 'PresentationUrl', 'http://localhost:8080/', 0)

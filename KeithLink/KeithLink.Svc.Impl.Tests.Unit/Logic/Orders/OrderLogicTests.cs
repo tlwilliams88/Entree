@@ -435,7 +435,8 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic.Orders {
             OrderLogicImpl testunit = new OrderLogicImpl(mockDependents.IPurchaseOrderRepository.Object, mockDependents.ICatalogLogic.Object, mockDependents.INoteLogic.Object,
                                                          mockDependents.ICacheRepository.Object, mockDependents.IOrderQueueLogic.Object, mockDependents.IPriceLogic.Object,
                                                          mockDependents.IEventLogRepository.Object, mockDependents.IShipDateRepository.Object, mockDependents.ICustomerRepository.Object,
-                                                         mockDependents.IOrderHistoryHeaderRepsitory.Object, mockDependents.IKPayInvoiceRepository.Object, mockDependents.IOrderedFromListRepository.Object);
+                                                         mockDependents.IOrderHistoryHeaderRepsitory.Object, mockDependents.IKPayInvoiceRepository.Object, 
+                                                         mockDependents.IOrderedFromListRepository.Object, null, null);
             return testunit;
         }
         #endregion Setup

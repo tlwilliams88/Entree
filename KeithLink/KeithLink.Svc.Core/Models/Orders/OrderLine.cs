@@ -125,6 +125,9 @@ namespace KeithLink.Svc.Core.Models.Orders
         [DataMember(Name = "getsimilaritems")]
         public string GetSimilarItems { get; set; }
 
+        [DataMember(Name = "orderedfromsource")]
+        public string OrderedFromSource { get; set; }
+
         [DataMember(Name = "status")]
         public string Status
         {

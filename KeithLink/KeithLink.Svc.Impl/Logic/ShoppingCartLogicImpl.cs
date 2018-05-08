@@ -65,6 +65,7 @@ namespace KeithLink.Svc.Impl.Logic
         private readonly IExternalCatalogRepository _externalCatalogRepo;
         private readonly IOrderedFromListRepository _orderedFromListRepository;
         private readonly IOrderedItemsFromListRepository _orderedItemsFromListRepository;
+        private readonly IRecommendedItemsOrderedAnalyticsRepository _recommendedItemsOrderedAnalyticsRepository;
         #endregion
 
         #region ctor
@@ -73,7 +74,8 @@ namespace KeithLink.Svc.Impl.Logic
 									 IBasketLogic basketLogic, IOrderHistoryLogic orderHistoryLogic, IOrderedItemsFromListRepository orderedItemsFromListRepository,
                                      ICustomerRepository customerRepository, IAuditLogRepository auditLogRepository,
                                      INotesListLogic notesLogic, IUserActiveCartLogic userActiveCartLogic, IExternalCatalogRepository externalCatalogRepo,
-                                     ICacheRepository cache, IEventLogRepository log, IOrderedFromListRepository orderedFromListRepository)
+                                     ICacheRepository cache, IEventLogRepository log, IOrderedFromListRepository orderedFromListRepository, 
+                                     IRecommendedItemsOrderedAnalyticsRepository recommendedItemsOrderedAnalyticsRepository)
 		{
             _cache = cache;
 			this.basketRepository = basketRepository;
@@ -92,6 +94,7 @@ namespace KeithLink.Svc.Impl.Logic
             _externalCatalogRepo = externalCatalogRepo;
             _orderedFromListRepository = orderedFromListRepository;
 		    _orderedItemsFromListRepository = orderedItemsFromListRepository;
+		    _recommendedItemsOrderedAnalyticsRepository = recommendedItemsOrderedAnalyticsRepository;
 		}
         #endregion
 
@@ -160,12 +163,12 @@ namespace KeithLink.Svc.Impl.Logic
 
             foreach (var item in cart.Items)
             {
-                if (item.SourceProductList != null &&
-                    item.SourceProductList.Length > 0) {
+                if (item.OrderedFromSource != null &&
+                    item.OrderedFromSource.Length > 0) {
                     _orderedItemsFromListRepository.Write(new OrderedItemFromList() {
                         ControlNumber = newCartId.ToString(),
                         ItemNumber = item.ItemNumber,
-                        SourceList = item.SourceProductList
+                        SourceList = item.OrderedFromSource
                     });
                 }
             }
@@ -450,7 +453,7 @@ namespace KeithLink.Svc.Impl.Logic
 
                 var sourceList = _orderedItemsFromListRepository.Read(cart.CartId.ToString(), item.ItemNumber);
                 if (sourceList != null) {
-                    item.SourceProductList = sourceList.SourceList;
+                    item.OrderedFromSource = sourceList.SourceList;
                 }
             }
 
@@ -631,6 +634,19 @@ namespace KeithLink.Svc.Impl.Logic
                             item.ListPrice = (decimal)filteredProducts[0].PackagePriceNumeric;
                         } else {
                             item.ListPrice = (decimal)filteredProducts[0].CasePriceNumeric;
+                        }
+                    }
+
+                    var source = _orderedItemsFromListRepository.Read(cartId.ToString(), item.ProductId);
+                    if (source != null && source.SourceList != null)
+                    {
+                        var sources = _recommendedItemsOrderedAnalyticsRepository.GetOrderSources();
+                        if (sources.Contains(source.SourceList))
+                        {
+                            _recommendedItemsOrderedAnalyticsRepository.Add(orderNumber,
+                                item.ProductId,
+                                item.Each.Value == false ? 'C' : 'P',
+                                source.SourceList);
                         }
                     }
                 }
@@ -827,9 +843,27 @@ namespace KeithLink.Svc.Impl.Logic
 					}	
 					else
 						lineItems.Add(item.ToLineItem());
-				}
-				
-			}
+
+                    if (item.OrderedFromSource != null &&
+                        item.OrderedFromSource.Length > 0)
+                    {
+                        try
+                        {
+                            var sourceList = _orderedItemsFromListRepository.Read(cart.CartId.ToString(), item.ItemNumber);
+                            if (sourceList == null || item.OrderedFromSource.Equals(sourceList.SourceList) == false)
+                            {
+                                _orderedItemsFromListRepository.Write(new OrderedItemFromList()
+                                {
+                                    ControlNumber = cart.CartId.ToString(),
+                                    ItemNumber = item.ItemNumber,
+                                    SourceList = item.OrderedFromSource
+                                });
+                            }
+                        }
+                        catch { }
+                    }
+                }
+            }
 
 			var duplicates = lineItems.Cast<CS.LineItem>().GroupBy(l => new { l.ProductId, l.Each }).Select(i => new { Ech = i.Select(p => p.Each).First(), Key = i.Key, Cnt = i.Count() }).Where(w => w.Cnt > 1).ToList();
 
