@@ -154,22 +154,30 @@ namespace KeithLink.Svc.Impl.Logic
                                                          cart.Items.Select(l => l.ToLineItem()).ToList());
 
 		    if (cart.ListId != null) {
-		        _orderedFromListRepository.Write(new OrderedFromList() {
-		            ControlNumber = newCartId.ToString(),
-		            ListId = cart.ListId,
-		            ListType = cart.ListType
-		        });
-		    }
+		        try {
+                    _orderedFromListRepository.Write(new OrderedFromList()
+                    {
+                        ControlNumber = newCartId.ToString(),
+                        ListId = cart.ListId,
+                        ListType = cart.ListType
+                    });
+                }
+                catch { }
+            }
 
             foreach (var item in cart.Items)
             {
                 if (item.OrderedFromSource != null &&
                     item.OrderedFromSource.Length > 0) {
-                    _orderedItemsFromListRepository.Write(new OrderedItemFromList() {
-                        ControlNumber = newCartId.ToString(),
-                        ItemNumber = item.ItemNumber,
-                        SourceList = item.OrderedFromSource
-                    });
+                    try {
+                        _orderedItemsFromListRepository.Write(new OrderedItemFromList()
+                        {
+                            ControlNumber = newCartId.ToString(),
+                            ItemNumber = item.ItemNumber,
+                            SourceList = item.OrderedFromSource
+                        });
+                    }
+                    catch { }
                 }
             }
 
@@ -650,7 +658,7 @@ namespace KeithLink.Svc.Impl.Logic
                         }
                     }
                 }
-                
+
 
                 var type = catalogLogic.GetCatalogTypeFromCatalogId(catalogId).ToUpper().Substring(0, 3);
 
