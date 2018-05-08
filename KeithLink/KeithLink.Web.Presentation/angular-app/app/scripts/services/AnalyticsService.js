@@ -158,8 +158,6 @@ angular.module('bekApp')
                                  '', 
                                  item.position);
 
-            item.orderedfromsource = addedFrom;
-
             // inject customernumber and branch into detail hit
             Analytics.set('dimension7', customerNumber);
             Analytics.set('dimension6', branchId);
