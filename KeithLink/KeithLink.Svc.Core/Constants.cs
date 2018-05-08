@@ -468,5 +468,8 @@ namespace KeithLink.Svc.Core
         public const int OPENXML_EXPORT_WIDTH_PIXELS_20 = 20;
         public const int OPENXML_EXPORT_WIDTH_PIXELS_25 = 25;
         public const int OPENXML_EXPORT_WIDTH_PIXELS_80 = 80;
+
+        // OpenXml
+        public const string RECOMMENDED_CART_ITEM = "cartIQ";
     }
 }
