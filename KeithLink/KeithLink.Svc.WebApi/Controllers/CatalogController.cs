@@ -392,6 +392,28 @@ namespace KeithLink.Svc.WebApi.Controllers {
             return _catalogService.GetRecommendedItemsForCart(this.SelectedUserContext, itemNumbers, this.AuthenticatedUser);
         }
 
+        [HttpGet]
+        [ApiKeyedRoute("catalog/growthandrecovery")]
+        public OperationReturnModel<GrowthAndRecoveryItemsReturn> GetGrowthAndRecoveryGroupsByCustomer(int pagesize = 20, bool getimages = true)
+        {
+            OperationReturnModel<GrowthAndRecoveryItemsReturn> ret = new OperationReturnModel<GrowthAndRecoveryItemsReturn>();
+            try
+            {
+                ret.SuccessResponse = _catalogService.GetGrowthAndRecoveryItemsForCustomer(this.SelectedUserContext
+                                                                                           , this.AuthenticatedUser
+                                                                                           , pagesize
+                                                                                           , getimages);
+                ret.IsSuccess = true;
+            }
+            catch (Exception ex)
+            {
+                ret.IsSuccess = false;
+                ret.ErrorMessage = ex.Message;
+                _elRepo.WriteErrorLog("GetGrowthAndRecoveryGroupsByCustomer", ex);
+            }
+            return ret;
+        }
+
         /// <summary>
         /// Return list of products attached to a promotional catalog campaign
         /// </summary>

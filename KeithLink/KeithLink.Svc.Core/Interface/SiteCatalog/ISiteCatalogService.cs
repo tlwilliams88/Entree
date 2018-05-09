@@ -28,5 +28,10 @@ namespace KeithLink.Svc.Core.Interface.SiteCatalog
         ProductsReturn GetRecommendedItemsForCart(UserSelectedContext catalogInfo,
                                                   List<string> cartItems,
                                                   UserProfile profile);
+
+        GrowthAndRecoveryItemsReturn GetGrowthAndRecoveryItemsForCustomer(UserSelectedContext catalogInfo,
+                                                                          UserProfile profile, 
+                                                                          int pagesize, 
+                                                                          bool getimages);
     }
 }
