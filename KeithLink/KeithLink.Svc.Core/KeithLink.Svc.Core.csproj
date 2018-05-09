@@ -396,6 +396,7 @@
     <Compile Include="Models\Customers\EF\ItemHistory.cs" />
     <Compile Include="Models\Customers\GrowthAndRecoveriesModel.cs" />
     <Compile Include="Models\Customers\ItemHistoryModel.cs" />
+    <Compile Include="Models\Customers\GrowthAndRecoveryItemsReturn.cs" />
     <Compile Include="Models\Customers\RecommendedItemsModel.cs" />
     <Compile Include="Models\Customers\RecommendedItemsParametersModel.cs" />
     <Compile Include="Models\EF\CustomInventoryItem .cs" />
