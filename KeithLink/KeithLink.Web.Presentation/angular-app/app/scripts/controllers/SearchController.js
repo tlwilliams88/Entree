@@ -46,6 +46,8 @@ angular.module('bekApp')
     var isMobile = UtilityService.isMobileDevice();
     var isMobileApp = ENV.mobileApp;
 
+    $scope.recommendationType = $stateParams.recommendationType;
+
     function setHideTutorial(){
       LocalStorage.setHideTutorialSearch(true);
       $scope.tutorialRunning = false;
@@ -1100,7 +1102,8 @@ angular.module('bekApp')
     $scope.goToItemDetails = function(item) {
       ProductService.selectedProduct = item;
       $state.go('menu.catalog.products.details', {
-        itemNumber: item.itemnumber
+        itemNumber: item.itemnumber,
+        recommendationType: $scope.recommendationType
       });
     };
 

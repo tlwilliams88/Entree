@@ -20,6 +20,8 @@ angular.module('bekApp')
 
     $scope.isHomePage = isHomePage;
 
+    $scope.showRecommendedItems = ENV.showRecommendedItems;
+
     $scope.$on('$stateChangeStart',
       function(){
         guiders.hideAll();
@@ -95,9 +97,9 @@ angular.module('bekApp')
     // get promo/marketing items
     $scope.loadingPromoItems = true;
     MarketingService.getPromoItems().then(function(items) {
-      if(items[0].targeturltext != 'Admiral of the Fleet Salmon') { //Added to stop the salmon photo from displaying
+      // if(items[0].targeturltext != 'Admiral of the Fleet Salmon') { //Added to stop the salmon photo from displaying
         $scope.marketingPromoItems = items;
-      }
+      // }
       delete $scope.promoMessage;
     }, function(errorMessage) {
       $scope.promoMessage = errorMessage;

@@ -64,7 +64,9 @@
     <Compile Include="Migrations\Data\IntegrationTests\Configuration\AppSettings.cs" />
     <Compile Include="Migrations\Data\AppSettings.cs" />
     <Compile Include="Migrations\Data\Baseline_Data.cs" />
+    <Compile Include="Migrations\Data\IntegrationTests\Customers\GrowthAndRecoveryProductGroups.cs" />
     <Compile Include="Migrations\Data\IntegrationTests\Customers\RecommendedItemContexts.cs" />
+    <Compile Include="Migrations\Data\IntegrationTests\Customers\GrowthAndRecoveries.cs" />
     <Compile Include="Migrations\Data\IntegrationTests\Customers\SICMap.cs" />
     <Compile Include="Migrations\Data\IntegrationTests\Customers\RecommendedItems.cs" />
     <Compile Include="Migrations\Data\IntegrationTests\Lists\ListItemsDelta.cs" />
@@ -150,6 +152,8 @@
     <Compile Include="Migrations\v2018.01.00\Migration0066.cs" />
     <Compile Include="Migrations\v2018.04.00\Migration0068.cs" />
     <Compile Include="Migrations\v2018.04.00\Migration0067.cs" />
+    <Compile Include="Migrations\v2018.05.00\Migration0070.cs" />
+    <Compile Include="Migrations\v2018.05.00\Migration0071.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -337,6 +341,15 @@
     <Content Include="Scripts\AppData\Customers\Customers_0001_0001.11.00_up.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="Scripts\AppData\Customers\Tables\GrowthAndRecoveries\Indexes\IX_GrowthAndRecoveries_0070_2018.06.00_down.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Scripts\AppData\Customers\Tables\GrowthAndRecoveries\Indexes\IX_GrowthAndRecoveries_0070_2018.06.00_up.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Scripts\AppData\Customers\Tables\GrowthAndRecoveryTypes\PostDeployment\GrowthAndRecoverySeed_0070_2018.05.00_down.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="Scripts\AppData\Customers\Tables\InternalUserAccess\InternalUserAccess_0001_0001.11.00_down.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
@@ -347,6 +360,12 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Scripts\AppData\Customers\Tables\ItemHistory\ItemHistory_0001_0001.11.00_up.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Scripts\AppData\Customers\Tables\GrowthAndRecoveryProductGroups\GrowthAndRecoveryProductGroups_0070_2018.05.00_down.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Scripts\AppData\Customers\Tables\GrowthAndRecoveryProductGroups\GrowthAndRecoveryProductGroups_0070_2018.05.00_up.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Scripts\AppData\Customers\Tables\RecommendedItemContexts\Indexes\IX_RecommendedItemContexts_0067_2018.04.00_down.sql">
@@ -371,6 +390,21 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Scripts\AppData\Customers\Tables\RecommendedItems\RecommendedItems_0067_2018.04.00_up.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Scripts\AppData\Customers\Tables\GrowthAndRecoveries\GrowthAndRecoveries_0070_2018.05.00_down.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Scripts\AppData\Customers\Tables\GrowthAndRecoveries\GrowthAndRecoveries_0070_2018.05.00_up.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Scripts\AppData\Customers\Tables\GrowthAndRecoveryTypes\PostDeployment\GrowthAndRecoverySeed_0070_2018.05.00_up.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Scripts\AppData\Customers\Tables\GrowthAndRecoveryTypes\GrowthAndRecoveryTypes_0070_2018.05.00_down.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Scripts\AppData\Customers\Tables\GrowthAndRecoveryTypes\GrowthAndRecoveryTypes_0070_2018.05.00_up.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Scripts\AppData\Customers\Tables\SICMap\SICMap_0067_2018.04.00_down.sql">
@@ -779,6 +813,24 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Scripts\AppData\ETL\Tables\Staging_FSE_ProductSpec\Staging_FSE_ProductSpec_0001_0001.11.00_up.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Scripts\AppData\ETL\Tables\Staging_GrowthAndRecovery_Customer_Insights\Staging_GrowthAndRecovery_Customer_Insights_0070_2018.05.00_down.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Scripts\AppData\ETL\Tables\Staging_GrowthAndRecovery_Customer_Insights\Staging_GrowthAndRecovery_Customer_Insights_0070_2018.05.00_up.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Scripts\AppData\ETL\Tables\Staging_GrowthAndRecovery_Product_Grouping_Insights\Staging_GrowthAndRecovery_Product_Grouping_Insights_0070_2018.05.00_down.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Scripts\AppData\ETL\Tables\Staging_GrowthAndRecovery_Product_Grouping_Insights\Staging_GrowthAndRecovery_Product_Grouping_Insights_0070_2018.05.00_up.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Scripts\AppData\ETL\Tables\Staging_GrowthAndRecovery_Product_Grouping\Staging_GrowthAndRecovery_Product_Grouping_0070_2018.05.00_down.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Scripts\AppData\ETL\Tables\Staging_GrowthAndRecovery_Product_Grouping\Staging_GrowthAndRecovery_Product_Grouping_0070_2018.05.00_up.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Scripts\AppData\ETL\Tables\Staging_ItemData\Staging_ItemData_0067_2018.04.00_down.sql">
@@ -2080,10 +2132,31 @@
     <Content Include="Scripts\AppData\Orders\Tables\OrderHistoryHeader\OrderHistoryHeader_0001_0001.11.00_up.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="Scripts\AppData\Orders\Tables\RecommendedItemsOrderedAnalytics\RecommendedItemsOrderedAnalytics_0071_2018.05.00_down.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Scripts\AppData\Orders\Tables\RecommendedItemsOrderedAnalytics\RecommendedItemsOrderedAnalytics_0071_2018.05.00_up.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Scripts\AppData\Orders\Tables\RecommendedOrderSource\PostDeployment\RecommendedOrderSourceSeed_0071_2018-06-00_up.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Scripts\AppData\Orders\Tables\RecommendedOrderSource\RecommendedOrderSource_0071_2018.05.00_down.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Scripts\AppData\Orders\Tables\RecommendedOrderSource\RecommendedOrderSource_0071_2018.05.00_up.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="Scripts\AppData\Orders\Tables\UserActiveCarts\UserActiveCarts_0001_0001.11.00_down.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Scripts\AppData\Orders\Tables\UserActiveCarts\UserActiveCarts_0001_0001.11.00_up.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Scripts\AppData\Orders\Views\RecommendedItemsOrdered\RecommendedItemsOrdered_0071_2018.05.00_down.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Scripts\AppData\Orders\Views\RecommendedItemsOrdered\RecommendedItemsOrdered_0071_2018.05.00_up.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Scripts\AppData\Profile\Profile_0001_0001.11.00_down.sql">

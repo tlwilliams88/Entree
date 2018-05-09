@@ -44,6 +44,7 @@ namespace KeithLink.Svc.Impl.Service.SiteCatalog
         private readonly ICacheRepository _catalogCacheRepository;
         private readonly ICatalogLogic _catalogLogic;
         private readonly ICatalogRepository _catalogRepository;
+        private readonly ICategoryImageRepository _categoryImageRepository;
         private readonly IPriceLogic _priceLogic;
         private readonly IListRepository _listRepo;
         private readonly IFavoritesListLogic _favoritesLogic;
@@ -51,6 +52,7 @@ namespace KeithLink.Svc.Impl.Service.SiteCatalog
         private readonly IItemHistoryRepository _itemHistoryRepo;
         private readonly INotesListLogic _notesLogic;
         private readonly IRecommendedItemsRepository _recommendedItemsRepository;
+        private readonly IGrowthAndRecoveriesRepository _growthAndRecoveryItemsRepository;
         private readonly IEventLogRepository _log;
 
         protected string CACHE_GROUPNAME { get { return "Catalog"; } }
@@ -62,8 +64,9 @@ namespace KeithLink.Svc.Impl.Service.SiteCatalog
         public SiteCatalogServiceImpl(ICacheRepository catalogCacheRepository, ICatalogLogic catalogLogic
                                       , ICatalogRepository catalogRepository, IPriceLogic priceLogic
                                       , IListRepository listRepo, IFavoritesListLogic favoritesLogic
-                                      , IHistoryListLogic historyLogic, INotesListLogic notesLogic
-                                      , IItemHistoryRepository itemHistoryRepo, IRecommendedItemsRepository recommendedItemsRepository, IEventLogRepository logRepo)
+                                      , IHistoryListLogic historyLogic, INotesListLogic notesLogic, ICategoryImageRepository categoryImageRepository
+                                      , IItemHistoryRepository itemHistoryRepo, IRecommendedItemsRepository recommendedItemsRepository
+                                      , IEventLogRepository logRepo, IGrowthAndRecoveriesRepository growthAndRecoveryItemsRepository)
         {
             _catalogCacheRepository = catalogCacheRepository;
             _catalogLogic = catalogLogic;
@@ -75,6 +78,8 @@ namespace KeithLink.Svc.Impl.Service.SiteCatalog
             _itemHistoryRepo = itemHistoryRepo;
             _notesLogic = notesLogic;
             _recommendedItemsRepository = recommendedItemsRepository;
+            _growthAndRecoveryItemsRepository = growthAndRecoveryItemsRepository;
+            _categoryImageRepository = categoryImageRepository;
             _log = logRepo;
         }
         #endregion
@@ -201,8 +206,30 @@ namespace KeithLink.Svc.Impl.Service.SiteCatalog
 
             AddPricingInfo(products, catalogInfo);
             GetAdditionalProductInfo(profile, products, catalogInfo);
+            ApplyRecommendedTagging(products);
 
             return products;
+        }
+        #endregion
+
+        #region growthandrecovery items
+        public GrowthAndRecoveryItemsReturn GetGrowthAndRecoveryItemsForCustomer(UserSelectedContext catalogInfo, UserProfile profile, int pagesize, bool getimages)
+        {
+            GrowthAndRecoveryItemsReturn returnItems = new GrowthAndRecoveryItemsReturn();
+
+            returnItems.Items = _growthAndRecoveryItemsRepository.GetGrowthAdnGetGrowthAndRecoveryOpportunities(catalogInfo.CustomerId, catalogInfo.BranchId);
+
+            returnItems.Items = returnItems.Items.Take(pagesize)
+                                           .ToList();
+
+            if (getimages) {
+                foreach (var item in returnItems.Items)
+                {
+                    item.Image = _categoryImageRepository.GetImageByCategory(item.GroupingCode);
+                }
+            }
+
+            return returnItems;
         }
         #endregion
 
@@ -398,6 +425,12 @@ namespace KeithLink.Svc.Impl.Service.SiteCatalog
                     _catalogLogic.AddProductImageInfo(prod);
                 });
             }
+        }
+
+        private void ApplyRecommendedTagging(ProductsReturn ret) {
+            ret.Products.ForEach(delegate (Product prod) {
+                                     prod.OrderedFromSource = Constants.RECOMMENDED_CART_ITEM;
+                                 });
         }
 
         private void GetPreviouslyOrderedProductInfo(UserProfile profile, ProductsReturn ret, UserSelectedContext catalogInfo)
