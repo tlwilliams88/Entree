@@ -8,8 +8,8 @@
  * Controller of the bekApp
  */
 angular.module('bekApp')
-  .controller('RegisterController', ['$scope', '$state', 'ENV', 'toaster', 'AuthenticationService', 'AccessService', 'BranchService', 'UserProfileService', 'PhonegapPushService', 'LocalStorage', 'Constants', '$window', 'localStorageService',
-    function ($scope, $state, ENV, toaster, AuthenticationService, AccessService, BranchService, UserProfileService, PhonegapPushService, LocalStorage, Constants, $window, localStorageService) {
+  .controller('RegisterController', ['$scope', '$state', 'ENV', 'toaster', 'AuthenticationService', 'AccessService', 'BranchService', 'UserProfileService', 'PhonegapPushService', 'LocalStorage', 'Constants', '$window', 'localStorageService', 'blockUI', '$interval',
+    function ($scope, $state, ENV, toaster, AuthenticationService, AccessService, BranchService, UserProfileService, PhonegapPushService, LocalStorage, Constants, $window, localStorageService, blockUI, $interval) {
 
   $scope.isMobileApp = ENV.mobileApp;
   $scope.signUpBool = false;
@@ -35,8 +35,32 @@ angular.module('bekApp')
     $scope.enteredUserName = username;
   };
 
-  BranchService.getBranches().then(function(branches) {
-    $scope.branches = branches;
+  var branchCheck;
+  function checkForBranches() {
+    BranchService.getBranches().then(function(resp){
+      if(resp == -1) {
+        return;
+      } else {
+        blockUI.stop();
+        $interval.cancel(branchCheck);
+        $scope.branches = resp.successResponse;
+      }
+    })
+  }
+
+  BranchService.getBranches().then(function(resp) {
+    var branches = [],
+        maintenanceMessage = 'We\'re currently undergoing maintenance for an extended period today.\n We\'ll be back soon.\n Thank you for your patience.';
+    if(resp == -1 && ENV.isMobileApp) {
+      blockUI.start(maintenanceMessage).then(function() {
+        branchCheck = $interval(checkForBranches, 30000);
+      })
+    } else {
+      if(resp.successResponse && resp.successResponse.length > 0) {
+        branches = resp.successResponse;
+      }
+      $scope.branches = branches;
+    }
   });
 
   $scope.login = function(loginInfo) {
