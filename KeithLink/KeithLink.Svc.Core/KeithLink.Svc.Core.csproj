@@ -399,6 +399,8 @@
     <Compile Include="Models\Customers\GrowthAndRecoveryItemsReturn.cs" />
     <Compile Include="Models\Customers\RecommendedItemsModel.cs" />
     <Compile Include="Models\Customers\RecommendedItemsParametersModel.cs" />
+    <Compile Include="Models\Customers\RecommendedItemsRequestModel.cs" />
+    <Compile Include="Models\Customers\GrowthAndRecoveryItemsRequestModel.cs" />
     <Compile Include="Models\EF\CustomInventoryItem .cs" />
     <Compile Include="Models\EF\Dsr.cs" />
     <Compile Include="Models\EF\ListShare.cs" />

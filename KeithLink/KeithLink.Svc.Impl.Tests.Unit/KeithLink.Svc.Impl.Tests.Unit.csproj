@@ -123,6 +123,7 @@
     <Compile Include="Service\CatalogCampaignServiceTests.cs" />
     <Compile Include="Service\Invoices\ExportInvoicesServiceTests.cs" />
     <Compile Include="Service\List\ListServiceTests.cs" />
+    <Compile Include="Service\SiteCatalog\SiteCatalogServiceTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Logic\ApplicationHealth\" />
