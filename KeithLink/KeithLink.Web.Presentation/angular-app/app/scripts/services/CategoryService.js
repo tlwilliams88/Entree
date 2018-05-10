@@ -26,7 +26,11 @@ angular.module('bekApp')
 
       getRecommendedCategories: function() {
 
-        recommendedCategories = $http.get('/catalog/growthandrecovery').then(function(response) {
+        // This call is a post to allow for supporting any changes to the available parameters in the future
+        // Available Parameters:
+        // pagesize: num,
+        // getimages: bool
+        recommendedCategories = $http.post('/catalog/growthandrecovery').then(function(response) {
           return response.data.successResponse.items;
         })
         return recommendedCategories;
