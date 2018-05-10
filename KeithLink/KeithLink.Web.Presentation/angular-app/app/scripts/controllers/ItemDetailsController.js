@@ -8,8 +8,8 @@
  * Controller of the bekApp
  */
 angular.module('bekApp')
-  .controller('ItemDetailsController', ['$scope', '$state', '$modal', 'item', 'ProductService', 'AccessService', 'PricingService', 'LocalStorage', 'AnalyticsService', 'ENV',
-    function ($scope, $state, $modal, item, ProductService, AccessService, PricingService, LocalStorage, AnalyticsService, ENV) {
+  .controller('ItemDetailsController', ['$scope', '$state', '$modal', 'item', 'ProductService', 'AccessService', 'PricingService', 'LocalStorage', 'AnalyticsService', 'ENV', 'Constants',
+    function ($scope, $state, $modal, item, ProductService, AccessService, PricingService, LocalStorage, AnalyticsService, ENV, Constants) {
     
     if(!item){
       $state.go('menu.home');
@@ -22,7 +22,9 @@ angular.module('bekApp')
     $scope.showRecommendedItems = ENV.showRecommendedItems;
 
     if($scope.showRecommendedItems == true) {
-      ProductService.getRecommendedItems($scope.item.itemnumber).then(function(resp) {
+      var pagesize = ENV.isMobileApp == 'true' ? Constants.recommendedItemParameters.Mobile.pagesize : Constants.recommendedItemParameters.Desktop.ItemDetails.pagesize,
+          getimages = ENV.isMobileApp == 'true' ? Constants.recommendedItemParameters.Mobile.getimages : Constants.recommendedItemParameters.Desktop.getimages;
+      ProductService.getRecommendedItems($scope.item.itemnumber, pagesize, getimages).then(function(resp) {
         $scope.recommendedItems = resp;
       });
     }

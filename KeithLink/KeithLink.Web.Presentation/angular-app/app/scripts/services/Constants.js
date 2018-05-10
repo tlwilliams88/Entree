@@ -209,5 +209,25 @@ angular.module('bekApp')
     },
 
     infiniteScrollPageSize: 50,
-    promoItemsSize: 6
+    promoItemsSize: 6,
+
+    recommendedItemParameters: {
+      Desktop: {
+        getimages: true,
+        ATO: {
+          pagesize: null,
+          getimages: null
+        },
+        Cart: {
+          pagesize: 5
+        },
+        ItemDetails: {
+          pagesize: 3
+        }
+      },
+      Mobile: {
+        getimages: false,
+        pagesize: null
+      }
+    }
   });

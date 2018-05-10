@@ -141,7 +141,9 @@ angular.module('bekApp')
 
     function updateRecommendedItems(){
       if($scope.showRecommendedItems == true) {
-        ProductService.getRecommendedItems($scope.currentCart.items).then(function(resp) {
+        var pagesize = ENV.isMobileApp == 'true' ? Constants.recommendedItemParameters.Mobile.pagesize : Constants.recommendedItemParameters.Desktop.Cart.pagesize,
+        getimages = ENV.isMobileApp == 'true' ? Constants.recommendedItemParameters.Mobile.getimages : Constants.recommendedItemParameters.Desktop.getimages;
+        ProductService.getRecommendedItems($scope.currentCart.items, pagesize, getimages).then(function(resp) {
           $scope.recommendedItems = resp;
         });
       }
@@ -702,3 +704,4 @@ angular.module('bekApp')
                                     ""); //option
 
   }]);
+

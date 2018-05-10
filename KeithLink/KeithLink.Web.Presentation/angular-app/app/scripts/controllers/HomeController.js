@@ -20,8 +20,6 @@ angular.module('bekApp')
 
     $scope.isHomePage = isHomePage;
 
-    $scope.showRecommendedItems = ENV.showRecommendedItems;
-
     $scope.$on('$stateChangeStart',
       function(){
         guiders.hideAll();
@@ -166,15 +164,19 @@ angular.module('bekApp')
     $scope.loadingrecentlyOrderedUnfiItems = true;
     $scope.loadingCategories = true;
     $scope.loadingBrands = true;
-    $scope.loadingRecommendedItems = true;
+    $scope.loadingRecommendedCategories = true;
 
     ProductService.getRecentlyViewedItems().then(function(recentitems) {
       $scope.recentlyViewedItems = recentitems;
       $scope.loadingRecentlyViewedItems = false;
-      $scope.showRecommendedItems = ENV.showRecommendedItems;
+      $scope.showRecommendedCategories = ENV.showRecommendedItems;
 
-      $scope.recommendedItems = CategoryService.categories;
-      $scope.loadingRecommendedItems = false;
+      if($scope.showRecommendedCategories == true) {
+        CategoryService.getRecommendedCategories().then(function(recommendations){
+          $scope.recommendedCategories = recommendations;
+          $scope.loadingRecommendedCategories = false;
+        })
+      } 
       
       $scope.categories = CategoryService.categories;
       $scope.loadingCategories = false;
