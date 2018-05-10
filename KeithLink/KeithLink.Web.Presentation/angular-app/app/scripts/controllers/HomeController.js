@@ -172,7 +172,7 @@ angular.module('bekApp')
       $scope.showRecommendedCategories = ENV.showRecommendedItems;
 
       if($scope.showRecommendedCategories == true) {
-        CategoryService.getRecommendedCategories(Constants.recommendedCategoryParameters.pagesize, Constants.recommendedCategoryParameters.getimages).then(function(recommendations){
+        CategoryService.getRecommendedCategories().then(function(recommendations){
           $scope.recommendedCategories = recommendations;
           $scope.loadingRecommendedCategories = false;
         })

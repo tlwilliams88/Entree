@@ -24,14 +24,9 @@ angular.module('bekApp')
         return categories[catalogType];
       },
 
-      getRecommendedCategories: function(pagesize, getimages) {
+      getRecommendedCategories: function() {
 
-        var params = {
-          pagesize: pagesize,
-          getimages: getimages
-        }
-
-        recommendedCategories = $http.post('/catalog/growthandrecovery', params).then(function(response) {
+        recommendedCategories = $http.get('/catalog/growthandrecovery').then(function(response) {
           return response.data.successResponse.items;
         })
         return recommendedCategories;

@@ -229,10 +229,5 @@ angular.module('bekApp')
         getimages: false,
         pagesize: null
       }
-    },
-
-    recommendedCategoryParameters: {
-      getimages: true,
-      pagesize: 4
     }
   });
