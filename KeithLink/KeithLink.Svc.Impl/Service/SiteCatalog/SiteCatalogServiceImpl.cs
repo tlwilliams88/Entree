@@ -189,7 +189,7 @@ namespace KeithLink.Svc.Impl.Service.SiteCatalog
                                                                                                                 .ToList());
 
             AddPricingInfo(products, catalogInfo);
-            GetAdditionalProductInfo(profile, products, catalogInfo);
+            GetAdditionalProductInfo(profile, products, catalogInfo, (hasimages.HasValue) ? hasimages.Value : true);
             ApplyRecommendedTagging(products);
 
             return products;
@@ -416,7 +416,7 @@ namespace KeithLink.Svc.Impl.Service.SiteCatalog
             }
         }
 
-        private void GetAdditionalProductInfo(UserProfile profile, ProductsReturn ret, UserSelectedContext catalogInfo)
+        private void GetAdditionalProductInfo(UserProfile profile, ProductsReturn ret, UserSelectedContext catalogInfo, bool hasimages = true)
         {
             if (profile != null)
             {
