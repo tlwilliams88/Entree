@@ -10,7 +10,8 @@
 angular.module('bekApp')
   .factory('CategoryService', function ($http, $filter) {
 
-    var categories = {};
+    var categories = {},
+        recommendedCategories = {};
 
     var Service = {
       getCategories: function(catalogType) {
@@ -21,6 +22,19 @@ angular.module('bekApp')
           });
         }
         return categories[catalogType];
+      },
+
+      getRecommendedCategories: function(pagesize, getimages) {
+
+        var params = {
+          pagesize: pagesize,
+          getimages: getimages
+        }
+
+        recommendedCategories = $http.post('/catalog/growthandrecovery', params).then(function(response) {
+          return response.data.successResponse.items;
+        })
+        return recommendedCategories;
       }
   };
 

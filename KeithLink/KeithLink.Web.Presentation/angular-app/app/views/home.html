@@ -61,7 +61,7 @@
       <!-- end Account Summary -->
 
       <!-- Recommended Items -->
-      <div ng-if="recommendedItems && recommendedItems.length > 0 && showRecommendedItems == true" class="hidden-xs hidden-sm">
+      <div ng-if="recommendedCategories && recommendedCategories.length > 0 && showRecommendedCategories == true" class="hidden-xs hidden-sm">
         <div class="col-sm-12" style="padding-left: 0; padding-right: 0;">
           <h3>Recommended For You</h3>
           <div loading-spinner="loadingPromoItems" ng-show="loadingPromoItems"></div>
@@ -72,31 +72,39 @@
                 <ul class="horizontal-slide" style="white-space: normal; text-align: center; background-color: #F3F1EC; float:right; columns: 2; padding: 8px 8px 3px 8px;">
                     <li 
                       ng-if="item.name != 'All'" 
-                      ng-repeat="item in recommendedItems | limitTo: 4" 
+                      ng-repeat="category in recommendedCategories | limitTo: 4" 
                       class="item-holder"
                       analytics-on 
-                      analytics-category="SalesIQ-Recommended-Items-Homepage-Desktop" 
-                      analytics-event="SalesIQ Recommended Items Clicked" 
-                      analytics-label="{{item.itemnumber}}">
+                      analytics-category="SalesIQ-Recommended-Categories-Homepage-Desktop" 
+                      analytics-event="SalesIQ Recommended Categories Clicked" 
+                      analytics-label="{{category.itemnumber}}">
                       <div 
                         class="featured-item text-center" 
                         analytics-on 
-                        analytics-category="SalesIQ-Recommended-Items-Homepage-Desktop" 
-                        analytics-event="SalesIQ Recommended Items Clicked" 
-                        analytics-label="{{item.name}}"
-                        style="    min-width: 0px;
+                        analytics-category="SalesIQ-Recommended-Categories-Homepage-Desktop" 
+                        analytics-event="SalesIQ Recommended Categories Clicked" 
+                        analytics-label="{{category.name}}"
+                        style="min-width: 0px;
                         margin: 0 auto;">
                         <img 
-                          class="hand" 
-                          ui-sref="menu.catalog.products.list({ type: 'category', id: item.parent_category, category: item.parent_category, subcategories: item.name, recommendationType: 'salesIQ'})" 
-                          ng-src="{{item.category_image}}" 
+                          class="hand"
+                          ng-if="category.image.category_image.url"
+                          ui-sref="menu.catalog.products.list({ type: 'category', id: category.parent_category, category: category.parent_category, subcategories: category.name, recommendationType: 'SalesIQ'})" 
+                          ng-src="{{category.image.category_image.url}}" 
                           alt="image"
                           style="width: 100%;" />
+                        <img
+                          class="product-placeholder-image"
+                          ng-if="category.image.category_image == null" 
+                          src="images/bek-logo.png" 
+                          alt="default product image"
+                          style="width: 75%;" 
+                        />
                           <div>
                               <a 
-                                ui-sref="menu.catalog.products.list({ type: 'category', id: item.parent_category, category: item.parent_category, subcategories: item.name, recommendationType: 'salesIQ'})" 
+                                ui-sref="menu.catalog.products.list({ type: 'category', id: category.parent_category, category: category.parent_category, subcategories: category.name, recommendationType: 'SalesIQ'})" 
                                 class="featured-item__detail">
-                                {{::item.name}}
+                                {{::category.description}}
                               </a>
                             </div>
                       </div>
@@ -190,7 +198,7 @@
     </div>
 
     <!-- Recommended Items -->
-    <div ng-if="recommendedItems.length > 0" class="hidden-md hidden-lg" style="margin-bottom: 10px;">
+    <div ng-if="recommendedCategories.length > 0 && showRecommendedCategories == true" class="hidden-md hidden-lg" style="margin-bottom: 10px;">
       <div class="col-sm-12">
         <h3>Recommended For You</h3>
         <div loading-spinner="loadingPromoItems" ng-show="loadingPromoItems"></div>
@@ -201,31 +209,40 @@
             <ul class="horizontal-slide" style="white-space: normal; text-align: center; background-color: #F3F1EC; float:right; columns: 2; padding: 8px 8px 2px 8px;">
               <li 
                 ng-if="item.name != 'All'" 
-                ng-repeat="item in recommendedItems | limitTo: 4" 
+                ng-repeat="category in recommendedCategories | limitTo: 4" 
                 class="item-holder"
                 analytics-on 
-                analytics-category="SalesIQ-Recommended-Items-Homepage-Mobile" 
-                analytics-event="SalesIQ Recommended Items Clicked" 
-                analytics-label="{{item.itemnumber}}">
+                analytics-category="SalesIQ-Recommended-Categories-Homepage-Mobile" 
+                analytics-event="SalesIQ Recommended Categories Clicked" 
+                analytics-label="{{category.itemnumber}}">
                 <div 
                   class="featured-item text-center" 
                   analytics-on 
-                  analytics-category="SalesIQ-Recommended-Items-Homepage-Mobile"  
-                  analytics-event="SalesIQ Recommended Items Clicked" 
-                  analytics-label="{{item.name}}"
+                  analytics-category="SalesIQ-Recommended-Categories-Homepage-Mobile"  
+                  analytics-event="SalesIQ Recommended Categories Clicked" 
+                  analytics-label="{{category.name}}"
                   style="    min-width: 0px;
                   margin: 0 auto;">
                   <img 
-                    class="hand" 
-                    ui-sref="menu.catalog.products.list({ type: 'category', id: item.parent_category, category: item.parent_category, subcategories: item.name, recommendationType: 'salesIQ'})" 
-                    ng-src="{{item.category_image}}" 
+                    class="hand"
+                    ng-if="category.image.category_image.url" 
+                    ui-sref="menu.catalog.products.list({ type: 'category', id: 'SEAFOOD COMMODITY', category: 'SEAFOOD COMMODITY', subcategories: category.name, recommendationType: 'SalesIQ'})" 
+                    ng-src="{{category.image.category_image.url}}" 
                     alt="image"
-                    style="width: 100%;" />
+                    style="width: 100%;" 
+                  />
+                  <img
+                    class="product-placeholder-image"
+                    ng-if="category.image.category_image == null" 
+                    src="images/bek-logo.png" 
+                    alt="default product image"
+                    style="width: 75%;" 
+                  />
                     <div>
                       <a 
-                        ui-sref="menu.catalog.products.list({ type: 'category', id: item.parent_category, category: item.parent_category, subcategories: item.name, recommendationType: 'salesIQ'})" 
+                        ui-sref="menu.catalog.products.list({ type: 'category', id: category.parent_category, category: category.parent_category, subcategories: category.name, recommendationType: 'SalesIQ'})" 
                         class="featured-item__detail">
-                        {{::item.name}}
+                        {{::category.description}}
                       </a>
                     </div>
                 </div>

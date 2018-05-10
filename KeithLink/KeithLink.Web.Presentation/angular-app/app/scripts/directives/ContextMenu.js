@@ -29,6 +29,7 @@ angular.module('bekApp')
         $scope.carts = $scope.carts.length > 0 ? $scope.carts : CartService.getCartHeaders();
 
         }
+
       }
 
       function closeModal() {
@@ -95,7 +96,7 @@ angular.module('bekApp')
       $scope.addItemToCart = function(cartName, cartId, item) {
         var newItem = angular.copy(item);
 
-        if($stateParams.recommendationType && $stateParams.recommendationType != undefined) {
+        if($stateParams.recommendationType && $stateParams.recommendationType != undefined && newItem.orderedfromsource == null) {
           newItem.orderedfromsource = $stateParams.recommendationType;
         }
         CartService.addItemToCart(cartId, newItem).then(function(data) {
@@ -107,7 +108,7 @@ angular.module('bekApp')
       };
 
       $scope.createCartWithItem = function(item) {
-        if($stateParams.recommendationType && $stateParams.recommendationType != undefined) {
+        if($stateParams.recommendationType && $stateParams.recommendationType != undefined && newItem.orderedfromsource == null) {
           item.orderedfromsource = $stateParams.recommendationType;
         }
 
@@ -152,7 +153,7 @@ angular.module('bekApp')
        $scope.addItemToChangeOrder = function(order, item) {
         var orderItem = angular.copy(item);
 
-        if($stateParams.recommendationType && $stateParams.recommendationType != undefined) {
+        if($stateParams.recommendationType && $stateParams.recommendationType != undefined && newItem.orderedfromsource == null) {
           orderItem.orderedfromsource = $stateParams.recommendationType;
         }
         orderItem.quantity = (orderItem.quantity && orderItem.quantity > 0) ? orderItem.quantity : 1;
