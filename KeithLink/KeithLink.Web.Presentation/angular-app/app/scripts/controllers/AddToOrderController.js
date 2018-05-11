@@ -108,6 +108,20 @@ angular.module('bekApp')
       var changedExpression = this.exp; // jshint ignore:line
       var idx = changedExpression.substr(changedExpression.indexOf('[') + 1, changedExpression.indexOf(']') - changedExpression.indexOf('[') - 1);
       var object = changedExpression.substr(0, changedExpression.indexOf('.'));
+
+
+      var listItem;
+      var listIdx;
+      if(object == 'selectedCart') {
+        listItem = $filter('filter')($scope.selectedList.items, function(item) {
+                return (item.itemnumber == $scope[object].items[idx].itemnumber && item.quantity > 0)
+        });
+        listIdx = $scope.selectedList.items.indexOf(listItem[0]);
+        if(listIdx > -1 && $scope.selectedList.items[listIdx].quantity > 0) {
+          $scope.selectedList.items[listIdx].quantity = $scope[object].items[idx].quantity;
+        }
+      }
+
       var item = $scope[object].items[idx];
 
       if(newVal !== oldVal && item){
@@ -436,7 +450,9 @@ angular.module('bekApp')
 
     $scope.updateRecommendedItems = function(items) {
       if($scope.showRecommendedItems == true) {
-        ProductService.getRecommendedItems(items).then(function(resp) {
+        var pagesize = ENV.isMobileApp == 'true' ? Constants.recommendedItemParameters.Mobile.pagesize : Constants.recommendedItemParameters.Desktop.ATO.pagesize,
+        getimages = ENV.isMobileApp == 'true' ? Constants.recommendedItemParameters.Mobile.getimages : Constants.recommendedItemParameters.Desktop.ATO.getimages;
+        ProductService.getRecommendedItems(items, pagesize, getimages).then(function(resp) {
           $scope.recommendedItems = resp;
         });
       }
@@ -458,6 +474,8 @@ angular.module('bekApp')
                $scope.openErrorMessageModal('The ship date requested for this order has expired. Select Cancel to return to the home screen without making changes. Select Accept to update to the next available ship date.');
               selectedCart.requestedshipdate = $scope.shipDates[0].shipdate;
             }
+
+            $scope.updateRecommendedItems(selectedCart.items);
 
           } else {
             // create new cart if no cart was selected
@@ -965,7 +983,7 @@ angular.module('bekApp')
     $scope.updateCartWithRecommendedItems = function(item) {
       item.extPrice = PricingService.getPriceForItem(item);
 
-      item.source = "recommended";
+      item.orderedfromsource = "CartIQ";
 
       if($filter('filter')($scope.selectedCart.items, {itemnumber: item.itemnumber, recommended: item.recommended}).length > 0) {
         var itemIdx = $scope.selectedCart.items.indexOf(item);

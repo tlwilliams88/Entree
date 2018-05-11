@@ -23,6 +23,7 @@ angular.module('bekApp')
     $scope.$parent.$parent.cartHeaders = CartService.cartHeaders;
 
     $scope.showRecommendedItems = ENV.showRecommendedItems;
+    $scope.isMobileDevice = UtilityService.isMobileDevice();
 
     var watches = [];
     function onQuantityChange(newVal, oldVal) {
@@ -140,7 +141,9 @@ angular.module('bekApp')
 
     function updateRecommendedItems(){
       if($scope.showRecommendedItems == true) {
-        ProductService.getRecommendedItems($scope.currentCart.items).then(function(resp) {
+        var pagesize = ENV.isMobileApp == 'true' ? Constants.recommendedItemParameters.Mobile.pagesize : Constants.recommendedItemParameters.Desktop.Cart.pagesize,
+        getimages = ENV.isMobileApp == 'true' ? Constants.recommendedItemParameters.Mobile.getimages : Constants.recommendedItemParameters.Desktop.getimages;
+        ProductService.getRecommendedItems($scope.currentCart.items, pagesize, getimages).then(function(resp) {
           $scope.recommendedItems = resp;
         });
       }
@@ -167,6 +170,23 @@ angular.module('bekApp')
       }
       $state.go('menu.cart.items', {cartId: cartId} );
     };
+
+    $scope.scrollToTop = function($var) {
+      $('.back-to-top, .back-to-top-desktop, .floating-save-mobile').css({'display': 'inline'});
+      var duration = 300;
+      event.preventDefault();
+      jQuery('html, body').animate({scrollTop: 0}, duration);
+      return false;
+    };
+  
+    $(window).scroll(function() {
+      if($(this).scrollTop() > 190){
+        $('.back-to-top, .back-to-top-desktop, .floating-save-mobile').fadeIn('fast');
+        $('.back-to-top, .back-to-top-desktop, .floating-save-mobile').css('visibility', 'visible');
+      } else {
+        $('.back-to-top, .back-to-top-desktop, .floating-save-mobile').fadeOut('fast');
+      }
+    });
 
     $scope.cancelChanges = function() {
       var originalCart = angular.copy(originalBasket);
@@ -241,7 +261,6 @@ angular.module('bekApp')
 
    $scope.addItemToCart = function(item) {
     item.quantity = item.newQuantity;
-    item.source = "recommended";
 
     delete item.newQuantity;
 
@@ -685,3 +704,4 @@ angular.module('bekApp')
                                     ""); //option
 
   }]);
+

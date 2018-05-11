@@ -28,6 +28,7 @@ using System.Web.Http;
 using System.Web.Http.Cors;
 using System.IO;
 using KeithLink.Common.Core.Interfaces.Logging;
+using KeithLink.Svc.Core.Models.Customers;
 using KeithLink.Svc.Core.Models.Lists;
 using KeithLink.Svc.Core.Models.Orders;
 
@@ -388,8 +389,35 @@ namespace KeithLink.Svc.WebApi.Controllers {
 
         [HttpPost]
         [ApiKeyedRoute("catalog/recommended")]
-        public ProductsReturn GetRecommendedItemsByCart(List<string> itemNumbers) {
-            return _catalogService.GetRecommendedItemsForCart(this.SelectedUserContext, itemNumbers, this.AuthenticatedUser);
+        public ProductsReturn GetRecommendedItemsByCart(RecommendedItemsRequestModel request) {
+            return _catalogService.GetRecommendedItemsForCart(this.SelectedUserContext, 
+                                                              request.itemnumbers, 
+                                                              this.AuthenticatedUser, 
+                                                              request.pagesize, 
+                                                              request.hasimages);
+        }
+
+        [HttpPost]
+        [ApiKeyedRoute("catalog/growthandrecovery")]
+        public OperationReturnModel<GrowthAndRecoveryItemsReturn> GetGrowthAndRecoveryGroupsByCustomer(int pagesize = Constants.GROWTHANDRECOVERY_DEFAULT_PAGESIZE,
+                                                                                                       bool hasimages = Constants.GROWTHANDRECOVERY_DEFAULT_HASIMAGES)
+        {
+            OperationReturnModel<GrowthAndRecoveryItemsReturn> ret = new OperationReturnModel<GrowthAndRecoveryItemsReturn>();
+            try
+            {
+                ret.SuccessResponse = _catalogService.GetGrowthAndRecoveryItemsForCustomer(this.SelectedUserContext
+                                                                                           , this.AuthenticatedUser
+                                                                                           , pagesize
+                                                                                           , hasimages);
+                ret.IsSuccess = true;
+            }
+            catch (Exception ex)
+            {
+                ret.IsSuccess = false;
+                ret.ErrorMessage = ex.Message;
+                _elRepo.WriteErrorLog("GetGrowthAndRecoveryGroupsByCustomer", ex);
+            }
+            return ret;
         }
 
         /// <summary>

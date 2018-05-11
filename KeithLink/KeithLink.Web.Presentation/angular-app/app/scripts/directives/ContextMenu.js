@@ -9,15 +9,15 @@ angular.module('bekApp')
   return {
     restrict: 'A',
     // scope: true,
-    controller: ['$scope', '$rootScope', '$state', '$q', '$modal', 'toaster', 'ListService', 'CartService', 'OrderService', 'ContextMenuService', '$filter', 'AnalyticsService', 'Constants',
-    function($scope, $rootScope, $state, $q, $modal, toaster, ListService, CartService, OrderService, ContextMenuService, $filter, AnalyticsService, Constants){
+    controller: ['$scope', '$rootScope', '$state', '$q', '$modal', 'toaster', 'ListService', 'CartService', 'OrderService', 'ContextMenuService', '$filter', 'AnalyticsService', 'Constants', '$stateParams',
+    function($scope, $rootScope, $state, $q, $modal, toaster, ListService, CartService, OrderService, ContextMenuService, $filter, AnalyticsService, Constants, $stateParams){
 
       if ($scope.isOrderEntryCustomer) {
-        var cartHeaders = CartService.cartHeaders,
-            listHeaders = ListService.listHeaders,
-            changeOrderHeaders = OrderService.changeOrderHeaders;
+        $scope.carts = CartService.cartHeaders;
+        $scope.lists = ListService.listHeaders;
+        $scope.changeOrderHeaders = OrderService.changeOrderHeaders;
 
-      if(changeOrderHeaders == null || changeOrderHeaders.length == 0) {
+      if($scope.changeOrderHeaders == null || $scope.changeOrderHeaders.length == 0) {
           OrderService.getChangeOrders().then(function(resp){
             $scope.changeOrders = resp;
           });
@@ -26,9 +26,10 @@ angular.module('bekApp')
         if ($scope.canCreateOrders) {
           CartService.getShipDates(); // needed if user creates a cart using the context menu
 
-        $scope.carts = cartHeaders.length > 0 ? cartHeaders : CartService.getCartHeaders();
+        $scope.carts = $scope.carts.length > 0 ? $scope.carts : CartService.getCartHeaders();
 
         }
+
       }
 
       function closeModal() {
@@ -94,6 +95,10 @@ angular.module('bekApp')
 
       $scope.addItemToCart = function(cartName, cartId, item) {
         var newItem = angular.copy(item);
+
+        if($stateParams.recommendationType && $stateParams.recommendationType != undefined && newItem.orderedfromsource == null) {
+          newItem.orderedfromsource = $stateParams.recommendationType;
+        }
         CartService.addItemToCart(cartId, newItem).then(function(data) {
           closeModal();
           $scope.displayMessage('success', 'Successfully added item to cart ' + cartName + '.');
@@ -103,6 +108,10 @@ angular.module('bekApp')
       };
 
       $scope.createCartWithItem = function(item) {
+        if($stateParams.recommendationType && $stateParams.recommendationType != undefined && newItem.orderedfromsource == null) {
+          item.orderedfromsource = $stateParams.recommendationType;
+        }
+
         var items = [item];
         CartService.renameCart = true;
         
@@ -143,6 +152,10 @@ angular.module('bekApp')
 
        $scope.addItemToChangeOrder = function(order, item) {
         var orderItem = angular.copy(item);
+
+        if($stateParams.recommendationType && $stateParams.recommendationType != undefined && newItem.orderedfromsource == null) {
+          orderItem.orderedfromsource = $stateParams.recommendationType;
+        }
         orderItem.quantity = (orderItem.quantity && orderItem.quantity > 0) ? orderItem.quantity : 1;
         orderItem.each = (orderItem.each) ? true : false;
         order.items.push(orderItem);

@@ -62,7 +62,7 @@
       "cognosUrl": "https://kbitcustomer.benekeith.com/cognos10/setCookie.htm",
       "lastListStorageTimeout": "48",
       "mobileApp": false,
-      "enableDebugInfo": false,
+      "enableDebugInfo": true,
       "phonegapAppId": "com.benekeith.entree",
       "googleAnalytics": {
         "web": "UA-58495462-2",

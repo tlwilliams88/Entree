@@ -14,6 +14,7 @@ namespace Entree.Migrations.Migrations.Data.IntegrationTests.Customers {
                   .InSchema("Customers")
                   .Row(new {
                       ContextKey = "1",
+                      ContextDescription = "Context Description",
                       SIC = "1"
                   });
             Insert.IntoTable("RecommendedItemContexts")
@@ -21,6 +22,7 @@ namespace Entree.Migrations.Migrations.Data.IntegrationTests.Customers {
                   .Row(new
                   {
                       ContextKey = "2",
+                      ContextDescription = "Context Description",
                       SIC = "2"
                   });
             Insert.IntoTable("RecommendedItemContexts")
@@ -28,6 +30,7 @@ namespace Entree.Migrations.Migrations.Data.IntegrationTests.Customers {
                   .Row(new
                   {
                       ContextKey = "3",
+                      ContextDescription = "Context Description",
                       SIC = "3"
                   });
         }

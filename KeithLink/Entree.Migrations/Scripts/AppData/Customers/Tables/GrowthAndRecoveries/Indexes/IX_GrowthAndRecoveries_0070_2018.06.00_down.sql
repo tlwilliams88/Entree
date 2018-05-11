@@ -1,0 +1,1 @@
+-- Index gets dropped with table
