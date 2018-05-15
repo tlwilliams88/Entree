@@ -153,6 +153,7 @@
     <Compile Include="Migrations\v2018.04.00\Migration0068.cs" />
     <Compile Include="Migrations\v2018.04.00\Migration0067.cs" />
     <Compile Include="Migrations\v2018.05.00\Migration0070.cs" />
+    <Compile Include="Migrations\v2018.05.00\Migration0072.cs" />
     <Compile Include="Migrations\v2018.05.00\Migration0071.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -627,6 +628,12 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Scripts\AppData\ETL\Stored Procedures\ReadFullItemData\ReadFullItemData_0013_2017-02-00_down.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Scripts\AppData\ETL\Stored Procedures\ReadFullItemData\ReadFullItemData_0072_2018.05.00_down.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Scripts\AppData\ETL\Stored Procedures\ReadFullItemData\ReadFullItemData_0072_2018.05.00_up.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Scripts\AppData\ETL\Stored Procedures\ReadFullItemData\ReadFullItemData_0067_2018.04.00_up.sql">
@@ -2157,6 +2164,24 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Scripts\AppData\Orders\Views\RecommendedItemsOrdered\RecommendedItemsOrdered_0071_2018.05.00_up.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Scripts\AppData\Products\Products_0072_2018.05.00_down.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Scripts\AppData\Products\Products_0072_2018.05.00_up.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Scripts\AppData\Products\Tables\ClassCodes\ClassCodes_0072_2018.05.00_down.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Scripts\AppData\Products\Tables\ClassCodes\ClassCodes_0072_2018.05.00_up.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Scripts\AppData\Products\Tables\PriceListCodes\PriceListCodes_0072_2018.05.00_down.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Scripts\AppData\Products\Tables\PriceListCodes\PriceListCodes_0072_2018.05.00_up.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Scripts\AppData\Profile\Profile_0001_0001.11.00_down.sql">

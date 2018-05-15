@@ -248,6 +248,10 @@ namespace KeithLink.Svc.Impl.Models.ElasticSearch.Item
         public string MarketingNameNgramAnalyzed { get; set; }
         [JsonProperty("pricelistcode")]
         public string PriceListCode { get; set; }
+        [JsonProperty("pricelistcodecategoryname")]
+        public string PriceListCodeCategoryName { get; set; }
+        [JsonProperty("parentpricelistcode")]
+        public string ParentPriceListCode { get; set; }
         [JsonProperty("keywords")]
         public string Keywords { get; set; }
 

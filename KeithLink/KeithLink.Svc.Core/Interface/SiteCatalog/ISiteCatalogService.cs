@@ -31,7 +31,7 @@ namespace KeithLink.Svc.Core.Interface.SiteCatalog
                                                   int? pagesize, 
                                                   bool? hasimages);
 
-        GrowthAndRecoveryItemsReturn GetGrowthAndRecoveryItemsForCustomer(UserSelectedContext catalogInfo,
+        List<GrowthAndRecoveriesReturnModel> GetGrowthAndRecoveryItemsForCustomer(UserSelectedContext catalogInfo,
                                                                           UserProfile profile, 
                                                                           int pagesize, 
                                                                           bool getimages);

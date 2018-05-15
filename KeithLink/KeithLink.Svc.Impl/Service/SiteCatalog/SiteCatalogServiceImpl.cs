@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 
 using KeithLink.Svc.Core;
+using KeithLink.Svc.Core.Extensions.Customers;
 using KeithLink.Svc.Core.Interface.Customers;
 using KeithLink.Svc.Core.Interface.Lists;
 using KeithLink.Svc.Core.Interface.SiteCatalog;
@@ -197,24 +198,23 @@ namespace KeithLink.Svc.Impl.Service.SiteCatalog
         #endregion
 
         #region growthandrecovery items
-        public GrowthAndRecoveryItemsReturn GetGrowthAndRecoveryItemsForCustomer(UserSelectedContext catalogInfo, UserProfile profile, int pagesize, bool hasimages)
+        public List<GrowthAndRecoveriesReturnModel> GetGrowthAndRecoveryItemsForCustomer(UserSelectedContext catalogInfo, UserProfile profile, int pagesize, bool hasimages)
         {
-            GrowthAndRecoveryItemsReturn returnItems = new GrowthAndRecoveryItemsReturn();
+            List<GrowthAndRecoveriesReturnModel> returnModelItems = new List<GrowthAndRecoveriesReturnModel>();
 
-            returnItems.Items = _growthAndRecoveryItemsRepository.GetGrowthAdnGetGrowthAndRecoveryOpportunities(catalogInfo.CustomerId, catalogInfo.BranchId);
+            returnModelItems = _growthAndRecoveryItemsRepository.GetGrowthAdnGetGrowthAndRecoveryOpportunities(catalogInfo.CustomerId, catalogInfo.BranchId).ToWebModel();
 
-            returnItems.Items = returnItems.Items.Take(pagesize)
-                                           .ToList();
+            returnModelItems = returnModelItems.Take(pagesize).ToList();
 
             if (hasimages)
             {
-                foreach (GrowthAndRecoveriesModel item in returnItems.Items)
+                foreach (GrowthAndRecoveriesReturnModel webModel in returnModelItems)
                 {
-                    item.Image = _categoryImageRepository.GetImageByCategory(item.GroupingCode);
+                    webModel.Image = _categoryImageRepository.GetImageByCategory(webModel.GroupingCode);
                 }
             }
 
-            return returnItems;
+            return returnModelItems;
         }
         #endregion
 
