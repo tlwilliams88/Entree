@@ -156,7 +156,15 @@ namespace KeithLink.Svc.Impl.Repository.SiteCatalog
                     new {
                         query = category,
                         fields =
-                        new List<string>() { "categoryname_not_analyzed", "parentcategoryname_not_analyzed", "categoryid", "parentcategoryid" }
+                        new List<string>() {
+                            "categoryname_not_analyzed",
+                            "parentcategoryname_not_analyzed",
+                            "categoryid",
+                            "parentcategoryid",
+                            "pricelistcode",
+                            "parentpricelistcode",
+                            "pricelistcodecategoryname"
+                        }
                     }
             };
         }
@@ -1450,6 +1458,8 @@ namespace KeithLink.Svc.Impl.Repository.SiteCatalog
             p.MarketingName = oProd._source.marketing_name;
             p.Status1 = oProd._source.status1;
             p.PriceListCode = oProd._source.pricelistcode;
+            p.PriceListCodeCategoryName = oProd._source.pricelistcodecategoryname;
+            p.ParentPriceListCode = oProd._source.parentpricelistcode;
         }
 
         private void SetWorkingCatalog(string catalogId)

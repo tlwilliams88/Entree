@@ -399,10 +399,10 @@ namespace KeithLink.Svc.WebApi.Controllers {
 
         [HttpPost]
         [ApiKeyedRoute("catalog/growthandrecovery")]
-        public OperationReturnModel<GrowthAndRecoveryItemsReturn> GetGrowthAndRecoveryGroupsByCustomer(int pagesize = Constants.GROWTHANDRECOVERY_DEFAULT_PAGESIZE,
+        public OperationReturnModel<List<GrowthAndRecoveriesReturnModel>> GetGrowthAndRecoveryGroupsByCustomer(int pagesize = Constants.GROWTHANDRECOVERY_DEFAULT_PAGESIZE,
                                                                                                        bool hasimages = Constants.GROWTHANDRECOVERY_DEFAULT_HASIMAGES)
         {
-            OperationReturnModel<GrowthAndRecoveryItemsReturn> ret = new OperationReturnModel<GrowthAndRecoveryItemsReturn>();
+            OperationReturnModel<List<GrowthAndRecoveriesReturnModel>> ret = new OperationReturnModel<List<GrowthAndRecoveriesReturnModel>>();
             try
             {
                 ret.SuccessResponse = _catalogService.GetGrowthAndRecoveryItemsForCustomer(this.SelectedUserContext

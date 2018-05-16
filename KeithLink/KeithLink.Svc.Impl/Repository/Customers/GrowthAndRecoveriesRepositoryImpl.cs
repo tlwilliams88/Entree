@@ -11,10 +11,10 @@ using KeithLink.Svc.Core.Models.Customers;
 
 namespace KeithLink.Svc.Impl.Repository.Customers
 {
-    public class GrowthAndRecoveriesRepository : IGrowthAndRecoveriesRepository {
+    public class GrowthAndRecoveriesRepositoryImpl : IGrowthAndRecoveriesRepository {
 
         private IDapperDatabaseConnection connection;
-        public GrowthAndRecoveriesRepository(IDapperDatabaseConnection dbConnection) {
+        public GrowthAndRecoveriesRepositoryImpl(IDapperDatabaseConnection dbConnection) {
             connection = dbConnection;
         }
 

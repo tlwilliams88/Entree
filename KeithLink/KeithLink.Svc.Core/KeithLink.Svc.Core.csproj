@@ -188,6 +188,7 @@
     <Compile Include="Events\EventHandlers\EventHandlers.cs" />
     <Compile Include="Enumerations\List.cs" />
     <Compile Include="Exceptions\Queue\QueueDataError.cs" />
+    <Compile Include="Extensions\Customers\GrowthAndRecoveryModelExtensions.cs" />
     <Compile Include="Extensions\CustomInventoryItems\CustomInventoryItemExtensionscs.cs" />
     <Compile Include="Extensions\LinqSortHelpers.cs" />
     <Compile Include="Extensions\Lists\IEnumerableExtensions.cs" />
@@ -395,8 +396,9 @@
     <Compile Include="Models\Customers\EF\InternalUserAccess.cs" />
     <Compile Include="Models\Customers\EF\ItemHistory.cs" />
     <Compile Include="Models\Customers\GrowthAndRecoveriesModel.cs" />
+    <Compile Include="Models\Customers\GrowthAndRecoveryTypeEnum.cs" />
     <Compile Include="Models\Customers\ItemHistoryModel.cs" />
-    <Compile Include="Models\Customers\GrowthAndRecoveryItemsReturn.cs" />
+    <Compile Include="Models\Customers\GrowthAndRecoveriesReturnModel.cs" />
     <Compile Include="Models\Customers\RecommendedItemsModel.cs" />
     <Compile Include="Models\Customers\RecommendedItemsParametersModel.cs" />
     <Compile Include="Models\Customers\RecommendedItemsRequestModel.cs" />
