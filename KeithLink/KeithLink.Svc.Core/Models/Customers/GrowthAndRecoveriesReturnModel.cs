@@ -16,7 +16,10 @@ namespace KeithLink.Svc.Core.Models.SiteCatalog
     [DataContract(Name = "growthandrecovery")]
     public class GrowthAndRecoveriesReturnModel
     {
-        [DataMember(Name = "code")]
+        [DataMember(Name = "CategoryDescription")]
+        public string GroupingDescription { get; set; }
+
+        [DataMember(Name = "CategoryCode")]
         public string GroupingCode { get; set; }
 
         [DataMember(Name = "type")]
