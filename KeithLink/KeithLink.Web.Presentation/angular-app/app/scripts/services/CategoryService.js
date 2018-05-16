@@ -31,7 +31,7 @@ angular.module('bekApp')
         // pagesize: num,
         // getimages: bool
         recommendedCategories = $http.post('/catalog/growthandrecovery').then(function(response) {
-          return response.data.successResponse.items;
+          return response.data.successResponse;
         })
         return recommendedCategories;
       }
