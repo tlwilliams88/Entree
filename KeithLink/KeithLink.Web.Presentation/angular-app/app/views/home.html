@@ -76,20 +76,20 @@
                       class="item-holder"
                       analytics-on 
                       analytics-category="SalesIQ-Recommended-Categories-Homepage-Desktop" 
-                      analytics-event="SalesIQ Recommended Categories Clicked" 
-                      analytics-label="{{category.itemnumber}}">
+                      analytics-event="SalesIQ {{category.type | uppercase}} Categories Clicked" 
+                      analytics-label="{{category.categoryDescription}}">
                       <div 
                         class="featured-item text-center" 
                         analytics-on 
                         analytics-category="SalesIQ-Recommended-Categories-Homepage-Desktop" 
-                        analytics-event="SalesIQ Recommended Categories Clicked" 
-                        analytics-label="{{category.name}}"
+                        analytics-event="SalesIQ {{category.type | uppercase}} Categories Clicked" 
+                        analytics-label="{{category.categoryDescription}}"
                         style="min-width: 0px;
                         margin: 0 auto;">
                         <img 
                           class="hand"
                           ng-if="category.image.category_image.url"
-                          ui-sref="menu.catalog.products.list({ type: 'category', id: category.parent_category, category: category.parent_category, subcategories: category.name, recommendationType: 'SalesIQ'})" 
+                          ui-sref="menu.catalog.products.list({ type: 'category', id: category.categoryCode, category: category.categoryDescription, recommendationType: category.type})" 
                           ng-src="{{category.image.category_image.url}}" 
                           alt="image"
                           style="width: 100%;" />
@@ -102,9 +102,9 @@
                         />
                           <div>
                               <a 
-                                ui-sref="menu.catalog.products.list({ type: 'category', id: category.parent_category, category: category.parent_category, subcategories: category.name, recommendationType: 'SalesIQ'})" 
+                                ui-sref="menu.catalog.products.list({ type: 'category', id: category.categoryCode, category: category.categoryDescription, recommendationType: category.type})" 
                                 class="featured-item__detail">
-                                {{::category.description}}
+                                {{::category.categoryDescription}}
                               </a>
                             </div>
                       </div>
@@ -213,20 +213,20 @@
                 class="item-holder"
                 analytics-on 
                 analytics-category="SalesIQ-Recommended-Categories-Homepage-Mobile" 
-                analytics-event="SalesIQ Recommended Categories Clicked" 
+                analytics-event="SalesIQ {{category.type | uppercase}} Categories Clicked"  
                 analytics-label="{{category.itemnumber}}">
                 <div 
                   class="featured-item text-center" 
                   analytics-on 
                   analytics-category="SalesIQ-Recommended-Categories-Homepage-Mobile"  
-                  analytics-event="SalesIQ Recommended Categories Clicked" 
+                  analytics-event="SalesIQ {{category.type | uppercase}} Categories Clicked"
                   analytics-label="{{category.name}}"
                   style="    min-width: 0px;
                   margin: 0 auto;">
                   <img 
                     class="hand"
                     ng-if="category.image.category_image.url" 
-                    ui-sref="menu.catalog.products.list({ type: 'category', id: 'SEAFOOD COMMODITY', category: 'SEAFOOD COMMODITY', subcategories: category.name, recommendationType: 'SalesIQ'})" 
+                    ui-sref="menu.catalog.products.list({ type: 'category', id: category.categoryCode, category: category.categoryDescription, recommendationType: category.type})" 
                     ng-src="{{category.image.category_image.url}}" 
                     alt="image"
                     style="width: 100%;" 
@@ -240,9 +240,9 @@
                   />
                     <div>
                       <a 
-                        ui-sref="menu.catalog.products.list({ type: 'category', id: category.parent_category, category: category.parent_category, subcategories: category.name, recommendationType: 'SalesIQ'})" 
+                        ui-sref="menu.catalog.products.list({ type: 'category', id: category.categoryCode, category: category.categoryDescription, recommendationType: category.type})" 
                         class="featured-item__detail">
-                        {{::category.description}}
+                        {{::category.categoryDescription}}
                       </a>
                     </div>
                 </div>
