@@ -146,7 +146,7 @@ namespace KeithLink.Svc.Impl.Repository.SmartResolver
             builder.RegisterType<CustomerRepository>().As<ICustomerRepository>();
             builder.RegisterType<InternalUserAccessRepository>().As<IInternalUserAccessRepository>();
             builder.RegisterType<RecommendedItemsRepositoryImpl>().As<IRecommendedItemsRepository>();
-            builder.RegisterType<GrowthAndRecoveriesRepository>().As<IGrowthAndRecoveriesRepository>();
+            builder.RegisterType<GrowthAndRecoveriesRepositoryImpl>().As<IGrowthAndRecoveriesRepository>();
 
             // division
             builder.RegisterType<DivisionRepositoryImpl>().As<IDivisionRepository>();

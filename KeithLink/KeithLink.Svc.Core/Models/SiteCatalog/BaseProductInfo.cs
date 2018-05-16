@@ -251,5 +251,11 @@ namespace KeithLink.Svc.Core.Models.SiteCatalog
 
         [DataMember(Name="pricelistcode")]
         public string PriceListCode { get; set; }
+
+        [DataMember(Name="pricelistcodecategoryname")]
+        public string PriceListCodeCategoryName { get; set; }
+
+        [DataMember(Name ="parentpricelistcode")]
+        public string ParentPriceListCode { get; set; }
     }
 }

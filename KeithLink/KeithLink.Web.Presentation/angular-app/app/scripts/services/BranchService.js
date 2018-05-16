@@ -48,6 +48,8 @@ angular.module('bekApp')
         localStorageService.set('branches', response.data.successResponse);
         Service.branches = response.data.successResponse;
         return deferred.resolve(response.data.successResponse);
+      }, function(data) {
+        return deferred.resolve(data.status);
       });
 
       return deferred.promise;
