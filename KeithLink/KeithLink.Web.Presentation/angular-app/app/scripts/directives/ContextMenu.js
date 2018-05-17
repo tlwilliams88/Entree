@@ -108,7 +108,7 @@ angular.module('bekApp')
       };
 
       $scope.createCartWithItem = function(item) {
-        if($stateParams.recommendationType && $stateParams.recommendationType != undefined && newItem.orderedfromsource == null) {
+        if($stateParams.recommendationType && $stateParams.recommendationType != undefined && item.orderedfromsource == null) {
           item.orderedfromsource = $stateParams.recommendationType;
         }
 

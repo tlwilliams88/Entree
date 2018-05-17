@@ -68,7 +68,7 @@
 
           <div ng-if="!loadingPromoItems">
 
-            <div class="col-xs-12" style="padding-left: 0; padding-right: 0; border: 3px solid #837B6A;">
+            <div class="col-xs-12" style="padding-left: 0; padding-right: 0;">
                 <ul class="horizontal-slide" style="white-space: normal; text-align: center; background-color: #F3F1EC; float:right; columns: 2; padding: 8px 8px 3px 8px;">
                     <li 
                       ng-if="item.name != 'All'" 
@@ -205,7 +205,7 @@
 
         <div ng-if="!loadingPromoItems">
 
-          <div class="col-xs-12" style="padding-left: 0; padding-right: 0; border: 2px solid #837B6A;">
+          <div class="col-xs-12" style="padding-left: 0; padding-right: 0;">
             <ul class="horizontal-slide" style="white-space: normal; text-align: center; background-color: #F3F1EC; float:right; columns: 2; padding: 8px 8px 2px 8px;">
               <li 
                 ng-if="item.name != 'All'" 
@@ -226,7 +226,7 @@
                   <img 
                     class="hand"
                     ng-if="category.image.category_image.url" 
-                    ui-sref="menu.catalog.products.list({ type: 'category', id: category.categoryCode, category: category.categoryDescription, recommendationType: category.type})" 
+                    ui-sref="menu.catalog.products.list({ type: 'category', id: category.categoryCode, category: category.categoryDescription, recommendationType: 'SalesIQ'})" 
                     ng-src="{{category.image.category_image.url}}" 
                     alt="image"
                     style="width: 100%;" 
@@ -240,7 +240,7 @@
                   />
                     <div>
                       <a 
-                        ui-sref="menu.catalog.products.list({ type: 'category', id: category.categoryCode, category: category.categoryDescription, recommendationType: category.type})" 
+                        ui-sref="menu.catalog.products.list({ type: 'category', id: category.categoryCode, category: category.categoryDescription, recommendationType: 'SalesIQ'})" 
                         class="featured-item__detail">
                         {{::category.categoryDescription}}
                       </a>
