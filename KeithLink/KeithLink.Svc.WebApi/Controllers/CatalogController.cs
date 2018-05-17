@@ -390,11 +390,18 @@ namespace KeithLink.Svc.WebApi.Controllers {
         [HttpPost]
         [ApiKeyedRoute("catalog/recommended")]
         public ProductsReturn GetRecommendedItemsByCart(RecommendedItemsRequestModel request) {
-            return _catalogService.GetRecommendedItemsForCart(this.SelectedUserContext, 
-                                                              request.itemnumbers, 
+            ProductsReturn recommendedItems =  _catalogService.GetRecommendedItemsForCart(this.SelectedUserContext, 
+                                                              request.CartItems, 
                                                               this.AuthenticatedUser, 
-                                                              request.pagesize, 
                                                               request.hasimages);
+
+            if (request.pagesize.HasValue) {
+                recommendedItems.Products = recommendedItems.Products.Take(request.pagesize.Value).ToList();
+                recommendedItems.TotalCount = recommendedItems.Products.Count();
+                recommendedItems.Count = recommendedItems.Products.Count();
+            }
+
+            return recommendedItems;
         }
 
         [HttpPost]

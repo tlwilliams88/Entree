@@ -447,6 +447,7 @@ angular.module('bekApp')
     }
 
     $scope.showRecommendedItems = ENV.showRecommendedItems;
+    $scope.recommendedItems = [];
 
     $scope.updateRecommendedItems = function(items) {
       if($scope.showRecommendedItems == true) {

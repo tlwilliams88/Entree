@@ -28,7 +28,6 @@ namespace KeithLink.Svc.Core.Interface.SiteCatalog
         ProductsReturn GetRecommendedItemsForCart(UserSelectedContext catalogInfo, 
                                                   List<string> cartItems, 
                                                   UserProfile profile, 
-                                                  int? pagesize, 
                                                   bool? hasimages);
 
         List<GrowthAndRecoveriesReturnModel> GetGrowthAndRecoveryItemsForCustomer(UserSelectedContext catalogInfo,
