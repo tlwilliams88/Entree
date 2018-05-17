@@ -191,12 +191,13 @@ namespace KeithLink.Svc.Impl.Service.SiteCatalog
             GetAdditionalProductInfo(profile, products, catalogInfo);
             ApplyRecommendedTagging(products);
 
-            // Use reverse logic to remove any items without images
-            for (int productIndex = products.Products.Count() - 1; productIndex > -1; productIndex--) {
-                if (products.Products[productIndex].ProductImages == null &&
-                    hasImages.HasValue &&
-                    hasImages.Value == true) {
-                    products.Products.RemoveAt(productIndex);
+            // Use reverse logic to remove any items without images if the hasimages is set to true
+            if (hasImages.HasValue && hasImages.Value == true) {
+                for (int productIndex = products.Products.Count() - 1; productIndex > -1; productIndex--)
+                {
+                    if (products.Products[productIndex].ProductImages == null) {
+                        products.Products.RemoveAt(productIndex);
+                    }
                 }
             }
 
