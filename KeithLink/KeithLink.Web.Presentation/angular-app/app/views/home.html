@@ -89,7 +89,7 @@
                         <img 
                           class="hand"
                           ng-if="category.image.category_image.url"
-                          ui-sref="menu.catalog.products.list({ type: 'category', id: category.categoryCode, category: category.categoryDescription, recommendationType: category.type})" 
+                          ui-sref="menu.catalog.products.list({ type: 'category', id: category.categoryCode, category: category.categoryDescription, recommendationType: 'SalesIQ'})" 
                           ng-src="{{category.image.category_image.url}}" 
                           alt="image"
                           style="width: 100%;" />
@@ -102,7 +102,7 @@
                         />
                           <div>
                               <a 
-                                ui-sref="menu.catalog.products.list({ type: 'category', id: category.categoryCode, category: category.categoryDescription, recommendationType: category.type})" 
+                                ui-sref="menu.catalog.products.list({ type: 'category', id: category.categoryCode, category: category.categoryDescription, recommendationType: 'SalesIQ'})" 
                                 class="featured-item__detail">
                                 {{::category.categoryDescription}}
                               </a>
@@ -226,7 +226,7 @@
                   <img 
                     class="hand"
                     ng-if="category.image.category_image.url" 
-                    ui-sref="menu.catalog.products.list({ type: 'category', id: category.categoryCode, category: category.categoryDescription, recommendationType: category.type})" 
+                    ui-sref="menu.catalog.products.list({ type: 'category', id: category.categoryCode, category: category.categoryDescription, recommendationType: 'SalesIQ'})" 
                     ng-src="{{category.image.category_image.url}}" 
                     alt="image"
                     style="width: 100%;" 
@@ -240,7 +240,7 @@
                   />
                     <div>
                       <a 
-                        ui-sref="menu.catalog.products.list({ type: 'category', id: category.categoryCode, category: category.categoryDescription, recommendationType: category.type})" 
+                        ui-sref="menu.catalog.products.list({ type: 'category', id: category.categoryCode, category: category.categoryDescription, recommendationType: 'SalesIQ'})" 
                         class="featured-item__detail">
                         {{::category.categoryDescription}}
                       </a>

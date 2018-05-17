@@ -67,9 +67,7 @@ angular.module('bekApp')
           var recommendedItems = [];
           return $http.post('/catalog/recommended', params).then(function(resp) {
             resp.data.products.forEach(function(product) {
-              if(product.productimages && product.productimages.length > 0 && (product.caseprice > '0.00' || product.packageprice > '0.00')) {
-                recommendedItems.push(product);
-              }
+              recommendedItems.push(product);
             })
             return recommendedItems;
           })
