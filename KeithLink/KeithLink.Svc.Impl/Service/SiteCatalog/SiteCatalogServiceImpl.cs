@@ -179,19 +179,27 @@ namespace KeithLink.Svc.Impl.Service.SiteCatalog
         #endregion
 
         #region recommended items
-        public ProductsReturn GetRecommendedItemsForCart(UserSelectedContext catalogInfo, List<string> cartItems, UserProfile profile, int? pagesize, bool? hasimages)
+        public ProductsReturn GetRecommendedItemsForCart(UserSelectedContext catalogInfo, List<string> cartItems, UserProfile profile, bool? hasImages)
         {
             List<RecommendedItemsModel> recommendedItems = _recommendedItemsRepository.GetRecommendedItemsForCustomer(catalogInfo.CustomerId, catalogInfo.BranchId, cartItems, 50);
 
-            recommendedItems = recommendedItems.Take(pagesize.HasValue ? pagesize.Value : Constants.RECOMMENDED_DEFAULT_PAGESIZE)
-                                               .ToList();
 
             ProductsReturn products = _catalogRepository.GetProductsByIds(catalogInfo.BranchId, recommendedItems.Select(x => x.RecommendedItem)
                                                                                                                 .ToList());
 
             AddPricingInfo(products, catalogInfo);
-            GetAdditionalProductInfo(profile, products, catalogInfo, (hasimages.HasValue) ? hasimages.Value : true);
+            GetAdditionalProductInfo(profile, products, catalogInfo);
             ApplyRecommendedTagging(products);
+
+            // Use reverse logic to remove any items without images if the hasimages is set to true
+            if (hasImages.HasValue && hasImages.Value == true) {
+                for (int productIndex = products.Products.Count() - 1; productIndex > -1; productIndex--)
+                {
+                    if (products.Products[productIndex].ProductImages == null) {
+                        products.Products.RemoveAt(productIndex);
+                    }
+                }
+            }
 
             return products;
         }
@@ -416,7 +424,7 @@ namespace KeithLink.Svc.Impl.Service.SiteCatalog
             }
         }
 
-        private void GetAdditionalProductInfo(UserProfile profile, ProductsReturn ret, UserSelectedContext catalogInfo, bool hasimages = true)
+        private void GetAdditionalProductInfo(UserProfile profile, ProductsReturn ret, UserSelectedContext catalogInfo)
         {
             if (profile != null)
             {
