@@ -50,6 +50,13 @@ namespace KeithLink.Svc.WebApi.Controllers
             try
             {
                 ret.SuccessResponse = _brandRepository.GetHouseBrands();
+
+                // This is because it wasn't worth the effort of redesigning the system to satisfy Marketing request
+                // Basically we are combinine the Markon brand control labels into one.
+                ret.SuccessResponse.Brands.Where(x => x.BrandControlLabel.Equals("MA"))
+                   .FirstOrDefault()
+                   .BrandControlLabel = "MA ME MC MR";
+
                 ret.IsSuccess = true;
             }
             catch (Exception ex)
