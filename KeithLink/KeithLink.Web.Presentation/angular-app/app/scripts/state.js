@@ -55,14 +55,11 @@ angular.module('bekApp')
         mandatoryMessages: ['NotificationService', function(NotificationService) {
           return NotificationService.mandatoryMessages;
         }],
-        isHomePage: ['$stateParams', 'ConfigSettingsService', 'ENV', function($stateParams, ConfigSettingsService, ENV) {
+        isHomePage: ['$stateParams', 'ConfigSettingsService', 'ENV', 'LocalStorage', function($stateParams, ConfigSettingsService, ENV, LocalStorage) {
           ConfigSettingsService.getSetting('ShowRecommendedItems').then(function(setting) {
-            ENV.showRecommendedItems = setting;
-          },
-            function(data) {
-              console.log(data);
-            }
-          )
+            var currentCustomer = LocalStorage.getCurrentCustomer();
+            ENV.showRecommendedItems = setting && currentCustomer.customer.nationalId == '';
+          })
 
           return $stateParams.isHomePage = false;
         }]
