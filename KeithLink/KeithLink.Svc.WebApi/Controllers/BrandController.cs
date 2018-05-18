@@ -53,9 +53,16 @@ namespace KeithLink.Svc.WebApi.Controllers
 
                 // This is because it wasn't worth the effort of redesigning the system to satisfy Marketing request
                 // Basically we are combinine the Markon brand control labels into one.
-                ret.SuccessResponse.Brands.Where(x => x.BrandControlLabel.Equals("MA"))
-                   .FirstOrDefault()
-                   .BrandControlLabel = "MA ME MC MR";
+                var markonBrand = ret.SuccessResponse.Brands.First(x => x.BrandControlLabel.Equals("MA"));
+
+                // Remove the brand to re-order it to the first in the list
+                ret.SuccessResponse.Brands.Remove(markonBrand);
+
+                // Set the markon brand to pull back all brand control labels
+                markonBrand.BrandControlLabel = "MA ME MC MR";
+
+                // Add the markon brand to the first item in the list
+                ret.SuccessResponse.Brands.Insert(0, markonBrand);
 
                 ret.IsSuccess = true;
             }
