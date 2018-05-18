@@ -73,7 +73,7 @@ namespace KeithLink.Svc.Impl.Repository.SiteCatalog
             };
         }
 
-        private dynamic BuildBoolMultiMatchQuery(SearchInputModel searchModel, List<dynamic> filterTerms, List<string> fieldsToSearch, string searchExpression)
+        private dynamic BuildBoolMultiMatchQuery(SearchInputModel searchModel, List<dynamic> filterTerms, List<string> fieldsToSearch, string searchExpression, string fieldOperator = "and")
         {
             List<dynamic> statusFields = BuildStatusFilter();
 
@@ -85,7 +85,7 @@ namespace KeithLink.Svc.Impl.Repository.SiteCatalog
                         query = searchExpression,
                         @type = "most_fields",
                         fields = fieldsToSearch,
-                        @operator = "and"
+                        @operator = fieldOperator
                     },
                 });
             }
@@ -459,7 +459,7 @@ namespace KeithLink.Svc.Impl.Repository.SiteCatalog
 
             List<dynamic> filterTerms = BuildFilterTerms(searchModel.Facets, catalogInfo);
 
-            dynamic categorySearchExpression = BuildBoolMultiMatchQuery(searchModel, filterTerms, new List<string>() { "brand_control_label" }, brandControlLabel);
+            dynamic categorySearchExpression = BuildBoolMultiMatchQuery(searchModel, filterTerms, new List<string>() { "brand_control_label" }, brandControlLabel, "or");
 
             return GetProductsFromElasticSearch(catalogInfo.BranchId.ToLower(), true, "", categorySearchExpression);
         }
