@@ -1,8 +1,8 @@
 'use strict';
 
 angular.module('bekApp')
-.controller('CreateOrderModalController', ['$scope', '$stateParams', '$modalInstance', '$q', '$filter', '$analytics', 'Orders', 'CartService', 'ListService', 'LocalStorage', 'UtilityService', 'SessionService','CurrentCustomer', 'ShipDates', 'CartHeaders', 'Lists', 'CustomListHeaders', 'IsMobile', 'IsOffline', 'SelectedList', 'ApplicationSettingsService', 'Constants', 'AnalyticsService',
-  function ($scope, $stateParams, $modalInstance, $q, $filter, $analytics, Orders, CartService, ListService, LocalStorage, UtilityService, SessionService, CurrentCustomer, ShipDates, CartHeaders, Lists, CustomListHeaders, IsMobile, IsOffline, SelectedList, ApplicationSettingsService, Constants, AnalyticsService) {
+.controller('CreateOrderModalController', ['$scope', '$modalInstance', '$q', '$filter', '$analytics', 'Orders', 'CartService', 'ListService', 'LocalStorage', 'UtilityService', 'SessionService','CurrentCustomer', 'ShipDates', 'CartHeaders', 'Lists', 'CustomListHeaders', 'IsMobile', 'IsOffline', 'SelectedList', 'ApplicationSettingsService', 'Constants', 'AnalyticsService',
+  function ($scope, $modalInstance, $q, $filter, $analytics, Orders, CartService, ListService, LocalStorage, UtilityService, SessionService, CurrentCustomer, ShipDates, CartHeaders, Lists, CustomListHeaders, IsMobile, IsOffline, SelectedList, ApplicationSettingsService, Constants, AnalyticsService) {
 
   /*******************
     DEFAULT DATA
