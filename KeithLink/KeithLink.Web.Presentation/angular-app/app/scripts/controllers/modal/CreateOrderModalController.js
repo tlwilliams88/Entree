@@ -24,6 +24,13 @@ angular.module('bekApp')
     requestedshipdate: $scope.shipDates[0].shipdate
   };
 
+  if(SelectedList.value == null && $scope.lists.length == 0) {
+    var defaultList = {type:1};
+    return ListService.createList([], defaultList).then(function(resp){
+      SelectedList.value = resp.listid;
+    });
+  }
+  
   if(SelectedList && SelectedList.value){
     $scope.selectedList = ($filter('filter')($scope.lists, {listid: SelectedList.value})[0]) ? $filter('filter')($scope.lists, {listid: SelectedList.value})[0] : $scope.lists[0];
     $scope.defaultList = $scope.selectedList.listid;
