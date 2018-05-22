@@ -286,7 +286,7 @@
           <div ng-show="!loadingBrands && brands.length > 0">
             <ul class="horizontal-slide hidden-xs hidden-sm" ng-class="{ 'hidden-md' : isMobile == true }">
               <li 
-              ng-repeat="brand in brands | orderBy: ['extended_description']" 
+              ng-repeat="brand in brands" 
               class="item-holder" 
               analytics-on 
               analytics-category="Homepage-Brands-Desktop" 
