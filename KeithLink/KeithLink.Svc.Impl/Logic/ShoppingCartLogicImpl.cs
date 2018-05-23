@@ -112,19 +112,32 @@ namespace KeithLink.Svc.Impl.Logic
 			{
 				existingItem.First().Quantity += newItem.Quantity;
                 basketRepository.UpdateItem(basket.UserId.ToGuid(), cartId, existingItem.First());
+
 				return existingItem.First().Id.ToGuid();
 			}
+
             newItem.Position = basket.LineItems.Count;
 
-		    if (newItem.OrderedFromSource != null &&
-		        newItem.OrderedFromSource.Length > 0) {
+		    if (String.IsNullOrEmpty(newItem.OrderedFromSource) == false) {
+		        List<string> recommendedItemSources = _recommendedItemsOrderedAnalyticsRepository.GetOrderSources();
+
 		        try {
-		            _orderedItemsFromListRepository.Write(new OrderedItemFromList() {
-		                ControlNumber = cartId.ToString(),
-		                ItemNumber = newItem.ItemNumber,
-		                SourceList = newItem.OrderedFromSource
-		            });
-		        } catch {}
+		            if (recommendedItemSources.Contains(newItem.OrderedFromSource) == false) {
+		                _orderedItemsFromListRepository.Write(new OrderedItemFromList() {
+		                    ControlNumber = cartId.ToString(),
+		                    ItemNumber = newItem.ItemNumber,
+		                    SourceList = newItem.OrderedFromSource
+		                });
+		            } else {
+		                _recommendedItemsOrderedAnalyticsRepository.Add(newItem.ItemNumber,
+		                                                                newItem.Each == false ? 'C' : 'P',
+		                                                                newItem.OrderedFromSource,
+		                                                                cartId.ToString(),
+		                                                                newItem.TrackingKey);
+		            }
+		        } catch (Exception ex) {
+		            _log.WriteErrorLog("There was an error adding analytics in AddItem routine", ex);
+		        }
 		    }
 
 		    return basketRepository.AddItem(cartId, newItem.ToLineItem(), basket);
@@ -166,29 +179,43 @@ namespace KeithLink.Svc.Impl.Logic
 
 		    if (cart.ListId != null) {
 		        try {
-                    _orderedFromListRepository.Write(new OrderedFromList()
-                    {
-                        ControlNumber = newCartId.ToString(),
-                        ListId = cart.ListId,
-                        ListType = cart.ListType
-                    });
-                }
-                catch { }
+		            _orderedFromListRepository.Write(new OrderedFromList() {
+		                ControlNumber = newCartId.ToString(),
+		                ListId = cart.ListId,
+		                ListType = cart.ListType
+		            });
+		        } catch (Exception ex) {
+                    _log.WriteErrorLog("Error saving ordered from list information on cart creation", ex);
+		        }
             }
 
+            // Get the recommended item sources to check for a valid source
+	        List<string> recommendedItemSources = _recommendedItemsOrderedAnalyticsRepository.GetOrderSources();
+	        
             foreach (var item in cart.Items)
             {
-                if (item.OrderedFromSource != null &&
-                    item.OrderedFromSource.Length > 0) {
-                    try {
-                        _orderedItemsFromListRepository.Write(new OrderedItemFromList()
-                        {
-                            ControlNumber = newCartId.ToString(),
-                            ItemNumber = item.ItemNumber,
-                            SourceList = item.OrderedFromSource
-                        });
+                if (String.IsNullOrEmpty(item.OrderedFromSource) == false) {
+                    try
+                    {
+                        // If it isn't a recommended item process normally
+                        if (recommendedItemSources.Contains(item.OrderedFromSource, StringComparer.CurrentCultureIgnoreCase) == false) {
+                            _orderedItemsFromListRepository.Write(new OrderedItemFromList() {
+                                ControlNumber = newCartId.ToString(),
+                                ItemNumber = item.ItemNumber,
+                                SourceList = item.OrderedFromSource
+                            });
+                        } else {
+                            _recommendedItemsOrderedAnalyticsRepository.Add(item.ItemNumber,
+                                item.Each == false ? 'C' : 'P',
+                                item.OrderedFromSource,
+                                newCartId.ToString(),
+                                item.TrackingKey);
+                        }
                     }
-                    catch { }
+                    catch (Exception ex)
+                    {
+                        _log.WriteErrorLog("Error saving ordered item analytics on cart creation", ex);
+                    }
                 }
             }
 
@@ -655,20 +682,10 @@ namespace KeithLink.Svc.Impl.Logic
                             item.ListPrice = (decimal)filteredProducts[0].CasePriceNumeric;
                         }
                     }
-
-                    var source = _orderedItemsFromListRepository.Read(cartId.ToString(), item.ProductId);
-                    if (source != null && source.SourceList != null)
-                    {
-                        var sources = _recommendedItemsOrderedAnalyticsRepository.GetOrderSources();
-                        if (sources.Contains(source.SourceList, StringComparer.CurrentCultureIgnoreCase))
-                        {
-                            _recommendedItemsOrderedAnalyticsRepository.Add(orderNumber,
-                                item.ProductId,
-                                item.Each.Value == false ? 'C' : 'P',
-                                source.SourceList);
-                        }
-                    }
                 }
+
+                // Log the control number to the recommended items for this cart
+                _recommendedItemsOrderedAnalyticsRepository.UpdateAnalyticsForCardIdWithControlNumber(cartId.ToString(), orderNumber);
 
 
                 var type = catalogLogic.GetCatalogTypeFromCatalogId(catalogId).ToUpper().Substring(0, 3);

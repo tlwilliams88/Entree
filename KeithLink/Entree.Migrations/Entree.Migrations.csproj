@@ -153,6 +153,7 @@
     <Compile Include="Migrations\v2018.04.00\Migration0068.cs" />
     <Compile Include="Migrations\v2018.04.00\Migration0067.cs" />
     <Compile Include="Migrations\v2018.05.00\Migration0070.cs" />
+    <Compile Include="Migrations\v2018.05.00\Migration0073.cs" />
     <Compile Include="Migrations\v2018.05.00\Migration0072.cs" />
     <Compile Include="Migrations\v2018.05.00\Migration0071.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -340,6 +341,12 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Scripts\AppData\Customers\Customers_0001_0001.11.00_up.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Scripts\AppData\Customers\Tables\GrowthAndRecoveries\GrowthAndRecoveries_0073_2018.05.00_down.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Scripts\AppData\Customers\Tables\GrowthAndRecoveries\GrowthAndRecoveries_0073_2018.05.00_up.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Scripts\AppData\Customers\Tables\GrowthAndRecoveries\Indexes\IX_GrowthAndRecoveries_0070_2018.06.00_down.sql">
@@ -2139,10 +2146,19 @@
     <Content Include="Scripts\AppData\Orders\Tables\OrderHistoryHeader\OrderHistoryHeader_0001_0001.11.00_up.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="Scripts\AppData\Orders\Tables\RecommendedItemsOrderedAnalytics\RecommendedItemsOrderedAnalytics_0073_2018.05.00_down.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="Scripts\AppData\Orders\Tables\RecommendedItemsOrderedAnalytics\RecommendedItemsOrderedAnalytics_0071_2018.05.00_down.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="Scripts\AppData\Orders\Tables\RecommendedItemsOrderedAnalytics\RecommendedItemsOrderedAnalytics_0073_2018.05.00_up.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="Scripts\AppData\Orders\Tables\RecommendedItemsOrderedAnalytics\RecommendedItemsOrderedAnalytics_0071_2018.05.00_up.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Scripts\AppData\Orders\Tables\RecommendedOrderSource\PostDeployment\RecommendedOrderSourceSeed_0072_2018-06-00_up.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Scripts\AppData\Orders\Tables\RecommendedOrderSource\PostDeployment\RecommendedOrderSourceSeed_0071_2018-06-00_up.sql">
@@ -2160,7 +2176,13 @@
     <Content Include="Scripts\AppData\Orders\Tables\UserActiveCarts\UserActiveCarts_0001_0001.11.00_up.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="Scripts\AppData\Orders\Views\RecommendedItemsOrdered\RecommendedItemsOrdered_0073_2018.05.00_down.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="Scripts\AppData\Orders\Views\RecommendedItemsOrdered\RecommendedItemsOrdered_0071_2018.05.00_down.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Scripts\AppData\Orders\Views\RecommendedItemsOrdered\RecommendedItemsOrdered_0073_2018.05.00_up.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Scripts\AppData\Orders\Views\RecommendedItemsOrdered\RecommendedItemsOrdered_0071_2018.05.00_up.sql">

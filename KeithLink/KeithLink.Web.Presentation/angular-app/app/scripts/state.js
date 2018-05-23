@@ -185,7 +185,7 @@ angular.module('bekApp')
       }
     })
     .state('menu.catalog.products.list', {
-      url: ':type/:id/:deptName/:recommendationType/?currentPage/?startingPoint/?parentcategories/?subcategories/?brands/?manufacturers/?dietary/?itemspecs/?temp_zones/?specialfilters',
+      url: ':type/:id/:deptName/:recommendationType/:trackingKey/?currentPage/?startingPoint/?parentcategories/?subcategories/?brands/?manufacturers/?dietary/?itemspecs/?temp_zones/?specialfilters',
       params: {
         brand: null,
         category: null,
@@ -213,7 +213,7 @@ angular.module('bekApp')
       }
     })
     .state('menu.catalog.products.brand', {
-      url: 'catalog/:catalogType/search/:type/:id/:recommendationType/products',
+      url: 'catalog/:catalogType/search/:type/:id/:recommendationType/:trackingKey/products',
       templateUrl: 'views/searchresults.html',
       controller: 'SearchController',
       data: {
@@ -234,7 +234,7 @@ angular.module('bekApp')
       }
     })
     .state('menu.catalog.products.details', {
-      url: ':itemNumber/:recommendationType',
+      url: ':itemNumber/:recommendationType/:trackingKey',
       templateUrl: 'views/itemdetails.html',
       controller: 'ItemDetailsController',
       data: {

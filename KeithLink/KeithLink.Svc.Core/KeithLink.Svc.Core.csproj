@@ -471,6 +471,7 @@
     <Compile Include="Models\OnlinePayments\Payment\PaymentValidationResponseModel.cs" />
     <Compile Include="Models\Orders\OrderedItemFromList.cs" />
     <Compile Include="Models\Orders\OrderedFromList.cs" />
+    <Compile Include="Models\Orders\RecommendedItemsOrderedAnalyticsModel.cs" />
     <Compile Include="Models\PowerMenu\Order\LoginModel.cs" />
     <Compile Include="Models\PowerMenu\Order\OrderHeaderModel.cs" />
     <Compile Include="Models\PowerMenu\Order\OrderItemModel.cs" />
