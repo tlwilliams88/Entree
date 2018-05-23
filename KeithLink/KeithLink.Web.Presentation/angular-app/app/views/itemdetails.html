@@ -101,7 +101,7 @@
               </div>
   
               <div class="pull-left max-width-25 min-width-33" style="padding-top: 25px; padding-left: 5px;">
-                <p style= "overflow: hidden; white-space: nowrap; text-overflow: ellipsis;" ui-sref="menu.catalog.products.details({ itemNumber : item.itemnumber, recommendationType: {{item.orderedfromsource}} })"><a>{{item.name}}</a></p>
+                <p style= "overflow: hidden; white-space: nowrap; text-overflow: ellipsis;" ui-sref="menu.catalog.products.details({ itemNumber : item.itemnumber, recommendationType: {{item.orderedfromsource}}, trackingKey: category.trackingkey })"><a>{{item.name}}</a></p>
                 <p>{{item.each ? item.packageprice : item.caseprice | currency}} - {{item.packsize}}</p>
               </div>
   
@@ -457,7 +457,7 @@
             analytics-category="RecommendedItem-Item-Details" 
             analytics-event="Open Recommended Item Tab"
             ng-if="recommendedItems.length > 0">
-            <tab-heading style="color : #E1696C; font-weight : bold;"><span class="icon-thumbsup" style="padding-right: 5px;"></span>Recommendations<span class="icon-help" style="padding-left: 5px; padding-top: 2px;" tooltip="Recommended Items are based on what is currently in your cart."></span></tab-heading>
+            <tab-heading class="recommendedItemsStyling"><span class="icon-thumbsup" style="padding-right: 5px;"></span>Recommendations<span class="icon-help" style="padding-left: 5px; padding-top: 2px;" tooltip="Recommended Items are based on what is currently in your cart."></span></tab-heading>
                 <table class="table item-details__table table-striped-rows no-margin hidden-lg" style="table-layout: fixed">
                   <tbody>
                     <tr>
@@ -469,8 +469,8 @@
 
                     </tr>
                     <tr ng-repeat="item in recommendedItems" ng-class="{ odd : $odd }">
-                        <td ui-sref="menu.catalog.products.details({ itemNumber : item.itemnumber, recommendationType: {{item.orderedfromsource}} })"><a>{{item.orderedfromsource}}</a></td>
-                        <td ui-sref="menu.catalog.products.details({ itemNumber : item.itemnumber, recommendationType: {{item.orderedfromsource}} })"><a>{{item.name}}</a></td>
+                        <td ui-sref="menu.catalog.products.details({ itemNumber : item.itemnumber, recommendationType: {{item.orderedfromsource}}, trackingKey: category.trackingkey })"><a>{{item.orderedfromsource}}</a></td>
+                        <td ui-sref="menu.catalog.products.details({ itemNumber : item.itemnumber, recommendationType: {{item.orderedfromsource}}, trackingKey: category.trackingkey })"><a>{{item.name}}</a></td>
                         <td>{{item.brand_extended_description}}</td>
                         <td>{{item.each ? item.packageprice : item.caseprice | currency}} - {{item.packsize}}</td>
                         <td class="hand-pointer">

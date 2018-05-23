@@ -16,11 +16,14 @@ namespace KeithLink.Svc.Core.Models.SiteCatalog
     [DataContract(Name = "growthandrecovery")]
     public class GrowthAndRecoveriesReturnModel
     {
-        [DataMember(Name = "CategoryDescription")]
-        public string GroupingDescription { get; set; }
+        [DataMember(Name = "versionkey")]
+        public int CustomerInsightVersionKey { get; set; }
 
         [DataMember(Name = "CategoryCode")]
         public string GroupingCode { get; set; }
+
+        [DataMember(Name = "CategoryDescription")]
+        public string GroupingDescription { get; set; }
 
         [DataMember(Name = "type")]
         [JsonConverter(typeof(StringEnumConverter))]
@@ -28,5 +31,8 @@ namespace KeithLink.Svc.Core.Models.SiteCatalog
 
         [DataMember(Name = "image")]
         public CategoryImageReturn Image { get; set; }
+
+        [DataMember(Name = "trackingkey")]
+        public int ProductGroupingInsightKey { get; set; }
     }
 }

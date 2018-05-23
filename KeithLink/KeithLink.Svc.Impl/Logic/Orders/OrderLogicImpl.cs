@@ -824,22 +824,6 @@ namespace KeithLink.Svc.Impl.Logic.Orders {
             if (items == null ||
                 items.Count == 0) {
                 throw new ApplicationException("Cannot submit order with 0 line items");
-            } else {
-                foreach (var item in items)
-                {
-                    var source = _orderedItemsFromListRepository.Read(orderNumber, item.ItemNumber);
-                    if (source != null && source.SourceList != null)
-                    {
-                        var sources = _recommendedItemsOrderedAnalyticsRepository.GetOrderSources();
-                        if (sources.Contains(source.SourceList, StringComparer.CurrentCultureIgnoreCase))
-                        {
-                            _recommendedItemsOrderedAnalyticsRepository.Add(orderNumber,
-                                item.ItemNumber,
-                                item.Each == false ? 'C' : 'P',
-                                source.SourceList);
-                        }
-                    }
-                }
             }
 
             BEKFoundationServiceClient client = new BEKFoundationServiceClient();
