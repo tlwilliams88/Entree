@@ -184,24 +184,27 @@ namespace KeithLink.Svc.Impl.Service.SiteCatalog
             List<RecommendedItemsModel> recommendedItems = _recommendedItemsRepository.GetRecommendedItemsForCustomer(catalogInfo.CustomerId, catalogInfo.BranchId, cartItems, 50);
 
 
-            ProductsReturn products = _catalogRepository.GetProductsByIds(catalogInfo.BranchId, recommendedItems.Select(x => x.RecommendedItem)
+            ProductsReturn productsReturn = _catalogRepository.GetProductsByIds(catalogInfo.BranchId, recommendedItems.Select(x => x.RecommendedItem)
                                                                                                                 .ToList());
 
-            AddPricingInfo(products, catalogInfo);
-            GetAdditionalProductInfo(profile, products, catalogInfo);
-            ApplyRecommendedTagging(products);
+            AddPricingInfo(productsReturn, catalogInfo);
+            GetAdditionalProductInfo(profile, productsReturn, catalogInfo);
+            ApplyRecommendedTagging(productsReturn);
 
-            // Use reverse logic to remove any items without images if the hasimages is set to true
-            if (hasImages.HasValue && hasImages.Value == true) {
-                for (int productIndex = products.Products.Count() - 1; productIndex > -1; productIndex--)
-                {
-                    if (products.Products[productIndex].ProductImages == null) {
-                        products.Products.RemoveAt(productIndex);
+            for (int productIndex = productsReturn.Products.Count() - 1; productIndex > -1; productIndex--)
+            {
+                if (hasImages.HasValue && hasImages.Value == true) {
+                    if (productsReturn.Products[productIndex].ProductImages.Any() == false) {
+                        productsReturn.Products.RemoveAt(productIndex);
                     }
+                } else if (productsReturn.Products[productIndex].CasePrice.Equals("0.00") == true &&
+                    productsReturn.Products[productIndex].PackagePrice.Equals("0.00")) {
+                    productsReturn.Products.RemoveAt(productIndex);
                 }
+
             }
 
-            return products;
+            return productsReturn;
         }
         #endregion
 

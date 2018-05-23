@@ -23,9 +23,10 @@ AS
 		od.ShippedQuantity,
 		od.SellPrice,
 		oa.ProductGroupingInsightKey,
-		oa.CustomerInsightVersionKey
+		gr.CustomerInsightVersionKey
     FROM [Orders].[RecommendedItemsOrderedAnalytics] oa
         LEFT OUTER JOIN Orders.RecommendedOrderSource os ON os.OrderSourceId=oa.OrderSourceId
         LEFT OUTER JOIN Orders.OrderHistoryHeader oh ON oh.ControlNumber=oa.ControlNumber
         LEFT OUTER JOIN Orders.OrderHistoryDetail od ON od.OrderHistoryHeader_Id=oh.Id and od.ItemNumber=oa.ItemNumber and od.UnitOfMeasure=oa.UnitOfMeasure
-        LEFT OUTER JOIN ETL.Staging_ItemData id ON id.BranchId=oh.BranchId and id.ItemId=oa.ItemNumber;
+        LEFT OUTER JOIN ETL.Staging_ItemData id ON id.BranchId=oh.BranchId and id.ItemId=oa.ItemNumber
+		LEFT OUTER JOIN Customers.GrowthAndRecoveries gr ON gr.ProductGroupingInsightKey = oa.ProductGroupingInsightKey;
