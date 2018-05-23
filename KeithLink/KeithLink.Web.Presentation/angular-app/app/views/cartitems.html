@@ -537,10 +537,10 @@
             analytics-on 
             analytics-category="CartIQ-Item-Cart-Details" 
             analytics-event="Open Recommended Item Tab">
-              <tab-heading ng-style="recommendedItems.length > 0 && {'color' : '#E1696C', 'font-weight' : 'bold'}">
+              <tab-heading ng-class="{ recommendedItemsStyling : recommendedItems.length > 0 }">
                 <span 
                   class="icon-thumbsup" 
-                  style="padding-right: 5px; color: #E1696C;">
+                  style="padding-right: 5px;">
                 </span>
                   <span></span>Recommendations 
                 <span 
