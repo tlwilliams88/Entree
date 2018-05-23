@@ -5,12 +5,14 @@ using System.Text;
 using System.Threading.Tasks;
 
 using KeithLink.Svc.Core.Models.Customers;
+using KeithLink.Svc.Core.Models.Orders;
 using KeithLink.Svc.Core.Models.ShoppingCart;
 
 namespace KeithLink.Svc.Core.Interface.Orders
 {
     public interface IRecommendedItemsOrderedAnalyticsRepository {
+        void Add(string itemNumber, char caseOrPackage, string orderSource, string cartId, string productGroupingInsightKey);
         List<string> GetOrderSources();
-        void Add(string orderNumber, string itemNumber, char caseOrPackage, string orderSource);
+        void UpdateAnalyticsForCardIdWithControlNumber(string cartId, string controlNumber);
     }
 }

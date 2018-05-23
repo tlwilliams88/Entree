@@ -20,6 +20,8 @@ namespace KeithLink.Svc.Core.Extensions.Customers
                 returnModel.GroupingCode = model.GroupingCode;
                 returnModel.GrowthAndReccoveryTypeKey = model.GrowthAndRecoveryTypeKey;
                 returnModel.GroupingDescription = model.GroupingDescription;
+                returnModel.ProductGroupingInsightKey = model.ProductGroupingInsightKey;
+                returnModel.CustomerInsightVersionKey = model.CustomerInsightVersionKey;
 
                 returnValue.Add(returnModel);
             }
