@@ -122,7 +122,7 @@ namespace KeithLink.Svc.Impl.Logic
 		        List<string> recommendedItemSources = _recommendedItemsOrderedAnalyticsRepository.GetOrderSources();
 
 		        try {
-		            if (recommendedItemSources.Contains(newItem.OrderedFromSource) == false) {
+		            if (recommendedItemSources.Contains(newItem.OrderedFromSource, StringComparer.CurrentCultureIgnoreCase) == false) {
 		                _orderedItemsFromListRepository.Write(new OrderedItemFromList() {
 		                    ControlNumber = cartId.ToString(),
 		                    ItemNumber = newItem.ItemNumber,

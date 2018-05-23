@@ -42,9 +42,9 @@ namespace KeithLink.Svc.Impl.Repository.Customers
 
             connection.Execute(
                          @"INSERT INTO [Orders].[RecommendedItemsOrderedAnalytics]
-                            ([CartId], [ControlNumber],[ItemNumber],[UnitOfMeasure],[OrderSourceId])
+                            ([CartId],[ItemNumber],[UnitOfMeasure],[OrderSourceId],[ProductGroupingInsightKey])
                           VALUES
-                            (@CartId, @ControlNumber,@ItemNumber,@UnitOfMeasure,@OrderSourceiD)",
+                            (@CartId,@ItemNumber,@UnitOfMeasure,@OrderSourceId,@ProductGroupingInsightKey)",
                          new
                          {
                              CartId = cartId,
