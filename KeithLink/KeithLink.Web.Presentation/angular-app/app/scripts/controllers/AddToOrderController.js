@@ -1,9 +1,9 @@
 'use strict';
 
 angular.module('bekApp')
-  .controller('AddToOrderController', ['$rootScope', '$scope', '$state', '$modal', '$q', '$stateParams', '$filter', '$timeout', 'blockUI', 
+  .controller('AddToOrderController', ['$rootScope', '$scope', '$state', '$modal', '$q', '$stateParams', '$filter', '$timeout', '$interval', 'blockUI', 
    'lists', 'selectedList', 'selectedCart', 'Constants', 'CartService', 'ListService', 'OrderService', 'UtilityService', 'DateService', 'PricingService', 'ListPagingModel', 'LocalStorage', '$analytics', 'toaster', 'ENV', 'SessionService', 'ProductService',
-    function ($rootScope, $scope, $state, $modal, $q, $stateParams, $filter, $timeout, blockUI, lists, selectedList, selectedCart, Constants,
+    function ($rootScope, $scope, $state, $modal, $q, $stateParams, $filter, $timeout, $interval, blockUI, lists, selectedList, selectedCart, Constants,
      CartService, ListService, OrderService, UtilityService, DateService, PricingService, ListPagingModel, LocalStorage, $analytics, toaster, ENV, SessionService, ProductService) {
 
       $scope.$on('$stateChangeStart', function(event, toState, toParams, fromState, fromParams){
@@ -255,6 +255,39 @@ angular.module('bekApp')
       refreshSubtotal($scope.selectedCart.items, $scope.selectedList.items);
     }
 
+    var getRecommendations;
+
+    $scope.cancelRecommendedItemsInterval = function() {
+      $interval.cancel(getRecommendations);
+    };
+  
+    function getRecommendedItems() {
+      var listItemsWithQuantity = $filter('filter')($scope.selectedList.items, function(value) {
+        return value.quantity > 0;
+      })
+
+      if(listItemsWithQuantity.length > 0 && $scope.combinedItems.length == 0) {
+        $scope.updateRecommendedItems(listItemsWithQuantity);
+      } else if($scope.combinedItems.length > 0) {
+        $scope.updateRecommendedItems($scope.combinedItems);
+      }
+    }
+
+    $scope.setRecommendedItemsInterval = function() {
+      getRecommendations = $interval(getRecommendedItems, 15000);
+    }
+
+    $scope.showRecommendedItems = ENV.showRecommendedItems;
+    $scope.recommendedItems = [];
+
+    $scope.updateRecommendedItems = function(items) {
+      if($scope.showRecommendedItems == true) {
+        ProductService.getRecommendedItems(items).then(function(resp) {
+          $scope.recommendedItems = resp;
+        });
+      }
+    };
+
     $scope.blockUIAndChangePage = function(page){
       //Check if items for page already exist in the controller
       $scope.startingPoint = 0;
@@ -446,17 +479,6 @@ angular.module('bekApp')
        blockUI.stop();
     }
 
-    $scope.showRecommendedItems = ENV.showRecommendedItems;
-    $scope.recommendedItems = [];
-
-    $scope.updateRecommendedItems = function(items) {
-      if($scope.showRecommendedItems == true) {
-        ProductService.getRecommendedItems(items).then(function(resp) {
-          $scope.recommendedItems = resp;
-        });
-      }
-    }
-
     function init() {
       $scope.lists = lists;
 
@@ -473,8 +495,6 @@ angular.module('bekApp')
                $scope.openErrorMessageModal('The ship date requested for this order has expired. Select Cancel to return to the home screen without making changes. Select Accept to update to the next available ship date.');
               selectedCart.requestedshipdate = $scope.shipDates[0].shipdate;
             }
-
-            $scope.updateRecommendedItems(selectedCart.items);
 
           } else {
             // create new cart if no cart was selected
@@ -503,6 +523,9 @@ angular.module('bekApp')
           $state.go('menu.home');
           return;
         }
+
+        $scope.setRecommendedItemsInterval();
+        $scope.updateRecommendedItems($scope.selectedCart.items);
       });
     }
 
