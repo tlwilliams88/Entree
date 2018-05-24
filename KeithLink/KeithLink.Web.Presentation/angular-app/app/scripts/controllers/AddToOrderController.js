@@ -33,6 +33,8 @@ angular.module('bekApp')
 
           }
           guiders.hideAll();
+
+          $interval.cancel(getRecommendations);
       });
 
       $scope.showPagination = function(status) {
