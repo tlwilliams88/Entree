@@ -469,7 +469,7 @@
 
                     </tr>
                     <tr ng-repeat="item in recommendedItems" ng-class="{ odd : $odd }">
-                        <td ui-sref="menu.catalog.products.details({ itemNumber : item.itemnumber, recommendationType: {{item.orderedfromsource}}, trackingKey: category.trackingkey })"><a>{{item.orderedfromsource}}</a></td>
+                        <td ui-sref="menu.catalog.products.details({ itemNumber : item.itemnumber, recommendationType: {{item.orderedfromsource}}, trackingKey: category.trackingkey })"><a>{{item.itemnumber}}</a></td>
                         <td ui-sref="menu.catalog.products.details({ itemNumber : item.itemnumber, recommendationType: {{item.orderedfromsource}}, trackingKey: category.trackingkey })"><a>{{item.name}}</a></td>
                         <td>{{item.brand_extended_description}}</td>
                         <td>{{item.each ? item.packageprice : item.caseprice | currency}} - {{item.packsize}}</td>
