@@ -12,6 +12,7 @@ namespace KeithLink.Svc.Core.Interface.Orders
 {
     public interface IRecommendedItemsOrderedAnalyticsRepository {
         void Add(string itemNumber, char caseOrPackage, string orderSource, string cartId, string productGroupingInsightKey);
+        void DeleteByCartIdAndItemNumber(string cartId, string itemNumber);
         List<string> GetOrderSources();
         void UpdateAnalyticsForCardIdWithControlNumber(string cartId, string controlNumber);
     }
