@@ -1,8 +1,4 @@
-﻿TRUNCATE TABLE [Orders].[RecommendedOrderSource]
-
-GO
-
-INSERT 
+﻿INSERT 
 	INTO [Orders].[RecommendedOrderSource] 
 		([OrderSource], [Description]) 
 	VALUES 

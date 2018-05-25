@@ -55,6 +55,12 @@ namespace KeithLink.Svc.Impl.Repository.Customers
                          });
         }
 
+        public void DeleteByCartIdAndItemNumber(string cartId, string itemNumber) {
+            connection.Execute(@"DELETE FROM Orders.RecommendedItemsOrderedAnalytics
+                                 WHERE CartId = @CartId
+                                 AND   ItemNumber = @ItemNumber", new { CartId = cartId, ItemNumber = itemNumber });
+        }
+
         public List<string> GetOrderSources()
         {
             List<string> orderSources = connection.Query<string>(
