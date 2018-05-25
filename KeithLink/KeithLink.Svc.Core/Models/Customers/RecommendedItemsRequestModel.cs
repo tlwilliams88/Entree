@@ -16,7 +16,7 @@ namespace KeithLink.Svc.Core.Models.Customers
         [DataMember(Name = "pagesize")]
         public int? pagesize { get; set; }
 
-        [DataMember(Name = "hasimages")]
+        [DataMember(Name = "getimages")]
         public bool? hasimages { get; set; }
     }
 }
