@@ -50,6 +50,11 @@ angular.module('bekApp')
       $scope.branches = resp;
     })
   }
+
+  CartService.getCartHeaders().then(function(resp) {
+    $scope.carts = resp;
+  });
+
   // define search term in user bar so it can be cleared in the SearchController after a user searches
   $scope.userBar = {};
   $scope.userBar.universalSearchTerm = '';
