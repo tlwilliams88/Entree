@@ -153,6 +153,7 @@
     <Compile Include="Migrations\v2018.04.00\Migration0068.cs" />
     <Compile Include="Migrations\v2018.04.00\Migration0067.cs" />
     <Compile Include="Migrations\v2018.05.00\Migration0070.cs" />
+    <Compile Include="Migrations\v2018.05.00\Migration0074.cs" />
     <Compile Include="Migrations\v2018.05.00\Migration0073.cs" />
     <Compile Include="Migrations\v2018.05.00\Migration0072.cs" />
     <Compile Include="Migrations\v2018.05.00\Migration0071.cs" />
@@ -845,6 +846,12 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Scripts\AppData\ETL\Tables\Staging_GrowthAndRecovery_Product_Grouping\Staging_GrowthAndRecovery_Product_Grouping_0070_2018.05.00_up.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Scripts\AppData\ETL\Tables\Staging_ItemData\Indexes\Staging_ItemData_0074_2018.05.00_down.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Scripts\AppData\ETL\Tables\Staging_ItemData\Indexes\Staging_ItemData_0074_2018.05.00_up.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Scripts\AppData\ETL\Tables\Staging_ItemData\Staging_ItemData_0067_2018.04.00_down.sql">

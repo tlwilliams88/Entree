@@ -276,7 +276,7 @@ angular.module('bekApp')
     }
 
     $scope.setRecommendedItemsInterval = function() {
-      getRecommendations = $interval(getRecommendedItems, 15000);
+      getRecommendations = $interval(getRecommendedItems, 15000, 120);
     }
 
     $scope.showRecommendedItems = ENV.showRecommendedItems;

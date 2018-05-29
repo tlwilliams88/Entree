@@ -117,7 +117,7 @@
           <span class="nav-description text-light">Cart Info</span>
 
           <span class="nav-title">
-            {{(itemCount || selectedCart.items.length ||  '0') +((itemCount === 1 || (!itemCount && selectedCart.items.length === 1)) ? ' Item / ' : ' Items / ') +
+            {{(combinedItems.length || selectedCart.items.length ||  '0') +((combinedItems.length === 1 || (!combinedItems.length && selectedCart.items.length === 1)) ? ' Item / ' : ' Items / ') +
              (piecesCount || selectedCart.piececount || '0') +((piecesCount === 1 || (!piecesCount && selectedCart.piececount === 1)) ? ' Piece' : ' Pieces')}}
           </span>
           <span class="nav-subtotal pull-right text-green">{{selectedCart.subtotal | currency}}</span>
@@ -131,7 +131,7 @@
     <div class="col-xs-3">{{selectedList.name}}</div>
     <div class="col-xs-3">{{selectedCart.name || selectedCart.ordernumber || 'New Cart'}}</div>
     <div class="col-xs-2">{{( selectedCart.requestedshipdate | formatDate) || 'Select a date...' }}</div>
-    <div class="col-xs-2">{{itemCount || '0'}} Items</div>
+    <div class="col-xs-2">{{combinedItems.length || '0'}} Items</div>
     <div class="col-xs-2 text-right">{{subtotal | currency}}</div>
   </div>
 
