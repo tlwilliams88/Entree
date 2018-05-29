@@ -54,6 +54,7 @@ namespace KeithLink.Svc.Impl.Repository.Customers
                                                                       AND ri.ItemNumber IN @CartItemsList
                                                                       AND ri.RecommendedItem NOT IN @CartItemsList
                                                                       AND ri.PrimaryPriceListCode != ri.SecondaryPriceListCode
+                                                                      AND ri.SecondaryPriceListCode NOT IN (SELECT itemData.PriceListCode FROM ETL.Staging_ItemData itemData WHERE itemData.ItemId IN @CartItemsList AND itemData.BranchId = @BranchId)
                                                                   ORDER BY ri.Confidence DESC ",
                                                                   new {
                                                                       Size = size,
