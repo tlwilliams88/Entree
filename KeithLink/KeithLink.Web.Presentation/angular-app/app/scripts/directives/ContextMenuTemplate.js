@@ -11,8 +11,8 @@ angular.module('bekApp')
         modalElement: null
       };
     })
-.directive('contextMenuTemplate', [ '$modal', '$document', '$timeout', 'ContextMenuService', 'UtilityService', 'CartService', 'OrderService', 'ListService',
-  function($modal, $document, $timeout, ContextMenuService, UtilityService, CartService, OrderService, ListService){
+.directive('contextMenuTemplate', [ '$modal', '$document', '$timeout', 'ContextMenuService', 'UtilityService', 'CartService', 'OrderService', 'ListService', '$stateParams',
+  function($modal, $document, $timeout, ContextMenuService, UtilityService, CartService, OrderService, ListService, $stateParams){
 
   return {
     replace: true,
@@ -37,7 +37,7 @@ angular.module('bekApp')
 
           CartService.getShipDates(); // needed if user creates a cart using the context menu
 
-          $scope.carts = CartService.cartHeaders;
+          $scope.carts = $scope.cartsHeaders;
 
           $scope.changeOrders = OrderService.changeOrderHeaders;
 
@@ -95,13 +95,19 @@ angular.module('bekApp')
                 return $scope.item; // directive inherits $scope.item from html where the directive is located
               },
               lists: function() {
-                return $scope.lists;
+                return ListService.listHeaders;
               },
               carts: function() {
-                return $scope.carts;
+                return $scope.cartsHeaders;
               },
               changeOrders: function() {
-                return $scope.changeOrders;
+                return OrderService.changeOrderHeaders;
+              },
+              recommendationType: function() {
+                return $stateParams.recommendationType;
+              },
+              trackingKey: function() {
+                return $stateParams.trackingKey;
               }
             }
           });

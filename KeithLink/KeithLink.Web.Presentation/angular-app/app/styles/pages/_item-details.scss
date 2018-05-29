@@ -59,3 +59,7 @@
     width: 33%;
   }
 }
+
+.nav-tabs li a, .nav-tabs li a:hover, .nav-tabs li.active a:hover { // Added to allow all tabs to be on the same line for tablet view
+  padding: 12px 34px;
+}

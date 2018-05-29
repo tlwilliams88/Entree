@@ -149,8 +149,7 @@
                 name="renameCartForm" 
                 class="style-validation-errors inline-header-form nowrap"
                 ng-show="currentCart.isRenaming" 
-                autocomplete="off" 
-                style="display: -webkit-box;">
+                autocomplete="off">
                 <input
                   no-duplicates="name"
                   collection="carts"
@@ -163,29 +162,28 @@
                   ng-model="editCart.name"
                   name="cartName"
                   id="cartName" />
-                <span class="input-group-btn" style="background-color: #F3F1EB; border-radius: 4px;">
-                  <button
-                    ng-click="currentCart.isRenaming = false" 
-                    class="btn-default btn pull-right"
-                    type="submit"
-                    style="height: 40px">
-                    <span 
-                      class="large-icon text-red icon-cross">
-                    </span>
-                  </button>
-
-                  <button
-                    ng-disabled="renamecartForm.$invalid"
-                    class="btn-default btn pull-right"
-                    type="submit"
-                    ng-click="renameCart(currentCart.id, editCart.name); renameCartForm.$setPristine();"
-                    style="height: 40px">
-                    <span class="large-icon text-green icon-checkmark"></span>
-                  </button>
-                </span>
                 <span class="form-error-message" ng-show="renameCartForm.cartName.$error.required">Cart name is required</span>
                 <span class="form-error-message" ng-show="renameCartForm.cartName.$error.noDuplicates">Duplicate cart name</span>
               </form>
+              <span class="input-group-btn" style="border-radius: 4px;">
+                  <button
+                  ng-disabled="renamecartForm.$invalid"
+                  class="btn-default btn"
+                  type="submit"
+                  ng-click="renameCart(currentCart.id, editCart.name); renameCartForm.$setPristine();"
+                  style="height: 40px">
+                  <span class="large-icon text-green icon-checkmark"></span>
+                </button>
+                <button
+                  ng-click="currentCart.isRenaming = false" 
+                  class="btn-default btn"
+                  type="submit"
+                  style="height: 40px">
+                  <span 
+                    class="large-icon text-red icon-cross">
+                  </span>
+                </button>
+              </span>
             </div>
           </div>
         </div>

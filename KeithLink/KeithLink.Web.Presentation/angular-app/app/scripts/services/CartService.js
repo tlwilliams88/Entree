@@ -296,7 +296,8 @@ angular.module('bekApp')
 
           Service.getCartHeaders();
 
-          return Service.getCart(cart.id);
+          var cartId = cart.id ? cart.id : cart.commerceid;
+          return Service.getCart(cartId);
         });
       },
 
