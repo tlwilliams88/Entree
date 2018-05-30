@@ -579,8 +579,8 @@
                           class="pull-right" 
                           ng-click="addItemToCart(recommendedItem); recommendedItems.active = true;" 
                           analytics-on 
-                          analytics-category="CartIQ-Item-Cart-Details-Mobile" 
-                          analytics-event="Add CartIQ Item To Cart">
+                          analytics-category="Add CartIQ Item To Cart Mobile" 
+                          analytics-event="{{recommendedItem.orderedfromsource}}, Item: {{recommendedItem.itemnumber}}, Cart: {{currentCart.name ? currentCart.name : currentCart.invoicenumber}}">
                           <span class="icon-plus3 large-icon" tooltip="Add item to cart" style="padding: 10px;"></span>
                         </a>
                     </td>
@@ -691,8 +691,8 @@
                       ng-click="addItemToCart(recommendedItem)"
                       ng-disabled="!recommendedItem.newQuantity"
                       analytics-on 
-                      analytics-category="CartIQ-Item-Cart-Details-Desktop" 
-                      analytics-event="Add CartIQ Item To Cart">
+                      analytics-category="Add CartIQ Item To Cart Desktop" 
+                      analytics-event="{{recommendedItem.orderedfromsource}}, Item: {{recommendedItem.itemnumber}}, Cart: {{currentCart.name ? currentCart.name : currentCart.invoicenumber + '-' + currentCart.requestedshipdate}}">
                       Add
                     </div>
                   </div>

@@ -1,9 +1,11 @@
 'use strict';
 
 angular.module('bekApp')
-.controller('ContextMenuModalController', ['$scope', '$modalInstance', 'item', 'CartService', 'carts', 'lists', 'changeOrders', 'recommendationType', 'trackingKey', '$q', 'ListService', '$rootScope', 'OrderService', 'AnalyticsService', 'Constants', '$filter',
-  function ($scope, $modalInstance, item, CartService, carts, lists, changeOrders, recommendationType, trackingKey, $q, ListService, $rootScope, OrderService, AnalyticsService, Constants, $filter) {
+.controller('ContextMenuModalController', ['$scope', '$state', '$modalInstance', 'item', 'CartService', 'carts', 'lists', 'changeOrders', 'recommendationType', 'trackingKey', '$q', 'ListService', '$rootScope', 'OrderService', 'AnalyticsService', 'Constants', '$filter',
+  function ($scope, $state, $modalInstance, item, CartService, carts, lists, changeOrders, recommendationType, trackingKey, $q, ListService, $rootScope, OrderService, AnalyticsService, Constants, $filter) {
 
+	$scope.currentLocation = $state.current.name;
+	
 	$scope.item = item;
 
 	$scope.lists = lists;

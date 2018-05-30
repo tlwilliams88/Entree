@@ -56,8 +56,8 @@ angular.module('bekApp')
         branchCheck = $interval(checkForBranches, 30000);
       })
     } else {
-      if(resp.successResponse && resp.successResponse.length > 0) {
-        branches = resp.successResponse;
+      if(resp && resp.length > 0) {
+        branches = resp;
       }
       $scope.branches = branches;
     }

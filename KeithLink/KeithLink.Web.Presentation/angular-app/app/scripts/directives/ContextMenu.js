@@ -9,14 +9,18 @@ angular.module('bekApp')
   return {
     restrict: 'A',
     // scope: true,
-    controller: ['$scope', '$rootScope', '$state', '$q', '$modal', 'toaster', 'ListService', 'CartService', 'OrderService', 'ContextMenuService', '$filter', 'AnalyticsService', 'Constants', '$stateParams',
-    function($scope, $rootScope, $state, $q, $modal, toaster, ListService, CartService, OrderService, ContextMenuService, $filter, AnalyticsService, Constants, $stateParams){
+    controller: ['$scope', '$rootScope', '$state', '$q', '$modal', 'toaster', 'ListService', 'CartService', 'OrderService', 'ContextMenuService', '$filter', 'AnalyticsService', 'Constants', '$stateParams', 'PricingService',
+    function($scope, $rootScope, $state, $q, $modal, toaster, ListService, CartService, OrderService, ContextMenuService, $filter, AnalyticsService, Constants, $stateParams, PricingService){
+
+      $scope.currentLocation = $state.current.name;
+      $scope.recommendationType = $stateParams.recommendationType;
+      $scope.canOrderItem = PricingService.canOrderItem;
 
       if ($scope.isOrderEntryCustomer) {
         $scope.lists = ListService.listHeaders;
-        $scope.changeOrderHeaders = OrderService.changeOrderHeaders;
+        $scope.changeOrders = OrderService.changeOrderHeaders;
 
-      if($scope.changeOrderHeaders == null || $scope.changeOrderHeaders.length == 0) {
+      if($scope.changeOrders == null || $scope.changeOrders.length == 0) {
           OrderService.getChangeOrders().then(function(resp){
             $scope.changeOrders = resp;
           });
@@ -154,7 +158,7 @@ angular.module('bekApp')
        $scope.addItemToChangeOrder = function(order, item) {
         var orderItem = angular.copy(item);
 
-        if($stateParams.recommendationType && $stateParams.recommendationType != undefined && newItem.orderedfromsource == null) {
+        if($stateParams.recommendationType && $stateParams.recommendationType != undefined && item.orderedfromsource == null) {
           orderItem.orderedfromsource = $stateParams.recommendationType;
           orderItem.trackingkey = $stateParams.trackingKey;
         }
