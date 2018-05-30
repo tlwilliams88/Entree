@@ -266,9 +266,7 @@ angular.module('bekApp')
 
     $scope.currentCart.items.push(item);
 
-    ProductService.getRecommendedItems($scope.currentCart.items).then(function(resp) {
-      $scope.recommendedItems = resp;
-    });
+    updateRecommendedItems();
 
     $scope.saveCart($scope.currentCart);
    };

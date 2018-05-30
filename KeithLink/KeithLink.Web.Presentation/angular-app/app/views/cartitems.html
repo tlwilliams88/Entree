@@ -673,9 +673,9 @@
                 ui-sref="menu.catalog.products.details({ itemNumber : recommendedItem.itemnumber, recommendationType: 'CartIQ' })">
                 <a>{{recommendedItem.name}}</a>
               </p>
-                <p>{{recommendedItem.each ? recommendedItem.packageprice : recommendedItem.caseprice | currency}} / Case</p>
-              </div>
-  
+                <p>{{recommendedItem.each ? recommendedItem.packageprice : recommendedItem.caseprice | currency}} <span ng-if="recommendedItem.caseonly">/ Case</span> <span class="text-small" tooltip="Catch weight pricing" ng-if="recommendedItem.catchweight">LB</span></p>
+              </div>              
+
               <div class="pull-right" style="padding-top: 5px; padding-right: 10px;">
                 <div class="hidden-print sub-content">
                     <form name="orderForm" style="display: inline-block;">
