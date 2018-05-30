@@ -326,3 +326,11 @@ img.product-placeholder-image {
 .info-box { 
   padding: 7px;
 }
+
+.homepage-brands {
+  display: -ms-grid !important;
+}
+
+@supports (display: contents) {
+  .homepage-brands { display: contents !important; }
+}

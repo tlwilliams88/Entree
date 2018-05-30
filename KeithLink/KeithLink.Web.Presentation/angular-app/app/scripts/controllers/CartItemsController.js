@@ -9,9 +9,9 @@
  */
 angular.module('bekApp')
   .controller('CartItemsController', ['$scope', '$state', '$stateParams', '$filter', '$modal', '$q', 'ENV', 'Constants', 'LocalStorage',
-   'CartService', 'OrderService', 'UtilityService', 'PricingService', 'DateService', 'changeOrders', 'originalBasket', 'criticalItemsLists', 'AnalyticsService', 'ProductService',
+   'CartService', 'OrderService', 'UtilityService', 'PricingService', 'DateService', 'changeOrders', 'originalBasket', 'criticalItemsLists', 'AnalyticsService', 'ProductService', '$timeout',
     function($scope, $state, $stateParams, $filter, $modal, $q, ENV, Constants, LocalStorage, CartService, OrderService, UtilityService,
-     PricingService, DateService, changeOrders, originalBasket, criticalItemsLists, AnalyticsService, ProductService) {
+     PricingService, DateService, changeOrders, originalBasket, criticalItemsLists, AnalyticsService, ProductService, $timeout) {
 
     // redirect to url with correct ID as a param
     var basketId = originalBasket.id || originalBasket.ordernumber;
@@ -141,11 +141,14 @@ angular.module('bekApp')
 
     function updateRecommendedItems(){
       if($scope.showRecommendedItems == true) {
-        var pagesize = ENV.isMobileApp == 'true' ? Constants.recommendedItemParameters.Mobile.pagesize : Constants.recommendedItemParameters.Desktop.Cart.pagesize,
-        getimages = ENV.isMobileApp == 'true' ? Constants.recommendedItemParameters.Mobile.getimages : Constants.recommendedItemParameters.Desktop.getimages;
-        ProductService.getRecommendedItems($scope.currentCart.items, pagesize, getimages).then(function(resp) {
-          $scope.recommendedItems = resp;
-        });
+        $timeout(function() {
+          var pagesize = ENV.isMobileApp == 'true' ? Constants.recommendedItemParameters.Mobile.pagesize : Constants.recommendedItemParameters.Desktop.Cart.pagesize,
+          getimages = ENV.isMobileApp == 'true' ? Constants.recommendedItemParameters.Mobile.getimages : Constants.recommendedItemParameters.Desktop.getimages;
+          ProductService.getRecommendedItems($scope.currentCart.items, pagesize, getimages).then(function(resp) {
+            $scope.recommendedItems = resp;
+          });
+        }, 30);
+
       }
     }
 
@@ -196,6 +199,7 @@ angular.module('bekApp')
       originalCart.subtotal = PricingService.getSubtotalForItemsWithPrice(originalCart.items);
       setMandatoryAndReminder(originalCart);
       $scope.currentCart = originalCart;
+      updateRecommendedItems();
       $scope.resetSubmitDisableFlag(true);
       $scope.cartForm.$setPristine();
     };
@@ -266,9 +270,7 @@ angular.module('bekApp')
 
     $scope.currentCart.items.push(item);
 
-    ProductService.getRecommendedItems($scope.currentCart.items).then(function(resp) {
-      $scope.recommendedItems = resp;
-    });
+    updateRecommendedItems();
 
     $scope.saveCart($scope.currentCart);
    };

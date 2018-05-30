@@ -75,21 +75,21 @@
                       ng-repeat="category in recommendedCategories | limitTo: 4" 
                       class="item-holder"
                       analytics-on 
-                      analytics-category="SalesIQ-Recommended-Categories-Homepage-Desktop" 
-                      analytics-event="SalesIQ {{category.type | uppercase}} Categories Clicked" 
+                      analytics-category="{{category.type | uppercase}}-Categories-Homepage-Desktop" 
+                      analytics-event="{{category.type | uppercase}} Categories Clicked" 
                       analytics-label="{{category.categoryDescription}}">
                       <div 
                         class="featured-item text-center" 
                         analytics-on 
-                        analytics-category="SalesIQ-Recommended-Categories-Homepage-Desktop" 
-                        analytics-event="SalesIQ {{category.type | uppercase}} Categories Clicked" 
+                        analytics-category="{{category.type | uppercase}}-Categories-Homepage-Desktop" 
+                        analytics-event="{{category.type | uppercase}} Categories Clicked" 
                         analytics-label="{{category.categoryDescription}}"
                         style="min-width: 0px;
                         margin: 0 auto;">
                         <img 
                           class="hand"
                           ng-if="category.image.category_image.url"
-                          ui-sref="menu.catalog.products.list({ type: 'category', id: category.categoryCode, category: category.categoryDescription, recommendationType: category.type, trackingKey: category.trackingkey})" 
+                          ui-sref="menu.catalog.products.list({ type: 'category', id: category.categoryCode, category: category.categoryDescription, recommendationType: category.type, trackingkey: category.trackingkey})" 
                           ng-src="{{category.image.category_image.url}}" 
                           alt="image"
                           style="width: 100%;" />
@@ -102,7 +102,7 @@
                         />
                           <div>
                               <a 
-                                ui-sref="menu.catalog.products.list({ type: 'category', id: category.categoryCode, category: category.categoryDescription, recommendationType: category.type, trackingKey: category.trackingkey})" 
+                                ui-sref="menu.catalog.products.list({ type: 'category', id: category.categoryCode, category: category.categoryDescription, recommendationType: category.type, trackingkey: category.trackingkey})" 
                                 class="featured-item__detail">
                                 {{::category.categoryDescription}}
                               </a>
@@ -212,21 +212,21 @@
                 ng-repeat="category in recommendedCategories | limitTo: 4" 
                 class="item-holder"
                 analytics-on 
-                analytics-category="SalesIQ-Recommended-Categories-Homepage-Mobile" 
-                analytics-event="SalesIQ {{category.type | uppercase}} Categories Clicked"  
+                analytics-category="{{category.type | uppercase}}-Categories-Homepage-Mobile" 
+                analytics-event="{{category.type | uppercase}} Categories Clicked"  
                 analytics-label="{{category.itemnumber}}">
                 <div 
                   class="featured-item text-center" 
                   analytics-on 
-                  analytics-category="SalesIQ-Recommended-Categories-Homepage-Mobile"  
-                  analytics-event="SalesIQ {{category.type | uppercase}} Categories Clicked"
+                  analytics-category="{{category.type | uppercase}}-Categories-Homepage-Mobile"  
+                  analytics-event="{{category.type | uppercase}} Categories Clicked"
                   analytics-label="{{category.name}}"
                   style="    min-width: 0px;
                   margin: 0 auto;">
                   <img 
                     class="hand"
                     ng-if="category.image.category_image.url" 
-                    ui-sref="menu.catalog.products.list({ type: 'category', id: category.categoryCode, category: category.categoryDescription, recommendationType: category.type, trackingKey: category.trackingkey})" 
+                    ui-sref="menu.catalog.products.list({ type: 'category', id: category.categoryCode, category: category.categoryDescription, recommendationType: category.type, trackingkey: category.trackingkey})" 
                     ng-src="{{category.image.category_image.url}}" 
                     alt="image"
                     style="width: 100%;" 
@@ -240,7 +240,7 @@
                   />
                     <div>
                       <a 
-                        ui-sref="menu.catalog.products.list({ type: 'category', id: category.categoryCode, category: category.categoryDescription, recommendationType: category.type, trackingKey: category.trackingkey})" 
+                        ui-sref="menu.catalog.products.list({ type: 'category', id: category.categoryCode, category: category.categoryDescription, recommendationType: category.type, trackingkey: category.trackingkey})" 
                         class="featured-item__detail">
                         {{::category.categoryDescription}}
                       </a>
@@ -287,12 +287,12 @@
             <ul class="horizontal-slide hidden-xs hidden-sm" ng-class="{ 'hidden-md' : isMobile == true }">
               <li 
               ng-repeat="brand in brands" 
-              class="item-holder" 
+              class="item-holder homepage-brands" 
               analytics-on 
               analytics-category="Homepage-Brands-Desktop" 
               analytics-event="Brands" 
               analytics-label="brand.extended_description"
-              style="height: 246px; display: contents;">
+              style="height: 246px;">
                 <div class="featured-item text-center">
                   <img class="hand" ui-sref="menu.catalog.products.list({ type: 'housebrand', id: brand.brand_control_label, brand: brand.extended_description })" ng-src="{{brand.imageurl}}" alt="image">
                   <div style="height: 70px;">

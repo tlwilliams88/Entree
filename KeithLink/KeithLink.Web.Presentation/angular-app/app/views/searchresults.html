@@ -448,10 +448,10 @@
                       </div>
                       <h5 class="block-display">
                         <span ng-if="item.brand_extended_description && !item.marketing_brand">
-                          <a ng-if="$state.params.catalogType == 'UNFI'" ui-sref="menu.catalog.products.brand({type:'search', catalogType: 'UNFI', id: item.brand_extended_description, recommendationType: category.type, trackingKey: category.trackingkey})">
+                          <a ng-if="$state.params.catalogType == 'UNFI'" ui-sref="menu.catalog.products.brand({type:'search', catalogType: 'UNFI', id: item.brand_extended_description, recommendationType: category.type, trackingkey: category.trackingkey})">
                             {{item.brand_extended_description}}
                           </a>
-                          <a ng-if="$state.params.catalogType == 'BEK'" ui-sref="menu.catalog.products.brand({type:'brand', catalogType: 'BEK', id: item.brand_extended_description, recommendationType: category.type, trackingKey: category.trackingkey})">
+                          <a ng-if="$state.params.catalogType == 'BEK'" ui-sref="menu.catalog.products.brand({type:'brand', catalogType: 'BEK', id: item.brand_extended_description, recommendationType: category.type, trackingkey: category.trackingkey})">
                             {{item.brand_extended_description}}
                           </a>
                         </span>

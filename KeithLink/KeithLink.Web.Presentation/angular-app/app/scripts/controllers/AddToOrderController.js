@@ -263,7 +263,7 @@ angular.module('bekApp')
       $interval.cancel(getRecommendations);
     };
   
-    function getRecommendedItems() {
+    $scope.getRecommendedItems = function() {
       var listItemsWithQuantity = $filter('filter')($scope.selectedList.items, function(value) {
         return value.quantity > 0;
       })
@@ -276,7 +276,7 @@ angular.module('bekApp')
     }
 
     $scope.setRecommendedItemsInterval = function() {
-      getRecommendations = $interval(getRecommendedItems, 15000, 120);
+      getRecommendations = $interval($scope.getRecommendedItems, 15000, 120);
     }
 
     $scope.showRecommendedItems = ENV.showRecommendedItems;
