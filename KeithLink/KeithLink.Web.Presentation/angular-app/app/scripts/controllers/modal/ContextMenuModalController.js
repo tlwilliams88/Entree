@@ -68,7 +68,7 @@ angular.module('bekApp')
 	
 			if(recommendationType && recommendationType != undefined && newItem.orderedfromsource == null) {
 			  newItem.orderedfromsource = recommendationType;
-			  newItem.trackingKey = trackingKey;
+			  newItem.trackingkey = trackingKey;
 			}
 			CartService.addItemToCart(cartId, newItem).then(function(data) {
 			  $scope.cancel();
@@ -81,7 +81,7 @@ angular.module('bekApp')
 		$scope.createCartWithItem = function(item) {
 		  if(recommendationType && recommendationType != undefined && item.orderedfromsource == null) {
 			item.orderedfromsource = recommendationType;
-			item.trackingKey = trackingKey;
+			item.trackingkey = trackingKey;
 		  }
   
 		  var items = [item];
@@ -127,7 +127,7 @@ angular.module('bekApp')
   
 		  if(recommendationType && recommendationType != undefined && newItem.orderedfromsource == null) {
 			orderItem.orderedfromsource = recommendationType;
-			orderItem.trackingKey = trackingKey;
+			orderItem.trackingkey = trackingKey;
 		  }
 		  orderItem.quantity = (orderItem.quantity && orderItem.quantity > 0) ? orderItem.quantity : 1;
 		  orderItem.each = (orderItem.each) ? true : false;

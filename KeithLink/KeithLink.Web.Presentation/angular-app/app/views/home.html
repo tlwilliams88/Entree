@@ -287,12 +287,12 @@
             <ul class="horizontal-slide hidden-xs hidden-sm" ng-class="{ 'hidden-md' : isMobile == true }">
               <li 
               ng-repeat="brand in brands" 
-              class="item-holder" 
+              class="item-holder homepage-brands" 
               analytics-on 
               analytics-category="Homepage-Brands-Desktop" 
               analytics-event="Brands" 
               analytics-label="brand.extended_description"
-              style="height: 246px; display: contents;">
+              style="height: 246px;">
                 <div class="featured-item text-center">
                   <img class="hand" ui-sref="menu.catalog.products.list({ type: 'housebrand', id: brand.brand_control_label, brand: brand.extended_description })" ng-src="{{brand.imageurl}}" alt="image">
                   <div style="height: 70px;">

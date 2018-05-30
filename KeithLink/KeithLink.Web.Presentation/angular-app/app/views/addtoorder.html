@@ -575,7 +575,7 @@
       <tab
           ng-if="showRecommendedItems == true"
           class="text-center"  
-          ng-click="updateRecommendedItems(selectedCart.items); showPagination('false'); cancelRecommendedItemsInterval();"
+          ng-click="getRecommendedItems(); showPagination('false'); cancelRecommendedItemsInterval();"
           analytics-on 
           analytics-category="Recommended-Item-Add-To-Order" 
           analytics-event="Open Recommended Items Tab">

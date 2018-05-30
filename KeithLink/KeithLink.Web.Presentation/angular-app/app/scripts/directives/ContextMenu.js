@@ -97,7 +97,7 @@ angular.module('bekApp')
 
         if($stateParams.recommendationType && $stateParams.recommendationType != undefined && newItem.orderedfromsource == null) {
           newItem.orderedfromsource = $stateParams.recommendationType;
-          newItem.trackingKey = $stateParams.trackingKey;
+          newItem.trackingkey = $stateParams.trackingKey;
         }
         CartService.addItemToCart(cartId, newItem).then(function(data) {
           closeModal();
@@ -110,7 +110,7 @@ angular.module('bekApp')
       $scope.createCartWithItem = function(item) {
         if($stateParams.recommendationType && $stateParams.recommendationType != undefined && item.orderedfromsource == null) {
           item.orderedfromsource = $stateParams.recommendationType;
-          item.trackingKey = $stateParams.trackingKey;
+          item.trackingkey = $stateParams.trackingKey;
         }
 
         var items = [item];
@@ -156,7 +156,7 @@ angular.module('bekApp')
 
         if($stateParams.recommendationType && $stateParams.recommendationType != undefined && newItem.orderedfromsource == null) {
           orderItem.orderedfromsource = $stateParams.recommendationType;
-          orderItem.trackingKey = $stateParams.trackingKey;
+          orderItem.trackingkey = $stateParams.trackingKey;
         }
         orderItem.quantity = (orderItem.quantity && orderItem.quantity > 0) ? orderItem.quantity : 1;
         orderItem.each = (orderItem.each) ? true : false;
