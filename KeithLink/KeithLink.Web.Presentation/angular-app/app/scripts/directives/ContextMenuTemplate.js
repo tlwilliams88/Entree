@@ -106,8 +106,8 @@ angular.module('bekApp')
               recommendationType: function() {
                 return $stateParams.recommendationType;
               },
-              trackingKey: function() {
-                return $stateParams.trackingKey;
+              trackingkey: function() {
+                return $stateParams.trackingkey;
               }
             }
           });
