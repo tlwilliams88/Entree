@@ -1,8 +1,8 @@
 'use strict';
 
 angular.module('bekApp')
-.controller('ContextMenuModalController', ['$scope', '$state', '$modalInstance', 'item', 'CartService', 'carts', 'lists', 'changeOrders', 'recommendationType', 'trackingKey', '$q', 'ListService', '$rootScope', 'OrderService', 'AnalyticsService', 'Constants', '$filter',
-  function ($scope, $state, $modalInstance, item, CartService, carts, lists, changeOrders, recommendationType, trackingKey, $q, ListService, $rootScope, OrderService, AnalyticsService, Constants, $filter) {
+.controller('ContextMenuModalController', ['$scope', '$state', '$modalInstance', 'item', 'CartService', 'carts', 'lists', 'changeOrders', 'recommendationType', 'trackingkey', '$q', 'ListService', '$rootScope', 'OrderService', 'AnalyticsService', 'Constants', '$filter',
+  function ($scope, $state, $modalInstance, item, CartService, carts, lists, changeOrders, recommendationType, trackingkey, $q, ListService, $rootScope, OrderService, AnalyticsService, Constants, $filter) {
 
 	$scope.currentLocation = $state.current.name;
 	
@@ -70,7 +70,7 @@ angular.module('bekApp')
 	
 			if(recommendationType && recommendationType != undefined && newItem.orderedfromsource == null) {
 			  newItem.orderedfromsource = recommendationType;
-			  newItem.trackingkey = trackingKey;
+			  newItem.trackingkey = trackingkey;
 			}
 			CartService.addItemToCart(cartId, newItem).then(function(data) {
 			  $scope.cancel();
@@ -83,7 +83,7 @@ angular.module('bekApp')
 		$scope.createCartWithItem = function(item) {
 		  if(recommendationType && recommendationType != undefined && item.orderedfromsource == null) {
 			item.orderedfromsource = recommendationType;
-			item.trackingkey = trackingKey;
+			item.trackingkey = trackingkey;
 		  }
   
 		  var items = [item];
@@ -129,7 +129,7 @@ angular.module('bekApp')
   
 		  if(recommendationType && recommendationType != undefined && newItem.orderedfromsource == null) {
 			orderItem.orderedfromsource = recommendationType;
-			orderItem.trackingkey = trackingKey;
+			orderItem.trackingkey = trackingkey;
 		  }
 		  orderItem.quantity = (orderItem.quantity && orderItem.quantity > 0) ? orderItem.quantity : 1;
 		  orderItem.each = (orderItem.each) ? true : false;
