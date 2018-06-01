@@ -183,10 +183,8 @@ namespace KeithLink.Svc.Impl.Service.SiteCatalog
         {
             List<RecommendedItemsModel> recommendedItems = _recommendedItemsRepository.GetRecommendedItemsForCustomer(catalogInfo.CustomerId, catalogInfo.BranchId, cartItems, 50);
 
-
-            ProductsReturn productsReturn = _catalogRepository.GetProductsByIds(catalogInfo.BranchId, recommendedItems.Select(x => x.RecommendedItem)
+            ProductsReturn productsReturn = _catalogRepository.GetProductsByIdsWithoutProprietaryItems(catalogInfo.BranchId, recommendedItems.Select(x => x.RecommendedItem)
                                                                                                                 .ToList());
-
             AddPricingInfo(productsReturn, catalogInfo);
             GetAdditionalProductInfo(profile, productsReturn, catalogInfo);
             ApplyRecommendedTagging(productsReturn);

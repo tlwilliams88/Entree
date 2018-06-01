@@ -628,6 +628,29 @@ namespace KeithLink.Svc.Impl.Repository.SiteCatalog
             return GetProductsFromElasticSearch(branch, false, query);
         }
 
+        public ProductsReturn GetProductsByIdsWithoutProprietaryItems(string branch, List<string> idList) {
+            dynamic query = new {
+                from = 0,
+                size = 5000,
+                query = new {
+                    @bool = new {
+                        must = new {
+                            terms = new {
+                                itemnumber = idList
+                            }
+                        },
+                        must_not = new {
+                            term = new {
+                                isproprietary = true
+                            }
+                        }
+                    }
+                }
+            };
+
+            return GetProductsFromElasticSearch(branch, false, null, query);
+        }
+
         public ProductsReturn GetProductsByItemNumbers(string branch, List<string> ids, SearchInputModel searchModel)
         {
             var q = new {
