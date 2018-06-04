@@ -65,6 +65,7 @@ namespace KeithLink.Svc.Impl.Logic
         private readonly IExternalCatalogRepository _externalCatalogRepo;
         private readonly IOrderedFromListRepository _orderedFromListRepository;
         private readonly IOrderedItemsFromListRepository _orderedItemsFromListRepository;
+        private readonly IRecommendedItemsOrderedAnalyticsRepository _recommendedItemsOrderedAnalyticsRepository;
         #endregion
 
         #region ctor
@@ -73,7 +74,8 @@ namespace KeithLink.Svc.Impl.Logic
 									 IBasketLogic basketLogic, IOrderHistoryLogic orderHistoryLogic, IOrderedItemsFromListRepository orderedItemsFromListRepository,
                                      ICustomerRepository customerRepository, IAuditLogRepository auditLogRepository,
                                      INotesListLogic notesLogic, IUserActiveCartLogic userActiveCartLogic, IExternalCatalogRepository externalCatalogRepo,
-                                     ICacheRepository cache, IEventLogRepository log, IOrderedFromListRepository orderedFromListRepository)
+                                     ICacheRepository cache, IEventLogRepository log, IOrderedFromListRepository orderedFromListRepository, 
+                                     IRecommendedItemsOrderedAnalyticsRepository recommendedItemsOrderedAnalyticsRepository)
 		{
             _cache = cache;
 			this.basketRepository = basketRepository;
@@ -92,6 +94,7 @@ namespace KeithLink.Svc.Impl.Logic
             _externalCatalogRepo = externalCatalogRepo;
             _orderedFromListRepository = orderedFromListRepository;
 		    _orderedItemsFromListRepository = orderedItemsFromListRepository;
+		    _recommendedItemsOrderedAnalyticsRepository = recommendedItemsOrderedAnalyticsRepository;
 		}
         #endregion
 
@@ -109,11 +112,35 @@ namespace KeithLink.Svc.Impl.Logic
 			{
 				existingItem.First().Quantity += newItem.Quantity;
                 basketRepository.UpdateItem(basket.UserId.ToGuid(), cartId, existingItem.First());
+
 				return existingItem.First().Id.ToGuid();
 			}
+
             newItem.Position = basket.LineItems.Count;
-						
-			return basketRepository.AddItem(cartId, newItem.ToLineItem(), basket);
+
+		    if (String.IsNullOrEmpty(newItem.OrderedFromSource) == false) {
+		        List<string> recommendedItemSources = _recommendedItemsOrderedAnalyticsRepository.GetOrderSources();
+
+		        try {
+		            if (recommendedItemSources.Contains(newItem.OrderedFromSource, StringComparer.CurrentCultureIgnoreCase) == false) {
+		                _orderedItemsFromListRepository.Write(new OrderedItemFromList() {
+		                    ControlNumber = cartId.ToString(),
+		                    ItemNumber = newItem.ItemNumber,
+		                    SourceList = newItem.OrderedFromSource
+		                });
+		            } else {
+		                _recommendedItemsOrderedAnalyticsRepository.Add(newItem.ItemNumber,
+		                                                                newItem.Each == false ? 'C' : 'P',
+		                                                                newItem.OrderedFromSource,
+		                                                                cartId.ToString(),
+		                                                                newItem.TrackingKey);
+		            }
+		        } catch (Exception ex) {
+		            _log.WriteErrorLog("There was an error adding analytics in AddItem routine", ex);
+		        }
+		    }
+
+		    return basketRepository.AddItem(cartId, newItem.ToLineItem(), basket);
 		}
 
 		private string CartName(string name, UserSelectedContext catalogInfo)
@@ -151,22 +178,44 @@ namespace KeithLink.Svc.Impl.Logic
                                                          cart.Items.Select(l => l.ToLineItem()).ToList());
 
 		    if (cart.ListId != null) {
-		        _orderedFromListRepository.Write(new OrderedFromList() {
-		            ControlNumber = newCartId.ToString(),
-		            ListId = cart.ListId,
-		            ListType = cart.ListType
-		        });
-		    }
+		        try {
+		            _orderedFromListRepository.Write(new OrderedFromList() {
+		                ControlNumber = newCartId.ToString(),
+		                ListId = cart.ListId,
+		                ListType = cart.ListType
+		            });
+		        } catch (Exception ex) {
+                    _log.WriteErrorLog("Error saving ordered from list information on cart creation", ex);
+		        }
+            }
 
+            // Get the recommended item sources to check for a valid source
+	        List<string> recommendedItemSources = _recommendedItemsOrderedAnalyticsRepository.GetOrderSources();
+	        
             foreach (var item in cart.Items)
             {
-                if (item.SourceProductList != null &&
-                    item.SourceProductList.Length > 0) {
-                    _orderedItemsFromListRepository.Write(new OrderedItemFromList() {
-                        ControlNumber = newCartId.ToString(),
-                        ItemNumber = item.ItemNumber,
-                        SourceList = item.SourceProductList
-                    });
+                if (String.IsNullOrEmpty(item.OrderedFromSource) == false) {
+                    try
+                    {
+                        // If it isn't a recommended item process normally
+                        if (recommendedItemSources.Contains(item.OrderedFromSource, StringComparer.CurrentCultureIgnoreCase) == false) {
+                            _orderedItemsFromListRepository.Write(new OrderedItemFromList() {
+                                ControlNumber = newCartId.ToString(),
+                                ItemNumber = item.ItemNumber,
+                                SourceList = item.OrderedFromSource
+                            });
+                        } else {
+                            _recommendedItemsOrderedAnalyticsRepository.Add(item.ItemNumber,
+                                item.Each == false ? 'C' : 'P',
+                                item.OrderedFromSource,
+                                newCartId.ToString(),
+                                item.TrackingKey);
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        _log.WriteErrorLog("Error saving ordered item analytics on cart creation", ex);
+                    }
                 }
             }
 
@@ -450,7 +499,7 @@ namespace KeithLink.Svc.Impl.Logic
 
                 var sourceList = _orderedItemsFromListRepository.Read(cart.CartId.ToString(), item.ItemNumber);
                 if (sourceList != null) {
-                    item.SourceProductList = sourceList.SourceList;
+                    item.OrderedFromSource = sourceList.SourceList;
                 }
             }
 
@@ -634,7 +683,10 @@ namespace KeithLink.Svc.Impl.Logic
                         }
                     }
                 }
-                
+
+                // Log the control number to the recommended items for this cart
+                _recommendedItemsOrderedAnalyticsRepository.UpdateAnalyticsForCardIdWithControlNumber(cartId.ToString(), orderNumber);
+
 
                 var type = catalogLogic.GetCatalogTypeFromCatalogId(catalogId).ToUpper().Substring(0, 3);
 
@@ -806,11 +858,18 @@ namespace KeithLink.Svc.Impl.Logic
 		    } catch { }
 
 		    var itemsToRemove = new List<Guid>();
+		    var itemNumbersToRemoveAnalyticsFor = new List<string>();
 			var lineItems = new List<CS.LineItem>();
 
 			if (cart.Items != null)
 			{
 				itemsToRemove = updateCart.LineItems.Where(b => !cart.Items.Any(c => c.CartItemId.ToCommerceServerFormat().Equals(b.Id))).Select(l => l.Id.ToGuid()).ToList();
+
+                // This is to handle SalesIQ and CartIQ Deletions from the analytics. It needs to be refactored into a real solution.
+				itemNumbersToRemoveAnalyticsFor = updateCart.LineItems.Where(b => !cart.Items.Any(c => c.CartItemId.ToCommerceServerFormat().Equals(b.Id))).Select(l => l.ProductId).ToList();
+
+			    List<string> recommendedAnalyticsSources = _recommendedItemsOrderedAnalyticsRepository.GetOrderSources();
+
                 foreach (var item in cart.Items)
 				{
                     if(item.CartItemId==new Guid() && item.Position == 1)
@@ -820,16 +879,30 @@ namespace KeithLink.Svc.Impl.Logic
 
 					var existingItem = updateCart.LineItems.Where(l => l.ProductId.Equals(item.ItemNumber));
                     // Commenting on this mystery, I believe it is for quick add items
-                    if (existingItem.Any() && item.CartItemId == Guid.Empty)
-					{
-						existingItem.First().Quantity += item.Quantity;
-						lineItems.Add(existingItem.First());
-					}	
-					else
-						lineItems.Add(item.ToLineItem());
-				}
-				
-			}
+				    if (existingItem.Any() &&
+				        item.CartItemId == Guid.Empty) {
+				        existingItem.First().Quantity += item.Quantity;
+				        lineItems.Add(existingItem.First());
+				    } else {
+				        lineItems.Add(item.ToLineItem());
+				    }
+
+				    if (String.IsNullOrEmpty(item.OrderedFromSource) == false)
+                    {
+                        try {
+                            if (recommendedAnalyticsSources.Contains(item.OrderedFromSource, StringComparer.CurrentCultureIgnoreCase)) {
+                                _recommendedItemsOrderedAnalyticsRepository.Add(item.ItemNumber,
+                                                                                item.Each == false ? 'C' : 'P',
+                                                                                item.OrderedFromSource,
+                                                                                cart.CartId.ToString(),
+                                                                                null);
+                            }
+                        } catch (Exception ex) {
+                            _log.WriteErrorLog("Error adding recommended analytics for items in UpdateCart", ex);
+                        }
+                    }
+                }
+            }
 
 			var duplicates = lineItems.Cast<CS.LineItem>().GroupBy(l => new { l.ProductId, l.Each }).Select(i => new { Ech = i.Select(p => p.Each).First(), Key = i.Key, Cnt = i.Count() }).Where(w => w.Cnt > 1).ToList();
 
@@ -841,19 +914,20 @@ namespace KeithLink.Svc.Impl.Logic
 
 				itemsToRemove.AddRange(lineItems.Where(l => l.ProductId.Equals(duplicate.Key.ProductId) && l.Each.Equals(duplicate.Key.Each) && !l.Id.Equals(keepGuid.Id)).Select(p => p.Id.ToGuid()).ToList());
 
+				itemNumbersToRemoveAnalyticsFor.AddRange(lineItems.Where(l => l.ProductId.Equals(duplicate.Key.ProductId) && l.Each.Equals(duplicate.Key.Each) && !l.Id.Equals(keepGuid.Id)).Select(p => p.ProductId).ToList());
 			}
 
 			basketRepository.CreateOrUpdateBasket(updateCart.UserId.ToGuid(), updateCart.BranchId, updateCart, lineItems);
 
-			if(deleteOmmitedItems)
-				foreach (var toDelete in itemsToRemove)
-				{
-					basketRepository.DeleteItem(updateCart.UserId.ToGuid(), cart.CartId, toDelete);
-				}
+		    if (deleteOmmitedItems) {
+		        foreach (var toDelete in itemsToRemove) {
+		            basketRepository.DeleteItem(updateCart.UserId.ToGuid(), cart.CartId, toDelete);
+		        }
 
-			
-				
-
+		        foreach (string itemNumber in itemNumbersToRemoveAnalyticsFor) {
+		            _recommendedItemsOrderedAnalyticsRepository.DeleteByCartIdAndItemNumber(cart.CartId.ToString(), itemNumber);
+		        }
+		    }
 		}
         
         public void UpdateItem(UserProfile user,  UserSelectedContext catalogInfo, Guid cartId, ShoppingCartItem updatedItem)

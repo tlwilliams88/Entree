@@ -173,6 +173,9 @@ namespace KeithLink.Svc.Core.Models.SiteCatalog
         [Description("Item Order History")]
         public string OrderHistoryString { get; set; }
 
+        [DataMember(Name = "orderedfromsource")]
+        public string OrderedFromSource { get; set; }
+
         [DataMember(Name = "caseaverage")]
         public int CaseAverage { get; set; }
 

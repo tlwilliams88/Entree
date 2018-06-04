@@ -36,7 +36,12 @@ namespace KeithLink.Svc.Impl.Repository.SiteCatalog
                     new SubCategory() { Id = "PS941", Name="Pork, Chops", Description="Pork Chops"}}},
         };
 
-		public ProductsReturn GetProductsByCategory(string branch, string category, SearchInputModel searchModel)
+        public ProductsReturn GetProductsByIdsWithoutProprietaryItems(string branch, List<string> idList) {
+            return null;
+        }
+
+
+        public ProductsReturn GetProductsByCategory(string branch, string category, SearchInputModel searchModel)
         {
             if (String.IsNullOrEmpty(category))
             {

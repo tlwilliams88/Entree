@@ -9,7 +9,7 @@ using Autofac;
 using FluentAssertions;
 using Xunit;
 
-namespace KeithLink.Svc.Impl.Tests.Integration.Repository.Customer {
+namespace KeithLink.Svc.Impl.Tests.Integration.Repository.Customers {
     public class RecommendedItemRepositoryTests {
         private static IRecommendedItemsRepository MakeRepo() {
             IContainer diMap = DependencyMapFactory.GetTestsContainer()

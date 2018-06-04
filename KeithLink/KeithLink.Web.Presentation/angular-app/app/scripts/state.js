@@ -55,14 +55,11 @@ angular.module('bekApp')
         mandatoryMessages: ['NotificationService', function(NotificationService) {
           return NotificationService.mandatoryMessages;
         }],
-        isHomePage: ['$stateParams', 'ConfigSettingsService', 'ENV', function($stateParams, ConfigSettingsService, ENV) {
+        isHomePage: ['$stateParams', 'ConfigSettingsService', 'ENV', 'LocalStorage', function($stateParams, ConfigSettingsService, ENV, LocalStorage) {
           ConfigSettingsService.getSetting('ShowRecommendedItems').then(function(setting) {
-            ENV.showRecommendedItems = setting;
-          },
-            function(data) {
-              console.log(data);
-            }
-          )
+            var currentCustomer = LocalStorage.getCurrentCustomer();
+            ENV.showRecommendedItems = setting && currentCustomer.customer.nationalId == '';
+          })
 
           return $stateParams.isHomePage = false;
         }]
@@ -188,7 +185,7 @@ angular.module('bekApp')
       }
     })
     .state('menu.catalog.products.list', {
-      url: ':type/:id/:deptName/?currentPage/?startingPoint/?parentcategories/?subcategories/?brands/?manufacturers/?dietary/?itemspecs/?temp_zones/?specialfilters',
+      url: ':type/:id/:deptName/:recommendationType/:trackingkey/?currentPage/?startingPoint/?parentcategories/?subcategories/?brands/?manufacturers/?dietary/?itemspecs/?temp_zones/?specialfilters',
       params: {
         brand: null,
         category: null,
@@ -216,7 +213,7 @@ angular.module('bekApp')
       }
     })
     .state('menu.catalog.products.brand', {
-      url: 'catalog/:catalogType/search/:type/:id/products',
+      url: 'catalog/:catalogType/search/:type/:id/:recommendationType/:trackingkey/products',
       templateUrl: 'views/searchresults.html',
       controller: 'SearchController',
       data: {
@@ -237,7 +234,7 @@ angular.module('bekApp')
       }
     })
     .state('menu.catalog.products.details', {
-      url: ':itemNumber',
+      url: ':itemNumber/:recommendationType/:trackingkey',
       templateUrl: 'views/itemdetails.html',
       controller: 'ItemDetailsController',
       data: {

@@ -1,9 +1,9 @@
 'use strict';
 
 angular.module('bekApp')
-  .controller('AddToOrderController', ['$rootScope', '$scope', '$state', '$modal', '$q', '$stateParams', '$filter', '$timeout', 'blockUI', 
+  .controller('AddToOrderController', ['$rootScope', '$scope', '$state', '$modal', '$q', '$stateParams', '$filter', '$timeout', '$interval', 'blockUI', 
    'lists', 'selectedList', 'selectedCart', 'Constants', 'CartService', 'ListService', 'OrderService', 'UtilityService', 'DateService', 'PricingService', 'ListPagingModel', 'LocalStorage', '$analytics', 'toaster', 'ENV', 'SessionService', 'ProductService',
-    function ($rootScope, $scope, $state, $modal, $q, $stateParams, $filter, $timeout, blockUI, lists, selectedList, selectedCart, Constants,
+    function ($rootScope, $scope, $state, $modal, $q, $stateParams, $filter, $timeout, $interval, blockUI, lists, selectedList, selectedCart, Constants,
      CartService, ListService, OrderService, UtilityService, DateService, PricingService, ListPagingModel, LocalStorage, $analytics, toaster, ENV, SessionService, ProductService) {
 
       $scope.$on('$stateChangeStart', function(event, toState, toParams, fromState, fromParams){
@@ -33,6 +33,8 @@ angular.module('bekApp')
 
           }
           guiders.hideAll();
+
+          $interval.cancel(getRecommendations);
       });
 
       $scope.showPagination = function(status) {
@@ -108,6 +110,20 @@ angular.module('bekApp')
       var changedExpression = this.exp; // jshint ignore:line
       var idx = changedExpression.substr(changedExpression.indexOf('[') + 1, changedExpression.indexOf(']') - changedExpression.indexOf('[') - 1);
       var object = changedExpression.substr(0, changedExpression.indexOf('.'));
+
+
+      var listItem;
+      var listIdx;
+      if(object == 'selectedCart') {
+        listItem = $filter('filter')($scope.selectedList.items, function(item) {
+                return (item.itemnumber == $scope[object].items[idx].itemnumber && item.quantity > 0)
+        });
+        listIdx = $scope.selectedList.items.indexOf(listItem[0]);
+        if(listIdx > -1 && $scope.selectedList.items[listIdx].quantity > 0) {
+          $scope.selectedList.items[listIdx].quantity = $scope[object].items[idx].quantity;
+        }
+      }
+
       var item = $scope[object].items[idx];
 
       if(newVal !== oldVal && item){
@@ -240,6 +256,39 @@ angular.module('bekApp')
       $scope.appendedItems = [];
       refreshSubtotal($scope.selectedCart.items, $scope.selectedList.items);
     }
+
+    var getRecommendations;
+
+    $scope.cancelRecommendedItemsInterval = function() {
+      $interval.cancel(getRecommendations);
+    };
+  
+    $scope.getRecommendedItems = function() {
+      var listItemsWithQuantity = $filter('filter')($scope.selectedList.items, function(value) {
+        return value.quantity > 0;
+      })
+
+      if(listItemsWithQuantity.length > 0 && $scope.combinedItems.length == 0) {
+        $scope.updateRecommendedItems(listItemsWithQuantity);
+      } else if($scope.combinedItems.length > 0) {
+        $scope.updateRecommendedItems($scope.combinedItems);
+      }
+    }
+
+    $scope.setRecommendedItemsInterval = function() {
+      getRecommendations = $interval($scope.getRecommendedItems, 15000, 120);
+    }
+
+    $scope.showRecommendedItems = ENV.showRecommendedItems;
+    $scope.recommendedItems = [];
+
+    $scope.updateRecommendedItems = function(items) {
+      if($scope.showRecommendedItems == true) {
+        ProductService.getRecommendedItems(items).then(function(resp) {
+          $scope.recommendedItems = resp;
+        });
+      }
+    };
 
     $scope.blockUIAndChangePage = function(page){
       //Check if items for page already exist in the controller
@@ -432,16 +481,6 @@ angular.module('bekApp')
        blockUI.stop();
     }
 
-    $scope.showRecommendedItems = ENV.showRecommendedItems;
-
-    $scope.updateRecommendedItems = function(items) {
-      if($scope.showRecommendedItems == true) {
-        ProductService.getRecommendedItems(items).then(function(resp) {
-          $scope.recommendedItems = resp;
-        });
-      }
-    }
-
     function init() {
       $scope.lists = lists;
 
@@ -486,6 +525,9 @@ angular.module('bekApp')
           $state.go('menu.home');
           return;
         }
+
+        $scope.setRecommendedItemsInterval();
+        $scope.updateRecommendedItems($scope.selectedCart.items);
       });
     }
 
@@ -965,7 +1007,7 @@ angular.module('bekApp')
     $scope.updateCartWithRecommendedItems = function(item) {
       item.extPrice = PricingService.getPriceForItem(item);
 
-      item.source = "recommended";
+      item.orderedfromsource = "CartIQ";
 
       if($filter('filter')($scope.selectedCart.items, {itemnumber: item.itemnumber, recommended: item.recommended}).length > 0) {
         var itemIdx = $scope.selectedCart.items.indexOf(item);

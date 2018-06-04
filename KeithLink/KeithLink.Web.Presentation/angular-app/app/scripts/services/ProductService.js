@@ -45,7 +45,7 @@ angular.module('bekApp')
           });
         },
 
-        getRecommendedItems: function(items) {
+        getRecommendedItems: function(items, pagesize, showimages) {
 
           var cartItems = [];
 
@@ -57,13 +57,17 @@ angular.module('bekApp')
             cartItems.push(items);
           }
 
+          var params = {
+            cartItems: cartItems,
+            pagesize: pagesize,
+            getimages: showimages
+          }
+
 
           var recommendedItems = [];
-          return $http.post('/catalog/recommended', cartItems).then(function(resp) {
+          return $http.post('/catalog/recommended', params).then(function(resp) {
             resp.data.products.forEach(function(product) {
-              if(product.productimages && product.productimages.length > 0 && (product.caseprice > '0.00' || product.packageprice > '0.00')) {
-                recommendedItems.push(product);
-              }
+              recommendedItems.push(product);
             })
             return recommendedItems;
           })

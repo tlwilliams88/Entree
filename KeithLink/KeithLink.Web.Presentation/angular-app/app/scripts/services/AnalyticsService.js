@@ -56,7 +56,8 @@ angular.module('bekApp')
                 tranPosition++;
 
                 // Add item to transaction
-                Analytics.addProduct(item.itemnumber, 
+                Analytics.addProduct(item.orderedfromsource,
+                                     item.itemnumber, 
                                      item.name, 
                                      item.class, 
                                      item.brand_extended_description, 
@@ -113,7 +114,8 @@ angular.module('bekApp')
                   }
 
                   // Add item to cart
-                  Analytics.addProduct(item.itemnumber, 
+                  Analytics.addProduct(item.orderedfromsource,
+                                       item.itemnumber, 
                                        item.name, 
                                        item.class, 
                                        item.brand_extended_description, 
@@ -148,7 +150,8 @@ angular.module('bekApp')
             }
 
             // Add item being added
-            Analytics.addProduct(item.itemnumber, 
+            Analytics.addProduct(item.orderedfromsource,
+                                 item.itemnumber, 
                                  item.name, 
                                  item.class, 
                                  item.brand_extended_description, 
@@ -157,8 +160,6 @@ angular.module('bekApp')
                                  item.quantity, 
                                  '', 
                                  item.position);
-
-            item.sourceProductList = addedFrom;
 
             // inject customernumber and branch into detail hit
             Analytics.set('dimension7', customerNumber);
@@ -175,7 +176,8 @@ angular.module('bekApp')
             var removedFrom = item.sourceProductList;
 
             // Add item being removed
-            Analytics.addProduct(item.itemnumber, 
+            Analytics.addProduct(item.orderedfromsource,
+                                 item.itemnumber, 
                                  item.name, 
                                  item.class, 
                                  item.brand_extended_description, 

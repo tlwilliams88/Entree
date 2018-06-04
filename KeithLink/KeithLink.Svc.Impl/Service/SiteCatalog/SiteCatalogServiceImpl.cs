@@ -1,85 +1,68 @@
-﻿// KeithLink
-using KeithLink.Svc.Core;
-using KeithLink.Svc.Core.Interface.Cache;
-using KeithLink.Svc.Core.Interface.Configurations;
-using KeithLink.Svc.Core.Interface.Lists;
-using KeithLink.Svc.Core.Interface.Orders;
-using KeithLink.Svc.Core.Interface.Orders.History;
-using KeithLink.Svc.Core.Interface.SiteCatalog;
+﻿// Core
 
-using KeithLink.Svc.Core.Models.Configuration.EF;
-using KeithLink.Svc.Core.Models.Lists;
-using KeithLink.Svc.Core.Models.ModelExport;
-using KeithLink.Svc.Core.Models.Orders.History;
-using EF = KeithLink.Svc.Core.Models.Orders.History.EF;
-using KeithLink.Svc.Core.Models.Profile;
-using KeithLink.Svc.Core.Models.SiteCatalog;
-
-using KeithLink.Svc.Impl.Repository.Orders;
-using KeithLink.Svc.Impl.Repository.Orders.History;
-
-using KeithLink.Svc.Core.Extensions;
-
-// Core
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-using KeithLink.Common.Core.Interfaces.Logging;
-using KeithLink.Svc.Impl.Helpers;
-using KeithLink.Svc.Core.Enumerations.List;
+using KeithLink.Svc.Core;
+using KeithLink.Svc.Core.Extensions.Customers;
 using KeithLink.Svc.Core.Interface.Customers;
-using KeithLink.Svc.Core.Interface.Profile;
+using KeithLink.Svc.Core.Interface.Lists;
+using KeithLink.Svc.Core.Interface.SiteCatalog;
 using KeithLink.Svc.Core.Models.Customers;
-using KeithLink.Svc.Core.Models.Customers.EF;
+using KeithLink.Svc.Core.Models.Lists;
+using KeithLink.Svc.Core.Models.Profile;
+using KeithLink.Svc.Core.Models.SiteCatalog;
+// KeithLink
 
 namespace KeithLink.Svc.Impl.Service.SiteCatalog
 {
     public class SiteCatalogServiceImpl : ISiteCatalogService
     {
-        #region attributes
-        private readonly ICacheRepository _catalogCacheRepository;
-        private readonly ICatalogLogic _catalogLogic;
-        private readonly ICatalogRepository _catalogRepository;
-        private readonly IPriceLogic _priceLogic;
-        private readonly IListRepository _listRepo;
-        private readonly IFavoritesListLogic _favoritesLogic;
-        private readonly IHistoryListLogic _historyLogic;
-        private readonly IItemHistoryRepository _itemHistoryRepo;
-        private readonly INotesListLogic _notesLogic;
-        private readonly IRecommendedItemsRepository _recommendedItemsRepository;
-        private readonly IEventLogRepository _log;
-
-        protected string CACHE_GROUPNAME { get { return "Catalog"; } }
-        protected string CACHE_NAME { get { return "Catalog"; } }
-        protected string CACHE_PREFIX { get { return "Default"; } }
-        #endregion
-
         #region constructor
-        public SiteCatalogServiceImpl(ICacheRepository catalogCacheRepository, ICatalogLogic catalogLogic
+        public SiteCatalogServiceImpl(ICatalogLogic catalogLogic
                                       , ICatalogRepository catalogRepository, IPriceLogic priceLogic
-                                      , IListRepository listRepo, IFavoritesListLogic favoritesLogic
-                                      , IHistoryListLogic historyLogic, INotesListLogic notesLogic
-                                      , IItemHistoryRepository itemHistoryRepo, IRecommendedItemsRepository recommendedItemsRepository, IEventLogRepository logRepo)
+                                      , IHistoryListLogic historyLogic, ICategoryImageRepository categoryImageRepository
+                                      , IRecommendedItemsRepository recommendedItemsRepository
+                                      , IGrowthAndRecoveriesRepository growthAndRecoveryItemsRepository)
         {
-            _catalogCacheRepository = catalogCacheRepository;
             _catalogLogic = catalogLogic;
             _catalogRepository = catalogRepository;
             _priceLogic = priceLogic;
-            _listRepo = listRepo;
-            _favoritesLogic = favoritesLogic;
             _historyLogic = historyLogic;
-            _itemHistoryRepo = itemHistoryRepo;
-            _notesLogic = notesLogic;
             _recommendedItemsRepository = recommendedItemsRepository;
-            _log = logRepo;
+            _growthAndRecoveryItemsRepository = growthAndRecoveryItemsRepository;
+            _categoryImageRepository = categoryImageRepository;
+        }
+        #endregion
+
+        #region attributes
+        private readonly ICatalogLogic _catalogLogic;
+        private readonly ICatalogRepository _catalogRepository;
+        private readonly ICategoryImageRepository _categoryImageRepository;
+        private readonly IPriceLogic _priceLogic;
+        private readonly IHistoryListLogic _historyLogic;
+        private readonly IRecommendedItemsRepository _recommendedItemsRepository;
+        private readonly IGrowthAndRecoveriesRepository _growthAndRecoveryItemsRepository;
+
+        protected string CACHE_GROUPNAME
+        {
+            get { return "Catalog"; }
+        }
+
+        protected string CACHE_NAME
+        {
+            get { return "Catalog"; }
+        }
+
+        protected string CACHE_PREFIX
+        {
+            get { return "Default"; }
         }
         #endregion
 
         #region methods
+
         #region by category
         public ProductsReturn GetProductsByCategory(UserSelectedContext catalogInfo,
                                                     string category,
@@ -89,20 +72,23 @@ namespace KeithLink.Svc.Impl.Service.SiteCatalog
             ProductsReturn ret;
             string categoryName = _catalogLogic.GetCategoryName(category, searchModel);
 
-            var newCatalog = new UserSelectedContext() { CustomerId = catalogInfo.CustomerId,
-                                                         BranchId = _catalogLogic.GetBranchId(catalogInfo.BranchId, 
-                                                                                              searchModel.CatalogType) };
+            UserSelectedContext newCatalog = new UserSelectedContext
+            {
+                CustomerId = catalogInfo.CustomerId,
+                BranchId = _catalogLogic.GetBranchId(catalogInfo.BranchId,
+                                                     searchModel.CatalogType)
+            };
 
             List<string> specialFilters = _catalogRepository.SeekSpecialFilters(searchModel.Facets);
 
             // special handling for price sorting
             if (searchModel.SField == "caseprice") // we have to block caseprice from the searchModel used in es
-                ret = _catalogRepository.GetProductsByCategory(newCatalog, categoryName, new SearchInputModel() { Facets = searchModel.Facets, From = searchModel.From, Size = searchModel.Size });
-            else if (specialFilters.Count>0)
+            {
+                ret = _catalogRepository.GetProductsByCategory(newCatalog, categoryName, new SearchInputModel {Facets = searchModel.Facets, From = searchModel.From, Size = searchModel.Size});
+            } else if (specialFilters.Count > 0)
             {
                 ret = GetAllCategoryProductsShallow(searchModel, categoryName, newCatalog);
-            }
-            else
+            } else
             {
                 ret = _catalogRepository.GetProductsByCategory(newCatalog, categoryName, searchModel);
             }
@@ -117,7 +103,7 @@ namespace KeithLink.Svc.Impl.Service.SiteCatalog
         }
 
         private ProductsReturn GetAllCategoryProductsShallow(SearchInputModel searchModel, string categoryName,
-            UserSelectedContext newCatalog)
+                                                             UserSelectedContext newCatalog)
         {
             // get just the itemnumber and catalogid of the products matching the query
             searchModel.Size = 1; // set size 1 to to min results; we want total
@@ -130,25 +116,26 @@ namespace KeithLink.Svc.Impl.Service.SiteCatalog
         #endregion
 
         #region by search
-        public ProductsReturn GetProductsBySearch(UserSelectedContext catalogInfo, 
-                                                  string search, 
-                                                  SearchInputModel searchModel, 
+        public ProductsReturn GetProductsBySearch(UserSelectedContext catalogInfo,
+                                                  string search,
+                                                  SearchInputModel searchModel,
                                                   UserProfile profile)
         {
             ProductsReturn ret;
-            var catalogCounts = _catalogLogic.GetHitsForCatalogs(catalogInfo, search, searchModel);
-            var tempCatalogInfo = new UserSelectedContext();
+            Dictionary<string, int> catalogCounts = _catalogLogic.GetHitsForCatalogs(catalogInfo, search, searchModel);
+            UserSelectedContext tempCatalogInfo = new UserSelectedContext();
             tempCatalogInfo.CustomerId = catalogInfo.CustomerId;
             tempCatalogInfo.BranchId = _catalogLogic.GetBranchId(catalogInfo.BranchId, searchModel.CatalogType);
 
             List<string> specialFilters = _catalogRepository.SeekSpecialFilters(searchModel.Facets);
 
             // special handling for price sorting
-            if (searchModel.SField == "caseprice" || searchModel.SField == "unitprice")
+            if (searchModel.SField == "caseprice" ||
+                searchModel.SField == "unitprice")
             {
                 ret = _catalogRepository.GetProductsBySearch(tempCatalogInfo,
                                                              search,
-                                                             new SearchInputModel()
+                                                             new SearchInputModel
                                                              {
                                                                  Facets = searchModel.Facets,
                                                                  From = searchModel.From,
@@ -157,12 +144,10 @@ namespace KeithLink.Svc.Impl.Service.SiteCatalog
                                                                  CatalogType = searchModel.CatalogType
                                                              }
                                                             );
-            }
-            else if (specialFilters.Count>0)
+            } else if (specialFilters.Count > 0)
             {
                 ret = GetAllProductsBySearchShallow(search, searchModel, tempCatalogInfo);
-            }
-            else
+            } else
             {
                 ret = _catalogRepository.GetProductsBySearch(tempCatalogInfo, search, searchModel);
             }
@@ -173,7 +158,7 @@ namespace KeithLink.Svc.Impl.Service.SiteCatalog
             GetAdditionalProductInfo(profile, ret, catalogInfo);
             ret.CatalogCounts = catalogCounts;
 
-            foreach (var product in ret.Products)
+            foreach (Product product in ret.Products)
             {
                 product.IsSpecialtyCatalog = _catalogLogic.IsSpecialtyCatalog(searchModel.CatalogType);
             }
@@ -182,7 +167,7 @@ namespace KeithLink.Svc.Impl.Service.SiteCatalog
         }
 
         private ProductsReturn GetAllProductsBySearchShallow(string search, SearchInputModel searchModel,
-            UserSelectedContext tempCatalogInfo)
+                                                             UserSelectedContext tempCatalogInfo)
         {
             searchModel.Size = 1; // set size to 1 to make results small; we want total
             ProductsReturn ret = _catalogRepository.GetProductNumbersBySearch(tempCatalogInfo, search, searchModel);
@@ -191,25 +176,61 @@ namespace KeithLink.Svc.Impl.Service.SiteCatalog
             ret = _catalogRepository.GetProductNumbersBySearch(tempCatalogInfo, search, searchModel);
             return ret;
         }
-
         #endregion
 
         #region recommended items
-        public ProductsReturn GetRecommendedItemsForCart(UserSelectedContext catalogInfo, List<string> cartItems, UserProfile profile) {
+        public ProductsReturn GetRecommendedItemsForCart(UserSelectedContext catalogInfo, List<string> cartItems, UserProfile profile, bool? hasImages)
+        {
             List<RecommendedItemsModel> recommendedItems = _recommendedItemsRepository.GetRecommendedItemsForCustomer(catalogInfo.CustomerId, catalogInfo.BranchId, cartItems, 50);
-            ProductsReturn products = _catalogRepository.GetProductsByIds(catalogInfo.BranchId, recommendedItems.Select(x => x.RecommendedItem).ToList());
 
-            AddPricingInfo(products, catalogInfo);
-            GetAdditionalProductInfo(profile, products, catalogInfo);
+            ProductsReturn productsReturn = _catalogRepository.GetProductsByIdsWithoutProprietaryItems(catalogInfo.BranchId, recommendedItems.Select(x => x.RecommendedItem)
+                                                                                                                .ToList());
+            AddPricingInfo(productsReturn, catalogInfo);
+            GetAdditionalProductInfo(profile, productsReturn, catalogInfo);
+            ApplyRecommendedTagging(productsReturn);
 
-            return products;
+            for (int productIndex = productsReturn.Products.Count() - 1; productIndex > -1; productIndex--)
+            {
+                if (hasImages.HasValue && hasImages.Value == true) {
+                    if (productsReturn.Products[productIndex].ProductImages.Any() == false) {
+                        productsReturn.Products.RemoveAt(productIndex);
+                    }
+                } else if (productsReturn.Products[productIndex].CasePrice.Equals("0.00") == true &&
+                    productsReturn.Products[productIndex].PackagePrice.Equals("0.00")) {
+                    productsReturn.Products.RemoveAt(productIndex);
+                }
+
+            }
+
+            return productsReturn;
+        }
+        #endregion
+
+        #region growthandrecovery items
+        public List<GrowthAndRecoveriesReturnModel> GetGrowthAndRecoveryItemsForCustomer(UserSelectedContext catalogInfo, UserProfile profile, int pagesize, bool hasimages)
+        {
+            List<GrowthAndRecoveriesReturnModel> returnModelItems = new List<GrowthAndRecoveriesReturnModel>();
+
+            returnModelItems = _growthAndRecoveryItemsRepository.GetGrowthAdnGetGrowthAndRecoveryOpportunities(catalogInfo.CustomerId, catalogInfo.BranchId).ToWebModel();
+
+            returnModelItems = returnModelItems.Take(pagesize).ToList();
+
+            if (hasimages)
+            {
+                foreach (GrowthAndRecoveriesReturnModel webModel in returnModelItems)
+                {
+                    webModel.Image = _categoryImageRepository.GetImageByCategory(webModel.GroupingCode);
+                }
+            }
+
+            return returnModelItems;
         }
         #endregion
 
         #region by house products
-        public ProductsReturn GetHouseProductsByBranch(UserSelectedContext catalogInfo, 
-                                                       string brandControlLabel, 
-                                                       SearchInputModel searchModel, 
+        public ProductsReturn GetHouseProductsByBranch(UserSelectedContext catalogInfo,
+                                                       string brandControlLabel,
+                                                       SearchInputModel searchModel,
                                                        UserProfile profile)
         {
             ProductsReturn returnValue;
@@ -218,12 +239,12 @@ namespace KeithLink.Svc.Impl.Service.SiteCatalog
 
             // special handling for price sorting
             if (searchModel.SField == "caseprice")
-                returnValue = _catalogRepository.GetHouseProductsByBranch(catalogInfo, brandControlLabel, new SearchInputModel() { Facets = searchModel.Facets, From = searchModel.From, Size = Configuration.MaxSortByPriceItemCount });
-            else if (specialFilters.Count>0)
+            {
+                returnValue = _catalogRepository.GetHouseProductsByBranch(catalogInfo, brandControlLabel, new SearchInputModel {Facets = searchModel.Facets, From = searchModel.From, Size = Configuration.MaxSortByPriceItemCount});
+            } else if (specialFilters.Count > 0)
             {
                 returnValue = GetAllHouseBrandProductsShallow(catalogInfo, brandControlLabel, searchModel);
-            }
-            else
+            } else
             {
                 returnValue = _catalogRepository.GetHouseProductsByBranch(catalogInfo, brandControlLabel, searchModel);
             }
@@ -237,24 +258,24 @@ namespace KeithLink.Svc.Impl.Service.SiteCatalog
         }
 
         private ProductsReturn GetAllHouseBrandProductsShallow(UserSelectedContext catalogInfo, string brandControlLabel,
-            SearchInputModel searchModel)
+                                                               SearchInputModel searchModel)
         {
             searchModel.Size = 1; // set size to 1; we want total
             ProductsReturn returnValue = _catalogRepository.GetHouseProductNumbersByBranch(catalogInfo, brandControlLabel,
-                searchModel);
+                                                                                           searchModel);
 
             searchModel.Size = returnValue.TotalCount; // set size to total
             returnValue = _catalogRepository.GetHouseProductNumbersByBranch(catalogInfo, brandControlLabel, searchModel);
             return returnValue;
         }
-
         #endregion
 
         #region common
         private ProductsReturn ApplySpecialFilters(UserSelectedContext catalogInfo, UserProfile profile, List<string> specialFilters, SearchInputModel searchModel,
-            ProductsReturn returnProducts)
+                                                   ProductsReturn returnProducts)
         {
-            if (specialFilters != null && specialFilters.Count > 0)
+            if (specialFilters != null &&
+                specialFilters.Count > 0)
             {
                 if (specialFilters.Contains(Constants.SPECIALFILTER_DEVIATEDPRICES))
                 {
@@ -267,7 +288,8 @@ namespace KeithLink.Svc.Impl.Service.SiteCatalog
                 }
 
                 ProductsReturn filtered = _catalogRepository.GetProductsByIds(catalogInfo.BranchId,
-                    returnProducts.Products.Select(p => p.ItemNumber).ToList());
+                                                                              returnProducts.Products.Select(p => p.ItemNumber)
+                                                                                            .ToList());
 
                 // add facet for specialfilters to return and set count to number of products
                 filtered.Facets = returnProducts.Facets;
@@ -278,15 +300,18 @@ namespace KeithLink.Svc.Impl.Service.SiteCatalog
         }
 
         /// <summary>
-        /// Filter the given list of products for just those with deviated prices
+        ///     Filter the given list of products for just those with deviated prices
         /// </summary>
         /// <param name="prods"></param>
         /// <param name="context"></param>
         /// <param name="searchModel"></param>
         private void FilterDeviatedPriceProducts(ProductsReturn prods, UserSelectedContext context)
         {
-            if (context == null || String.IsNullOrEmpty(context.CustomerId))
+            if (context == null ||
+                string.IsNullOrEmpty(context.CustomerId))
+            {
                 return;
+            }
 
             PriceReturn pricingInfo = GetPricingInfoForProducts(prods, context);
 
@@ -297,7 +322,8 @@ namespace KeithLink.Svc.Impl.Service.SiteCatalog
                 prod.DeviatedCost = p.DeviatedCost ? "Y" : "N";
             }
 
-            prods.Products = prods.Products.Where(p => p.DeviatedCost == "Y").ToList();
+            prods.Products = prods.Products.Where(p => p.DeviatedCost == "Y")
+                                  .ToList();
             prods.Count = prods.Products.Count();
             prods.TotalCount = prods.Products.Count();
         }
@@ -314,13 +340,13 @@ namespace KeithLink.Svc.Impl.Service.SiteCatalog
         private PriceReturn GetPricingInfoForProducts(ProductsReturn prods, UserSelectedContext context)
         {
             PriceReturn pricingInfo = null;
-            if (prods.Products.Count > 0 && _catalogLogic.IsSpecialtyCatalog(null, prods.Products[0].CatalogId))
+            if (prods.Products.Count > 0 &&
+                _catalogLogic.IsSpecialtyCatalog(null, prods.Products[0].CatalogId))
             {
                 string source = _catalogLogic.GetCatalogTypeFromCatalogId(prods.Products[0].CatalogId);
                 // we use FDF as the default here for external catalog pricing
                 pricingInfo = _priceLogic.GetNonBekItemPrices(Constants.BRANCH_FDF, context.CustomerId, source, DateTime.Now.AddDays(1), prods.Products);
-            }
-            else
+            } else
             {
                 pricingInfo = _priceLogic.GetPrices(context.BranchId, context.CustomerId, DateTime.Now.AddDays(1), prods.Products);
             }
@@ -330,14 +356,18 @@ namespace KeithLink.Svc.Impl.Service.SiteCatalog
 
         public void AddPricingInfo(ProductsReturn prods, UserSelectedContext context, SearchInputModel searchModel = null)
         {
-            if (context == null || String.IsNullOrEmpty(context.CustomerId))
+            if (context == null ||
+                string.IsNullOrEmpty(context.CustomerId))
+            {
                 return;
+            }
 
             PriceReturn pricingInfo = GetPricingInfoForProducts(prods, context);
 
             AddPricingInfoToProducts(prods, pricingInfo);
 
-            if (searchModel != null) {
+            if (searchModel != null)
+            {
                 AddSortForPricingWhenApplicable(prods, searchModel);
             }
         }
@@ -359,61 +389,81 @@ namespace KeithLink.Svc.Impl.Service.SiteCatalog
 
         private void AddSortForPricingWhenApplicable(ProductsReturn prods, SearchInputModel searchModel)
         {
-            if ((searchModel.SField == "caseprice"
-                || searchModel.SField == "unitprice")) // sort pricing info first
+            if (searchModel.SField == "caseprice"
+                ||
+                searchModel.SField == "unitprice") // sort pricing info first
             {
                 if (searchModel.SDir == "asc")
+                {
                     SortAscendingByPrices(prods, searchModel);
-                else
+                } else
+                {
                     SortDescendingByPrices(prods, searchModel);
+                }
             }
         }
 
         private void SortDescendingByPrices(ProductsReturn prods, SearchInputModel searchModel)
         {
             if (searchModel.SField == "caseprice")
+            {
                 prods.Products.Sort((x, y) => y.CasePriceNumeric.CompareTo(x.CasePriceNumeric));
-            else
+            } else
+            {
                 prods.Products.Sort((x, y) => y.UnitCost.CompareTo(x.UnitCost));
+            }
         }
 
         private void SortAscendingByPrices(ProductsReturn prods, SearchInputModel searchModel)
         {
             if (searchModel.SField == "caseprice")
+            {
                 prods.Products.Sort((x, y) => x.CasePriceNumeric.CompareTo(y.CasePriceNumeric));
-            else
+            } else
+            {
                 prods.Products.Sort((x, y) => x.UnitCost.CompareTo(y.UnitCost));
+            }
         }
 
         private void GetAdditionalProductInfo(UserProfile profile, ProductsReturn ret, UserSelectedContext catalogInfo)
         {
             if (profile != null)
             {
-                var history = _historyLogic.ItemsInHistoryList(catalogInfo, ret.Products.Select(p => p.ItemNumber).ToList());
+                List<InHistoryReturnModel> history = _historyLogic.ItemsInHistoryList(catalogInfo, ret.Products.Select(p => p.ItemNumber)
+                                                                                                      .ToList());
 
-                ret.Products.ForEach(delegate (Product prod) {
-                    prod.InHistory = history.Where(h => h.ItemNumber.Equals(prod.ItemNumber))
-                                            .FirstOrDefault()
-                                            .InHistory;
-                    _catalogLogic.AddProductImageInfo(prod);
-                });
+                ret.Products.ForEach(delegate(Product prod)
+                                     {
+                                         prod.InHistory = history.Where(h => h.ItemNumber.Equals(prod.ItemNumber))
+                                                                 .FirstOrDefault()
+                                                                 .InHistory;
+                                         _catalogLogic.AddProductImageInfo(prod);
+                                     });
             }
+        }
+
+        private void ApplyRecommendedTagging(ProductsReturn ret)
+        {
+            ret.Products.ForEach(delegate(Product prod) { prod.OrderedFromSource = Constants.RECOMMENDED_CART_ITEM; });
         }
 
         private void GetPreviouslyOrderedProductInfo(UserProfile profile, ProductsReturn ret, UserSelectedContext catalogInfo)
         {
             if (profile != null)
             {
-                var history = _historyLogic.ItemsInHistoryList(catalogInfo, ret.Products.Select(p => p.ItemNumber).ToList());
+                List<InHistoryReturnModel> history = _historyLogic.ItemsInHistoryList(catalogInfo, ret.Products.Select(p => p.ItemNumber)
+                                                                                                      .ToList());
 
-                ret.Products.ForEach(delegate (Product prod) {
-                    prod.InHistory = history.Where(h => h.ItemNumber.Equals(prod.ItemNumber))
-                                            .FirstOrDefault()
-                                            .InHistory;
-                });
+                ret.Products.ForEach(delegate(Product prod)
+                                     {
+                                         prod.InHistory = history.Where(h => h.ItemNumber.Equals(prod.ItemNumber))
+                                                                 .FirstOrDefault()
+                                                                 .InHistory;
+                                     });
             }
         }
         #endregion
+
         #endregion
     }
 }

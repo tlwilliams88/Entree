@@ -322,3 +322,15 @@ img.product-placeholder-image {
 .tab-content {
   padding-bottom: 0;
 }
+
+.info-box { 
+  padding: 7px;
+}
+
+.homepage-brands {
+  display: inline !important;
+}
+
+@supports (display: contents) {
+  .homepage-brands { display: contents !important; }
+}

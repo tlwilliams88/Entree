@@ -95,9 +95,9 @@ angular.module('bekApp')
     // get promo/marketing items
     $scope.loadingPromoItems = true;
     MarketingService.getPromoItems().then(function(items) {
-      if(items[0].targeturltext != 'Admiral of the Fleet Salmon') { //Added to stop the salmon photo from displaying
+      // if(items[0].targeturltext != 'Admiral of the Fleet Salmon') { //Added to stop the salmon photo from displaying
         $scope.marketingPromoItems = items;
-      }
+      // }
       delete $scope.promoMessage;
     }, function(errorMessage) {
       $scope.promoMessage = errorMessage;
@@ -164,25 +164,26 @@ angular.module('bekApp')
     $scope.loadingrecentlyOrderedUnfiItems = true;
     $scope.loadingCategories = true;
     $scope.loadingBrands = true;
-    $scope.loadingRecommendedItems = true;
+    $scope.loadingRecommendedCategories = true;
 
     ProductService.getRecentlyViewedItems().then(function(recentitems) {
       $scope.recentlyViewedItems = recentitems;
       $scope.loadingRecentlyViewedItems = false;
+      $scope.showRecommendedCategories = ENV.showRecommendedItems;
 
-      CategoryService.getCategories($state.params.catalogType).then(function(categories) {
-        $scope.showRecommendedItems = ENV.showRecommendedItems;
+      if($scope.showRecommendedCategories == true) {
+        CategoryService.getRecommendedCategories().then(function(recommendations){
+          $scope.recommendedCategories = recommendations;
+          $scope.loadingRecommendedCategories = false;
+        })
+      } 
+      
+      $scope.categories = CategoryService.categories;
+      $scope.loadingCategories = false;
 
-        $scope.recommendedItems = categories;
-        $scope.loadingRecommendedItems = false;
-        
-        $scope.categories = categories;
-        $scope.loadingCategories = false;
-
-        BrandService.getHouseBrands().then(function(brands){
-          $scope.brands = brands;
-          $scope.loadingBrands = false;
-        });
+      BrandService.getHouseBrands().then(function(brands){
+        $scope.brands = brands;
+        $scope.loadingBrands = false;
       });
     });
 

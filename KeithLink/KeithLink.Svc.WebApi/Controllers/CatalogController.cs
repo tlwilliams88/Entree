@@ -28,6 +28,7 @@ using System.Web.Http;
 using System.Web.Http.Cors;
 using System.IO;
 using KeithLink.Common.Core.Interfaces.Logging;
+using KeithLink.Svc.Core.Models.Customers;
 using KeithLink.Svc.Core.Models.Lists;
 using KeithLink.Svc.Core.Models.Orders;
 
@@ -388,8 +389,42 @@ namespace KeithLink.Svc.WebApi.Controllers {
 
         [HttpPost]
         [ApiKeyedRoute("catalog/recommended")]
-        public ProductsReturn GetRecommendedItemsByCart(List<string> itemNumbers) {
-            return _catalogService.GetRecommendedItemsForCart(this.SelectedUserContext, itemNumbers, this.AuthenticatedUser);
+        public ProductsReturn GetRecommendedItemsByCart(RecommendedItemsRequestModel request) {
+            ProductsReturn recommendedItems =  _catalogService.GetRecommendedItemsForCart(this.SelectedUserContext, 
+                                                              request.CartItems, 
+                                                              this.AuthenticatedUser, 
+                                                              request.hasimages);
+
+            if (request.pagesize.HasValue) {
+                recommendedItems.Products = recommendedItems.Products.Take(request.pagesize.Value).ToList();
+                recommendedItems.TotalCount = recommendedItems.Products.Count();
+                recommendedItems.Count = recommendedItems.Products.Count();
+            }
+
+            return recommendedItems;
+        }
+
+        [HttpPost]
+        [ApiKeyedRoute("catalog/growthandrecovery")]
+        public OperationReturnModel<List<GrowthAndRecoveriesReturnModel>> GetGrowthAndRecoveryGroupsByCustomer(int pagesize = Constants.GROWTHANDRECOVERY_DEFAULT_PAGESIZE,
+                                                                                                       bool hasimages = Constants.GROWTHANDRECOVERY_DEFAULT_HASIMAGES)
+        {
+            OperationReturnModel<List<GrowthAndRecoveriesReturnModel>> ret = new OperationReturnModel<List<GrowthAndRecoveriesReturnModel>>();
+            try
+            {
+                ret.SuccessResponse = _catalogService.GetGrowthAndRecoveryItemsForCustomer(this.SelectedUserContext
+                                                                                           , this.AuthenticatedUser
+                                                                                           , pagesize
+                                                                                           , hasimages);
+                ret.IsSuccess = true;
+            }
+            catch (Exception ex)
+            {
+                ret.IsSuccess = false;
+                ret.ErrorMessage = ex.Message;
+                _elRepo.WriteErrorLog("GetGrowthAndRecoveryGroupsByCustomer", ex);
+            }
+            return ret;
         }
 
         /// <summary>
