@@ -278,6 +278,84 @@ namespace KeithLink.Svc.Impl.Logic.ETL {
             }
         }
 
+        public void ImportUNFIEastItems()
+        {
+            try
+            {
+                DateTime start = DateTime.Now;
+                _eventLog.WriteInformationLog(String.Format("ETL: Import Process Starting:  Import UNFI East items to ES {0}", start.ToString()));
+
+                var warehouses = _stagingRepository.ReadDistinctUNFIEastWarehouses();
+
+                var products = new BlockingCollection<IESItem>();
+
+                var items = _stagingRepository.ReadUNFIEastItems();
+
+                foreach (var warehouse in warehouses)
+                {
+                    if (!_elasticSearchRepository.CheckIfIndexExist(string.Format("unfi_east_{0}", warehouse)))
+                    {
+                        _elasticSearchRepository.CreateEmptyIndex(string.Format("unfi_east_{0}", warehouse));
+                        _elasticSearchRepository.MapProductProperties(string.Format("unfi_east_{0}", warehouse), GetProductMapping());
+                    }
+
+                    List<string> ESItems =
+                        _elasticSearchRepository.ReadListOfProductsByBranch
+                            (string.Format("unfi_east_{0}", warehouse));
+
+                    foreach (DataRow row in items.Rows)
+                    {
+                        if (row.GetString("WarehouseNumber").Equals(warehouse))
+                        {
+                            products.Add(PopulateUNFIElasticSearchItem(row, ESItems));
+                        }
+
+                        ESItems.Remove(row.GetString("ProductNumber"));
+                    };
+
+                    foreach (string toDelete in ESItems)
+                    {
+                        ItemDelete del = new ItemDelete();
+                        del.delete = new RootData();
+                        del.delete._id = toDelete;
+                        del.delete._index = string.Format("unfi_east_{0}", warehouse);
+                        products.Add(del);
+                    }
+                }
+
+                int totalProcessed = 0;
+
+                while (totalProcessed < products.Count)
+                {
+                    try
+                    {
+                        var batch = products.Skip(totalProcessed).Take(Configuration.ElasticSearchBatchSize).ToList();
+
+                        _elasticSearchRepository.Create(string.Concat(batch.Select(i => i.ToJson())));
+
+                        totalProcessed += Configuration.ElasticSearchBatchSize;
+                    }
+                    catch (Exception ex2)
+                    {
+                        _eventLog.WriteErrorLog(String.Format("ETL: Error Importing items to ES -- error importing individual item to ES.  {0} -- {1}", ex2.Message, ex2.StackTrace));
+
+                        KeithLink.Common.Impl.Email.ExceptionEmail.Send(ex2,
+                            "ETL: Error Importing items to ES -- error importing individual item to ES.");
+                    }
+                }
+
+
+                TimeSpan took = DateTime.Now - start;
+                _eventLog.WriteInformationLog(String.Format("ETL: Import Process Finished:  Import UNFI East items to ES.  Process took {0}", took.ToString()));
+            }
+            catch (Exception e)
+            {
+                _eventLog.WriteErrorLog(String.Format("ETL: Error Importing UNFI East items to ES -- whole process failed.  {0} -- {1}", e.Message, e.StackTrace));
+
+                KeithLink.Common.Impl.Email.ExceptionEmail.Send(e,
+                    "ETL: Error Importing UNFI East items to ES -- whole process failed.");
+            }
+        }
         #endregion
 
         #region helper methods
