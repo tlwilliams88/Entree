@@ -1,11 +1,8 @@
 ﻿using KeithLink.Common.Core.Interfaces.Logging;
 using KeithLink.Common.Core.Extensions;
-
-using KeithLink.Svc.Core.Enumerations.Messaging;
 using KeithLink.Svc.Core.Enumerations.Profile;
 using KeithLink.Svc.Core.Enumerations.SingleSignOn;
 using KeithLink.Svc.Core.Interface.Configurations;
-using KeithLink.Svc.Core.Interface.Messaging;
 using KeithLink.Svc.Core.Interface.Profile;
 using KeithLink.Svc.Core.Interface.Profile.PasswordReset;
 using KeithLink.Svc.Core.Models.Paging;
@@ -20,10 +17,10 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
-using System.Net.NetworkInformation;
 using System.Threading.Tasks;
 using System.Web.Http;
 using System.Net;
+using System.Security.Cryptography;
 
 namespace KeithLink.Svc.WebApi.Controllers
 {
@@ -156,6 +153,44 @@ namespace KeithLink.Svc.WebApi.Controllers
             }
 
             return retVal;
+        }
+
+        /// <summary>
+        /// Generate SHA512 Authentication Token
+        /// </summary>
+        /// <returns></returns>
+        [Authorize]
+        [HttpGet]
+        [ApiKeyedRoute("profile/generateauthtoken")]
+        public OperationReturnModel<string> AuthToken()
+        {
+            OperationReturnModel<string> returnValue = new OperationReturnModel<string>();
+            try
+            {
+                string keyandemail = AuthenticatedUser.EmailAddress.ToString() + KeithLink.Svc.Impl.Configuration.MenuMaxSharedKey.ToString();
+
+                SHA512 sha512 = SHA512.Create();
+                byte[] bytes = System.Text.Encoding.UTF8.GetBytes(keyandemail);
+                byte[] hash = sha512.ComputeHash(bytes);
+
+                System.Text.StringBuilder authtoken = new System.Text.StringBuilder();
+                for (int i = 0; i < hash.Length; i++)
+                {
+                    authtoken.Append(hash[i].ToString("X2"));
+                }
+
+                returnValue.SuccessResponse = authtoken.ToString();
+                returnValue.IsSuccess = true;
+            }
+            catch (Exception ex)
+            {
+                _log.WriteErrorLog("GenerateAuthToken", ex);
+                returnValue.SuccessResponse = "false";
+                returnValue.ErrorMessage = ex.Message;
+                returnValue.IsSuccess = false;
+            }
+
+            return returnValue;
         }
 
         /// <summary>

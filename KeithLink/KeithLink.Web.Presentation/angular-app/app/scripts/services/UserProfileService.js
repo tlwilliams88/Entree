@@ -54,6 +54,13 @@ angular.module('bekApp')
 
       },
 
+      generateAuthToken: function() {
+        var promise = $http.get('/profile/generateauthtoken');
+        return UtilityService.resolvePromise(promise).then(function(successResponse) {
+          return successResponse;
+        });
+      },
+
       resetPassword: function(email) {
         var promise = $http.post('/profile/forgotpassword?emailAddress='+email);
         return UtilityService.resolvePromise(promise);
