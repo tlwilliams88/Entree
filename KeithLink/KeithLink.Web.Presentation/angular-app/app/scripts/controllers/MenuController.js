@@ -399,7 +399,7 @@ angular.module('bekApp')
   // Menumax
   $scope.redirectToMenumax = function() {
     UserProfileService.generateAuthToken().then(function(resp) {
-      $scope.openExternalLink(resp);
+      $scope.openExternalLink('https://www.menumax.com/' + '?entreeSSOPayload=' + resp);
     })
   };
 
