@@ -117,6 +117,18 @@ angular
     window.open(url, '_system');
   };
 
+  $rootScope.openExternalLinkWithPost = function(url, windowoption, name, params)
+  {
+    var form = document.createElement("form");
+    form.setAttribute("method", "post");
+    form.setAttribute("action", url);
+    form.setAttribute("target", name);
+    
+    document.body.appendChild(form);
+    form.submit();
+    document.body.removeChild(form);
+  }
+
   // ENV.currentusername = localStorageService.get('currentUserName');
 
   ENV.username = localStorageService.get('userName');

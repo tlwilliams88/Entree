@@ -397,9 +397,16 @@ angular.module('bekApp')
   };
 
   // Menumax
-  $scope.redirectToMenumax = function() {
+  $scope.redirectToMenumax = function(url) {
     UserProfileService.generateAuthToken().then(function(resp) {
-      $scope.openExternalLink('https://www.menumax.com/' + '?entreeSSOPayload=' + resp);
+
+      var payload = {
+        email: $scope.userProfile.emailaddress,
+        entreeSSOPayload: resp
+      }
+
+      $scope.openExternalLinkWithPost(url, "width=1000, height=600, left=100, top=100, resizable=yes, scrollbars=yes", "_blank", payload);
+
     })
   };
 
