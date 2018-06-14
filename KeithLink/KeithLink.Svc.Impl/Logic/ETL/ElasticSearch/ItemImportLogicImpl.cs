@@ -293,21 +293,21 @@ namespace KeithLink.Svc.Impl.Logic.ETL {
 
                 foreach (var warehouse in warehouses)
                 {
-                    if (!_elasticSearchRepository.CheckIfIndexExist(string.Format("unfi_east_{0}", warehouse)))
+                    if (!_elasticSearchRepository.CheckIfIndexExist(string.Format("unfe_{0}", warehouse)))
                     {
-                        _elasticSearchRepository.CreateEmptyIndex(string.Format("unfi_east_{0}", warehouse));
-                        _elasticSearchRepository.MapProductProperties(string.Format("unfi_east_{0}", warehouse), GetProductMapping());
+                        _elasticSearchRepository.CreateEmptyIndex(string.Format("unfe_{0}", warehouse));
+                        _elasticSearchRepository.MapProductProperties(string.Format("unfe_{0}", warehouse), GetProductMapping());
                     }
 
                     List<string> ESItems =
                         _elasticSearchRepository.ReadListOfProductsByBranch
-                            (string.Format("unfi_east_{0}", warehouse));
+                            (string.Format("unfe_{0}", warehouse));
 
                     foreach (DataRow row in items.Rows)
                     {
                         if (row.GetString("WarehouseNumber").Equals(warehouse))
                         {
-                            products.Add(PopulateUNFIElasticSearchItem(row, ESItems));
+                            products.Add(PopulateUNFIEastElasticSearchItem(row, ESItems));
                         }
 
                         ESItems.Remove(row.GetString("ProductNumber"));
@@ -318,7 +318,7 @@ namespace KeithLink.Svc.Impl.Logic.ETL {
                         ItemDelete del = new ItemDelete();
                         del.delete = new RootData();
                         del.delete._id = toDelete;
-                        del.delete._index = string.Format("unfi_east_{0}", warehouse);
+                        del.delete._index = string.Format("unfe_{0}", warehouse);
                         products.Add(del);
                     }
                 }
@@ -909,6 +909,82 @@ namespace KeithLink.Svc.Impl.Logic.ETL {
             }
             return null;
 		}
+
+        private IESItem PopulateUNFIEastElasticSearchItem(DataRow row, List<string> existingItems)
+        {
+
+            var data = new AdditionalData()
+            {
+                WarehouseNumber = row.GetString("WarehouseNumber"),
+                ItemNumber = row.GetString("ProductNumber"),
+                Name = row.GetString("Description"),
+                NameNotAnalyzed = row.GetString("Description"),
+                Brand = row.GetString("Brand"),
+                BrandNotAnalyzed = row.GetString("Brand"),
+                BrandDescription = row.GetString("Brand"),
+                BrandDescriptionNotAnalyzed = row.GetString("Brand"),
+                BranchId = "unfe",
+                CLength = row.GetNullableDouble("CLength"),
+                CWidth = row.GetNullableDouble("CWidth"),
+                CHeight = row.GetNullableDouble("CHeight"),
+                TempZone = row.GetString("TempControl"),
+                UnitOfSale = row.GetString("UnitOfSale"),
+                CatalogDept = row.GetString("CatalogDept"),
+                ShipMinExpire = row.GetString("ShipMinExpire"),
+                MfrItemNumber = row.GetString("ProductNumber"),
+                MinOrder = row.GetNullableInt("MinOrder"),
+                VendorCasesPerTier = row.GetNullableInt("VendorCasesPerTier"),
+                VendorTiersPerPallet = row.GetNullableInt("VendorTiersPerPallet"),
+                VendorCasesPerPallet = row.GetNullableInt("VendorCasesPerPallet"),
+                CaseQuantity = row.GetNullableInt("CaseQuantity"),
+                Cases = row.GetString("OnHandQty"),
+                PutUp = row.GetString("PutUp"),
+                ContSize = row.GetNullableDouble("ContSize"),
+                ContUnit = row.GetString("ContUnit"),
+                TCSCode = row.GetString("TCSCode"),
+                Upc = row.GetString("RetailUPC"),
+                CaseUPC = row.GetString("CaseUPC"),
+                AverageWeight = row.GetDouble("Weight"),
+                PLength = row.GetNullableDouble("PLength"),
+                PHeight = row.GetNullableDouble("PHeight"),
+                PWidth = row.GetNullableDouble("PWidth"),
+                Status = row.GetString("Status"),
+                ItemType = row.GetString("Type"),
+                ParentCategoryName = row.GetString("Category"),
+                ParentCategoryNameNotAnalyzed = row.GetString("Category"),
+                CategoryName = row.GetString("Subgroup"),
+                CategoryNameNotAnalyzed = row.GetString("Subgroup"),
+                CategoryId = "KO",
+                Flag1 = row.GetString("Flag1"),
+                Flag2 = row.GetString("Flag2"),
+                Flag3 = row.GetString("Flag3"),
+                Flag4 = row.GetString("Flag4"),
+                OnHandQty = row.GetNullableInt("OnHandQty"),
+                Vendor1 = row.GetString("Vendor"),
+                CasePrice = row.GetDecimal("CasePrice"),
+                PackagePrice = row.GetDecimal("EachPrice"),
+                StockedInBranches = row.GetString("StockedInBranches"),
+            };
+
+            RootData index = new RootData();
+            index._id = data.MfrItemNumber.ToString();
+            index._index = string.Format("unfe_{0}", data.WarehouseNumber);
+            index.data = data;
+
+            if (existingItems.Contains(data.MfrItemNumber.ToString()))
+            {
+                ItemUpdate item = new ItemUpdate();
+                item.index = index;
+                return item;
+            }
+            else
+            {
+                ItemInsert item = new ItemInsert();
+                item.index = index;
+                return item;
+            }
+            return null;
+        }
         #endregion
 
     }

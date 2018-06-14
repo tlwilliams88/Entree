@@ -214,7 +214,7 @@ namespace KeithLink.Svc.Impl.Logic.ETL {
                     {
                         index = new ESCategoryRootData()
                         {
-                            _index = "unfi_east_categories",
+                            _index = "unfe_categories",
                             _id = row.GetString("CategoryId"),
                             data = new ESCategoryData()
                             {
@@ -237,7 +237,7 @@ namespace KeithLink.Svc.Impl.Logic.ETL {
                     {
                         index = new ESCategoryRootData()
                         {
-                            _index = "unfi_east_categories",
+                            _index = "unfe_categories",
                             _id = row.GetString("CategoryId"),
                             data = new ESCategoryData()
                             {
