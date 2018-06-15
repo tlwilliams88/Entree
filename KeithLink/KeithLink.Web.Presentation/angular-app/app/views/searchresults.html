@@ -68,7 +68,7 @@
                     class="margin-right-10"
                     value="categoryValue_{{parentcategory.name}}"
                     id="categoryId_{{parentcategory.name}}"
-                    ng-if="$state.params.catalogType != 'UNFI'"
+                    ng-if="$state.params.catalogType != constants.catalogType.UNFI"
                     ng-checked="  parentcategories.selected.indexOf(parentcategory.name) > -1 || parentcategory.name === featuredBreadcrumb.displayText"
                     ng-disabled="parentcategory.name === featuredBreadcrumb.displayText"
                     ng-click="toggleSelection(true, parentcategories.selected, parentcategory.name, '', $index); $event.stopPropagation();">
@@ -78,7 +78,6 @@
                       <span ng-show="parentcategory.count > 0">({{parentcategory.count}})</span>
                     </label>
                   </div>
-                  <!-- <span style="margin-bottom:5px !important;" ng-class="{'icon-minus3' : parentcategory.isOpen && $state.params.catalogType != 'UNFI', 'icon-plus3' : !parentcategory.isOpen && $state.params.catalogType != 'UNFI'}" ng-click="toggleSubCategories(parentcategory, $index)" class="subCategoryToggle pull-right"></span> -->
                 </div>
               </accordion-heading>
               <div class="panel-body max-width-100Percent" ng-repeat="category in parentcategory.categories">
@@ -199,8 +198,8 @@
           <accordion-heading>Catalogs<i class="pull-right" ng-class="{'icon-arrow-up6': status.openCatalogs, 'icon-arrow-down7': !status.openCatalogs}"></i></accordion-heading>
             <div class="panel panel-default">
               <div class="panel-body">
-                  <a ng-click="bekCatalogSwitch()" ng-show="$state.params.catalogType != 'BEK' && bekItemCount > 0">Main ({{bekItemCount}})</a>
-                  <a ng-click="unfiCatalogSwitch()" ng-show="$state.params.catalogType != 'UNFI' && unfiItemCount > 0 && selectedUserContext.customer.canViewUNFI">Natural and Organic ({{unfiItemCount}})</a>
+                  <a ng-click="bekCatalogSwitch()" ng-show="$state.params.catalogType != constants.catalogType.BEK && bekItemCount > 0">Main ({{bekItemCount}})</a>
+                  <a ng-click="unfiCatalogSwitch()" ng-show="$state.params.catalogType != constants.catalogType.UNFI && unfiItemCount > 0 && selectedUserContext.customer.canViewUNFI">Natural and Organic ({{unfiItemCount}})</a>
               </div>
             </div>
         </accordion-group>
@@ -235,7 +234,6 @@
                   {{::parentcategory.name}} <span ng-show="parentcategory.count > 0">({{parentcategory.count}})</span>
                 </span>
               </label>
-              <!-- <a ng-class="{'icon-minus3' : parentcategory.IsOpen && $state.params.catalogType != 'UNFI', 'icon-plus3' : !parentcategory.IsOpen && $state.params.catalogType != 'UNFI'}" class="subCategoryToggle large-icon inline-icon" ng-click="toggleSubCategories(parentcategory, $index)"></a> -->
             </div>
             <ul class="subcategories_{{$index}} subcategory-description-md">
               <li ng-repeat="category in parentcategory.categories">
@@ -374,8 +372,8 @@
       <div class="row" ng-show="(bekItemCount + unfiItemCount - totalcount) > 0 && selectedUserContext.customer.canViewUNFI">
         <div class="col-sm-12">
           <h3>Catalogs</h3>
-            <a ng-click="bekCatalogSwitch()" ng-show="$state.params.catalogType != 'BEK' && bekItemCount > 0">Main ({{bekItemCount}})</a>
-            <a ng-click="unfiCatalogSwitch()" ng-show="$state.params.catalogType != 'UNFI' && unfiItemCount > 0 && selectedUserContext.customer.canViewUNFI">Natural and Organic ({{unfiItemCount}})</a>
+            <a ng-click="bekCatalogSwitch()" ng-show="$state.params.catalogType != constants.catalogType.BEK && bekItemCount > 0">Main ({{bekItemCount}})</a>
+            <a ng-click="unfiCatalogSwitch()" ng-show="$state.params.catalogType != constants.catalogType.UNFI && unfiItemCount > 0 && selectedUserContext.customer.canViewUNFI">Natural and Organic ({{unfiItemCount}})</a>
         </div>
       </div>
     </div>
@@ -448,10 +446,10 @@
                       </div>
                       <h5 class="block-display">
                         <span ng-if="item.brand_extended_description && !item.marketing_brand">
-                          <a ng-if="$state.params.catalogType == 'UNFI'" ui-sref="menu.catalog.products.brand({type:'search', catalogType: 'UNFI', id: item.brand_extended_description, recommendationType: category.type, trackingkey: category.trackingkey})">
+                          <a ng-if="$state.params.catalogType == constants.catalogType.UNFI" ui-sref="menu.catalog.products.brand({type:'search', catalogType: constants.catalogType.UNFI, id: item.brand_extended_description, recommendationType: category.type, trackingkey: category.trackingkey})">
                             {{item.brand_extended_description}}
                           </a>
-                          <a ng-if="$state.params.catalogType == 'BEK'" ui-sref="menu.catalog.products.brand({type:'brand', catalogType: 'BEK', id: item.brand_extended_description, recommendationType: category.type, trackingkey: category.trackingkey})">
+                          <a ng-if="$state.params.catalogType == constants.catalogType.BEK" ui-sref="menu.catalog.products.brand({type:'brand', catalogType: constants.catalogType.BEK, id: item.brand_extended_description, recommendationType: category.type, trackingkey: category.trackingkey})">
                             {{item.brand_extended_description}}
                           </a>
                         </span>
@@ -628,10 +626,10 @@
           </td>
           <td class="hidden-mobile-visible-print">
             <span ng-if="item.brand_extended_description && !item.marketing_brand">
-              <a ng-if="$state.params.catalogType == 'UNFI'" ui-sref="menu.catalog.products.brand({type:'search', catalogType: 'UNFI', id: item.brand_extended_description })">
+              <a ng-if="$state.params.catalogType == constants.catalogType.UNFI" ui-sref="menu.catalog.products.brand({type:'search', catalogType: constants.catalogType.UNFI, id: item.brand_extended_description })">
                 {{item.brand_extended_description}}
               </a>
-              <a ng-if="$state.params.catalogType == 'BEK'" ui-sref="menu.catalog.products.brand({type:'brand', catalogType: 'BEK', id: item.brand_extended_description })">
+              <a ng-if="$state.params.catalogType == constants.catalogType.BEK" ui-sref="menu.catalog.products.brand({type:'brand', catalogType: constants.catalogType.BEK, id: item.brand_extended_description })">
                 {{item.brand_extended_description}}
               </a>
             </span>
@@ -679,10 +677,10 @@
                   <td>Brand</td>
                   <td>
                     <span ng-if="item.brand_extended_description && !item.marketing_brand">
-                      <a ng-if="$state.params.catalogType == 'UNFI'" ui-sref="menu.catalog.products.brand({type:'search', catalogType: 'UNFI', id: item.brand_extended_description })">
+                      <a ng-if="$state.params.catalogType == constants.catalogType.UNFI" ui-sref="menu.catalog.products.brand({type:'search', catalogType: constants.catalogType.UNFI, id: item.brand_extended_description })">
                         {{::item.brand_extended_description}}
                       </a>
-                      <a ng-if="$state.params.catalogType == 'BEK'" ui-sref="menu.catalog.products.brand({type:'brand', catalogType: 'BEK', id: item.brand_extended_description })">
+                      <a ng-if="$state.params.catalogType == constants.catalogType.BEK" ui-sref="menu.catalog.products.brand({type:'brand', catalogType: constants.catalogType.BEK, id: item.brand_extended_description })">
                         {{::item.brand_extended_description}}
                       </a>
                     </span>

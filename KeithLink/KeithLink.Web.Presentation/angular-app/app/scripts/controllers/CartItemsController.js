@@ -331,7 +331,7 @@ angular.module('bekApp')
               var orderNumber = -1;
               var index;
               for (index in data.ordersReturned) {
-                if (data.ordersReturned[index].catalogType === 'BEK')
+                if (data.ordersReturned[index].catalogType === Constants.catalogType.BEK)
                 {
                   orderNumber = data.ordersReturned[index].ordernumber;
                 }
