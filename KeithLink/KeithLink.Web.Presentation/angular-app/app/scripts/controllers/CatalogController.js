@@ -8,8 +8,8 @@
  * Controller of the bekApp
  */
 angular.module('bekApp')
-  .controller('CatalogController', ['$scope', '$state', 'OrderService', 'CategoryService', 'ProductService', 'CartService', 'BrandService', 'ListService',
-    function ($scope, $state, OrderService, CategoryService, ProductService, CartService, BrandService, ListService) {
+  .controller('CatalogController', ['$scope', '$state', 'OrderService', 'CategoryService', 'ProductService', 'CartService', 'BrandService', 'ListService', 'Constants',
+    function ($scope, $state, OrderService, CategoryService, ProductService, CartService, BrandService, ListService, Constants) {
     
     $scope.myInterval = -1;
 
@@ -23,7 +23,7 @@ angular.module('bekApp')
     $scope.loadingBrands = true;
     $scope.loadingRecommendedItems = true;
 
-    if ($state.params.catalogType === 'BEK') {
+    if ($state.params.catalogType === Constants.catalogType.BEK) {
       $scope.pageTitle = 'Product Catalog';
       ProductService.getRecentlyViewedItems().then(function(items) {
         $scope.recentlyViewedItems = items;

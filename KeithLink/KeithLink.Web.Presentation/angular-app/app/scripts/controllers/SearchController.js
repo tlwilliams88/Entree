@@ -111,10 +111,10 @@ angular.module('bekApp')
     $scope.categoryIsOpen = false;
 
     $scope.hideMobileFilters = true;
-    if ($state.params.catalogType == 'BEK') {
+    if ($state.params.catalogType == Constants.catalogType.BEK) {
         $scope.pageTitle = 'Product Catalog';
     } else {
-        if ($state.params.catalogType == "UNFI"){
+        if ($state.params.catalogType == Constants.catalogType.UNFI){
             $scope.pageTitle = "Natural and Organic";
         } else if($state.params.campaign_id) {
           $scope.pageTitle = campaignInfo.description;
@@ -604,7 +604,7 @@ angular.module('bekApp')
       $scope.endPoint = angular.copy($scope.startingPoint + $scope.itemsPerPage);
       $scope.firstPageItem = ($scope.currentPage * $scope.itemsPerPage) - ($scope.itemsPerPage - 1);
 
-      if($scope.sortField === 'itemnumber' && $stateParams.catalogType && $stateParams.catalogType != 'BEK'){
+      if($scope.sortField === 'itemnumber' && $stateParams.catalogType && $stateParams.catalogType != Constants.catalogType.BEK){
         $scope.sortField  = '';
       }
 
@@ -1151,12 +1151,12 @@ angular.module('bekApp')
 
     $scope.bekCatalogSwitch = function () {
         //change state to unfi
-        $state.go($state.current,{catalogType: 'BEK'}, {reload: true});
+        $state.go($state.current,{catalogType: Constants.catalogType.BEK}, {reload: true});
     };
 
     $scope.unfiCatalogSwitch = function () {
         //change state to unfi
-        $state.go($state.current,{catalogType: 'UNFI'}, {reload: true});
+        $state.go($state.current,{catalogType: Constants.catalogType.UNFI}, {reload: true});
     };
     // INIT
     loadProducts().then(refreshFacets);
