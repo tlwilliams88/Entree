@@ -41,6 +41,12 @@ angular.module('bekApp')
       RecentlyViewed: 13,  
       CustomInventory: 14
     },
+
+    catalogType: {
+      BEK: 'BEK',
+      UNFI: 'UNFI',
+      ES: 'E&S'
+    },
     
     exportType: {
       invoiceExport: 'invoiceExport',

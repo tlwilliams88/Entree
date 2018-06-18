@@ -178,7 +178,10 @@ angular.module('bekApp')
         })
       } 
       
-      $scope.categories = CategoryService.categories;
+      CategoryService.getCategories('BEK').then(function(categories) {
+        $scope.categories = categories;
+      })
+      
       $scope.loadingCategories = false;
 
       BrandService.getHouseBrands().then(function(brands){

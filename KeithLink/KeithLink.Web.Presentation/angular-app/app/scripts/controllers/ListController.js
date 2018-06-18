@@ -753,7 +753,7 @@ angular.module('bekApp')
         $scope.errorMessage = '';
 
         blockUI.start().then(function(){
-            ProductService.getProductDetails(itemNumber, 'BEK').then(function(item) {
+            ProductService.getProductDetails(itemNumber, Constants.catalogType.BEK).then(function(item) {
                 var list = {
                     listid: $scope.selectedList.listid,
                     type: $scope.selectedList.type,

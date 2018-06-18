@@ -89,8 +89,10 @@ angular
     }
   };
 }])
-.run(['$rootScope', '$state', '$log', 'toaster', 'ENV', 'AccessService', 'NotificationService', 'ListService', 'CartService', 'UserProfileService', '$window', '$location', 'PhonegapServices', 'PhonegapPushService', 'localStorageService', 'Analytics', 'OrderService', 'ConfigSettingsService', '$filter',
-  function($rootScope, $state, $log, toaster, ENV, AccessService, NotificationService, ListService, CartService, UserProfileService, $window, $location, PhonegapServices, PhonegapPushService, localStorageService, Analytics, OrderService, ConfigSettingsService, $filter) {
+.run(['$rootScope', '$state', '$log', 'toaster', 'ENV', 'AccessService', 'NotificationService', 'ListService', 'CartService', 'UserProfileService', '$window', '$location', 'PhonegapServices', 'PhonegapPushService', 'localStorageService', 'Analytics', 'OrderService', 'ConfigSettingsService', '$filter', 'Constants',
+  function($rootScope, $state, $log, toaster, ENV, AccessService, NotificationService, ListService, CartService, UserProfileService, $window, $location, PhonegapServices, PhonegapPushService, localStorageService, Analytics, OrderService, ConfigSettingsService, $filter, Constants) {
+
+  $rootScope.constants = Constants;
 
   // helper method to display toaster popup message
   // takes 'success', 'error' types and message as a string
@@ -117,6 +119,7 @@ angular
     window.open(url, '_system');
   };
 
+
   $rootScope.openExternalLinkWithPost = function(url, windowoption, name, params)
   {
     var form = document.createElement("form");
@@ -128,8 +131,6 @@ angular
     form.submit();
     document.body.removeChild(form);
   }
-
-  // ENV.currentusername = localStorageService.get('currentUserName');
 
   ENV.username = localStorageService.get('userName');
 
