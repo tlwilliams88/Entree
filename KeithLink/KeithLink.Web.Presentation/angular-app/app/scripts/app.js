@@ -89,8 +89,10 @@ angular
     }
   };
 }])
-.run(['$rootScope', '$state', '$log', 'toaster', 'ENV', 'AccessService', 'NotificationService', 'ListService', 'CartService', 'UserProfileService', '$window', '$location', 'PhonegapServices', 'PhonegapPushService', 'localStorageService', 'Analytics', 'OrderService', 'ConfigSettingsService', '$filter',
-  function($rootScope, $state, $log, toaster, ENV, AccessService, NotificationService, ListService, CartService, UserProfileService, $window, $location, PhonegapServices, PhonegapPushService, localStorageService, Analytics, OrderService, ConfigSettingsService, $filter) {
+.run(['$rootScope', '$state', '$log', 'toaster', 'ENV', 'AccessService', 'NotificationService', 'ListService', 'CartService', 'UserProfileService', '$window', '$location', 'PhonegapServices', 'PhonegapPushService', 'localStorageService', 'Analytics', 'OrderService', 'ConfigSettingsService', '$filter', 'Constants',
+  function($rootScope, $state, $log, toaster, ENV, AccessService, NotificationService, ListService, CartService, UserProfileService, $window, $location, PhonegapServices, PhonegapPushService, localStorageService, Analytics, OrderService, ConfigSettingsService, $filter, Constants) {
+
+  $rootScope.constants = Constants;
 
   // helper method to display toaster popup message
   // takes 'success', 'error' types and message as a string
@@ -125,7 +127,7 @@ angular
     form.setAttribute("target", target);
 
     var hiddenField = document.createElement("input");
-    
+
     hiddenField.setAttribute("type", "hidden");
     hiddenField.setAttribute("name", "entreeSSOPayload");
     hiddenField.setAttribute("value", payload);
