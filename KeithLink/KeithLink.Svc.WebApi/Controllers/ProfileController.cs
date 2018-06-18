@@ -167,7 +167,7 @@ namespace KeithLink.Svc.WebApi.Controllers
             OperationReturnModel<string> returnValue = new OperationReturnModel<string>();
             try
             {
-                string keyandemail = String.Concat(AuthenticatedUser.EmailAddress.ToString(), KeithLink.Svc.Impl.Configuration.MenuMaxSharedKey.ToString());
+                string keyandemail = String.Concat(AuthenticatedUser.EmailAddress.ToString(), Impl.Configuration.MenuMaxSharedKey.ToString());
 
                 SHA512 sha512 = SHA512.Create();
                 byte[] bytes = System.Text.Encoding.UTF8.GetBytes(keyandemail);

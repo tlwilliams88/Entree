@@ -397,15 +397,13 @@ angular.module('bekApp')
   };
 
   // Menumax
-  $scope.redirectToMenumax = function(url) {
+  $scope.redirectToMenumax = function() {
     UserProfileService.generateAuthToken().then(function(resp) {
 
-      var payload = {
-        email: $scope.userProfile.emailaddress,
-        entreeSSOToken: resp
-      }
-
-      $scope.openExternalLinkWithPost(url, "width=1000, height=600, left=100, top=100, resizable=yes, scrollbars=yes", "_blank", payload);
+      var payload = '{"email":"' + $scope.userProfile.emailaddress + '",' + '"entreeSSOToken":"' + resp + '"}';
+      var url = ENV.menuMaxUrl + '/public/dologin.cfm';
+      
+      $scope.openExternalLinkWithPost(url, "_blank", payload);
 
     })
   };
