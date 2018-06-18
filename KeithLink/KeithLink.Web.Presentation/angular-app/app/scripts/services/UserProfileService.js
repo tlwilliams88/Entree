@@ -54,8 +54,8 @@ angular.module('bekApp')
 
       },
 
-      generateAuthToken: function() {
-        var promise = $http.get('/profile/generateauthtoken');
+      generateMenuMaxAuthToken: function() {
+        var promise = $http.get('/profile/generatemenumaxauthtoken');
         return UtilityService.resolvePromise(promise).then(function(successResponse) {
           return successResponse;
         });

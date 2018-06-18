@@ -161,7 +161,7 @@ namespace KeithLink.Svc.WebApi.Controllers
         /// <returns></returns>
         [Authorize]
         [HttpGet]
-        [ApiKeyedRoute("profile/generateauthtoken")]
+        [ApiKeyedRoute("profile/generatemenumaxauthtoken")]
         public OperationReturnModel<string> AuthToken()
         {
             OperationReturnModel<string> returnValue = new OperationReturnModel<string>();

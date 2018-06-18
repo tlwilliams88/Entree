@@ -398,11 +398,11 @@ angular.module('bekApp')
 
   // Menumax
   $scope.redirectToMenumax = function() {
-    UserProfileService.generateAuthToken().then(function(resp) {
+    UserProfileService.generateMenuMaxAuthToken().then(function(resp) {
 
       var payload = '{"email":"' + $scope.userProfile.emailaddress + '",' + '"entreeSSOToken":"' + resp + '"}';
-      var url = ENV.menuMaxUrl + '/public/dologin.cfm';
-      
+      var url = ENV.menuMaxUrl;
+
       $scope.openExternalLinkWithPost(url, "_blank", payload);
 
     })
