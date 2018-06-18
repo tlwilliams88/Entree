@@ -402,7 +402,7 @@ angular.module('bekApp')
 
       var payload = {
         email: $scope.userProfile.emailaddress,
-        entreeSSOPayload: resp
+        entreeSSOToken: resp
       }
 
       $scope.openExternalLinkWithPost(url, "width=1000, height=600, left=100, top=100, resizable=yes, scrollbars=yes", "_blank", payload);
