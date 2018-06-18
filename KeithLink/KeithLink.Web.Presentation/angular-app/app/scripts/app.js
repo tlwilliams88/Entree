@@ -119,6 +119,26 @@ angular
     window.open(url, '_system');
   };
 
+  $rootScope.openExternalLinkWithPost = function(url, target, payload)
+  {
+    var form = document.createElement("form");
+    form.setAttribute("method", "post");
+    form.setAttribute("action", url);
+    form.setAttribute("target", target);
+
+    var hiddenField = document.createElement("input");
+
+    hiddenField.setAttribute("type", "hidden");
+    hiddenField.setAttribute("name", "entreeSSOPayload");
+    hiddenField.setAttribute("value", payload);
+
+    form.appendChild(hiddenField);
+    
+    document.body.appendChild(form);
+    form.submit();
+    document.body.removeChild(form);
+  }
+
   ENV.username = localStorageService.get('userName');
 
   /**********
