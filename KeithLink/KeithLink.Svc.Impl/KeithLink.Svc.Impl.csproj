@@ -373,6 +373,7 @@
     <Compile Include="Logic\ShoppingCartLogicImpl.cs" />
     <Compile Include="Logic\SingleSignOn\AccessRequestLogicImpl.cs" />
     <Compile Include="Logic\SingleSignOn\KbitRequestLogicImpl.cs" />
+    <Compile Include="Logic\UserFeedback\UserFeedbackLogicImpl.cs" />
     <Compile Include="Models\ElasticSearch\Item\ItemBase.cs" />
     <Compile Include="Models\ElasticSearch\Item\ItemDelete.cs" />
     <Compile Include="Models\ElasticSearch\Item\ItemUpdate.cs" />
@@ -898,6 +899,7 @@
     <Compile Include="Repository\SiteCatalog\ProductImageRepositoryImpl.cs" />
     <Compile Include="Repository\SiteCatalog\StubCatalogRepositoryImpl.cs" />
     <Compile Include="Repository\Templates\TemplatesRepositoryImpl.cs" />
+    <Compile Include="Repository\UserFeedback\UserFeedbackRepository.cs" />
     <Compile Include="RequestTemplates\ControllerFactory.cs" />
     <Compile Include="RequestTemplates\RequestTemplateException.cs" />
     <Compile Include="RequestTemplates\RequestTemplates.cs">
