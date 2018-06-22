@@ -6,10 +6,8 @@ angular.module('bekApp')
 
 
     $scope.documents = [];
-    $scope.previousPage = [];
     $scope.identifier = $scope.selectedUserContext.customer.customerNumber + '-' + $scope.selectedUserContext.customer.customerBranch;  
     $scope.breadcrumbs = [{name: $scope.selectedUserContext.customer.customerName, url: $scope.identifier}];
-    $scope.previousPage.push($scope.identifier);
     $scope.currentPage = $scope.identifier; 
     var orderBy = $filter('orderBy');
 
@@ -23,7 +21,6 @@ angular.module('bekApp')
 
     $scope.getFolder = function(doc) {
 
-      $scope.previousPage.push($scope.currentPage);
       $scope.currentPage = doc.url; 
       var existingBreadcrumb = null;
 

@@ -48,31 +48,31 @@ namespace KeithLink.Svc.Impl.Repository.DataConnection
                         var i = 0;
                         foreach (var segment in document.Uri.Segments)
                         {
-                           doc.name = System.Net.WebUtility.UrlDecode(document.Uri.Segments[i]);
+                           doc.Name = System.Net.WebUtility.UrlDecode(document.Uri.Segments[i]);
                             i++;
                         }
 
-                        if (doc.name[doc.name.Length -1].ToString() == "/")
+                        if (doc.Name[doc.Name.Length -1].ToString() == "/")
                         {
                             var decodedUrl = System.Net.WebUtility.UrlDecode(document.Uri.AbsolutePath);
-                            doc.type = "folder";
-                            doc.name = doc.name.Remove(doc.name.Length - 1);
-                            doc.url = decodedUrl.Substring(decodedUrl.IndexOf(identifier), decodedUrl.Length - decodedUrl.IndexOf(identifier));
+                            doc.Type = "folder";
+                            doc.Name = doc.Name.Remove(doc.Name.Length - 1);
+                            doc.Url = decodedUrl.Substring(decodedUrl.IndexOf(identifier), decodedUrl.Length - decodedUrl.IndexOf(identifier));
                         }
                         else
                         {
-                            if (doc.name.IndexOf(".xls") > 0) { doc.type = "excel"; }
-                            else if (doc.name.IndexOf(".pdf") > 0) { doc.type = "pdf"; }
-                            else if (doc.name.IndexOf(".docx") > 0) { doc.type = "word"; }
-                            else if (doc.name.IndexOf(".txt") > 0) { doc.type = "text"; }
-                            else if (doc.name.IndexOf(".jpg") > 0 || doc.name.IndexOf(".png") > 0 || doc.name.IndexOf(".bmp") > 0) { doc.type = "image"; }
-                            else if (doc.name.IndexOf(".zip") > 0) { doc.type = "zip"; }
-                            else { doc.type = "other"; }
+                            if (doc.Name.IndexOf(".xls") > 0) { doc.Type = "excel"; }
+                            else if (doc.Name.IndexOf(".pdf") > 0) { doc.Type = "pdf"; }
+                            else if (doc.Name.IndexOf(".docx") > 0) { doc.Type = "word"; }
+                            else if (doc.Name.IndexOf(".txt") > 0) { doc.Type = "text"; }
+                            else if (doc.Name.IndexOf(".jpg") > 0 || doc.Name.IndexOf(".png") > 0 || doc.Name.IndexOf(".bmp") > 0) { doc.Type = "image"; }
+                            else if (doc.Name.IndexOf(".zip") > 0) { doc.Type = "zip"; }
+                            else { doc.Type = "other"; }
 
-                            doc.url = "https://bekcdn.azureedge.net/bekblob" + System.Net.WebUtility.UrlDecode(document.Uri.AbsolutePath);
+                            doc.Url = "https://bekcdn.azureedge.net/bekblob" + System.Net.WebUtility.UrlDecode(document.Uri.AbsolutePath);
                         }
 
-                        if (doc.type != "folder")
+                        if (doc.Type != "folder")
                         {
                             using (HttpClient http = new HttpClient())
                             {
@@ -80,7 +80,7 @@ namespace KeithLink.Svc.Impl.Repository.DataConnection
                                 {
                                     if (response.StatusCode.Equals(HttpStatusCode.OK))
                                     {
-                                        doc.modified = response.Content.Headers.LastModified;
+                                        doc.Modified = response.Content.Headers.LastModified;
                                     }
                                 }
                             }
