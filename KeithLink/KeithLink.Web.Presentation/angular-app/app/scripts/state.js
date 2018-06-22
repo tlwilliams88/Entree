@@ -97,6 +97,14 @@ angular.module('bekApp')
         }]
       }
     })
+    .state('menu.documents', {
+      url: '/documents/',
+      templateUrl: 'views/documents.html',
+      controller: 'DocumentController',
+      data: {
+        authorize: 'isLoggedIn'
+      }
+    })
     .state('menu.applicationsettings', {
       url: '/applicationsettings/',
       templateUrl: 'views/applicationsettings.html',

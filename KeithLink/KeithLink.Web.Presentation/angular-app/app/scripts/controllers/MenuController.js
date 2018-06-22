@@ -21,6 +21,7 @@ angular.module('bekApp')
   'OrderService', 'mandatoryMessages', 
   'localStorageService', 'CategoryService', 
   'BranchService', 'ConfigSettingsService',
+  'DocumentService',
     function (
       $scope, $timeout, $rootScope, $modalStack, $state, $q, $log, $window,  // built in angular services
       $modal,   // ui-bootstrap library
@@ -37,14 +38,16 @@ angular.module('bekApp')
       localStorageService,
       CategoryService,
       BranchService,
-      ConfigSettingsService
+      ConfigSettingsService,
+      DocumentService
     ) {
 
   $scope.$state = $state;
   $scope.isMobile = UtilityService.isMobileDevice();
-  $scope.isMobileApp = ENV.mobileApp;
+  $scope.isMobileApp = ENV.mobileApp;  
   $scope.mandatoryMessages = mandatoryMessages;
   $scope.branches = branches;
+
   if(!$scope.branches) {
     BranchService.getBranches().then(function(resp){
       $scope.branches = resp;
@@ -190,6 +193,10 @@ angular.module('bekApp')
   } else {
     $scope.setSelectedUserContext(LocalStorage.getBranchId());
   }
+
+  DocumentService.getAllDocuments($scope.selectedUserContext.customer.customerNumber + '-' + $scope.selectedUserContext.customer.customerBranch).then(function(links){
+    $scope.customerHasDocuments = links.length > 0;
+  });
 
   $scope.customerInfiniteScroll = {
     from: 0,
