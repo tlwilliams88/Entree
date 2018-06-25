@@ -321,6 +321,12 @@
     <Content Include="Scripts\AppData\Configuration\Tables\ExternalCatalogs\ExternalCatalogs_0001_0001.11.00_up.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="Scripts\AppData\Configuration\Tables\ExternalCatalogs\PostDeployment\ExternalCatalogs_0075_2018.07.00_down.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Scripts\AppData\Configuration\Tables\ExternalCatalogs\PostDeployment\ExternalCatalogs_0075_2018.07.00_up.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="Scripts\AppData\Configuration\Tables\MessageTemplates\MessageTemplates_0001_0001.11.00_down.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
