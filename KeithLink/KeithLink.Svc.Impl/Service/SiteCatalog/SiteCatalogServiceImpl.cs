@@ -97,7 +97,10 @@ namespace KeithLink.Svc.Impl.Service.SiteCatalog
 
             AddPricingInfo(ret, catalogInfo, searchModel);
 
-            GetAdditionalProductInfo(profile, ret, catalogInfo);
+            if(searchModel.CatalogType.Equals(Constants.CATALOG_UNFIEAST, StringComparison.CurrentCultureIgnoreCase) == false)
+            {
+                GetAdditionalProductInfo(profile, ret, catalogInfo);
+            }
 
             return ret;
         }

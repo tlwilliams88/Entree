@@ -255,6 +255,8 @@ namespace KeithLink.Svc.Impl.Repository.SiteCatalog
                 case "unfi_5":
                 case "unfi_7":
                     return Constants.CATALOG_UNFI;
+                case "unfi_e_5":
+                    return Constants.CATALOG_UNFIEAST;
                 default:
                     return null;
             }

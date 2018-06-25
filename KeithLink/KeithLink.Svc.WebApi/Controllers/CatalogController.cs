@@ -87,6 +87,10 @@ namespace KeithLink.Svc.WebApi.Controllers {
             try
             {
                 IEnumerable<KeyValuePair<string, string>> pairs = Request.GetQueryNameValuePairs();
+                if (catalogType.ToLower().Equals("unfi") && this.SelectedUserContext.BranchId.Equals("FEL"))
+                {
+                    catalogType = "unfi_e";
+                }
                 ret.SuccessResponse = _catalogLogic.GetCategories(0, 2000, catalogType);
                 ret.IsSuccess = true;
             }
@@ -138,6 +142,10 @@ namespace KeithLink.Svc.WebApi.Controllers {
             OperationReturnModel<ProductsReturn> ret = new OperationReturnModel<ProductsReturn>();
             try
             {
+                if (catalogType.ToLower().Equals("unfi") && this.SelectedUserContext.BranchId.Equals("FEL"))
+                {
+                    catalogType = "unfi_e";
+                }
                 searchModel.CatalogType = catalogType;
 
                 ProductsReturn prods = _catalogService.GetProductsByCategory(this.SelectedUserContext, categoryId, searchModel, this.AuthenticatedUser);
@@ -263,6 +271,10 @@ namespace KeithLink.Svc.WebApi.Controllers {
             try
             {
                 IEnumerable<KeyValuePair<string, string>> pairs = Request.GetQueryNameValuePairs();
+                if (catalogType.ToLower().Equals("unfi") && this.SelectedUserContext.BranchId.Equals("FEL"))
+                {
+                    catalogType = "unfi_e";
+                }
 
                 Product prod = _catalogLogic.GetProductById(this.SelectedUserContext, id, this.AuthenticatedUser, catalogType);
 

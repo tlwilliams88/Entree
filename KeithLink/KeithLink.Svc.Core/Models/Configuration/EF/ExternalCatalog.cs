@@ -12,7 +12,8 @@ namespace KeithLink.Svc.Core.Models.Configuration.EF
     public enum ExternalCatalogType
     {
         BEK = 0,
-        UNFI = 1
+        UNFI = 1,
+        UNFI_E = 2
     }
 
     public class ExternalCatalog : BaseEFModel

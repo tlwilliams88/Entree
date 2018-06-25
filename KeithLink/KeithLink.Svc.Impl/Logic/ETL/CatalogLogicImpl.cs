@@ -322,7 +322,7 @@ namespace KeithLink.Svc.Impl.ETL
             {
                 var newCatalog = new MSCommerceCatalogCollection2Catalog()
                 {
-                    name = string.Format("unfi_east_{0}", warehouse),
+                    name = string.Format("unfi_e_{0}", warehouse),
                     productUID = "ProductId",
                     startDate = DateTime.Now.ToString("yyyy-MM-ddTHH:mm:ss"),
                     endDate = DateTime.Now.AddYears(500)
@@ -331,7 +331,7 @@ namespace KeithLink.Svc.Impl.ETL
                     DefaultLanguage = Language,
                     ReportingLanguage = Language
                 };
-                newCatalog.DisplayName = CreateDisplayName(string.Format("UNFI_{0}", warehouse));
+                newCatalog.DisplayName = CreateDisplayName(string.Format("UNFI_E_{0}", warehouse));
 
                 newCatalog.Category = GenerateUNFIEastCategories();
                 newCatalog.Product = GenerateUNFIEastProducts(warehouse);

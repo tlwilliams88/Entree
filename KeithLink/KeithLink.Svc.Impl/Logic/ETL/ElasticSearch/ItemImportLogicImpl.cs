@@ -293,15 +293,15 @@ namespace KeithLink.Svc.Impl.Logic.ETL {
 
                 foreach (var warehouse in warehouses)
                 {
-                    if (!_elasticSearchRepository.CheckIfIndexExist(string.Format("unfe_{0}", warehouse)))
+                    if (!_elasticSearchRepository.CheckIfIndexExist(string.Format("unfi_e_{0}", warehouse)))
                     {
-                        _elasticSearchRepository.CreateEmptyIndex(string.Format("unfe_{0}", warehouse));
-                        _elasticSearchRepository.MapProductProperties(string.Format("unfe_{0}", warehouse), GetProductMapping());
+                        _elasticSearchRepository.CreateEmptyIndex(string.Format("unfi_e_{0}", warehouse));
+                        _elasticSearchRepository.MapProductProperties(string.Format("unfi_e_{0}", warehouse), GetProductMapping());
                     }
 
                     List<string> ESItems =
                         _elasticSearchRepository.ReadListOfProductsByBranch
-                            (string.Format("unfe_{0}", warehouse));
+                            (string.Format("unfi_e_{0}", warehouse));
 
                     foreach (DataRow row in items.Rows)
                     {
@@ -318,7 +318,7 @@ namespace KeithLink.Svc.Impl.Logic.ETL {
                         ItemDelete del = new ItemDelete();
                         del.delete = new RootData();
                         del.delete._id = toDelete;
-                        del.delete._index = string.Format("unfe_{0}", warehouse);
+                        del.delete._index = string.Format("unfi_e_{0}", warehouse);
                         products.Add(del);
                     }
                 }
@@ -923,7 +923,7 @@ namespace KeithLink.Svc.Impl.Logic.ETL {
                 BrandNotAnalyzed = row.GetString("Brand"),
                 BrandDescription = row.GetString("Brand"),
                 BrandDescriptionNotAnalyzed = row.GetString("Brand"),
-                BranchId = "unfe",
+                BranchId = "unfi",
                 CLength = row.GetNullableDouble("CLength"),
                 CWidth = row.GetNullableDouble("CWidth"),
                 CHeight = row.GetNullableDouble("CHeight"),
@@ -951,7 +951,7 @@ namespace KeithLink.Svc.Impl.Logic.ETL {
                 Status = row.GetString("Status"),
                 ItemType = row.GetString("Type"),
                 ParentCategoryName = row.GetString("Category"),
-                ParentCategoryNameNotAnalyzed = row.GetString("Category"),
+                ParentCategoryNameNotAnalyzed = TitleCaseString(row.GetString("Category")),
                 CategoryName = row.GetString("Subgroup"),
                 CategoryNameNotAnalyzed = row.GetString("Subgroup"),
                 CategoryId = "KO",
@@ -968,7 +968,7 @@ namespace KeithLink.Svc.Impl.Logic.ETL {
 
             RootData index = new RootData();
             index._id = data.MfrItemNumber.ToString();
-            index._index = string.Format("unfe_{0}", data.WarehouseNumber);
+            index._index = string.Format("unfi_e_{0}", data.WarehouseNumber);
             index.data = data;
 
             if (existingItems.Contains(data.MfrItemNumber.ToString()))
@@ -984,6 +984,25 @@ namespace KeithLink.Svc.Impl.Logic.ETL {
                 return item;
             }
             return null;
+        }
+        private String TitleCaseString(String s)
+        {
+            if (s == null) return s;
+
+            String[] words = s.Split(' ');
+            for (int i = 0; i < words.Length; i++)
+            {
+                if (words[i].Length == 0) continue;
+
+                Char firstChar = Char.ToUpper(words[i][0]);
+                String rest = "";
+                if (words[i].Length > 1)
+                {
+                    rest = words[i].Substring(1).ToLower();
+                }
+                words[i] = firstChar + rest;
+            }
+            return String.Join(" ", words);
         }
         #endregion
 
