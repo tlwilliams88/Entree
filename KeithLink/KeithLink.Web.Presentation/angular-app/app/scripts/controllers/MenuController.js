@@ -195,7 +195,7 @@ angular.module('bekApp')
   }
 
   DocumentService.getAllDocuments($scope.selectedUserContext.customer.customerNumber + '-' + $scope.selectedUserContext.customer.customerBranch).then(function(links){
-    $scope.customerHasDocuments = links.length > 0;
+    $scope.showDocuments = links.length > 0 && ENV.showDocumentsPage;
   });
 
   $scope.customerInfiniteScroll = {

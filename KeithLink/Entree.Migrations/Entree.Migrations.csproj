@@ -243,6 +243,12 @@
     <Content Include="Scripts\AppData\Configuration\Stored Procedures\SaveAppSetting\SaveAppSetting_0001_0001.11.00_up.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="Scripts\AppData\Configuration\Tables\AppSettings\PostDeployment\AppSettingsSeed_0077_2018.07.00_down.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Scripts\AppData\Configuration\Tables\AppSettings\PostDeployment\AppSettingsSeed_0077_2018.07.00_up.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="Scripts\AppData\Configuration\Tables\AppSettings\PostDeployment\AppSettings_0077_2018.07.00_down.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
