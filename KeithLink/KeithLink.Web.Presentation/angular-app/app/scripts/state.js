@@ -63,7 +63,7 @@ angular.module('bekApp')
 
           ConfigSettingsService.getSetting('ShowDocumentsPage').then(function(setting) {
             ENV.showDocumentsPage = setting;
-          })
+          });
 
           return $stateParams.isHomePage = false;
         }]
