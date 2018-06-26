@@ -23,7 +23,7 @@ CREATE TABLE [ETL].[Staging_UNFIEastProducts](
 	[VendorCasesPerPallet] [int] NULL,
 	[CaseQuantity] [int] NULL,
 	[PutUp] [varchar](50) NULL,
-	[ContSize] [decimal](9, 3) NULL,
+	[ContSize] [varchar](10) NULL,
 	[ContUnit] [varchar](50) NULL,
 	[TCSCode] [varchar](50) NULL,
 	[RetailUPC] [varchar](50) NULL,

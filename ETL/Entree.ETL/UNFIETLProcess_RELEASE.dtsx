@@ -8,12 +8,12 @@
   DTS:DTSID="{D462F6C6-983A-4F11-8DF8-CC0DDDA710D9}"
   DTS:EnableConfig="True"
   DTS:ExecutableType="Microsoft.Package"
-  DTS:LastModifiedProductVersion="14.0.3008.28"
+  DTS:LastModifiedProductVersion="14.0.3002.106"
   DTS:LocaleID="1033"
   DTS:ObjectName="UNFIETLProcess_RELEASE"
   DTS:PackageType="5"
-  DTS:VersionBuild="129"
-  DTS:VersionGUID="{BB9782B1-6944-4C52-8B37-47B731EE5577}">
+  DTS:VersionBuild="139"
+  DTS:VersionGUID="{8B91818C-4423-42A6-8392-8D8172C63C74}">
   <DTS:Property
     DTS:Name="PackageFormatVersion">8</DTS:Property>
   <DTS:ConnectionManagers>
@@ -772,11 +772,11 @@
             <DTS:Property
               DTS:Name="ServerPassword"
               Sensitive="1"
-              Encrypted="1">AQAAANCMnd8BFdERjHoAwE/Cl+sBAAAAXNK8DzCMwUSdTLI29vfI8wAAAAAIAAAARABUAFMAAAADZgAAwAAAABAAAAAiW8THtIN91l9RB/4p+SYYAAAAAASAAACgAAAAEAAAAEIotrl9Dd+2/RZFXrfcLOoIAAAAy4aWXtWtmWoUAAAALqtQ1lkb0JUmPZIDehAlkWWbs/s</DTS:Property>
+              Encrypted="1">AQAAANCMnd8BFdERjHoAwE/Cl+sBAAAAXNK8DzCMwUSdTLI29vfI8wAAAAAIAAAARABUAFMAAAADZgAAwAAAABAAAAB6U0iwap+5JVzTgDeAMy/IAAAAAASAAACgAAAAEAAAAEJaOj4oiLcHddbx4/nckv4IAAAAaiyVMaRtwUMUAAAAoY/aRSvA0lThbwt03mRUb5MvPpA</DTS:Property>
             <DTS:Property
               DTS:Name="ProxyPassword"
               Sensitive="1"
-              Encrypted="1">AQAAANCMnd8BFdERjHoAwE/Cl+sBAAAAXNK8DzCMwUSdTLI29vfI8wAAAAAIAAAARABUAFMAAAADZgAAwAAAABAAAABCMKczOcvCWsWskqw0YjafAAAAAASAAACgAAAAEAAAAEbcLA7RM+gxiE+49dSwlUUIAAAAMoQjNp89y4cUAAAAvGUaAjwP4uBwcLWlmGNgh5o1wDs</DTS:Property>
+              Encrypted="1">AQAAANCMnd8BFdERjHoAwE/Cl+sBAAAAXNK8DzCMwUSdTLI29vfI8wAAAAAIAAAARABUAFMAAAADZgAAwAAAABAAAAAusp3jOy8lg+fa/3Lkw0iSAAAAAASAAACgAAAAEAAAAAdUfHAu25DCnhngPvXlOE8IAAAAwrPtoEGwVF8UAAAAXZKfPhp9NXW0gFNt6HT4mqTzhgU</DTS:Property>
           </DTS:HttpConnection>
         </DTS:ConnectionManager>
       </DTS:ObjectData>
@@ -1235,7 +1235,7 @@
           DTS:LocaleID="-1"
           DTS:ObjectName="Process Elastic Search Data"
           DTS:TaskContact="Web Service Task; Microsoft Corporation; SQL Server 2012; © 2007 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
-          DTS:ThreadHint="4">
+          DTS:ThreadHint="2">
           <DTS:Variables />
           <DTS:LoggingOptions
             DTS:FilterKind="0" />
@@ -1917,7 +1917,7 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA</BinaryItem>
       DTS:LocaleID="-1"
       DTS:ObjectName="Send Fail Message"
       DTS:TaskContact="Send Mail Task; Microsoft Corporation; SQL Server 2012; © 2007 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
-      DTS:ThreadHint="2">
+      DTS:ThreadHint="4">
       <DTS:Variables />
       <DTS:LoggingOptions
         DTS:FilterKind="0" />
@@ -4148,6 +4148,82 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA</BinaryItem>
                   </outputs>
                 </component>
                 <component
+                  refId="Package\Sequence Container UNFI EAST\Stage UNFI Products\Derived Column"
+                  componentClassID="Microsoft.DerivedColumn"
+                  contactInfo="Derived Column;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;0"
+                  description="Creates new column values by applying expressions to transformation input columns. Create new columns or overwrite existing ones. For example, concatenate the values from the 'first name' and 'last name' column to make a 'full name' column."
+                  name="Derived Column"
+                  usesDispositions="true">
+                  <inputs>
+                    <input
+                      refId="Package\Sequence Container UNFI EAST\Stage UNFI Products\Derived Column.Inputs[Derived Column Input]"
+                      description="Input to the Derived Column Transformation"
+                      name="Derived Column Input">
+                      <inputColumns>
+                        <inputColumn
+                          refId="Package\Sequence Container UNFI EAST\Stage UNFI Products\Derived Column.Inputs[Derived Column Input].Columns[DC]"
+                          cachedCodepage="1252"
+                          cachedDataType="str"
+                          cachedLength="50"
+                          cachedName="DC"
+                          errorOrTruncationOperation="Computation"
+                          errorRowDisposition="FailComponent"
+                          lineageId="Package\Sequence Container UNFI EAST\Stage UNFI Products\Flat File Source.Outputs[Flat File Source Output].Columns[DC]"
+                          truncationRowDisposition="FailComponent"
+                          usageType="readWrite">
+                          <properties>
+                            <property
+                              containsID="true"
+                              dataType="System.String"
+                              description="Derived Column Expression"
+                              name="Expression">3</property>
+                            <property
+                              containsID="true"
+                              dataType="System.String"
+                              description="Derived Column Friendly Expression"
+                              expressionType="Notify"
+                              name="FriendlyExpression">3</property>
+                          </properties>
+                        </inputColumn>
+                      </inputColumns>
+                      <externalMetadataColumns />
+                    </input>
+                  </inputs>
+                  <outputs>
+                    <output
+                      refId="Package\Sequence Container UNFI EAST\Stage UNFI Products\Derived Column.Outputs[Derived Column Output]"
+                      description="Default Output of the Derived Column Transformation"
+                      exclusionGroup="1"
+                      name="Derived Column Output"
+                      synchronousInputId="Package\Sequence Container UNFI EAST\Stage UNFI Products\Derived Column.Inputs[Derived Column Input]">
+                      <externalMetadataColumns />
+                    </output>
+                    <output
+                      refId="Package\Sequence Container UNFI EAST\Stage UNFI Products\Derived Column.Outputs[Derived Column Error Output]"
+                      description="Error Output of the Derived Column Transformation"
+                      exclusionGroup="1"
+                      isErrorOut="true"
+                      name="Derived Column Error Output"
+                      synchronousInputId="Package\Sequence Container UNFI EAST\Stage UNFI Products\Derived Column.Inputs[Derived Column Input]">
+                      <outputColumns>
+                        <outputColumn
+                          refId="Package\Sequence Container UNFI EAST\Stage UNFI Products\Derived Column.Outputs[Derived Column Error Output].Columns[ErrorCode]"
+                          dataType="i4"
+                          lineageId="Package\Sequence Container UNFI EAST\Stage UNFI Products\Derived Column.Outputs[Derived Column Error Output].Columns[ErrorCode]"
+                          name="ErrorCode"
+                          specialFlags="1" />
+                        <outputColumn
+                          refId="Package\Sequence Container UNFI EAST\Stage UNFI Products\Derived Column.Outputs[Derived Column Error Output].Columns[ErrorColumn]"
+                          dataType="i4"
+                          lineageId="Package\Sequence Container UNFI EAST\Stage UNFI Products\Derived Column.Outputs[Derived Column Error Output].Columns[ErrorColumn]"
+                          name="ErrorColumn"
+                          specialFlags="2" />
+                      </outputColumns>
+                      <externalMetadataColumns />
+                    </output>
+                  </outputs>
+                </component>
+                <component
                   refId="Package\Sequence Container UNFI EAST\Stage UNFI Products\Flat File Source"
                   componentClassID="Microsoft.FlatFileSource"
                   contactInfo="Flat File Source;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;1"
@@ -5350,11 +5426,11 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA</BinaryItem>
                     <property
                       dataType="System.Boolean"
                       description="Indicates whether the columns containing null will have null inserted in the destination. If false, columns containing null will have their default values inserted at the destination. Applies only if fast load is turned on."
-                      name="FastLoadKeepNulls">false</property>
+                      name="FastLoadKeepNulls">true</property>
                     <property
                       dataType="System.String"
                       description="Specifies options to be used with fast load.  Applies only if fast load is turned on."
-                      name="FastLoadOptions">TABLOCK</property>
+                      name="FastLoadOptions"></property>
                     <property
                       dataType="System.Int32"
                       description="Specifies when commits are issued during data insertion.  A value of 0 specifies that one commit will be issued at the end of data insertion.  Applies only if fast load is turned on."
@@ -5750,10 +5826,10 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA</BinaryItem>
                           name="PutUp" />
                         <externalMetadataColumn
                           refId="Package\Sequence Container UNFI EAST\Stage UNFI Products\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[ContSize]"
-                          codePage="1252"
-                          dataType="str"
-                          length="10"
-                          name="ContSize" />
+                          dataType="numeric"
+                          name="ContSize"
+                          precision="9"
+                          scale="4" />
                         <externalMetadataColumn
                           refId="Package\Sequence Container UNFI EAST\Stage UNFI Products\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[ContUnit]"
                           codePage="1252"
@@ -5909,8 +5985,13 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA</BinaryItem>
               </components>
               <paths>
                 <path
-                  refId="Package\Sequence Container UNFI EAST\Stage UNFI Products.Paths[Flat File Source Output]"
+                  refId="Package\Sequence Container UNFI EAST\Stage UNFI Products.Paths[Derived Column Output]"
                   endId="Package\Sequence Container UNFI EAST\Stage UNFI Products\Conditional Split.Inputs[Conditional Split Input]"
+                  name="Derived Column Output"
+                  startId="Package\Sequence Container UNFI EAST\Stage UNFI Products\Derived Column.Outputs[Derived Column Output]" />
+                <path
+                  refId="Package\Sequence Container UNFI EAST\Stage UNFI Products.Paths[Flat File Source Output]"
+                  endId="Package\Sequence Container UNFI EAST\Stage UNFI Products\Derived Column.Inputs[Derived Column Input]"
                   name="Flat File Source Output"
                   startId="Package\Sequence Container UNFI EAST\Stage UNFI Products\Flat File Source.Outputs[Flat File Source Output]" />
                 <path
@@ -5931,7 +6012,7 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA</BinaryItem>
           DTS:LocaleID="-1"
           DTS:ObjectName="Truncate Staging Table"
           DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2012; © 2007 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
-          DTS:ThreadHint="3">
+          DTS:ThreadHint="2">
           <DTS:Variables />
           <DTS:LoggingOptions
             DTS:FilterKind="0" />
@@ -5950,7 +6031,7 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA</BinaryItem>
           DTS:LocaleID="-1"
           DTS:ObjectName="Update UNFI Item Numbers from BEK stocked items"
           DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2012; © 2007 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
-          DTS:ThreadHint="3">
+          DTS:ThreadHint="2">
           <DTS:Variables />
           <DTS:LoggingOptions
             DTS:FilterKind="0" />
@@ -6532,55 +6613,81 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA</BinaryItem>
       <GraphLayout
         Capacity="8" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:assembly="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:mssgm="clr-namespace:Microsoft.SqlServer.Graph.Model;assembly=Microsoft.SqlServer.Graph">
         <NodeLayout
+          Size="151,42"
+          Id="Package\Sequence Container UNFI EAST\Stage UNFI Products\Flat File Source"
+          TopLeft="52.5,10.5" />
+        <NodeLayout
+          Size="154,42"
+          Id="Package\Sequence Container UNFI EAST\Stage UNFI Products\Derived Column"
+          TopLeft="53.5,100.5" />
+        <NodeLayout
           Size="171,42"
           Id="Package\Sequence Container UNFI EAST\Stage UNFI Products\OLE DB Destination"
-          TopLeft="5.50000000000003,312.5" />
-        <NodeLayout
-          Size="153,42"
-          Id="Package\Sequence Container UNFI EAST\Stage UNFI Products\Flat File Source"
-          TopLeft="15.5,5.5" />
+          TopLeft="42.5,312.5" />
         <NodeLayout
           Size="155,42"
           Id="Package\Sequence Container UNFI EAST\Stage UNFI Products\Conditional Split"
-          TopLeft="13.5,209.5" />
+          TopLeft="48.5,226.5" />
         <EdgeLayout
           Id="Package\Sequence Container UNFI EAST\Stage UNFI Products.Paths[Output]"
-          TopLeft="91,251.5">
+          TopLeft="127,268.5">
           <EdgeLayout.Curve>
             <mssgle:Curve
               StartConnector="{assembly:Null}"
-              EndConnector="0,61"
+              EndConnector="0,44"
               Start="0,0"
-              End="0,53.5">
+              End="0,36.5">
               <mssgle:Curve.Segments>
                 <mssgle:SegmentCollection
                   Capacity="5">
                   <mssgle:LineSegment
-                    End="0,53.5" />
+                    End="0,36.5" />
                 </mssgle:SegmentCollection>
               </mssgle:Curve.Segments>
             </mssgle:Curve>
           </EdgeLayout.Curve>
           <EdgeLayout.Labels>
             <mssgm:EdgeLabel
-              BoundingBox="-16.05890625,21.033203125,32.1178125,11.43359375"
+              BoundingBox="-16.05890625,12.533203125,32.1178125,11.43359375"
               RelativePosition="Any" />
           </EdgeLayout.Labels>
         </EdgeLayout>
         <EdgeLayout
           Id="Package\Sequence Container UNFI EAST\Stage UNFI Products.Paths[Flat File Source Output]"
-          TopLeft="91.5,47.5">
+          TopLeft="129.25,52.5">
           <EdgeLayout.Curve>
             <mssgle:Curve
               StartConnector="{assembly:Null}"
-              EndConnector="0,162"
+              EndConnector="0,48"
               Start="0,0"
-              End="0,154.5">
+              End="0,40.5">
               <mssgle:Curve.Segments>
                 <mssgle:SegmentCollection
                   Capacity="5">
                   <mssgle:LineSegment
-                    End="0,154.5" />
+                    End="0,40.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package\Sequence Container UNFI EAST\Stage UNFI Products.Paths[Derived Column Output]"
+          TopLeft="128.25,142.5">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,84"
+              Start="0,0"
+              End="0,76.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,76.5" />
                 </mssgle:SegmentCollection>
               </mssgle:Curve.Segments>
             </mssgle:Curve>
