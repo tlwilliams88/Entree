@@ -2,10 +2,8 @@
 using KeithLink.Svc.Core.Enumerations.Messaging;
 using KeithLink.Svc.Core.Interface.UserFeedback;
 using KeithLink.Svc.Core.Models.UserFeedback;
-using KeithLink.Svc.Core.Models.SiteCatalog;
 
 using System;
-using System.Net.Mail;
 
 namespace KeithLink.Svc.Impl.Logic.UserFeedback
 {
@@ -14,19 +12,16 @@ namespace KeithLink.Svc.Impl.Logic.UserFeedback
         #region attributes
         private readonly IUserFeedbackRepository _userFeedbackRepo;
         private readonly IEventLogRepository _eventLog;
-        //private readonly IEmailClient _emailClient;
         #endregion
 
         #region ctor
         public UserFeedbackLogicImpl(
                                     IUserFeedbackRepository userFeedbackRepo,
                                     IEventLogRepository eventLog
-                                    //IEmailClient emailClient
                                     )
         {
             _userFeedbackRepo = userFeedbackRepo;
             _eventLog = eventLog;
-            //_emailClient = emailClient;
         }
         #endregion
 
@@ -57,7 +52,7 @@ namespace KeithLink.Svc.Impl.Logic.UserFeedback
         /// <param name="user"></param>
         /// <param name="userFeedback"></param>
         /// <returns></returns>
-        public int SubmitUserFeedback(UserFeedbackContext context, Core.Models.UserFeedback.UserFeedback userFeedback)
+        public void SaveUserFeedback(UserFeedbackContext context, Core.Models.UserFeedback.UserFeedback userFeedback)
         {
             if (context == null)
                 throw new ArgumentNullException("context");
@@ -66,34 +61,7 @@ namespace KeithLink.Svc.Impl.Logic.UserFeedback
 
             AssertUserFeedback(userFeedback);
 
-            //List<Recipient> recipients = new List<Recipient>();
-            //var recipient = new Recipient()
-            //{
-            //    UserId = user.UserId,
-            //    UserEmail = "entreefeedback@benekeith.com",
-
-            //    CustomerNumber = user.CustomerNumber,
-            //    Channel = Core.Enumerations.Messaging.Channel.Email,
-            //};
-
-            //recipients.Add(recipient);
-            //var message = new Message()
-            //{
-            //    MessageSubject = userFeedback.Subject,
-            //    MessageBody = userFeedback.Content,
-            //};
-
-            //_emailMessageProvider.SendMessage(recipients, message);
-
-           MailMessage message = new MailMessage(context.SourceEmailAddress, context.TargetEmailAddress, userFeedback.Subject, userFeedback.Content);
-            //SmtpClient client = new SmtpClient(mailServer);
-            //client.UseDefaultCredentials = true;
-            //client.Send(message);
-
-
-            int rowsAffected = _userFeedbackRepo.SaveUserFeedback(context, userFeedback);
-
-            return rowsAffected;
+            _userFeedbackRepo.SaveUserFeedback(context, userFeedback);
         }
 
         #endregion

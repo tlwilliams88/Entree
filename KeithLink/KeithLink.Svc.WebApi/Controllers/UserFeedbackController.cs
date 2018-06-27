@@ -5,6 +5,7 @@ using KeithLink.Svc.Core.Interface.Messaging;
 using KeithLink.Svc.Core.Interface.Profile;
 using KeithLink.Svc.Core.Interface.SiteCatalog;
 using KeithLink.Svc.Core.Interface.UserFeedback;
+using KeithLink.Svc.Core.Models.Messaging.Queue;
 using KeithLink.Svc.Core.Models.Profile;
 using KeithLink.Svc.Core.Models.UserFeedback;
 using KeithLink.Svc.Core.Models.SiteCatalog;
@@ -18,7 +19,7 @@ using System.Web.Http;
 namespace KeithLink.Svc.WebApi.Controllers
 {
     /// <summary>
-    /// end points for working the user profile
+    /// end points for handling user feedback
     /// </summary>
 	public class UserFeedbackController : BaseController
     {
@@ -27,6 +28,7 @@ namespace KeithLink.Svc.WebApi.Controllers
         private readonly IUserProfileLogic _profileLogic;
         private readonly IDivisionLogic _divisionLogic;
         private readonly IEventLogRepository _log;
+        private readonly INotificationHandler _notificationHandler;
         #endregion
 
         #region ctor
@@ -36,20 +38,20 @@ namespace KeithLink.Svc.WebApi.Controllers
         /// <param name="userFeedbackLogic"></param>
         /// <param name="profileLogic"></param>
         /// <param name="divisionLogic"></param>
+        /// <param name="notificationHandlerFactory"></param>
         /// <param name="logRepo"></param>
         public UserFeedbackController(
             IUserFeedbackLogic userFeedbackLogic, 
             IUserProfileLogic profileLogic,
             IDivisionLogic divisionLogic,
-            //IMessagingLogic messagingLogic,
-            //IMessageProvider emailMessageProvider,
-            //IMessageTemplateLogic messageTemplateLogic,
+            Func<NotificationType, INotificationHandler> notificationHandlerFactory,
             IEventLogRepository logRepo
             ) : base(profileLogic)
         {
             _userFeedbackLogic = userFeedbackLogic;
             _profileLogic = profileLogic;
             _divisionLogic = divisionLogic;
+            _notificationHandler = notificationHandlerFactory(NotificationType.UserFeedback);
             _log = logRepo;
         }
         #endregion
@@ -63,9 +65,9 @@ namespace KeithLink.Svc.WebApi.Controllers
         [Authorize]
         [HttpPut]
         [ApiKeyedRoute("userfeedback")]
-        public OperationReturnModel<int> SubmitUserFeedback(UserFeedback userFeedback)
+        public OperationReturnModel<string> SubmitUserFeedback(UserFeedback userFeedback)
         {
-            OperationReturnModel<int> retVal = new OperationReturnModel<int>() { IsSuccess = false };
+            OperationReturnModel<string> retVal = new OperationReturnModel<string>() { IsSuccess = false };
 
             try
             {
@@ -76,7 +78,10 @@ namespace KeithLink.Svc.WebApi.Controllers
                 var context = new UserFeedbackContext
                 {
                     UserId = AuthenticatedUser.UserId,
+                    UserFirstName = AuthenticatedUser.FirstName,
+                    UserLastName = AuthenticatedUser.LastName,
                     BranchId = customer?.CustomerBranch,
+                    CustomerNumber = customer?.CustomerNumber,
                     CustomerName = customer?.CustomerName,
                     SalesRepName = customer?.Dsr?.Name,
                     SourceName = AuthenticatedUser.Name,
@@ -85,7 +90,20 @@ namespace KeithLink.Svc.WebApi.Controllers
                     TargetEmailAddress = target.Item2,
                 };
 
-                retVal.SuccessResponse = _userFeedbackLogic.SubmitUserFeedback(context, userFeedback);
+                UserFeedbackNotification notification = new UserFeedbackNotification()
+                {
+                    BranchId = customer?.CustomerBranch,
+                    CustomerNumber = customer?.CustomerNumber,
+                    Audience = userFeedback.Audience,
+
+                    Context = context,
+                    UserFeedback = userFeedback,
+                };
+
+                _notificationHandler.ProcessNotification(notification);
+                _userFeedbackLogic.SaveUserFeedback(context, userFeedback);
+
+                retVal.SuccessResponse = "Feedback processed successfully.";
                 retVal.IsSuccess = true;
             }
             catch (ApplicationException axe)
@@ -128,6 +146,9 @@ namespace KeithLink.Svc.WebApi.Controllers
                     break;
             }
 
+#if DEBUG
+            target = Tuple.Create("debugging user", AuthenticatedUser.EmailAddress);
+#endif
             return target;
         }
 

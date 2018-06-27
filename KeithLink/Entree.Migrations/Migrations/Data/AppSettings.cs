@@ -25,6 +25,9 @@ namespace Entree.Migrations.Data {
 
             // Brett
             _specificConfigurationsToRun.Add("CORPMISDEV2H", @"Scripts\AppData\Configuration\Tables\AppSettings\PostDeployment\bakillins.local.configuration.sql");
+
+            // John
+            _specificConfigurationsToRun.Add("CORPMISDEV4B", @"Scripts\AppData\Configuration\Tables\AppSettings\PostDeployment\jjdevonshire.local.configuration.sql");
         }
 
         public override void Up() {

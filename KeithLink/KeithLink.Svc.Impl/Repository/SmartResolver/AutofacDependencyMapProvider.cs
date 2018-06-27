@@ -312,6 +312,7 @@ namespace KeithLink.Svc.Impl.Repository.SmartResolver
             builder.RegisterType<EtaNotificationHandlerImpl>().Keyed<INotificationHandler>(NotificationType.Eta);
             builder.RegisterType<PaymentConfirmationNotificationHandlerImpl>().Keyed<INotificationHandler>(NotificationType.PaymentConfirmation);
             builder.RegisterType<HasNewsNotificationHandlerImpl>().Keyed<INotificationHandler>(NotificationType.HasNews);
+            builder.RegisterType<UserFeedbackNotificationHandlerImpl>().Keyed<INotificationHandler>(NotificationType.UserFeedback);
             builder.Register<Func<NotificationType, INotificationHandler>>(
                 c => {
                     var handlers = c.Resolve<IIndex<NotificationType, INotificationHandler>>();

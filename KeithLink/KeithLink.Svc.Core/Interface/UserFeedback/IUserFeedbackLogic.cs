@@ -9,6 +9,6 @@ namespace KeithLink.Svc.Core.Interface.UserFeedback
 {
     public interface IUserFeedbackLogic
     {
-        int SubmitUserFeedback(UserFeedbackContext context, Core.Models.UserFeedback.UserFeedback userFeedback);
+        void SaveUserFeedback(UserFeedbackContext context, Core.Models.UserFeedback.UserFeedback userFeedback);
     }
 }

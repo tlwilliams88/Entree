@@ -48,8 +48,6 @@ namespace KeithLink.Svc.Impl
 			this.smtpHostName = Configuration.SMTPHostName;
 			this.smtpSendPort = Configuration.SMTPSendPort;
 
-
-
             _log = log;
         }
 
@@ -123,10 +121,14 @@ namespace KeithLink.Svc.Impl
             SmtpClient client = this.smtpClient;
 
 // Don't send emails in DEBUG, save to disk instead
-#if DEBUG
-            client.DeliveryMethod = SmtpDeliveryMethod.SpecifiedPickupDirectory;
-            client.PickupDirectoryLocation = @"c:\temp\mail";
-#endif
+//#if DEBUG
+//            client.DeliveryMethod = SmtpDeliveryMethod.SpecifiedPickupDirectory;
+//            client.PickupDirectoryLocation = @"c:\temp\mail";
+//            if (Directory.Exists(client.PickupDirectoryLocation) == false)
+//            {
+//                Directory.CreateDirectory(client.PickupDirectoryLocation);
+//            }
+//#endif
 
             if (!string.IsNullOrEmpty(this.smtpUserName) && !string.IsNullOrEmpty(this.smtpPassword))
             {

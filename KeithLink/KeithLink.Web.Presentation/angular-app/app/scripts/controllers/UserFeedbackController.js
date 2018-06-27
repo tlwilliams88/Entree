@@ -12,19 +12,16 @@ angular.module('bekApp')
         $state.go('menu.home');
       };
 
-      $scope.cancelChanges = function () {
-        $scope.userFeedbackForm.$setPristine();
-      };
-
       $scope.submitUserFeedback = function (userFeedback) {
-        userFeedback.Audience = $state.params.audience;
-        userFeedback.BrowserUserAgent = navigator.userAgent;
-        userFeedback.BrowserVendor = navigator.vendor;
+        userFeedback.audience = $state.params.audience;
+        userFeedback.browserUserAgent = navigator.userAgent;
+        userFeedback.browserVendor = navigator.vendor;
 
        $scope.submitUserFeedbackErrorMessage = null;
 
-        UserFeedbackService.submitUserFeedback(userFeedback).then(
-          function (profile) {
+       UserFeedbackService.submitUserFeedback(userFeedback).then(
+         function (profile) {
+            $scope.userFeedback = {};
             $scope.userFeedbackForm.$setPristine();
             $scope.displayMessage('success', 'Successfully sent feedback.');
           },

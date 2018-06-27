@@ -1,11 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Runtime.Serialization;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace KeithLink.Svc.Core.Models.SiteCatalog
+namespace KeithLink.Svc.Core.Models.UserFeedback
 {
     [DataContract]
     [Serializable]
@@ -14,8 +11,17 @@ namespace KeithLink.Svc.Core.Models.SiteCatalog
         [DataMember(Name = "userId")]
         public Guid UserId { get; set; }
 
+        [DataMember(Name = "userFirstName")]
+        public string UserFirstName { get; set; }
+
+        [DataMember(Name = "userLastName")]
+        public string UserLastName { get; set; }
+
         [DataMember(Name = "branchid")]
         public string BranchId { get; set; }
+
+        [DataMember(Name = "customerNumber")]
+        public string CustomerNumber { get; set; }
 
         [DataMember(Name = "customerName")]
         public string CustomerName { get; set; }

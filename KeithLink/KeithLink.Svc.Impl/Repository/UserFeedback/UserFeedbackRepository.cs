@@ -1,22 +1,23 @@
 ﻿using Dapper;
-using KeithLink.Svc.Core.Enumerations.Messaging;
+using KeithLink.Svc.Core.Interface.DataConnection;
 using KeithLink.Svc.Core.Interface.UserFeedback;
-using KeithLink.Svc.Core.Models.Profile;
-using KeithLink.Svc.Core.Models.SiteCatalog;
+using KeithLink.Svc.Core.Models.UserFeedback;
 using KeithLink.Svc.Impl.Repository.DataConnection;
 using System;
 using System.Data;
 
 namespace KeithLink.Svc.Impl.Repository.UserFeedback
 {
-    public class UserFeedbackRepository : DapperDatabaseConnection, IUserFeedbackRepository
+    public class UserFeedbackRepository : IUserFeedbackRepository
     {
         #region attributes
+        private readonly IDapperDatabaseConnection _dbConnection;
         #endregion
 
         #region ctor
-        public UserFeedbackRepository() : base(Configuration.BEKDBConnectionString)
+        public UserFeedbackRepository(IDapperDatabaseConnection dbConnection)
         {
+            _dbConnection = dbConnection;
         }
         #endregion
 
@@ -26,34 +27,84 @@ namespace KeithLink.Svc.Impl.Repository.UserFeedback
         /// </summary>
         /// <param name="user"></param>
         /// <param name="userFeedback"></param>
-        public int SaveUserFeedback(UserFeedbackContext context, Core.Models.UserFeedback.UserFeedback userFeedback)
+        public void SaveUserFeedback(UserFeedbackContext context, Core.Models.UserFeedback.UserFeedback userFeedback)
         {
             if (context == null)
                 throw new ArgumentNullException("context");
             if (userFeedback == null)
                 throw new ArgumentNullException("userFeedback");
 
-            var command = new CommandDefinition(
-                "Messaging.AddUserFeedback",
+            string sqlCommand = @"
+	            INSERT INTO [Messaging].[UserFeedback]
+		            (
+		            [UserId]
+		            ,[UserFirstName]
+		            ,[UserLastName]
+		            ,[BranchId]	
+		            ,[CustomerNumber]
+		            ,[CustomerName]
+		            ,[SalesRepName]
+		            ,[Audience]
+		            ,[SourceName]
+		            ,[TargetName]
+		            ,[SourceEmailAddress]
+		            ,[TargetEmailAddress]
+		            ,[Subject]
+		            ,[Content]
+		            ,[BrowserUserAgent]
+		            ,[BrowserVendor]
+		            )
+	            OUTPUT Inserted.Id
+	            VALUES
+		            (
+		            @UserId	
+		            ,@UserFirstName
+		            ,@UserLastName
+		            ,@BranchId
+		            ,@CustomerNumber
+		            ,@CustomerName
+		            ,@SalesRepName
+		            ,@Audience
+		            ,@SourceName
+		            ,@TargetName
+		            ,@SourceEmailAddress
+		            ,@TargetEmailAddress
+
+		            ,@Subject
+		            ,@Content
+
+		            ,@BrowserUserAgent
+		            ,@BrowserVendor
+		            )
+
+                SELECT SCOPE_IDENTITY()
+                ";
+
+            var parameters =
                 new
                 {
                     UserId = context.UserId,
+                    UserFirstName = context.UserFirstName,
+                    UserLastName = context.UserLastName,
                     BranchId = context.BranchId,
+                    CustomerNumber = context.CustomerNumber,
                     CustomerName = context.CustomerName,
                     SalesRepName = context.SalesRepName,
                     SourceName = context.SourceName,
                     TargetName = context.TargetName,
                     SourceEmailAddress = context.SourceEmailAddress,
                     TargetEmailAddress = context.TargetEmailAddress,
+
                     Subject = userFeedback.Subject,
                     Content = userFeedback.Content,
-                },
-                commandType: CommandType.StoredProcedure
-            );
 
-            int Id = ExecuteScalarCommand<int>(command);
+                    Audience = userFeedback.Audience.ToString(),
+                    BrowserUserAgent = userFeedback.BrowserUserAgent,
+                    BrowserVendor = userFeedback.BrowserVendor,
+                };
 
-            return Id;
+            _dbConnection.Execute(sqlCommand, parameters);
+
         }
 
          #endregion

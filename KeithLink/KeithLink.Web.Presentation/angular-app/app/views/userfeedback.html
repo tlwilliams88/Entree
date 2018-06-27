@@ -38,7 +38,6 @@
           </button>
           <button ng-if="!(userFeedbackForm.$dirty)" type="button" class="btn btn-lg btn-danger" ui-sref="menu.home">Back</button>
           <button ng-if="userFeedbackForm.$dirty" type="button" confirmed-click="goBack()" ng-confirm-click="{{'Unsaved data will be lost. Do you wish to continue?'}}" class="btn btn-lg btn-danger">Back</button>
-          <a ng-click="cancelChanges()">Cancel Feedback</a>
         </div>
       </div>
 

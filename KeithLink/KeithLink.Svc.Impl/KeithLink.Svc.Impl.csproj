@@ -331,6 +331,7 @@
     <Compile Include="Logic\Lists\RecentlyOrderedListLogicImpl.cs" />
     <Compile Include="Logic\Lists\HistoryListLogicImpl.cs" />
     <Compile Include="Logic\Lists\NotesListLogicImpl.cs" />
+    <Compile Include="Logic\Messaging\UserFeedbackNotificationHandlerImpl.cs" />
     <Compile Include="Logic\Orders\OrderHistoryWriterImpl.cs" />
     <Compile Include="Logic\Messaging\PushMessageConsumerImpl.cs" />
     <Compile Include="Logic\Messaging\PushMessagePublisherImpl.cs" />

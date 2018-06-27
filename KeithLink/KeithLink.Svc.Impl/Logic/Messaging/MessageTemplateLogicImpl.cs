@@ -37,50 +37,20 @@ namespace KeithLink.Svc.Impl.Logic.Messaging
 
             return template.ToMessageTemplateModel();
         }
+
         public StringBuilder BuildHeader(string subject, Customer customer)
         {
             StringBuilder header = new StringBuilder();
             MessageTemplateModel templateHeader = ReadForKey(MESSAGE_TEMPLATE_HEADER);
-            if ((subject != null) && (customer != null) && (customer.CustomerName != null) && (customer.CustomerNumber != null) && (customer.CustomerBranch != null))
+
+            header.Append(templateHeader.Body.Inject(new
             {
-                header.Append(templateHeader.Body.Inject(new
-                {
-                    Subject = subject,
-                    CustomerName = customer.CustomerName,
-                    CustomerNumber = customer.CustomerNumber,
-                    BranchID = customer.CustomerBranch
-                }));
-            }
-            else if ((subject != null) && (customer != null) && (customer.CustomerName != null) && (customer.CustomerNumber != null))
-            {
-                header.Append(templateHeader.Body.Inject(new
-                {
-                    Subject = subject,
-                    CustomerName = customer.CustomerName,
-                    CustomerNumber = customer.CustomerNumber,
-                    BranchID = ""
-                }));
-            }
-            else if ((subject != null) && (customer != null) && (customer.CustomerNumber != null) && (customer.CustomerBranch != null))
-            {
-                header.Append(templateHeader.Body.Inject(new
-                {
-                    Subject = subject,
-                    CustomerName = "",
-                    CustomerNumber = customer.CustomerNumber,
-                    BranchID = customer.CustomerBranch
-                }));
-            }
-            else if (subject != null)
-            {
-                header.Append(templateHeader.Body.Inject(new
-                {
-                    Subject = subject,
-                    CustomerName = "",
-                    CustomerNumber = "",
-                    BranchID = ""
-                }));
-            }
+                Subject = subject,
+                CustomerName = customer?.CustomerName,
+                CustomerNumber = customer?.CustomerNumber,
+                BranchID = customer?.CustomerBranch
+            }));
+
             return header;
         }
         #endregion

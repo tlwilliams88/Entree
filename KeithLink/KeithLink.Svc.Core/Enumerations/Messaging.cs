@@ -42,9 +42,13 @@ namespace KeithLink.Svc.Core.Enumerations.Messaging
         [Description("Payment Confirmation")]
         [EnumMember]
         PaymentConfirmation = 64,
-	}
 
-	[DataContract(Name = "Channel")]
+        [Description("User Feedback")]
+        [EnumMember]
+        UserFeedback = 128,
+    }
+
+    [DataContract(Name = "Channel")]
     public enum Channel : int
     {
         [Description("Email")]
