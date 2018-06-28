@@ -63,7 +63,7 @@
           <button class="btn-no-style"
                   type="button"
                   ng-click="isSidebarOpen = false"
-                  ui-sref="menu.userfeedback({audience: 'ProductSupport'})">
+                  ui-sref="menu.userfeedback({audience: 'Support'})">
             <li>Send Feedback</li>
           </button>
           <button class="btn-no-style"
@@ -308,8 +308,12 @@
           <a ng-click="isSidebarOpen = !isSidebarOpen"><li class="mobile-menu-item"><span class="icon-list2"></span></li></a>
         </ul>
         <ul class="right-mobile-menu">
-          <a class="btn btn-default" ui-sref="menu.userfeedback({audience: 'ProductSupport'})">Send Feedback</a>
-          <a ng-click="isMobileSearchBarDisplayed = !isMobileSearchBarDisplayed"><li class="mobile-menu-item"><span class="icon-search"></span></li></a>
+          <a class="hidden-xs" ui-sref="menu.userfeedback({audience: 'Support'})">
+            <li class="mobile-menu-item"><span class="icon-comment" style="font-size: 20px;"></span></li>
+          </a>
+          <a ng-click="isMobileSearchBarDisplayed = !isMobileSearchBarDisplayed">
+            <li class="mobile-menu-item"><span class="icon-search"></span></li>
+          </a>
           <li class="mobile-menu-item" ng-if="canCreateOrders">
             <order-dropdown is-disabled="!canCreateOrders" open-scope="status.orderdropdownisopen2"></order-dropdown>
           </li>
@@ -491,7 +495,7 @@
                 <button class="btn btn-lg btn-default" ui-sref="menu.userprofile">Profile Settings</button>
                 <button class="btn btn-lg btn-default" ui-sref="menu.applicationsettings">Application Settings</button>
                 <button class="btn btn-lg btn-default" ng-click="openTechnicalSupportModal()">Technical Support</button>
-                <button class="btn btn-lg btn-default" ui-sref="menu.userfeedback({audience: 'ProductSupport'})">Send Feedback</button>
+                <button class="btn btn-lg btn-default" ui-sref="menu.userfeedback({audience: 'Support'})">Send Feedback</button>
                 <button class="btn btn-lg btn-default" ng-click="openExternalLink(userGuideUrl)">Users Guide</button>
                 <button class="btn btn-lg btn-default" ng-click="logout()">Sign Out</button>
               </div>

@@ -100,8 +100,8 @@ namespace KeithLink.Svc.WebApi.Controllers
                     UserFeedback = userFeedback,
                 };
 
-                _notificationHandler.ProcessNotification(notification);
                 _userFeedbackLogic.SaveUserFeedback(context, userFeedback);
+                _notificationHandler.ProcessNotification(notification);
 
                 retVal.SuccessResponse = "Feedback processed successfully.";
                 retVal.IsSuccess = true;
@@ -128,7 +128,7 @@ namespace KeithLink.Svc.WebApi.Controllers
 
             switch (audience)
             {
-                case Audience.ProductSupport:
+                case Audience.Support:
                     target = Tuple.Create(audience.ToString(), "entreefeedback@benekeith.com");
                     break;
                 case Audience.BranchSupport:

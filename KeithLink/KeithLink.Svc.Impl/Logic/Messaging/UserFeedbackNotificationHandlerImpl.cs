@@ -44,6 +44,11 @@ namespace KeithLink.Svc.Impl.Logic.Messaging
         #endregion
 
         #region methods
+        /// <summary>
+        /// Creates email message from user feeedback notification.
+        /// </summary>
+        /// <param name="notification"></param>
+        /// <returns></returns>
         private Message CreateEmailMessageForNotification(UserFeedbackNotification notification)
         {
             Message message = new Message();
@@ -85,6 +90,10 @@ namespace KeithLink.Svc.Impl.Logic.Messaging
             return message;
         }
 
+        /// <summary>
+        /// Process user feedback notification.
+        /// </summary>
+        /// <param name="notification"></param>
         public void ProcessNotification(BaseNotification notification)
         {
             try

@@ -28,7 +28,7 @@ namespace KeithLink.Svc.Impl.Logic.UserFeedback
         #region methods
 
         /// <summary>
-        /// validate all of the attributes of the user's feedback
+        /// Validates all of the attributes of the user's feedback.
         /// </summary>
         /// <remarks>
         /// </remarks>
@@ -47,7 +47,7 @@ namespace KeithLink.Svc.Impl.Logic.UserFeedback
 
 
         /// <summary>
-        /// Saves user feedback and forwards feedback to target audience.
+        /// Saves user feedback.
         /// </summary>
         /// <param name="user"></param>
         /// <param name="userFeedback"></param>

@@ -79,9 +79,9 @@ namespace KeithLink.Svc.Core.Enumerations.Messaging
     [DataContract(Name = "Audience")]
     public enum Audience : int
     {
-        [Description("Product Support")]
-        [EnumMember(Value = "ProductSupport")]
-        ProductSupport = 1,
+        [Description("Support")]
+        [EnumMember(Value = "Support")]
+        Support = 1,
 
         [Description("Branch Support")]
         [EnumMember(Value = "BranchSupport")]
