@@ -97,10 +97,7 @@ namespace KeithLink.Svc.Impl.Service.SiteCatalog
 
             AddPricingInfo(ret, catalogInfo, searchModel);
 
-            if(searchModel.CatalogType.Equals(Constants.CATALOG_UNFIEAST, StringComparison.CurrentCultureIgnoreCase) == false)
-            {
-                GetAdditionalProductInfo(profile, ret, catalogInfo);
-            }
+            GetAdditionalProductInfo(profile, ret, catalogInfo);
 
             return ret;
         }
@@ -158,7 +155,9 @@ namespace KeithLink.Svc.Impl.Service.SiteCatalog
             ret = ApplySpecialFilters(catalogInfo, profile, specialFilters, searchModel, ret);
 
             AddPricingInfo(ret, catalogInfo, searchModel);
+
             GetAdditionalProductInfo(profile, ret, catalogInfo);
+
             ret.CatalogCounts = catalogCounts;
 
             foreach (Product product in ret.Products)
@@ -440,7 +439,12 @@ namespace KeithLink.Svc.Impl.Service.SiteCatalog
                                          prod.InHistory = history.Where(h => h.ItemNumber.Equals(prod.ItemNumber))
                                                                  .FirstOrDefault()
                                                                  .InHistory;
-                                         _catalogLogic.AddProductImageInfo(prod);
+
+                                         // don't addproductimageinfo on unfi east products; this doesn't work
+                                         if(prod.CatalogId.ToLower().IndexOf(Constants.CATALOG_UNFIEAST.ToLower()) == -1)
+                                         {
+                                             _catalogLogic.AddProductImageInfo(prod);
+                                         }
                                      });
             }
         }
