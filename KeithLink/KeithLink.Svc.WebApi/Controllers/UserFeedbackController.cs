@@ -67,11 +67,11 @@ namespace KeithLink.Svc.WebApi.Controllers
         [ApiKeyedRoute("userfeedback")]
         public OperationReturnModel<string> SubmitUserFeedback(UserFeedback userFeedback)
         {
-            OperationReturnModel<string> retVal = new OperationReturnModel<string>() { IsSuccess = false };
+            var retVal = new OperationReturnModel<string>() { IsSuccess = false };
 
             try
             {
-                var target = GetTarget(SelectedUserContext, AuthenticatedUser, userFeedback.Audience);
+                (string Name, string EmailAddress) target = GetTarget(SelectedUserContext, AuthenticatedUser, userFeedback.Audience);
 
                 var customer = GetCustomer(SelectedUserContext, AuthenticatedUser);
 
@@ -85,12 +85,12 @@ namespace KeithLink.Svc.WebApi.Controllers
                     CustomerName = customer?.CustomerName,
                     SalesRepName = customer?.Dsr?.Name,
                     SourceName = AuthenticatedUser.Name,
-                    TargetName = target.Item1,
+                    TargetName = target.Name,
                     SourceEmailAddress = AuthenticatedUser.EmailAddress,
-                    TargetEmailAddress = target.Item2,
+                    TargetEmailAddress = target.EmailAddress,
                 };
 
-                UserFeedbackNotification notification = new UserFeedbackNotification()
+                var notification = new UserFeedbackNotification()
                 {
                     BranchId = customer?.CustomerBranch,
                     CustomerNumber = customer?.CustomerNumber,
@@ -122,32 +122,32 @@ namespace KeithLink.Svc.WebApi.Controllers
             return retVal;
         }
 
-        private Tuple<string, string> GetTarget(UserSelectedContext userContext, UserProfile user, Audience audience)
+        private (string Name, string EmailAddress) GetTarget(UserSelectedContext userContext, UserProfile user, Audience audience)
         {
-            Tuple<string, string> target = null;
+            (string Name, string EmailAddress) target;
 
             switch (audience)
             {
                 case Audience.Support:
-                    target = Tuple.Create(audience.ToString(), "entreefeedback@benekeith.com");
+                    target = (audience.ToString(), "entreefeedback@benekeith.com");
                     break;
                 case Audience.BranchSupport:
                     var branch = GetBranch(userContext);
-                    target = Tuple.Create(branch.BranchName, branch.Email);
+                    target = (branch.BranchName, branch.Email);
                     break;
                 case Audience.SalesRep:
                     var customer = GetCustomer(userContext, user);
-                    target = Tuple.Create(customer.Dsr.Name, customer.Dsr.EmailAddress);
+                    target = (customer.Dsr.Name, customer.Dsr.EmailAddress);
                     break;
                 case Audience.User:
-                    target = Tuple.Create(user.Name, user.EmailAddress);
+                    target = (user.Name, user.EmailAddress);
                     break;
                 default:
                     break;
             }
 
 #if DEBUG
-            target = Tuple.Create("debugging user", AuthenticatedUser.EmailAddress);
+            target = ("debugging user", AuthenticatedUser.EmailAddress);
 #endif
             return target;
         }
