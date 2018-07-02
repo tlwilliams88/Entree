@@ -898,7 +898,7 @@ namespace KeithLink.Svc.Impl.Repository.SiteCatalog
             {
                 BuildFacetsObjectFromResponse(res, facets);
 
-                //CorrelateCategoriesToParentCatories(facets);
+                CorrelateCategoriesToParentCatories(facets);
 
                 AddSpecialFiltersToFacets(facets);
             }
