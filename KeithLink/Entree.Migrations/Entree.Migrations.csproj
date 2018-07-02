@@ -158,6 +158,7 @@
     <Compile Include="Migrations\v2018.05.00\Migration0072.cs" />
     <Compile Include="Migrations\v2018.05.00\Migration0071.cs" />
     <Compile Include="Migrations\v2018.07.00\Migration0078.cs" />
+    <Compile Include="Migrations\v2018.07.00\Migration0076.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -288,6 +289,8 @@
     <Content Include="Scripts\AppData\Configuration\Tables\AppSettings\PostDeployment\AppSettingsSeed_0017_2017.02.00_up.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="Scripts\AppData\Configuration\Tables\AppSettings\PostDeployment\AppSettingsSeed_0076_2018.07.00_down.sql" />
+    <Content Include="Scripts\AppData\Configuration\Tables\AppSettings\PostDeployment\AppSettingsSeed_0076_2018.07.00_up.sql" />
     <Content Include="Scripts\AppData\Configuration\Tables\AppSettings\PostDeployment\bakillins.local.configuration.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

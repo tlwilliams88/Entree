@@ -101,22 +101,11 @@
             </li>
           </button>
             <span  ng-if="::!canViewOrders" tooltip="Create and manage orders. Contact your DSR for more information." class="glyphicon glyphicon-info-sign pull-right btn-info-sidebar"></span>
-          <!-- <button
-            class="btn-no-style"
-            type="button"
-            ng-disabled="::!canBrowseCatalog"
-            ui-sref="menu.catalog.home({catalogType: 'BEK'})"
-            ng-class="{'is-selected': $state.includes('menu.catalog') && $state.params.catalogType == 'BEK'}" >
-            <li>
-              <span class="icon-book2 sidebar-nav__icon"></span>
-              Product Catalog
-            </li>
-          </button> -->
         </div>
         <div>
           <li
               ng-if="selectedUserContext.customer.canViewUNFI"
-              ng-class="{'is-selected': $state.includes('menu.catalog') && ($state.params.catalogType == 'UNFI' || $state.params.catalogType == 'E&S')}"
+              ng-class="{'is-selected': $state.includes('menu.catalog') && ($state.params.catalogType == constants.catalogType.UNFI || $state.params.catalogType == constants.catalogType.ES)}"
               ng-show="showSpecialtyCatalogs">
           <button
             class="btn-no-style"
@@ -132,17 +121,10 @@
                     class="btn-no-style sub-btn"
                     ng-click="toggleSidebarMenu()";
                     type="button"
-                    ui-sref="menu.catalog.home({catalogType: 'UNFI'})"
-                    ng-class="{'is-sub-selected': $state.includes('menu.catalog') && $state.params.catalogType == 'UNFI'}">
+                    ui-sref="menu.catalog.home({catalogType: constants.catalogType.UNFI})"
+                    ng-class="{'is-sub-selected': $state.includes('menu.catalog') && $state.params.catalogType == constants.catalogType.UNFI}">
                     <li>Natural and Organic</li>
                 </button>
-<!--                 <button
-                        class="btn-no-style sub-btn"
-                        type="button"
-                        ui-sref="menu.catalog.home({catalogType: 'E&S'})"
-                        ng-class="{'is-sub-selected': $state.includes('menu.catalog') && $state.params.catalogType == 'E&S'}">
-                    <li>Equipment and Supply</li>
-                </button> -->
             </ul>
           </li>
         </div>
@@ -151,7 +133,7 @@
             analytics-on
             analytics-category="External Applications"
             analytics-event="Menumax"
-            ng-click="openExternalLink('https://www.menumax.com/')"
+            ng-click="redirectToMenumax()"
             target="_blank" >
             <span class="icon-spoon-knife sidebar-nav__icon"></span>
             Menumax
@@ -367,10 +349,10 @@
           </li>
         </ul>
         <img ng-if="userProfile.rolename != 'guest'" src="images/bek-logo.png" alt="logo" class="logo-mobile hide-icon-423px" ui-sref="menu.home" />
-        <img ng-if="userProfile.rolename == 'guest'" src="images/bek-logo.png" alt="logo" class="logo-mobile hide-icon-423px" ui-sref="menu.catalog.home({catalogType: 'BEK'})" />
+        <img ng-if="userProfile.rolename == 'guest'" src="images/bek-logo.png" alt="logo" class="logo-mobile hide-icon-423px" ui-sref="menu.catalog.home({catalogType: constants.catalogType.BEK})" />
 
         <img ng-if="userProfile.rolename != 'guest'" src="images/bek-logo-small.png" alt="logo" class="logo-mobile show-small-icon-422px" ui-sref="menu.home" />
-        <img ng-if="userProfile.rolename == 'guest'" src="images/bek-logo-small.png" alt="logo" class="logo-mobile show-small-icon-422px" ui-sref="menu.catalog.home({catalogType: 'BEK'})" />
+        <img ng-if="userProfile.rolename == 'guest'" src="images/bek-logo-small.png" alt="logo" class="logo-mobile show-small-icon-422px" ui-sref="menu.catalog.home({catalogType: constants.catalogType.BEK})" />
 
       </div>
     <div class="row hidden-md hidden-lg mobile-user-context hidden-print">
@@ -392,7 +374,7 @@
           <a ng-hide="tutorialRunning" ng-click="isSidebarOpen = !isSidebarOpen" class="margin-top-5 margin-right-10" style="font-size: 28px; z-index:1;"><span class="icon-list2 user-bar-buttons "></span></a>
           <a ng-show="tutorialRunning" class="margin-top-5 margin-right-10" style="font-size: 28px; z-index:1;"><span class="icon-list2 user-bar-buttons "></span></a>
           <a ng-if="userProfile.rolename != 'guest'" ui-sref="menu.home"><img class="hand-pointer max-width-100Percent height-100Percent" src="images/bek-logo.png" alt="logo" /></a>
-          <a ng-if="userProfile.rolename == 'guest'" ui-sref="menu.catalog.home({catalogType: 'BEK'})"><img class="hand-pointer max-width-100Percent height-100Percent" src="images/bek-logo.png" alt="logo" /></a>
+          <a ng-if="userProfile.rolename == 'guest'" ui-sref="menu.catalog.home({catalogType: constants.catalogType.BEK})"><img class="hand-pointer max-width-100Percent height-100Percent" src="images/bek-logo.png" alt="logo" /></a>
         </div>
 
 
@@ -408,7 +390,7 @@
           <ul class="dropdown-menu col-xs-12" role="menu">
             <li ng-repeat="department in departments" ng-if="department.name != 'All'" analytics-on analytics-category="Menu-Products-Dropdown" analytics-event="Products Dropdown" analytics-label="{{department.name}}">
               <a ui-sref="menu.catalog.products.list({ 
-                catalogType: 'BEK', type: 'category', 
+                catalogType: constants.catalogType.BEK, type: 'category', 
                 id: department.search_name,
                 dept: department.id, 
                 category: department.name,
@@ -428,7 +410,7 @@
               </a>
             </li>
             <li class="hand-pointer" ng-if="selectedUserContext.customer.canViewUNFI" style="padding-left: 10px; padding-top: 10px; padding-bottom: 10px;" analytics-on analytics-category="Menu-Products-Dropdown" analytics-event="Products Dropdown" analytics-label="UNFI catalog">
-                <span class="hand-pointer" ui-sref="menu.catalog.home({catalogType: 'UNFI'})" style="color: green;"><span class="icon-leaf padding-right-5"></span>Natural and Organic</span>
+                <span class="hand-pointer" ui-sref="menu.catalog.home({catalogType: constants.catalogType.UNFI})" style="color: green;"><span class="icon-leaf padding-right-5"></span>Natural and Organic</span>
             </li>
           </ul>
         </div>
