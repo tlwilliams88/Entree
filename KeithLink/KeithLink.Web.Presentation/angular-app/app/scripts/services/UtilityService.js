@@ -109,16 +109,19 @@ angular.module('bekApp')
       resolvePromise: function(promise) {
         var deferred = $q.defer();
 
-        promise.then(function(response) {
-          var data = response.data;
-          if (data.successResponse) {
-            deferred.resolve(data.successResponse);
-          } else {
-            deferred.reject(data.errorMessage);
+        promise.then(
+          function (response) {
+            var data = response.data;
+            if (data.successResponse) {
+              deferred.resolve(data.successResponse);
+            } else {
+              deferred.reject(data.errorMessage);
+            }
+          },
+          function (error) {
+            deferred.reject('An error occurred.');
           }
-        }, function(error) {
-          deferred.reject('An error occurred.');
-        });
+        );
         return deferred.promise;
       }
     };

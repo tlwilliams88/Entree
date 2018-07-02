@@ -470,6 +470,7 @@ module.exports = function (grunt) {
                     loggingEnabled: '<%= config.environment.debug.loggingEnabled %>',
                     googleAnalytics: '<%= config.environment.debug.googleAnalytics.web %>',
                     cognosUrl: '<%= config.environment.debug.cognosUrl %>',
+                    menuMaxUrl: '<%= config.environment.debug.menuMaxUrl %>',
                     username: 'sabroussard@somecompany.com',
                     password: 'L1ttleStev1e',
                     mobileApp: '<%= config.environment.debug.mobileApp %>',
@@ -504,6 +505,7 @@ module.exports = function (grunt) {
                     loggingEnabled: '<%= config.environment.dev.loggingEnabled %>',
                     googleAnalytics: '<%= config.environment.dev.googleAnalytics.web %>',
                     cognosUrl: '<%= config.environment.dev.cognosUrl %>',
+                    menuMaxUrl: '<%= config.environment.dev.menuMaxUrl %>',
                     username: 'sabroussard@somecompany.com',
                     password: 'L1ttleStev1e',
                     mobileApp: false,
@@ -522,6 +524,7 @@ module.exports = function (grunt) {
                     loggingEnabled: '<%= config.environment.test.loggingEnabled %>',
                     googleAnalytics: '<%= config.environment.test.googleAnalytics.web %>',
                     cognosUrl: '<%= config.environment.test.cognosUrl %>',
+                    menuMaxUrl: '<%= config.environment.test.menuMaxUrl %>',
                     mobileApp: false,
                     lastListStorageTimeout: 48,
                     enableDebugInfo: false
@@ -538,6 +541,7 @@ module.exports = function (grunt) {
                     loggingEnabled: '<%= config.environment.prod.loggingEnabled %>',
                     googleAnalytics: '<%= config.environment.prod.googleAnalytics.web %>',
                     cognosUrl: '<%= config.environment.prod.cognosUrl %>',
+                    menuMaxUrl: '<%= config.environment.prod.menuMaxUrl %>',
                     mobileApp: false,
                     lastListStorageTimeout: 48,
                     enableDebugInfo: false

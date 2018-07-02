@@ -1,9 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using KeithLink.Svc.Core.Enumerations.Messaging;
+
+using System;
 using System.Text;
-using System.Threading.Tasks;
-using KeithLink.Svc.Core.Enumerations.Messaging;
 using System.Runtime.Serialization;
 using System.Runtime.Serialization.Json;
 
@@ -21,7 +19,10 @@ namespace KeithLink.Svc.Core.Models.Messaging.Queue
         [DataMember(Name = "notificationtype")]
         public NotificationType NotificationType { get; set; }
 
-		[DataMember(Name = "dsrdsmonly")]
+        [DataMember(Name = "audience")]
+        public Audience Audience { get; set; }
+
+        [DataMember(Name = "dsrdsmonly")]
 		public bool DSRDSMOnly { get; set; }
     }
 }
