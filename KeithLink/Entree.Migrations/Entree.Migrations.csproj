@@ -157,6 +157,7 @@
     <Compile Include="Migrations\v2018.05.00\Migration0073.cs" />
     <Compile Include="Migrations\v2018.05.00\Migration0072.cs" />
     <Compile Include="Migrations\v2018.05.00\Migration0071.cs" />
+    <Compile Include="Migrations\v2018.07.00\Migration0078.cs" />
     <Compile Include="Migrations\v2018.07.00\Migration0076.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -308,6 +309,9 @@
     <Content Include="Scripts\AppData\Configuration\Tables\AppSettings\PostDeployment\jeremy.local.configuration.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="Scripts\AppData\Configuration\Tables\AppSettings\PostDeployment\jjdevonshire.local.configuration.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="Scripts\AppData\Configuration\Tables\AppSettings\PostDeployment\matt.local.configuration.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
@@ -341,6 +345,7 @@
     <Content Include="Scripts\AppData\Configuration\Tables\MessageTemplates\PostDeployment\MessageTemplatesSeed_0019_2017.04.00_up.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="Scripts\AppData\Configuration\Tables\MessageTemplates\PostDeployment\MessageTemplatesSeed_0078_2018-06-22_up.sql" />
     <Content Include="Scripts\AppData\Customers\Customers_0001_0001.11.00_down.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
@@ -2015,6 +2020,8 @@
     <Content Include="Scripts\AppData\Messaging\Tables\CustomerTopics\CustomerTopcis_0001_0001.11.00_up.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="Scripts\AppData\Messaging\Tables\UserFeedback\UserFeedback_0078_2018-06-22_down.sql" />
+    <Content Include="Scripts\AppData\Messaging\Tables\UserFeedback\UserFeedback_0078_2018-06-22_up.sql" />
     <Content Include="Scripts\AppData\Messaging\Tables\UserMessages\UserMessages_0001_0001.11.00_down.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

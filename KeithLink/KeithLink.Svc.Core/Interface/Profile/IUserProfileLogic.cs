@@ -20,9 +20,9 @@ namespace KeithLink.Svc.Core.Interface.Profile {
 
         DsrAliasModel CreateDsrAlias(Guid userId, string email, Dsr dsr);
         
-        UserProfileReturn CreateGuestUserAndProfile(UserProfile actiingUser, string emailAddress, string password, string branchId);
+        UserProfileReturn CreateGuestUserAndProfile(UserProfile actingUser, string emailAddress, string password, string branchId);
 
-		UserProfileReturn CreateUserAndProfile(UserProfile actiingUser, string customerName, string emailAddress, string password, string firstName, string lastName, string phone, string roleName, List<string> permissions, string branchId);
+		UserProfileReturn CreateUserAndProfile(UserProfile actingUser, string customerName, string emailAddress, string password, string firstName, string lastName, string phone, string roleName, List<string> permissions, string branchId);
 
         PagedResults<Customer> CustomerSearch(UserProfile user, string searchTerms, PagingModel paging, string account, CustomerSearchType searchType);
 

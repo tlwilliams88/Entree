@@ -33,10 +33,10 @@
   <body ng-app="bekApp">
 
     <!--[if lt IE 9]>
-    <p> Entree does not support older browsers.</p>
-    <p>Entree is compatible with the following browsers:
-Internet Explorer 10 and higher, Google Chrome, Safari, Mozilla Firefox.</p>
-    <![endif]-->
+      <p> Entree does not support older browsers.</p>
+      <p>Entree is compatible with the following browsers:
+  Internet Explorer 10 and higher, Google Chrome, Safari, Mozilla Firefox.</p>
+      <![endif]-->
 
     <toaster-container toaster-options="{'time-out': 3000, 'error-time-out': 3000, 'position-class': 'toast-bottom-right'}"></toaster-container>
 
@@ -105,17 +105,17 @@ Internet Explorer 10 and higher, Google Chrome, Safari, Mozilla Firefox.</p>
     <!-- endbuild -->
 
     <!--REPLACEHERE
-    <script type="text/javascript" charset="utf-8" src="cordova.js"></script>
-    <script type="text/javascript" src="scripts/index.js"></script>
-    <script>
-        angular.element(document).ready(function() {
-            app.initialize();
-            document.addEventListener('deviceready', function onDeviceReady() {
-                angular.bootstrap(document, ['bekApp']);
-            }, false);
-        });
-    </script>
-    REPLACEHERE-->
+  <script type="text/javascript" charset="utf-8" src="cordova.js"></script>
+  <script type="text/javascript" src="scripts/index.js"></script>
+  <script>
+      angular.element(document).ready(function() {
+          app.initialize();
+          document.addEventListener('deviceready', function onDeviceReady() {
+              angular.bootstrap(document, ['bekApp']);
+          }, false);
+      });
+  </script>
+  REPLACEHERE-->
 
     <!-- build:js({.tmp,app}) scripts/scripts.js -->
     <script type="text/javascript" src="scripts/app.js"></script>
@@ -151,6 +151,7 @@ Internet Explorer 10 and higher, Google Chrome, Safari, Mozilla Firefox.</p>
     <script type="text/javascript" src="scripts/controllers/RegisterController.js"></script>
     <script type="text/javascript" src="scripts/controllers/ReportsController.js"></script>
     <script type="text/javascript" src="scripts/controllers/TransactionController.js"></script>
+    <script type="text/javascript" src="scripts/controllers/UserFeedbackController.js"></script>
     <script type="text/javascript" src="scripts/controllers/UserProfileController.js"></script>
 
 
@@ -261,6 +262,7 @@ Internet Explorer 10 and higher, Google Chrome, Safari, Mozilla Firefox.</p>
     <script type="text/javascript" src="scripts/services/ResolveService.js"></script>
     <script type="text/javascript" src="scripts/services/SessionService.js"></script>
     <script type="text/javascript" src="scripts/services/TransactionService.js"></script>
+    <script type="text/javascript" src="scripts/services/UserFeedbackService.js"></script>
     <script type="text/javascript" src="scripts/services/UserProfileService.js"></script>
     <script type="text/javascript" src="scripts/services/UtilityService.js"></script>
 
@@ -311,5 +313,5 @@ Internet Explorer 10 and higher, Google Chrome, Safari, Mozilla Firefox.</p>
     </div>
 
 
-</body>
+  </body>
 </html>
