@@ -951,7 +951,7 @@ namespace KeithLink.Svc.Impl.Logic.ETL {
                 Status = row.GetString("Status"),
                 ItemType = row.GetString("Type"),
                 ParentCategoryName = row.GetString("Category"),
-                ParentCategoryNameNotAnalyzed = TitleCaseString(row.GetString("Category")),
+                ParentCategoryNameNotAnalyzed = row.GetString("Category"),
                 CategoryName = row.GetString("Subgroup"),
                 CategoryNameNotAnalyzed = row.GetString("Subgroup"),
                 CategoryId = "KO",
@@ -984,25 +984,6 @@ namespace KeithLink.Svc.Impl.Logic.ETL {
                 return item;
             }
             return null;
-        }
-        private String TitleCaseString(String s)
-        {
-            if (s == null) return s;
-
-            String[] words = s.Split(' ');
-            for (int i = 0; i < words.Length; i++)
-            {
-                if (words[i].Length == 0) continue;
-
-                Char firstChar = Char.ToUpper(words[i][0]);
-                String rest = "";
-                if (words[i].Length > 1)
-                {
-                    rest = words[i].Substring(1).ToLower();
-                }
-                words[i] = firstChar + rest;
-            }
-            return String.Join(" ", words);
         }
         #endregion
 

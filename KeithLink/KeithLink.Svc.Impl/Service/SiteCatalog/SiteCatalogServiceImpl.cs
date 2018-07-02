@@ -440,11 +440,7 @@ namespace KeithLink.Svc.Impl.Service.SiteCatalog
                                                                  .FirstOrDefault()
                                                                  .InHistory;
 
-                                         // don't addproductimageinfo on unfi east products; this doesn't work
-                                         if(prod.CatalogId.ToLower().IndexOf(Constants.CATALOG_UNFIEAST.ToLower()) == -1)
-                                         {
-                                             _catalogLogic.AddProductImageInfo(prod);
-                                         }
+                                         _catalogLogic.AddProductImageInfo(prod);
                                      });
             }
         }
