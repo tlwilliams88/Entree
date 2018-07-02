@@ -44,34 +44,34 @@
     <nav class="sidebar-nav" ng-click = "checkModal()">
       <ul class="list-unstyled">
         <div ng-show="displayUserMenu2" class="hidden-md hidden-lg">
-          <button
-            class="btn-no-style"
-            type="button"
-            ng-click="isSidebarOpen = false"
-            ui-sref="menu.userprofile">
+          <button class="btn-no-style"
+                  type="button"
+                  ng-click="isSidebarOpen = false"
+                  ui-sref="menu.userprofile">
             <li>Profile Settings</li>
           </button>
-          <button
-            class="btn-no-style"
-            type="button"
-            ng-click="isSidebarOpen = false"
-            ui-sref="menu.applicationsettings">
+          <button class="btn-no-style"
+                  type="button"
+                  ng-click="isSidebarOpen = false"
+                  ui-sref="menu.applicationsettings">
             <li>Application Settings</li>
           </button>
-          <button
-            class="btn-no-style"
-            ng-click="isSidebarOpen = false; openTechnicalSupportModal()">
+          <button class="btn-no-style"
+                  ng-click="isSidebarOpen = false; openTechnicalSupportModal()">
             <li>Technical Support</li>
           </button>
-         <a style="color:inherit; text-styling:none;" href="mailto:entreefeedback@benekeith.com?subject=Entree Feedback"><li>Send Feedback</li></a>
-          <button
-            class="btn-no-style"
-            ng-click="openExternalLink(userGuideUrl)">
+          <button class="btn-no-style"
+                  type="button"
+                  ng-click="isSidebarOpen = false"
+                  ui-sref="menu.userfeedback({audience: 'Support'})">
+            <li>Send Feedback</li>
+          </button>
+          <button class="btn-no-style"
+                  ng-click="openExternalLink(userGuideUrl)">
             <li>User Guide</li>
           </button>
-          <button
-            class="btn-no-style"
-            ng-click="logout()">
+          <button class="btn-no-style"
+                  ng-click="logout()">
             <li>Sign Out</li>
           </button>
         </div>
@@ -246,7 +246,12 @@
           <span>{{::selectedUserContext.customer.dsr.name}}</span>
           <a ng-href="{{::'tel:' + selectedUserContext.customer.dsr.phonenumber}}">{{::selectedUserContext.customer.dsr.phonenumber | phoneNumber}}</a>
         </p>
-        <a class="text-uppercase" ng-show="::selectedUserContext.customer.dsr.emailaddress" href="mailto:{{::selectedUserContext.customer.dsr.emailaddress}}">Email Me</a>
+        <a class="text-uppercase"
+           ng-show="::selectedUserContext.customer.dsr.emailaddress"
+           ng-click="toggleSidebarMenu()"
+           ui-sref="menu.userfeedback({audience: 'SalesRep'})">
+          Email Me
+        </a>
       </div>
     </div>
 
@@ -285,8 +290,12 @@
           <a ng-click="isSidebarOpen = !isSidebarOpen"><li class="mobile-menu-item"><span class="icon-list2"></span></li></a>
         </ul>
         <ul class="right-mobile-menu">
-          <a class="hidden-xs" href="mailto:entreefeedback@benekeith.com?subject=Entree Feedback"><li class="mobile-menu-item"><span class="icon-comment" style="font-size: 20px;"></span></li></a>
-          <a ng-click="isMobileSearchBarDisplayed = !isMobileSearchBarDisplayed"><li class="mobile-menu-item"><span class="icon-search"></span></li></a>
+          <a class="hidden-xs" ui-sref="menu.userfeedback({audience: 'Support'})">
+            <li class="mobile-menu-item"><span class="icon-comment" style="font-size: 20px;"></span></li>
+          </a>
+          <a ng-click="isMobileSearchBarDisplayed = !isMobileSearchBarDisplayed">
+            <li class="mobile-menu-item"><span class="icon-search"></span></li>
+          </a>
           <li class="mobile-menu-item" ng-if="canCreateOrders">
             <order-dropdown is-disabled="!canCreateOrders" open-scope="status.orderdropdownisopen2"></order-dropdown>
           </li>
@@ -445,9 +454,6 @@
         </div>
 
         <div class="hidden-sm hidden-xs text-right nowrap pull-right margin-right-desktop-10 margin-top-3 margin-right-5" style="margin-left:none; padding-left:none; display:inline-flex;">
-          <!-- <div style="margin-top: 2%; margin-right: 10px;">
-            <a class="hidden-md" href="mailto:entreefeedback@benekeith.com?subject=Entree Feedback" tooltip="Submit Feedback" tooltip-placement="left"><span class="icon-comment margin-right-5" style="font-size: 20px;"></span><span class="show-icon-only" style="width:80%"></span></a>
-          </div> -->
 
           <div class="mobile-margin-right-15 desktop-margin-right-10" style="display: inline-flex; width: 200px;">
             <div header-buttons>
@@ -455,11 +461,13 @@
             </div>
           </div>
 
-          <a ng-if="::isOrderEntryCustomer" ui-sref="menu.notifications" class="text-regular"><span class="user-bar__notification badge-parent margin-top-5 margin-left-5 padding-right-15">
-            <span class="icon-bell user-bar-buttons" analytics-on analytics-category="Menu-Notifications-Desktop" analytics-event="Notification Icon"></span>
-            <span class="badge" ng-if="userBar.userNotificationsCount.unread && userBar.userNotificationsCount.unread > 0" style="margin-right: 12px;">{{userBar.userNotificationsCount.unread}}</span>
-          </span></a>
-          <div class="person-info user-info hand-pointer" ng-click="displayUserMenu = !displayUserMenu"  ng-mouseenter="mouseOverDropdown = true" ng-mouseleave="mouseOverDropdown = false">
+          <a ng-if="::isOrderEntryCustomer" ui-sref="menu.notifications" class="text-regular">
+            <span class="user-bar__notification badge-parent margin-top-5 margin-left-5 padding-right-15">
+              <span class="icon-bell user-bar-buttons" analytics-on analytics-category="Menu-Notifications-Desktop" analytics-event="Notification Icon"></span>
+              <span class="badge" ng-if="userBar.userNotificationsCount.unread && userBar.userNotificationsCount.unread > 0" style="margin-right: 12px;">{{userBar.userNotificationsCount.unread}}</span>
+            </span>
+          </a>
+          <div class="person-info user-info hand-pointer" ng-click="displayUserMenu = !displayUserMenu" ng-mouseenter="mouseOverDropdown = true" ng-mouseleave="mouseOverDropdown = false">
             <div class="person-info__section person-info__details">
               <span class="user-info__name">{{userProfile.displayname}}</span>
               <span ng-if="userProfile.displayRole !== 'approver' && userProfile.displayRole !== 'buyer'" class="user-info__job-title text-capitalize">{{userProfile.displayRole}}</span>
@@ -469,7 +477,7 @@
                 <button class="btn btn-lg btn-default" ui-sref="menu.userprofile">Profile Settings</button>
                 <button class="btn btn-lg btn-default" ui-sref="menu.applicationsettings">Application Settings</button>
                 <button class="btn btn-lg btn-default" ng-click="openTechnicalSupportModal()">Technical Support</button>
-                <a class="feedback-link" href="mailto:entreefeedback@benekeith.com?subject=Entree Feedback"><button class="btn btn-lg btn-default feedback-btn">Send Feedback</button> </a>
+                <button class="btn btn-lg btn-default" ui-sref="menu.userfeedback({audience: 'Support'})">Send Feedback</button>
                 <button class="btn btn-lg btn-default" ng-click="openExternalLink(userGuideUrl)">Users Guide</button>
                 <button class="btn btn-lg btn-default" ng-click="logout()">Sign Out</button>
               </div>
