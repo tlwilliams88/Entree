@@ -318,6 +318,7 @@
     <Compile Include="Logic\ETL\ElasticSearch\HouseBrandsImportLogicImpl.cs" />
     <Compile Include="Logic\ETL\ElasticSearch\ItemImportLogicImpl.cs" />
     <Compile Include="Logic\Export\ModelExportLogicImpl.cs" />
+    <Compile Include="Logic\FlipSnackApiClient.cs" />
     <Compile Include="Logic\ImportLogicImpl.cs" />
     <Compile Include="Logic\Invoices\ImagingLogicImpl.cs" />
     <Compile Include="Logic\Invoices\TermLogicImpl.cs" />
