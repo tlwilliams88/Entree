@@ -111,7 +111,7 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Service.SiteCatalog
                             Amount = 12,
                             GroupingCode = "XXX",
                             GroupingDescription = "XXX",
-                            GrowthAndReccoveryTypeKey = GrowthAndRecoveriesModel.GrowthAndRecoveryType.Growth,
+                            GrowthAndRecoveryTypeKey = GrowthAndRecoveryType.Growth,
                             GrowthAndRecoveryProductGroup = 1
                         },
                         new GrowthAndRecoveriesModel()
@@ -120,7 +120,7 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Service.SiteCatalog
                             Amount = 12,
                             GroupingCode = "XXX",
                             GroupingDescription = "XXX",
-                            GrowthAndReccoveryTypeKey = GrowthAndRecoveriesModel.GrowthAndRecoveryType.Growth,
+                            GrowthAndRecoveryTypeKey = GrowthAndRecoveryType.Growth,
                             GrowthAndRecoveryProductGroup = 2
                         },
                         new GrowthAndRecoveriesModel()
@@ -129,7 +129,7 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Service.SiteCatalog
                             Amount = 12,
                             GroupingCode = "XXX",
                             GroupingDescription = "XXX",
-                            GrowthAndReccoveryTypeKey = GrowthAndRecoveriesModel.GrowthAndRecoveryType.Growth,
+                            GrowthAndRecoveryTypeKey = GrowthAndRecoveryType.Growth,
                             GrowthAndRecoveryProductGroup = 3
                         },
                         new GrowthAndRecoveriesModel()
@@ -138,7 +138,7 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Service.SiteCatalog
                             Amount = 12,
                             GroupingCode = "XXX",
                             GroupingDescription = "XXX",
-                            GrowthAndReccoveryTypeKey = GrowthAndRecoveriesModel.GrowthAndRecoveryType.Growth,
+                            GrowthAndRecoveryTypeKey = GrowthAndRecoveryType.Growth,
                             GrowthAndRecoveryProductGroup = 4
                         },
                         new GrowthAndRecoveriesModel()
@@ -147,7 +147,7 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Service.SiteCatalog
                             Amount = 12,
                             GroupingCode = "XXX",
                             GroupingDescription = "XXX",
-                            GrowthAndReccoveryTypeKey = GrowthAndRecoveriesModel.GrowthAndRecoveryType.Growth,
+                            GrowthAndRecoveryTypeKey = GrowthAndRecoveryType.Growth,
                             GrowthAndRecoveryProductGroup = 5
                         },
                         new GrowthAndRecoveriesModel()
@@ -156,7 +156,7 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Service.SiteCatalog
                             Amount = 12,
                             GroupingCode = "XXX",
                             GroupingDescription = "XXX",
-                            GrowthAndReccoveryTypeKey = GrowthAndRecoveriesModel.GrowthAndRecoveryType.Growth,
+                            GrowthAndRecoveryTypeKey = GrowthAndRecoveryType.Growth,
                             GrowthAndRecoveryProductGroup = 6
                         }
                     });
