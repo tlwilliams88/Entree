@@ -250,6 +250,9 @@ namespace KeithLink.Svc.Impl.Repository.SmartResolver
             // user feedback 
             builder.RegisterType<UserFeedbackRepository>().As<IUserFeedbackRepository>();
 
+            // FlipSnack API client
+            builder.RegisterType<FlipSnackApiClient>().As<FlipSnackApiClient>();
+
 
             ///////////////////////////////////////////////////////////////////////////////
             // Logic Classes

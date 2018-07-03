@@ -2,17 +2,17 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 
 using Autofac;
 
-using FluentAssertions;
+//using FluentAssertions;
+using FluentAssertions.Json;
 
 using KeithLink.Common.Core.Interfaces.Logging;
-using KeithLink.Svc.Core.Models.Customers;
 using KeithLink.Svc.Impl.Logic;
 
 using Moq;
+using Newtonsoft.Json.Linq;
 
 using Xunit;
 
@@ -22,7 +22,7 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic
     {
         private static FlipSnackApiClient InstantiateTestSubject()
         {
-            Mock<IEventLogRepository> eventLog = new Mock<IEventLogRepository>();
+            IEventLogRepository eventLog = new Mock<IEventLogRepository>().Object;
 
             ContainerBuilder containerBuilder = GetTestsContainer();
             containerBuilder.RegisterInstance(eventLog)
@@ -34,27 +34,39 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic
         }
 
         [Fact]
-        public void GoodData_GetEmbed()
+        public void GetList_InvalidCredentials()
         {
             // arrange
             FlipSnackApiClient testSubject = InstantiateTestSubject();
 
-            // act
-            string results = testSubject.GetEmbed();
-
-
             // expect
-            string expected = "";
+            int expected = 41;  // Invalid credentials
+
+            // act
+            JObject result = testSubject.GetList();
 
             // assert
-            results.Count()
+            result["code"]
                 .Should()
-                .BeGreaterThan(0);
+                .BeEquivalentTo(expected);
+        }
 
-            //results[0]
-            //    .CampaignId
-            //    .Should()
-            //    .Be(expected);
+        [Fact]
+        public void GetEmbed_InvalidCredentials()
+        {
+            // arrange
+            FlipSnackApiClient testSubject = InstantiateTestSubject();
+
+            // expect
+            int expected = 41;  // Invalid credentials
+
+            // act
+            JObject result = testSubject.GetEmbed();
+
+            // assert
+            result["code"]
+                .Should()
+                .BeEquivalentTo(expected);
         }
 
     }
