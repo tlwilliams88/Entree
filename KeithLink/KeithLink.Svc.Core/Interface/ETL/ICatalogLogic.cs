@@ -10,5 +10,6 @@ namespace KeithLink.Svc.Core.Interface.ETL
     {
         void ImportCatalog();
 		void ImportUNFICatalog();
+        void ImportUNFIEastCatalog();
     }
 }

@@ -22,7 +22,9 @@ namespace KeithLink.Svc.Core.Extensions.Lists {
             retVal.Each = value.Each ?? false;
             retVal.CatalogId = value.CatalogId;
 
-            if(value.CreatedUtc.AddDays(Constants.CONTENTMGMT_CONTRACTITEMS_THRESHOLD) > SystemTime.Now) {
+            if( (value.ToDate != null) && 
+                (value.ToDate.Value > SystemTime.Now) && 
+                (value.CreatedUtc.AddDays(Constants.CONTENTMGMT_CONTRACTITEMS_THRESHOLD) > SystemTime.Now)) {
                 retVal.Delta = Constants.CONTENTMGMT_CONTRACTITEMS_NEWADDED + " " + Constants.CONTENTMGMT_CONTRACTITEMS_ACTIVE;
             } else {
                 if(value.ToDate != null && value.ToDate.Value < SystemTime.Now) {

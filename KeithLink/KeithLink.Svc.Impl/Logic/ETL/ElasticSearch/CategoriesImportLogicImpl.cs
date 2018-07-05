@@ -192,6 +192,80 @@ namespace KeithLink.Svc.Impl.Logic.ETL {
 
         }
 
+        /// <summary>
+        /// Import categories to elasatic search
+        /// </summary>
+        public void ImportUnfiEastCategories()
+        {
+            try
+            {
+                DateTime start = DateTime.Now;
+                _eventLog.WriteInformationLog(String.Format("ETL: Import Process Starting:  Import UNFI East categories to ES {0}", start.ToString()));
+
+                var parentCategories = _stagingRepository.ReadUnfiEastCategories();
+                var childCategories = _stagingRepository.ReadUnfiEastSubCategories();
+                var categories = new BlockingCollection<ElasticSearchCategoryUpdate>();
+
+                //Parent Categories
+                //Parallel.ForEach(parentCategories.AsEnumerable(), row =>
+                foreach (DataRow row in parentCategories.Rows)
+                {
+                    categories.Add(new ElasticSearchCategoryUpdate()
+                    {
+                        index = new ESCategoryRootData()
+                        {
+                            _index = "unfi_e_categories",
+                            _id = row.GetString("CategoryId"),
+                            data = new ESCategoryData()
+                            {
+                                parentcategoryid = null,
+                                name = row.GetString("CategoryName"),
+                                ppicode = row.GetString("CategoryId"),
+                                department = row.GetString("Department"),
+                                subcategories = PopulateUnfiSubCategories(row.GetString("CategoryId"), childCategories)
+                            }
+                        }
+                    });
+                }
+                ;
+
+                //Sub Categories
+                //Parallel.ForEach(childCategories.AsEnumerable(), row =>
+                foreach (DataRow row in childCategories.Rows)
+                {
+                    categories.Add(new ElasticSearchCategoryUpdate()
+                    {
+                        index = new ESCategoryRootData()
+                        {
+                            _index = "unfi_e_categories",
+                            _id = row.GetString("CategoryId"),
+                            data = new ESCategoryData()
+                            {
+                                parentcategoryid = row.GetString("ParentCategoryId"),
+                                name = row.GetString("CategoryName"),
+                                ppicode = row.GetString("CategoryId"),
+                                department = row.GetString("Department"),
+                            }
+                        }
+                    });
+                }
+
+                _elasticSearchRepository.Create(string.Concat(categories.Select(c => c.ToJson())));
+
+                TimeSpan took = DateTime.Now - start;
+                _eventLog.WriteInformationLog(String.Format("ETL: Import Process Finished:  Import UNFI East categories to ES.  Process took {0}", took.ToString()));
+            }
+            catch (Exception e)
+            {
+                _eventLog.WriteErrorLog(String.Format("ETL: Error importing UNFI East categories to ES -- whole process failed.  {0} -- {1}", e.Message, e.StackTrace));
+
+                KeithLink.Common.Impl.Email.ExceptionEmail.Send(e,
+                                                                "ETL: Error importing UNFI East categories to ES -- whole process failed.");
+            }
+
+
+        }
+
         #endregion
 
         #region helper methods

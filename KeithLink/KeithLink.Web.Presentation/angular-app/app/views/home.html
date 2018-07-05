@@ -198,7 +198,7 @@
     </div>
 
     <!-- Recommended Items -->
-    <div ng-if="recommendedCategories.length > 0 && showRecommendedCategories == true" class="hidden-md hidden-lg" style="margin-bottom: 10px;">
+    <div ng-if="recommendedCategories.length > 0 && showRecommendedCategories == true" class="hidden-md hidden-lg" style="margin-bottom: 10px; overflow: auto;">
       <div class="col-sm-12">
         <h3>Recommended For You</h3>
         <div loading-spinner="loadingPromoItems" ng-show="loadingPromoItems"></div>
@@ -249,13 +249,12 @@
               </li>
             </ul>
           </div>
-
         </div>
       </div>
     </div> <!-- end Recommended Items -->
 
     <!-- Categories -->
-    <div style="margin-top: 20px;">
+    <div>
       <div class="col-sm-12">
         <h3>Categories</h3>
         <div loading-spinner="loadingCategories" ng-show="loadingCategories"></div>
@@ -280,7 +279,7 @@
     <!-- Brands -->
     <div ng-hide="brands && brands.length == 0">
         <div class="col-sm-12">
-          <h3>Featured Brands</h3>
+          <h3>Exclusive Brands</h3>
           <div ng-show="loadingBrands" loading-spinner="loadingBrands"></div>
 
           <div ng-show="!loadingBrands && brands.length > 0">

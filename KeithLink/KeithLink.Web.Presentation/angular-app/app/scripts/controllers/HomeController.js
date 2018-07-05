@@ -8,8 +8,8 @@
  * Controller of the bekApp
  */
 angular.module('bekApp')
-  .controller('HomeController', [ '$scope', '$rootScope', '$state', '$stateParams', '$modal', '$filter', 'Constants', 'CartService', 'OrderService', 'MarketingService', 'DateService', 'NotificationService', 'CustomerService', 'isHomePage', 'LocalStorage', 'UtilityService', 'ENV', 'ListService', 'ProductService', 'CategoryService', 'BrandService', 'SessionService', 'AnalyticsService',
-    function($scope, $rootScope, $state, $stateParams, $modal, $filter, Constants, CartService, OrderService, MarketingService, DateService, NotificationService, CustomerService, isHomePage, LocalStorage, UtilityService, ENV, ListService, ProductService, CategoryService, BrandService, SessionService, AnalyticsService) {
+  .controller('HomeController', [ '$scope', '$rootScope', '$state', '$stateParams', '$modal', '$filter', 'Constants', 'CartService', 'OrderService', 'MarketingService', 'DateService', 'NotificationService', 'CustomerService', 'isHomePage', 'LocalStorage', 'UtilityService', 'ENV', 'ListService', 'ProductService', 'CategoryService', 'BrandService', 'SessionService', 'AnalyticsService', 'SessionRecordingService',
+    function($scope, $rootScope, $state, $stateParams, $modal, $filter, Constants, CartService, OrderService, MarketingService, DateService, NotificationService, CustomerService, isHomePage, LocalStorage, UtilityService, ENV, ListService, ProductService, CategoryService, BrandService, SessionService, AnalyticsService, SessionRecordingService) {
 
     AnalyticsService.setUserProperties(SessionService.userProfile.userid, 
                                        SessionService.userProfile.displayRole, 
@@ -17,6 +17,8 @@ angular.module('bekApp')
                                        SessionService.userProfile.iskbitcustomer.toString(), 
                                        SessionService.userProfile.ispowermenucustomer.toString());
 
+    SessionRecordingService.identify(SessionService.userProfile.emailaddress);
+    SessionRecordingService.tagEmail(SessionService.userProfile.emailaddress);
 
     $scope.isHomePage = isHomePage;
 
@@ -83,31 +85,14 @@ angular.module('bekApp')
     }
 
     ProductService.getCampaigns().then(function(resp) {
-        $scope.promoItems = resp;
+      $scope.promoItems = resp;
 
-        AnalyticsService.recordPromotion(
-          $scope.promoItems,
-          LocalStorage.getCustomerNumber(),
-          LocalStorage.getBranchId());
+      AnalyticsService.recordPromotion(
+        $scope.promoItems,
+        LocalStorage.getCustomerNumber(),
+        LocalStorage.getBranchId()
+      );
 
-    });
-
-    // get promo/marketing items
-    $scope.loadingPromoItems = true;
-    MarketingService.getPromoItems().then(function(items) {
-      // if(items[0].targeturltext != 'Admiral of the Fleet Salmon') { //Added to stop the salmon photo from displaying
-        $scope.marketingPromoItems = items;
-      // }
-      delete $scope.promoMessage;
-    }, function(errorMessage) {
-      $scope.promoMessage = errorMessage;
-    }).finally(function() {
-      $scope.loadingPromoItems = false;
-
-      // If Tutorial Should not show remove onboarding-focus class for icon element
-    //   if(!$scope.runTutorial){
-    //     $('.onboarding-focus').removeClass('onboarding-focus');
-    //   }
     });
 
     // get account info
@@ -160,15 +145,14 @@ angular.module('bekApp')
       }]
     };
 
-    $scope.loadingRecentlyViewedItems = true;
-    $scope.loadingrecentlyOrderedUnfiItems = true;
     $scope.loadingCategories = true;
     $scope.loadingBrands = true;
     $scope.loadingRecommendedCategories = true;
 
-    ProductService.getRecentlyViewedItems().then(function(recentitems) {
-      $scope.recentlyViewedItems = recentitems;
-      $scope.loadingRecentlyViewedItems = false;
+    CategoryService.getCategories(Constants.catalogType.BEK).then(function(categories) {
+      $scope.categories = categories;
+      $scope.loadingCategories = false;
+
       $scope.showRecommendedCategories = ENV.showRecommendedItems;
 
       if($scope.showRecommendedCategories == true) {
@@ -177,9 +161,6 @@ angular.module('bekApp')
           $scope.loadingRecommendedCategories = false;
         })
       } 
-      
-      $scope.categories = CategoryService.categories;
-      $scope.loadingCategories = false;
 
       BrandService.getHouseBrands().then(function(brands){
         $scope.brands = brands;

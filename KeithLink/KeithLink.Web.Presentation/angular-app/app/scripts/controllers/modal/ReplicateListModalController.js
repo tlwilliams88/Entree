@@ -20,20 +20,28 @@ angular.module('bekApp')
 
   function setCustomers(data) {
     $scope.totalCustomers = data.totalResults;
+    $scope.customers = data.results;
 
+    setCustomerShares(data);
+  }
+
+  function appendCustomers(data) {
+    $scope.customers = $scope.customers.concat(data.results);
+    setCustomerShares(data);
+  }
+
+  function setCustomerShares(data) {
     // select shared customers
     list.sharedwith.forEach(function(customerNumber) {
       data.results.forEach(function(customer) {
-        if (customerNumber === customer.customerNumber) {
+        if (customerNumber === customer.customerNumber && $scope.selectedShareCustomers.indexOf(customer) == -1) {
           $scope.selectedShareCustomers.push(customer);
         }
       });
     });
-    $scope.customers = data.results;
+
   }
-  function appendCustomers(data) {
-    $scope.customers = $scope.customers.concat(data.results);
-  }
+
   function startLoading() {
     $scope.loadingResults = true;
   }

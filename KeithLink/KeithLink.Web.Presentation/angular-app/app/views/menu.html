@@ -44,18 +44,16 @@
     <nav class="sidebar-nav" ng-click = "checkModal()">
       <ul class="list-unstyled">
         <div ng-show="displayUserMenu2" class="hidden-md hidden-lg">
-          <button
-            class="btn-no-style"
-            type="button"
-            ng-click="isSidebarOpen = false"
-            ui-sref="menu.userprofile">
+          <button class="btn-no-style"
+                  type="button"
+                  ng-click="isSidebarOpen = false"
+                  ui-sref="menu.userprofile">
             <li>Profile Settings</li>
           </button>
-          <button
-            class="btn-no-style"
-            type="button"
-            ng-click="isSidebarOpen = false"
-            ui-sref="menu.applicationsettings">
+          <button class="btn-no-style"
+                  type="button"
+                  ng-click="isSidebarOpen = false"
+                  ui-sref="menu.applicationsettings">
             <li>Application Settings</li>
           </button>
           <button
@@ -71,15 +69,18 @@
             ng-click="isSidebarOpen = false; openTechnicalSupportModal()">
             <li>Technical Support</li>
           </button>
-         <a style="color:inherit; text-styling:none;" href="mailto:entreefeedback@benekeith.com?subject=Entree Feedback"><li>Send Feedback</li></a>
-          <button
-            class="btn-no-style"
-            ng-click="openExternalLink(userGuideUrl)">
+          <button class="btn-no-style"
+                  type="button"
+                  ng-click="isSidebarOpen = false"
+                  ui-sref="menu.userfeedback({audience: 'Support'})">
+            <li>Send Feedback</li>
+          </button>
+          <button class="btn-no-style"
+                  ng-click="openExternalLink(userGuideUrl)">
             <li>User Guide</li>
           </button>
-          <button
-            class="btn-no-style"
-            ng-click="logout()">
+          <button class="btn-no-style"
+                  ng-click="logout()">
             <li>Sign Out</li>
           </button>
         </div>
@@ -109,22 +110,11 @@
             </li>
           </button>
             <span  ng-if="::!canViewOrders" tooltip="Create and manage orders. Contact your DSR for more information." class="glyphicon glyphicon-info-sign pull-right btn-info-sidebar"></span>
-          <!-- <button
-            class="btn-no-style"
-            type="button"
-            ng-disabled="::!canBrowseCatalog"
-            ui-sref="menu.catalog.home({catalogType: 'BEK'})"
-            ng-class="{'is-selected': $state.includes('menu.catalog') && $state.params.catalogType == 'BEK'}" >
-            <li>
-              <span class="icon-book2 sidebar-nav__icon"></span>
-              Product Catalog
-            </li>
-          </button> -->
         </div>
         <div>
           <li
               ng-if="selectedUserContext.customer.canViewUNFI"
-              ng-class="{'is-selected': $state.includes('menu.catalog') && ($state.params.catalogType == 'UNFI' || $state.params.catalogType == 'E&S')}"
+              ng-class="{'is-selected': $state.includes('menu.catalog') && ($state.params.catalogType == constants.catalogType.UNFI || $state.params.catalogType == constants.catalogType.ES)}"
               ng-show="showSpecialtyCatalogs">
           <button
             class="btn-no-style"
@@ -140,17 +130,10 @@
                     class="btn-no-style sub-btn"
                     ng-click="toggleSidebarMenu()";
                     type="button"
-                    ui-sref="menu.catalog.home({catalogType: 'UNFI'})"
-                    ng-class="{'is-sub-selected': $state.includes('menu.catalog') && $state.params.catalogType == 'UNFI'}">
+                    ui-sref="menu.catalog.home({catalogType: constants.catalogType.UNFI})"
+                    ng-class="{'is-sub-selected': $state.includes('menu.catalog') && $state.params.catalogType == constants.catalogType.UNFI}">
                     <li>Natural and Organic</li>
                 </button>
-<!--                 <button
-                        class="btn-no-style sub-btn"
-                        type="button"
-                        ui-sref="menu.catalog.home({catalogType: 'E&S'})"
-                        ng-class="{'is-sub-selected': $state.includes('menu.catalog') && $state.params.catalogType == 'E&S'}">
-                    <li>Equipment and Supply</li>
-                </button> -->
             </ul>
           </li>
         </div>
@@ -159,7 +142,7 @@
             analytics-on
             analytics-category="External Applications"
             analytics-event="Menumax"
-            ng-click="openExternalLink('https://www.menumax.com/')"
+            ng-click="redirectToMenumax()"
             target="_blank" >
             <span class="icon-spoon-knife sidebar-nav__icon"></span>
             Menumax
@@ -272,7 +255,12 @@
           <span>{{::selectedUserContext.customer.dsr.name}}</span>
           <a ng-href="{{::'tel:' + selectedUserContext.customer.dsr.phonenumber}}">{{::selectedUserContext.customer.dsr.phonenumber | phoneNumber}}</a>
         </p>
-        <a class="text-uppercase" ng-show="::selectedUserContext.customer.dsr.emailaddress" href="mailto:{{::selectedUserContext.customer.dsr.emailaddress}}">Email Me</a>
+        <a class="text-uppercase"
+           ng-show="::selectedUserContext.customer.dsr.emailaddress"
+           ng-click="toggleSidebarMenu()"
+           ui-sref="menu.userfeedback({audience: 'SalesRep'})">
+          Email Me
+        </a>
       </div>
     </div>
 
@@ -311,8 +299,12 @@
           <a ng-click="isSidebarOpen = !isSidebarOpen"><li class="mobile-menu-item"><span class="icon-list2"></span></li></a>
         </ul>
         <ul class="right-mobile-menu">
-          <a class="hidden-xs" href="mailto:entreefeedback@benekeith.com?subject=Entree Feedback"><li class="mobile-menu-item"><span class="icon-comment" style="font-size: 20px;"></span></li></a>
-          <a ng-click="isMobileSearchBarDisplayed = !isMobileSearchBarDisplayed"><li class="mobile-menu-item"><span class="icon-search"></span></li></a>
+          <a class="hidden-xs" ui-sref="menu.userfeedback({audience: 'Support'})">
+            <li class="mobile-menu-item"><span class="icon-comment" style="font-size: 20px;"></span></li>
+          </a>
+          <a ng-click="isMobileSearchBarDisplayed = !isMobileSearchBarDisplayed">
+            <li class="mobile-menu-item"><span class="icon-search"></span></li>
+          </a>
           <li class="mobile-menu-item" ng-if="canCreateOrders">
             <order-dropdown is-disabled="!canCreateOrders" open-scope="status.orderdropdownisopen2"></order-dropdown>
           </li>
@@ -366,10 +358,10 @@
           </li>
         </ul>
         <img ng-if="userProfile.rolename != 'guest'" src="images/bek-logo.png" alt="logo" class="logo-mobile hide-icon-423px" ui-sref="menu.home" />
-        <img ng-if="userProfile.rolename == 'guest'" src="images/bek-logo.png" alt="logo" class="logo-mobile hide-icon-423px" ui-sref="menu.catalog.home({catalogType: 'BEK'})" />
+        <img ng-if="userProfile.rolename == 'guest'" src="images/bek-logo.png" alt="logo" class="logo-mobile hide-icon-423px" ui-sref="menu.catalog.home({catalogType: constants.catalogType.BEK})" />
 
         <img ng-if="userProfile.rolename != 'guest'" src="images/bek-logo-small.png" alt="logo" class="logo-mobile show-small-icon-422px" ui-sref="menu.home" />
-        <img ng-if="userProfile.rolename == 'guest'" src="images/bek-logo-small.png" alt="logo" class="logo-mobile show-small-icon-422px" ui-sref="menu.catalog.home({catalogType: 'BEK'})" />
+        <img ng-if="userProfile.rolename == 'guest'" src="images/bek-logo-small.png" alt="logo" class="logo-mobile show-small-icon-422px" ui-sref="menu.catalog.home({catalogType: constants.catalogType.BEK})" />
 
       </div>
     <div class="row hidden-md hidden-lg mobile-user-context hidden-print">
@@ -387,11 +379,11 @@
          </div>
 
 
-        <div id="menuIcon" class="col-md-1 col-lg-2 sidebar-logo hidden-xs hidden-sm" style="height:50px; width: 150px; display: inline-flex; margin-right: 35px; margin-left: -15px">
+        <div id="menuIcon" class="col-md-1 col-lg-2 sidebar-logo hidden-xs hidden-sm" style="height:50px; width: 193px; display: inline-flex; margin-left: -15px">
           <a ng-hide="tutorialRunning" ng-click="isSidebarOpen = !isSidebarOpen" class="margin-top-5 margin-right-10" style="font-size: 28px; z-index:1;"><span class="icon-list2 user-bar-buttons "></span></a>
           <a ng-show="tutorialRunning" class="margin-top-5 margin-right-10" style="font-size: 28px; z-index:1;"><span class="icon-list2 user-bar-buttons "></span></a>
-          <img ng-if="userProfile.rolename != 'guest'" class="hand-pointer max-width-100Percent height-100Percent" src="images/bek-logo.png" alt="logo" ui-sref="menu.home" />
-          <img ng-if="userProfile.rolename == 'guest'" class="hand-pointer max-width-100Percent height-100Percent" src="images/bek-logo.png" alt="logo" ui-sref="menu.catalog.home({catalogType: 'BEK'})" />
+          <a ng-if="userProfile.rolename != 'guest'" ui-sref="menu.home"><img class="hand-pointer max-width-100Percent height-100Percent" src="images/bek-logo.png" alt="logo" /></a>
+          <a ng-if="userProfile.rolename == 'guest'" ui-sref="menu.catalog.home({catalogType: constants.catalogType.BEK})"><img class="hand-pointer max-width-100Percent height-100Percent" src="images/bek-logo.png" alt="logo" /></a>
         </div>
 
 
@@ -407,7 +399,7 @@
           <ul class="dropdown-menu col-xs-12" role="menu">
             <li ng-repeat="department in departments" ng-if="department.name != 'All'" analytics-on analytics-category="Menu-Products-Dropdown" analytics-event="Products Dropdown" analytics-label="{{department.name}}">
               <a ui-sref="menu.catalog.products.list({ 
-                catalogType: 'BEK', type: 'category', 
+                catalogType: constants.catalogType.BEK, type: 'category', 
                 id: department.search_name,
                 dept: department.id, 
                 category: department.name,
@@ -427,7 +419,7 @@
               </a>
             </li>
             <li class="hand-pointer" ng-if="selectedUserContext.customer.canViewUNFI" style="padding-left: 10px; padding-top: 10px; padding-bottom: 10px;" analytics-on analytics-category="Menu-Products-Dropdown" analytics-event="Products Dropdown" analytics-label="UNFI catalog">
-                <span class="hand-pointer" ui-sref="menu.catalog.home({catalogType: 'UNFI'})" style="color: green;"><span class="icon-leaf padding-right-5"></span>Natural and Organic</span>
+                <span class="hand-pointer" ui-sref="menu.catalog.home({catalogType: constants.catalogType.UNFI})" style="color: green;"><span class="icon-leaf padding-right-5"></span>Natural and Organic</span>
             </li>
           </ul>
         </div>
@@ -471,9 +463,6 @@
         </div>
 
         <div class="hidden-sm hidden-xs text-right nowrap pull-right margin-right-desktop-10 margin-top-3 margin-right-5" style="margin-left:none; padding-left:none; display:inline-flex;">
-          <!-- <div style="margin-top: 2%; margin-right: 10px;">
-            <a class="hidden-md" href="mailto:entreefeedback@benekeith.com?subject=Entree Feedback" tooltip="Submit Feedback" tooltip-placement="left"><span class="icon-comment margin-right-5" style="font-size: 20px;"></span><span class="show-icon-only" style="width:80%"></span></a>
-          </div> -->
 
           <div class="mobile-margin-right-15 desktop-margin-right-10" style="display: inline-flex; width: 200px;">
             <div header-buttons>
@@ -481,11 +470,13 @@
             </div>
           </div>
 
-          <a ng-if="::isOrderEntryCustomer" ui-sref="menu.notifications" class="text-regular"><span class="user-bar__notification badge-parent margin-top-5 margin-left-5 padding-right-15">
-            <span class="icon-bell user-bar-buttons" analytics-on analytics-category="Menu-Notifications-Desktop" analytics-event="Notification Icon"></span>
-            <span class="badge" ng-if="userBar.userNotificationsCount.unread && userBar.userNotificationsCount.unread > 0" style="margin-right: 12px;">{{userBar.userNotificationsCount.unread}}</span>
-          </span></a>
-          <div class="person-info user-info hand-pointer" ng-click="displayUserMenu = !displayUserMenu"  ng-mouseenter="mouseOverDropdown = true" ng-mouseleave="mouseOverDropdown = false">
+          <a ng-if="::isOrderEntryCustomer" ui-sref="menu.notifications" class="text-regular">
+            <span class="user-bar__notification badge-parent margin-top-5 margin-left-5 padding-right-15">
+              <span class="icon-bell user-bar-buttons" analytics-on analytics-category="Menu-Notifications-Desktop" analytics-event="Notification Icon"></span>
+              <span class="badge" ng-if="userBar.userNotificationsCount.unread && userBar.userNotificationsCount.unread > 0" style="margin-right: 12px;">{{userBar.userNotificationsCount.unread}}</span>
+            </span>
+          </a>
+          <div class="person-info user-info hand-pointer" ng-click="displayUserMenu = !displayUserMenu" ng-mouseenter="mouseOverDropdown = true" ng-mouseleave="mouseOverDropdown = false">
             <div class="person-info__section person-info__details">
               <span class="user-info__name">{{userProfile.displayname}}</span>
               <span ng-if="userProfile.displayRole !== 'approver' && userProfile.displayRole !== 'buyer'" class="user-info__job-title text-capitalize">{{userProfile.displayRole}}</span>
@@ -496,7 +487,7 @@
                 <button class="btn btn-lg btn-default" ui-sref="menu.applicationsettings">Application Settings</button>
                 <button class="btn btn-lg btn-default" ng-show="showDocuments" ui-sref="menu.documents">Documents</button>
                 <button class="btn btn-lg btn-default" ng-click="openTechnicalSupportModal()">Technical Support</button>
-                <a class="feedback-link" href="mailto:entreefeedback@benekeith.com?subject=Entree Feedback"><button class="btn btn-lg btn-default feedback-btn">Send Feedback</button> </a>
+                <button class="btn btn-lg btn-default" ui-sref="menu.userfeedback({audience: 'Support'})">Send Feedback</button>
                 <button class="btn btn-lg btn-default" ng-click="openExternalLink(userGuideUrl)">Users Guide</button>
                 <button class="btn btn-lg btn-default" ng-click="logout()">Sign Out</button>
               </div>

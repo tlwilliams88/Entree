@@ -40,7 +40,6 @@ angular.module('bekApp')
           // guest users must have branches to load the page (but non-guest users do not)
           // also needed for tech support
           var branches = localStorageService.get('branches');
-
         }],
         userProfile: ['SessionService', function(SessionService) {
           return SessionService.userProfile;
@@ -640,6 +639,15 @@ angular.module('bekApp')
       data: {
         authorize: 'canPayInvoices'
       }
+    })
+
+    /**********
+    USER FEEDBACK
+    **********/
+    .state('menu.userfeedback', {
+      url: '/userfeedback/:audience',
+      templateUrl: 'views/userfeedback.html',
+      controller: 'UserFeedbackController',
     })
 
     /**********

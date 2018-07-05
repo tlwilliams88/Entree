@@ -22,6 +22,7 @@ angular.module('bekApp')
   'localStorageService', 'CategoryService', 
   'BranchService', 'ConfigSettingsService',
   'DocumentService',
+  'UserProfileService',
     function (
       $scope, $timeout, $rootScope, $modalStack, $state, $q, $log, $window,  // built in angular services
       $modal,   // ui-bootstrap library
@@ -39,7 +40,8 @@ angular.module('bekApp')
       CategoryService,
       BranchService,
       ConfigSettingsService,
-      DocumentService
+      DocumentService,
+      UserProfileService
     ) {
 
   $scope.$state = $state;
@@ -399,6 +401,18 @@ angular.module('bekApp')
     }, function (error) {
       $log.debug('Scanning failed: ' + error);
     });
+  };
+
+  // Menumax
+  $scope.redirectToMenumax = function() {
+    UserProfileService.generateMenuMaxAuthToken().then(function(resp) {
+
+      var payload = '{"email":"' + $scope.userProfile.emailaddress + '",' + '"entreeSSOToken":"' + resp + '"}';
+      var url = ENV.menuMaxUrl;
+
+      $scope.openExternalLinkWithPost(url, "_blank", payload);
+
+    })
   };
 
   /**********

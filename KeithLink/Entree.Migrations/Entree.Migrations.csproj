@@ -158,6 +158,10 @@
     <Compile Include="Migrations\v2018.05.00\Migration0072.cs" />
     <Compile Include="Migrations\v2018.05.00\Migration0071.cs" />
     <Compile Include="Migrations\v2018.07.00\Migration0077.cs" />
+    <Compile Include="Migrations\v2018.07.00\Migration0075.cs" />
+    <Compile Include="Migrations\v2018.07.00\Migration0078.cs" />
+    <Compile Include="Migrations\v2018.07.00\Migration0076.cs" />
+
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -300,6 +304,8 @@
     <Content Include="Scripts\AppData\Configuration\Tables\AppSettings\PostDeployment\AppSettingsSeed_0017_2017.02.00_up.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="Scripts\AppData\Configuration\Tables\AppSettings\PostDeployment\AppSettingsSeed_0076_2018.07.00_down.sql" />
+    <Content Include="Scripts\AppData\Configuration\Tables\AppSettings\PostDeployment\AppSettingsSeed_0076_2018.07.00_up.sql" />
     <Content Include="Scripts\AppData\Configuration\Tables\AppSettings\PostDeployment\bakillins.local.configuration.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
@@ -318,6 +324,9 @@
     <Content Include="Scripts\AppData\Configuration\Tables\AppSettings\PostDeployment\jeremy.local.configuration.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="Scripts\AppData\Configuration\Tables\AppSettings\PostDeployment\jjdevonshire.local.configuration.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="Scripts\AppData\Configuration\Tables\AppSettings\PostDeployment\matt.local.configuration.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
@@ -331,6 +340,12 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Scripts\AppData\Configuration\Tables\ExternalCatalogs\ExternalCatalogs_0001_0001.11.00_up.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Scripts\AppData\Configuration\Tables\ExternalCatalogs\PostDeployment\ExternalCatalogs_0075_2018.07.00_down.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Scripts\AppData\Configuration\Tables\ExternalCatalogs\PostDeployment\ExternalCatalogs_0075_2018.07.00_up.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Scripts\AppData\Configuration\Tables\MessageTemplates\MessageTemplates_0001_0001.11.00_down.sql">
@@ -351,6 +366,7 @@
     <Content Include="Scripts\AppData\Configuration\Tables\MessageTemplates\PostDeployment\MessageTemplatesSeed_0019_2017.04.00_up.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="Scripts\AppData\Configuration\Tables\MessageTemplates\PostDeployment\MessageTemplatesSeed_0078_2018-06-22_up.sql" />
     <Content Include="Scripts\AppData\Customers\Customers_0001_0001.11.00_down.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
@@ -723,6 +739,16 @@
     <Content Include="Scripts\AppData\ETL\Stored Procedures\ReadUNFIDistinctWarehouses\ReadUNFIDistinctWarehouses_0001_0001.11.00_up.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="Scripts\AppData\ETL\Stored Procedures\ReadUNFIEastCategories\ReadUNFIEastCategories_0075_2018.07.00_down.sql" />
+    <Content Include="Scripts\AppData\ETL\Stored Procedures\ReadUNFIEastCategories\ReadUNFIEastCategories_0075_2018.07.00_up.sql" />
+    <Content Include="Scripts\AppData\ETL\Stored Procedures\ReadUNFIEastDistinctWarehouses\ReadUNFIEastDistinctWarehouses_0075_2018.07.00_down.sql" />
+    <Content Include="Scripts\AppData\ETL\Stored Procedures\ReadUNFIEastDistinctWarehouses\ReadUNFIEastDistinctWarehouses_0075_2018.07.00_up.sql" />
+    <Content Include="Scripts\AppData\ETL\Stored Procedures\ReadUNFIEastItemsByWarehouse\ReadUNFIEastItemsByWarehouse_0075_2018.07.00_down.sql" />
+    <Content Include="Scripts\AppData\ETL\Stored Procedures\ReadUNFIEastItemsByWarehouse\ReadUNFIEastItemsByWarehouse_0075_2018.07.00_up.sql" />
+    <Content Include="Scripts\AppData\ETL\Stored Procedures\ReadUNFIEastProducts\ReadUNFIEastProducts_0075_2018.07.00_down.sql" />
+    <Content Include="Scripts\AppData\ETL\Stored Procedures\ReadUNFIEastProducts\ReadUNFIEastProducts_0075_2018.07.00_up.sql" />
+    <Content Include="Scripts\AppData\ETL\Stored Procedures\ReadUNFIEastSubCategories\ReadUNFIEastSubCategories_0075_2018.07.00_down.sql" />
+    <Content Include="Scripts\AppData\ETL\Stored Procedures\ReadUNFIEastSubCategories\ReadUNFIEastSubCategories_0075_2018.07.00_up.sql" />
     <Content Include="Scripts\AppData\ETL\Stored Procedures\ReadUNFIProducts\ReadUNFIProducts_0001_0001.11.00_down.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
@@ -975,6 +1001,8 @@
     <Content Include="Scripts\AppData\ETL\Tables\Staging_Terms\Staging_Terms_0001_0001.11.00_up.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="Scripts\AppData\ETL\Tables\Staging_UNFIEastProducts\Staging_UNFIEastProducts_0075_2018.07.00_down.sql" />
+    <Content Include="Scripts\AppData\ETL\Tables\Staging_UNFIEastProducts\Staging_UNFIEastProducts_0075_2018.07.00_up.sql" />
     <Content Include="Scripts\AppData\ETL\Tables\Staging_UNFIProducts\Staging_UNFIProducts_0001_0001.11.00_down.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
@@ -2025,6 +2053,8 @@
     <Content Include="Scripts\AppData\Messaging\Tables\CustomerTopics\CustomerTopcis_0001_0001.11.00_up.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="Scripts\AppData\Messaging\Tables\UserFeedback\UserFeedback_0078_2018-06-22_down.sql" />
+    <Content Include="Scripts\AppData\Messaging\Tables\UserFeedback\UserFeedback_0078_2018-06-22_up.sql" />
     <Content Include="Scripts\AppData\Messaging\Tables\UserMessages\UserMessages_0001_0001.11.00_down.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
@@ -2179,9 +2209,6 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Scripts\AppData\Orders\Tables\RecommendedOrderSource\PostDeployment\RecommendedOrderSourceSeed_0072_2018-06-00_up.sql">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Scripts\AppData\Orders\Tables\RecommendedOrderSource\PostDeployment\RecommendedOrderSourceSeed_0071_2018-06-00_up.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Scripts\AppData\Orders\Tables\RecommendedOrderSource\RecommendedOrderSource_0071_2018.05.00_down.sql">
