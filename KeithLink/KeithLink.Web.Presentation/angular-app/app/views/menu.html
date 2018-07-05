@@ -56,8 +56,17 @@
                   ui-sref="menu.applicationsettings">
             <li>Application Settings</li>
           </button>
-          <button class="btn-no-style"
-                  ng-click="isSidebarOpen = false; openTechnicalSupportModal()">
+          <button
+            class="btn-no-style"
+            type="button"
+             ng-show="showDocuments"
+            ng-click="isSidebarOpen = false"
+            ui-sref="menu.documents">
+            <li>Documents</li>
+          </button>
+          <button
+            class="btn-no-style"
+            ng-click="isSidebarOpen = false; openTechnicalSupportModal()">
             <li>Technical Support</li>
           </button>
           <button class="btn-no-style"
@@ -476,6 +485,7 @@
               <div class="user-info__menu btn-group-vertical" ng-show="displayUserMenu">
                 <button class="btn btn-lg btn-default" ui-sref="menu.userprofile">Profile Settings</button>
                 <button class="btn btn-lg btn-default" ui-sref="menu.applicationsettings">Application Settings</button>
+                <button class="btn btn-lg btn-default" ng-show="showDocuments" ui-sref="menu.documents">Documents</button>
                 <button class="btn btn-lg btn-default" ng-click="openTechnicalSupportModal()">Technical Support</button>
                 <button class="btn btn-lg btn-default" ui-sref="menu.userfeedback({audience: 'Support'})">Send Feedback</button>
                 <button class="btn btn-lg btn-default" ng-click="openExternalLink(userGuideUrl)">Users Guide</button>

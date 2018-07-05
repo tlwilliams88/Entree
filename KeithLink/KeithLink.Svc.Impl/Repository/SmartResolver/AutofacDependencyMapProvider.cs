@@ -109,9 +109,11 @@ using KeithLink.Svc.Core.Interface.Templates;
 using KeithLink.Svc.Impl.Helpers;
 using KeithLink.Svc.Impl.Logic.Cache;
 using KeithLink.Svc.Impl.Repository.DataConnection;
+using KeithLink.Svc.Impl.Repository.Documents;
 using KeithLink.Svc.Impl.Service.Invoices;
 using KeithLink.Svc.Impl.Service.SiteCatalog;
 using KeithLink.Svc.Impl.Service.List;
+using KeithLink.Svc.Core.Interface.Documents;
 
 namespace KeithLink.Svc.Impl.Repository.SmartResolver
 {
@@ -126,6 +128,13 @@ namespace KeithLink.Svc.Impl.Repository.SmartResolver
             builder.Register(ctx => new DapperDatabaseConnection(Configuration.BEKDBConnectionString))
                    .As<IDapperDatabaseConnection>()
                    .InstancePerRequest();
+
+            // Azure connection
+            builder.Register(ctx => new AzureContainerConnection(Configuration.AzureConnectionString))
+                   .As<IAzureContainerConnection>()
+                   .InstancePerRequest();
+            builder.RegisterType<AzureContainerRepositoryImpl>().As<IAzureContainerRepository>();
+
 
             // cart
             builder.RegisterType<BasketRepositoryImpl>().As<IBasketRepository>();
