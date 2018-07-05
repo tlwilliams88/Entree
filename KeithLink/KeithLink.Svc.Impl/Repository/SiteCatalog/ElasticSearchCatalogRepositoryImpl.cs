@@ -435,11 +435,11 @@ namespace KeithLink.Svc.Impl.Repository.SiteCatalog
                 r.Source.Id = r.Id;
             }
 
-            List<Category> filteredResults = (from s in response.Documents
-                                              where !(from p in prefixesToExclude select p).Contains(s.Id)
-                                              && (s.SubCategories != null && !s.Id.Equals(0))
-                                              orderby s.Id
-                                              select s).ToList<Category>();
+            List<Category> filteredResults = (from category in response.Documents
+                                              where !(from p in prefixesToExclude select p).Contains(category.Id)
+                                              && (category.SubCategories != null && !category.Id.Equals(0))
+                                              orderby category.Id
+                                              select category).ToList<Category>();
 
             CategoriesReturn results = new CategoriesReturn { Categories = filteredResults };
 

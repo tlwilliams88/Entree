@@ -398,7 +398,7 @@
                 parentcategories: undefined, 
                 subcategories: undefined,
                 brands: undefined,
-                manufacturers: undefined,
+                manufacturers: undefined,ng-if
                 dietary: undefined,
                 itemspecs: undefined,
                 temp_zones: undefined,
@@ -407,6 +407,11 @@
                 currentPage: undefined,
                 recommendationType: undefined})">
                 {{department.name}}
+              </a>
+              <a ng-if="department.category_image != null && department.name == 'Equip & Supply'"
+                 title="Equipment and Supplies Portfolio"
+                 target="_blank" href="https://www.flipsnack.com/BenEKeithFoods/keith-kitchen-essentials-2018-catalog.html">
+                <img src="{{department.category_image.url}}" width="30" height="30" />
               </a>
             </li>
             <li class="hand-pointer" ng-if="selectedUserContext.customer.canViewUNFI" style="padding-left: 10px; padding-top: 10px; padding-bottom: 10px;" analytics-on analytics-category="Menu-Products-Dropdown" analytics-event="Products Dropdown" analytics-label="UNFI catalog">
