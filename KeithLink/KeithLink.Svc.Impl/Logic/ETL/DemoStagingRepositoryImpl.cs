@@ -495,5 +495,38 @@ namespace KeithLink.Svc.Impl.ETL
 			}
 			return itemTable;
 		}
-	}
+
+        /// <summary>
+        /// ReadSP parent categories
+        /// </summary>
+        /// <returns></returns>
+        public DataTable ReadUnfiEastCategories()
+        {
+            throw new NotImplementedException("Not implemented in demo");
+        }
+
+        /// <summary>
+        /// ReadSP proprietary items
+        /// </summary>
+        /// <returns></returns>
+        public DataTable ReadUnfiEastSubCategories()
+        {
+            throw new NotImplementedException("Not implemented in demo");
+        }
+
+        public DataTable ReadUNFIEastItems(string warehouse)
+        {
+            throw new NotImplementedException("Not implemented in demo");
+        }
+
+        public List<string> ReadDistinctUNFIEastWarehouses()
+        {
+            throw new NotImplementedException("Not implemented in demo");
+        }
+
+        public DataTable ReadUNFIEastItems()
+        {
+            throw new NotImplementedException("Not implemented in demo");
+        }
+    }
 }

@@ -198,6 +198,23 @@ namespace KeithLink.Svc.InternalSvc
 			{ (new ErrorHandler()).HandleError(t.Exception); }, TaskContinuationOptions.OnlyOnFaulted);
 			return true;
 		}
+
+        public bool ProcessUNFIEastCatalogData()
+        {
+            Task.Factory.StartNew(() => categoryLogic.ImportUNFIEastCatalog()).ContinueWith((t) => { (new ErrorHandler()).HandleError(t.Exception); }, TaskContinuationOptions.OnlyOnFaulted);
+
+            return true;
+        }
+
+        public bool ProcessUNFIEastElasticSearchData()
+        {
+            Task.Factory.StartNew(() => _esItemImportLogic.ImportUNFIEastItems()).ContinueWith((t) =>
+            { (new ErrorHandler()).HandleError(t.Exception); }, TaskContinuationOptions.OnlyOnFaulted);
+
+            Task.Factory.StartNew(() => _esCategoriesImportLogic.ImportUnfiEastCategories()).ContinueWith((t) =>
+            { (new ErrorHandler()).HandleError(t.Exception); }, TaskContinuationOptions.OnlyOnFaulted);
+            return true;
+        }
         #endregion
-	}
+    }
 }
