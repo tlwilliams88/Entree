@@ -413,11 +413,14 @@ namespace KeithLink.Svc.Impl.Repository.SiteCatalog
             switch (catagoryType.ToLower())
             {
                 case "unfi":
-                index = Constants.ES_UNFI_INDEX_CATEGORIES;
-                break;
+                    index = Constants.ES_UNFI_INDEX_CATEGORIES;
+                    break;
+                case "unfi_e":
+                    index = Constants.ES_UNFI_EAST_INDEX_CATEGORIES;
+                    break;
                 default:
-                index = Constants.ES_INDEX_CATEGORIES;
-                break;
+                    index = Constants.ES_INDEX_CATEGORIES;
+                    break;
             }
 
             var response = _eshelper.ElasticClient.Search<Category>(s => s
