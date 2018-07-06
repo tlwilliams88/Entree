@@ -378,7 +378,6 @@ namespace KeithLink.Svc.Impl.ETL
             return itemTable;
         }
 
-
 		public DataTable ReadUNFIItems(string warehouse)
 		{
 			var itemTable = new DataTable();
@@ -561,11 +560,83 @@ namespace KeithLink.Svc.Impl.ETL
 				eventLog.WriteErrorLog(String.Format("Etl:  Error reading distinct UNFI warehouses. {0} {1}", ex.Message, ex.StackTrace));
 				return returnList;
 			}
-		}		
+		}
 
+        /// <summary>
+        /// ReadSP parent categories
+        /// </summary>
+        /// <returns></returns>
+        public DataTable ReadUnfiEastCategories()
+        {
+            return PopulateDataTable("[ETL].[ReadUNFIEastCategories]");
+        }
+
+        /// <summary>
+        /// ReadSP proprietary items
+        /// </summary>
+        /// <returns></returns>
+        public DataTable ReadUnfiEastSubCategories()
+        {
+            return PopulateDataTable("[ETL].[ReadUNFIEastSubCategories]");
+        }
+
+        public DataTable ReadUNFIEastItems(string warehouse)
+        {
+            var itemTable = new DataTable();
+
+            using (var conn = new SqlConnection(Configuration.BEKDBConnectionString))
+            {
+                using (var cmd = new SqlCommand("[ETL].[ReadUNFIEastItemsByWarehouse]", conn))
+                {
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    var paramBranchID = cmd.Parameters.Add("warehouse", SqlDbType.VarChar);
+                    paramBranchID.Direction = ParameterDirection.Input;
+                    paramBranchID.Value = warehouse;
+
+                    cmd.CommandTimeout = 0;
+                    conn.Open();
+                    var da = new SqlDataAdapter(cmd);
+                    da.Fill(itemTable);
+                }
+            }
+            return itemTable;
+        }
+
+        public List<string> ReadDistinctUNFIEastWarehouses()
+        {
+            var returnList = new List<string>();
+            try
+            {
+                using (var conn = new SqlConnection(Configuration.BEKDBConnectionString))
+                {
+                    using (var cmd = new SqlCommand("[ETL].[ReadUNFIEastDistinctWarehouses]", conn))
+                    {
+                        cmd.CommandTimeout = 0;
+                        conn.Open();
+
+                        var reader = cmd.ExecuteReader();
+                        while (reader.Read())
+                        {
+                            returnList.Add(reader[0].ToString());
+                        }
+                    }
+                }
+                return returnList;
+            }
+            catch (Exception ex)
+            {
+                eventLog.WriteErrorLog(String.Format("Etl:  Error reading distinct UNFI warehouses. {0} {1}", ex.Message, ex.StackTrace));
+                return returnList;
+            }
+        }
+
+        public DataTable ReadUNFIEastItems()
+        {
+            return PopulateDataTable("[ETL].[ReadUNFIEastProducts]");
+        }
         #endregion
 
 
-		
-	}
+
+    }
 }

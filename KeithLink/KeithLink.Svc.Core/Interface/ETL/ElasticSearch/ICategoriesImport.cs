@@ -10,5 +10,6 @@ namespace KeithLink.Svc.Core.Interface.ETL.ElasticSearch {
         void ImportCategories();
         void ImportDepartments();
 		void ImportUnfiCategories();
+        void ImportUnfiEastCategories();
     }
 }

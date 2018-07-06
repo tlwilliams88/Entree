@@ -292,7 +292,7 @@ namespace KeithLink.Svc.Impl.Tests.Integration.Repository.Lists {
                 Action act = () => { repo.SaveInventoryValuationListHeader(header); };
 
                 // assert
-                act.ShouldThrow<SqlException>();
+                act.Should().Throw<SqlException>();
             }
 
             [Fact]
@@ -310,7 +310,7 @@ namespace KeithLink.Svc.Impl.Tests.Integration.Repository.Lists {
                 Action act = () => { repo.SaveInventoryValuationListHeader(header); };
 
                 // assert
-                act.ShouldThrow<SqlException>();
+                act.Should().Throw<SqlException>();
             }
 
             [Fact]
@@ -328,7 +328,7 @@ namespace KeithLink.Svc.Impl.Tests.Integration.Repository.Lists {
                 Action act = () => { repo.SaveInventoryValuationListHeader(header); };
 
                 // assert
-                act.ShouldThrow<SqlException>();
+                act.Should().Throw<SqlException>();
             }
         }
     }

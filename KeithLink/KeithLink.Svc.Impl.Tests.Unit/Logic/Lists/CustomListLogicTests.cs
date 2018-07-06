@@ -869,7 +869,7 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic.Lists {
                 Action act = () => logic.SaveItem(detail);
 
                 // assert
-                act.ShouldThrow<ArgumentException>();
+                act.Should().Throw<ArgumentException>();
             }
 
             // the list item is what is passed to detailRepo.save

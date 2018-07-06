@@ -182,7 +182,7 @@ namespace KeithLink.Svc.Impl.Tests.Integration.Repository.Lists {
                 Action act = () => { repo.GetRecentlyOrderedHeader(Guid.Parse(GOOD_USER_ID), fakeCustomer); };
 
                 // assert
-                act.ShouldThrow<NullReferenceException>();
+                act.Should().Throw<NullReferenceException>();
             }
         }
 

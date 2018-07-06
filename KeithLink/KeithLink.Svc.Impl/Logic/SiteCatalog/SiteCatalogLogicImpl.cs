@@ -480,7 +480,8 @@ namespace KeithLink.Svc.Impl.Logic.SiteCatalog
             if (catFromSearchName != null)
                 categoryName = catFromSearchName.Name;
 
-            if (searchModel.CatalogType.Equals(Constants.CATALOG_UNFI, StringComparison.InvariantCultureIgnoreCase))
+            if ((searchModel.CatalogType.Equals(Constants.CATALOG_UNFI, StringComparison.InvariantCultureIgnoreCase)) |
+                (searchModel.CatalogType.Equals(Constants.CATALOG_UNFIEAST, StringComparison.InvariantCultureIgnoreCase)))
                 categoryName = categoryName.ToUpper();
             return categoryName;
         }

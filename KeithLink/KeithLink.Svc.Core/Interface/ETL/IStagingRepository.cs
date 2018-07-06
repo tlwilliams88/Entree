@@ -40,5 +40,10 @@ namespace KeithLink.Svc.Core.Interface.ETL
 		DataTable ReadUNFIItems();
 		List<string> ReadDistinctUNFIWarehouses();
 		DataTable ReadUNFIItems(string warehouse);
+        DataTable ReadUnfiEastCategories();
+        DataTable ReadUnfiEastSubCategories();
+        DataTable ReadUNFIEastItems(string warehouse);
+        List<string> ReadDistinctUNFIEastWarehouses();
+        DataTable ReadUNFIEastItems();
     }
 }

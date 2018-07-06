@@ -157,7 +157,7 @@ namespace KeithLink.Svc.Impl.Tests.Integration.Repository.Lists {
                 Action act = () => { repo.GetReminderItemsHeader(fakeCustomer); };
 
                 // assert
-                act.ShouldThrow<NullReferenceException>();
+                act.Should().Throw<NullReferenceException>();
             }
         }
 
