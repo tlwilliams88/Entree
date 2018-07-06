@@ -26,7 +26,7 @@ namespace KeithLink.Svc.Impl.Repository.DataConnection
             _connectionString = connection;
         }
 
-        public List<DocumentReturnModel> GetDocuments(string identifier = "")
+        public List<DocumentReturnModel> GetDocuments(string containerName, string directoryName, string identifier = "")
         {
             List<DocumentReturnModel> returnValue = new List<DocumentReturnModel>();
             CloudStorageAccount storageAccount;
@@ -36,9 +36,9 @@ namespace KeithLink.Svc.Impl.Repository.DataConnection
                 if (CloudStorageAccount.TryParse(_connectionString, out storageAccount))
                 {
                     CloudBlobClient client = storageAccount.CreateCloudBlobClient();
-                    CloudBlobContainer container = client.GetContainerReference("bekblob");
+                    CloudBlobContainer container = client.GetContainerReference(containerName);
 
-                    var directory = container.GetDirectoryReference("hns/" + identifier);
+                    var directory = container.GetDirectoryReference(String.Concat(directoryName, identifier));
                     IEnumerable<IListBlobItem> documents = directory.ListBlobs();
 
                     foreach (var document in documents)

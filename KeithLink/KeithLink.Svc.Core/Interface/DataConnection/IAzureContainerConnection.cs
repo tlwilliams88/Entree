@@ -13,6 +13,6 @@ namespace KeithLink.Svc.Core.Interface.DataConnection
 {
      public interface IAzureContainerConnection
     {
-        List<DocumentReturnModel> GetDocuments(string uriName = "");
+        List<DocumentReturnModel> GetDocuments(string containerName, string directoryName, string uriName = "");
     }
 }

@@ -19,7 +19,7 @@ namespace KeithLink.Svc.Impl.Repository.Documents {
 
         #region methods        
         public List<DocumentReturnModel> GetAllDocuments(string identifier) {
-            return _docRepository.GetDocuments(identifier);
+            return _docRepository.GetDocuments("bekblob", "hns/", identifier);
         }
         #endregion
     }
