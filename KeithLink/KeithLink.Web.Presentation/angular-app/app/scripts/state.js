@@ -58,7 +58,11 @@ angular.module('bekApp')
           ConfigSettingsService.getSetting('ShowRecommendedItems').then(function(setting) {
             var currentCustomer = LocalStorage.getCurrentCustomer();
             ENV.showRecommendedItems = setting && currentCustomer.customer.nationalId == '';
-          })
+          });
+
+          ConfigSettingsService.getSetting('ShowDocumentsPage').then(function(setting) {
+            ENV.showDocumentsPage = setting;
+          });
 
           return $stateParams.isHomePage = false;
         }]
@@ -94,6 +98,14 @@ angular.module('bekApp')
         branches: ['BranchService', 'localStorageService', function(BranchService, localStorageService) {
           return localStorageService.get('branches');
         }]
+      }
+    })
+    .state('menu.documents', {
+      url: '/documents/',
+      templateUrl: 'views/documents.html',
+      controller: 'DocumentController',
+      data: {
+        authorize: 'isLoggedIn'
       }
     })
     .state('menu.applicationsettings', {

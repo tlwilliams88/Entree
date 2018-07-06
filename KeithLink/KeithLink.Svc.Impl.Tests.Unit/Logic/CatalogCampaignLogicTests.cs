@@ -448,7 +448,7 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic {
                 Action act = () => logic.GetCampaign(id, includeItems);
 
                 // assert
-                act.ShouldThrow<NullReferenceException>();
+                act.Should().Throw<NullReferenceException>();
             }
 
             [Fact]
@@ -462,7 +462,7 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic {
                 Action act = () => logic.GetCampaign(id, includeItems);
 
                 // assert
-                act.ShouldThrow<NullReferenceException>();
+                act.Should().Throw<NullReferenceException>();
             }
 
             [Fact]
@@ -529,7 +529,7 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic {
                 Action act = () => logic.GetCampaignByUri(uri, includeItems);
 
                 // assert
-                act.ShouldThrow<NullReferenceException>();
+                act.Should().Throw<NullReferenceException>();
             }
 
             [Fact]
@@ -543,7 +543,7 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic {
                 Action act = () => logic.GetCampaignByUri(uri, includeItems);
 
                 // assert
-                act.ShouldThrow<NullReferenceException>();
+                act.Should().Throw<NullReferenceException>();
             }
 
             [Fact]

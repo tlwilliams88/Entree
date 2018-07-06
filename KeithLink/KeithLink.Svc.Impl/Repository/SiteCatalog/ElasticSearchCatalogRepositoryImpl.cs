@@ -413,11 +413,14 @@ namespace KeithLink.Svc.Impl.Repository.SiteCatalog
             switch (catagoryType.ToLower())
             {
                 case "unfi":
-                index = Constants.ES_UNFI_INDEX_CATEGORIES;
-                break;
+                    index = Constants.ES_UNFI_INDEX_CATEGORIES;
+                    break;
+                case "unfi_e":
+                    index = Constants.ES_UNFI_EAST_INDEX_CATEGORIES;
+                    break;
                 default:
-                index = Constants.ES_INDEX_CATEGORIES;
-                break;
+                    index = Constants.ES_INDEX_CATEGORIES;
+                    break;
             }
 
             var response = _eshelper.ElasticClient.Search<Category>(s => s
@@ -435,11 +438,11 @@ namespace KeithLink.Svc.Impl.Repository.SiteCatalog
                 r.Source.Id = r.Id;
             }
 
-            List<Category> filteredResults = (from s in response.Documents
-                                              where !(from p in prefixesToExclude select p).Contains(s.Id)
-                                              && (s.SubCategories != null && !s.Id.Equals(0))
-                                              orderby s.Id
-                                              select s).ToList<Category>();
+            List<Category> filteredResults = (from category in response.Documents
+                                              where !(from p in prefixesToExclude select p).Contains(category.Id)
+                                              && (category.SubCategories != null && !category.Id.Equals(0))
+                                              orderby category.Id
+                                              select category).ToList<Category>();
 
             CategoriesReturn results = new CategoriesReturn { Categories = filteredResults };
 

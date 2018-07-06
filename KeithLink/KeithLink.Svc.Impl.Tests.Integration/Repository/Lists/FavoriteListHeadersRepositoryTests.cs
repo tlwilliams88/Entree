@@ -108,7 +108,7 @@ namespace KeithLink.Svc.Impl.Tests.Integration.Repository.Lists {
                 Action act = () => { repo.GetFavoritesList(fakeUser, fakeCustomer); };
 
                 // assert
-                act.ShouldThrow<NullReferenceException>();
+                act.Should().Throw<NullReferenceException>();
             }
         }
 

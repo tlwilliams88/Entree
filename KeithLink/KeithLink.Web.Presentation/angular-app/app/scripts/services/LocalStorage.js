@@ -8,8 +8,8 @@
  * Service of the bekApp
  */
 angular.module('bekApp')
-  .factory('LocalStorage', ['localStorageService', 'Constants',
-    function (localStorageService, Constants) {
+  .factory('LocalStorage', ['localStorageService', 'Constants', 'SessionRecordingService',
+    function (localStorageService, Constants, SessionRecordingService) {
 
     var Service = {
 
@@ -184,6 +184,8 @@ angular.module('bekApp')
 
     function setCustomerNumber(customerNumber) {
       localStorageService.set(Constants.localStorage.customerNumber, customerNumber);
+
+      SessionRecordingService.tagCustomer(customerNumber);
     }
 
     function setBranchId(branchId) {

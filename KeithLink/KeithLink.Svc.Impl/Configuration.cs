@@ -30,6 +30,9 @@ namespace KeithLink.Svc.Impl
         // Item History
         private const string KEY_ITEM_HISTORY_WEEKS = "ItemHistoryAverageWeeks";
 
+        //Azure Settings 
+        public static string KEY_AZURE_CONNECTION_STRING = "AzureConnectionString";
+
         // Active Directory Constants
         private const string KEY_AD_EXTERNAL_ACCESSGROUP_KBITADMIN = "ADExtAccessGroupKbitAdmin";
         private const string KEY_AD_EXTERNAL_ACCESSGROUP_KBITCUSTOMER = "ADExtAccessGroupKbitCustomer";
@@ -284,9 +287,18 @@ namespace KeithLink.Svc.Impl
         #endregion
 
         #region properties
-        public static string CatalogCampaignImagesUrl {
-            get {
+        public static string CatalogCampaignImagesUrl
+        {
+            get
+            {
                 return DBAppSettingsRepositoryImpl.GetValue(KEY_CAMPAIGN_IMAGES_URL, string.Empty);
+            }
+        }
+        public static string AzureConnectionString
+        {
+            get
+            {
+                return DBAppSettingsRepositoryImpl.GetValue(KEY_AZURE_CONNECTION_STRING, string.Empty);
             }
         }
 

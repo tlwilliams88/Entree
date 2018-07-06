@@ -155,7 +155,9 @@ namespace KeithLink.Svc.Impl.Service.SiteCatalog
             ret = ApplySpecialFilters(catalogInfo, profile, specialFilters, searchModel, ret);
 
             AddPricingInfo(ret, catalogInfo, searchModel);
+
             GetAdditionalProductInfo(profile, ret, catalogInfo);
+
             ret.CatalogCounts = catalogCounts;
 
             foreach (Product product in ret.Products)
@@ -437,6 +439,7 @@ namespace KeithLink.Svc.Impl.Service.SiteCatalog
                                          prod.InHistory = history.Where(h => h.ItemNumber.Equals(prod.ItemNumber))
                                                                  .FirstOrDefault()
                                                                  .InHistory;
+
                                          _catalogLogic.AddProductImageInfo(prod);
                                      });
             }

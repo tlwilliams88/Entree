@@ -33,6 +33,7 @@ namespace KeithLink.Svc.Core
 
         public const string CATALOG_BEK = "BEK";
         public const string CATALOG_UNFI = "UNFI";
+        public const string CATALOG_UNFIEAST = "UNFI_E";
         public const string CATALOG_CUSTOMINVENTORY = "CUSTOM";
 
         public const string REGEX_AD_ILLEGALCHARACTERS = @"[/\\\[\]:;\|=,\+\*\?<>@']";
@@ -174,6 +175,7 @@ namespace KeithLink.Svc.Core
         // Elastic Search : Indexes
         public const string ES_INDEX_CATEGORIES = "categories";
         public const string ES_UNFI_INDEX_CATEGORIES = "unfi_categories";
+        public const string ES_UNFI_EAST_INDEX_CATEGORIES = "unfi_e_categories";
         public const string ES_INDEX_BRANDS = "brands";
 
         // Elastic Search : Types

@@ -312,7 +312,7 @@ module.exports = function (grunt) {
               files: [{
                 expand: true,
                 cwd: '<%= yeoman.app %>/newrelic/newrelic-dev',
-                dest: '<%= yeoman.app %>/newrelic',
+                dest: '<%= yeoman.dev %>/newrelic',
                 src: '**/newrelic.js'
               }]
           },
@@ -336,7 +336,7 @@ module.exports = function (grunt) {
               files: [{
                 expand: true,
                 cwd: '<%= yeoman.app %>/inspectlet/inspectlet',
-                dest: '<%= yeoman.app %>/inspectlet',
+                dest: '<%= yeoman.dev %>/inspectlet',
                 src: '**/inspectlet.js'
               }]
           },
