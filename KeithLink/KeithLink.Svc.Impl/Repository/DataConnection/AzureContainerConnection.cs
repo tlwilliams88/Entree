@@ -26,7 +26,7 @@ namespace KeithLink.Svc.Impl.Repository.DataConnection
             _connectionString = connection;
         }
 
-        public List<DocumentReturnModel> GetDocuments(string identifier = "")
+        public List<DocumentReturnModel> GetDocuments(string containerName, string directoryName, string identifier = "")
         {
             List<DocumentReturnModel> returnValue = new List<DocumentReturnModel>();
             CloudStorageAccount storageAccount;
@@ -36,9 +36,9 @@ namespace KeithLink.Svc.Impl.Repository.DataConnection
                 if (CloudStorageAccount.TryParse(_connectionString, out storageAccount))
                 {
                     CloudBlobClient client = storageAccount.CreateCloudBlobClient();
-                    CloudBlobContainer container = client.GetContainerReference("hns"); 
+                    CloudBlobContainer container = client.GetContainerReference(containerName);
 
-                    var directory = container.GetDirectoryReference(identifier);
+                    var directory = container.GetDirectoryReference(String.Concat(directoryName, identifier));
                     IEnumerable<IListBlobItem> documents = directory.ListBlobs();
 
                     foreach (var document in documents)
@@ -48,11 +48,11 @@ namespace KeithLink.Svc.Impl.Repository.DataConnection
                         var i = 0;
                         foreach (var segment in document.Uri.Segments)
                         {
-                           doc.Name = System.Net.WebUtility.UrlDecode(document.Uri.Segments[i]);
+                            doc.Name = System.Net.WebUtility.UrlDecode(document.Uri.Segments[i]);
                             i++;
                         }
 
-                        if (doc.Name[doc.Name.Length -1].ToString() == "/")
+                        if (doc.Name[doc.Name.Length - 1].ToString() == "/")
                         {
                             var decodedUrl = System.Net.WebUtility.UrlDecode(document.Uri.AbsolutePath);
                             doc.Type = "folder";
@@ -69,14 +69,14 @@ namespace KeithLink.Svc.Impl.Repository.DataConnection
                             else if (doc.Name.IndexOf(".zip") > 0) { doc.Type = "zip"; }
                             else { doc.Type = "other"; }
 
-                            doc.Url = "https://bekcdn.azureedge.net/bekblob" + System.Net.WebUtility.UrlDecode(document.Uri.AbsolutePath);
+                            doc.Url = "https://bekcdn.azureedge.net" + System.Net.WebUtility.UrlDecode(document.Uri.AbsolutePath);
                         }
 
                         if (doc.Type != "folder")
                         {
                             using (HttpClient http = new HttpClient())
                             {
-                                using (HttpResponseMessage response = http.GetAsync("https://bekcdn.azureedge.net/bekblob" + System.Net.WebUtility.UrlDecode(document.Uri.AbsolutePath) + "?comp=metadata").Result)
+                                using (HttpResponseMessage response = http.GetAsync("https://bekcdn.azureedge.net" + System.Net.WebUtility.UrlDecode(document.Uri.AbsolutePath) + "?comp=metadata").Result)
                                 {
                                     if (response.StatusCode.Equals(HttpStatusCode.OK))
                                     {
@@ -86,7 +86,7 @@ namespace KeithLink.Svc.Impl.Repository.DataConnection
                             }
                         }
                         returnValue.Add(doc);
-                    }                    
+                    }
                 }
                 else
                 {
