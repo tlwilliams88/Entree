@@ -75,8 +75,8 @@
                       ng-repeat="category in recommendedCategories | limitTo: 4" 
                       class="item-holder"
                       analytics-on 
-                      analytics-category="{{category.type | uppercase}} Categories Homepage Desktop" 
-                      analytics-event="{{category.categoryDescription}} Category Clicked">
+                      analytics-category="{{category.type}} Categories Homepage Desktop" 
+                      analytics-event="{{category.categoryDescription}} Selected">
                       <div 
                         class="featured-item text-center" 
                         style="min-width: 0px;
@@ -207,8 +207,8 @@
                 ng-repeat="category in recommendedCategories | limitTo: 4" 
                 class="item-holder"
                 analytics-on 
-                analytics-category="{{category.type | uppercase}} Categories Homepage Mobile" 
-                analytics-event="{{category.name}} Category Clicked">
+                analytics-category="{{category.type}} Categories Homepage Mobile" 
+                analytics-event="{{category.name}} Selected">
                 <div 
                   class="featured-item text-center" 
                   style="min-width: 0px;

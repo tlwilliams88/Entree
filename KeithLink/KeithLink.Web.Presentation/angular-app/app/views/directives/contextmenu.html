@@ -22,9 +22,8 @@
             class="btn btn-default"
             ng-repeat="cart in carts | orderBy: ['name']" 
             analytics-on 
-            analytics-category="Add To Cart" 
-            analytics-event="{{item.orderedfromsource ? item.orderedfromsource : recommendationType}} Cart: {{cart.name}}, Item: {{item.itemnumber}}" 
-            analytics-label="{{currentLocation}} Context Menu" 
+            analytics-category="{{item.orderedfromsource ? item.orderedfromsource : recommendationType}} Add To Cart From {{currentLocation}} On Desktop" 
+            analytics-event="Added {{item.orderedfromsource ? item.orderedfromsource : recommendationType}} Item {{item.itemnumber}} to {{cart.name}} From Context Menu" 
             ng-click="addItemToCart(cart.name, cart.id, item)">
             {{cart.name}}
           </button>
@@ -32,8 +31,8 @@
             type="button" 
             class="btn btn-default" 
             analytics-on 
-            analytics-category="Create Cart" 
-            analytics-event="{{item.orderedfromsource ? item.orderedfromsource : recommendationType}}, Item: {{item.itemnumber}}" 
+            analytics-category="{{item.orderedfromsource ? item.orderedfromsource : recommendationType}} Create Cart From {{currentLocation}} On Desktop" 
+            analytics-event="Created Cart With {{item.orderedfromsource ? item.orderedfromsource : recommendationType}} with Item {{item.itemnumber}} From Context Menu"
             analytics-label="{{currentLocation}} Context Menu" 
             ng-click="createCartWithItem(item)">
             New Cart...
@@ -56,7 +55,7 @@
             ng-repeat="list in lists | sortLists" 
             analytics-on 
             analytics-category="{{item.orderedfromsource ? item.orderedfromsource : recommendationType}} Add To List From {{currentLocation}} On Desktop" 
-            analytics-event="Added {{item.orderedfromsource ? item.orderedfromsource : recommendationType}} Item {{item.itemnumber}} to {{list.name}} From Context Menu" 
+            analytics-event="Added {{item.orderedfromsource ? item.orderedfromsource : recommendationType}} Item {{item.itemnumber}} to {{list.name}} From Context Menu"
             ng-if="list.permissions.canAddItems && !list.permissions.specialDisplay">
             {{list.name}}
           </button>
@@ -85,7 +84,7 @@
             type="button" 
             class="btn btn-default" 
             analytics-on 
-            analytics-category="{{item.orderedfromsource ? item.orderedfromsource : recommendationType}} Add To Change Order From {{currentLocation}} From {{currentLocation}} On Desktop" 
+            analytics-category="{{item.orderedfromsource ? item.orderedfromsource : recommendationType}} Add To Change Order From {{currentLocation}} On Desktop" 
             analytics-event="Added {{item.orderedfromsource ? item.orderedfromsource : recommendationType}} Item {{item.itemnumber}} to {{order.invoicenumber}} From Context Menu" 
             ng-click="addItemToChangeOrder(order, item)">
             <span ng-if="!order.ponumber"># {{order.invoicenumber}}</span>

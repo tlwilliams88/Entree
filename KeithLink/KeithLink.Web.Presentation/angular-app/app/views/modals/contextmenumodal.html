@@ -15,7 +15,7 @@
         ng-repeat="cart in carts | orderBy: ['name']" 
         analytics-on 
         analytics-category="{{item.orderedfromsource ? item.orderedfromsource : recommendationType}} Add To Cart From {{currentLocation}} On Mobile" 
-        analytics-event="Added {{item.orderedfromsource ? item.orderedfromsource : recommendationType}} Item {{item.itemnumber}} to {{cart.name}}" 
+        analytics-event="Added {{item.orderedfromsource ? item.orderedfromsource : recommendationType}} Item {{item.itemnumber}} to {{cart.name}} From Context Menu" 
         ng-click="addItemToCart(cart.name, cart.id, item)" 
         class="hand list-group-item">
         {{cart.name}}
