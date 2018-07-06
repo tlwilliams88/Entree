@@ -143,12 +143,16 @@ namespace KeithLink.Svc.WebApi.Controllers
                     target = (user.Name, user.EmailAddress);
                     break;
                 default:
+                    target = (audience.ToString(), "entreefeedback@benekeith.com");
                     break;
             }
 
-#if DEBUG
-            target = ("debugging user", AuthenticatedUser.EmailAddress);
-#endif
+            // Route feedback to originating user when not in production
+            if (Common.Impl.Configuration.IsProduction == false)
+            {
+                target = ("non-production user", AuthenticatedUser.EmailAddress);
+            }
+
             return target;
         }
 
