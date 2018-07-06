@@ -17,8 +17,27 @@
       </button>
       <ul class="dropdown-menu" role="menu">
         <div class="btn-group-vertical">
-          <button type="button" class="btn btn-default" analytics-on analytics-category="Add To Cart" analytics-event="{{item.orderedfromsource ? item.orderedfromsource : recommendationType}} Cart: {{cart.name}}, Item: {{item.itemnumber}}" analytics-label="{{currentLocation}} Context Menu" ng-repeat="cart in carts | orderBy: ['name']" ng-click="addItemToCart(cart.name, cart.id, item)">{{cart.name}}</button>
-          <button type="button" class="btn btn-default" analytics-on analytics-category="Create Cart" analytics-event="{{item.orderedfromsource ? item.orderedfromsource : recommendationType}}, Item: {{item.itemnumber}}" analytics-label="{{currentLocation}} Context Menu" ng-click="createCartWithItem(item)">New Cart...</button>
+          <button 
+            type="button" 
+            class="btn btn-default"
+            ng-repeat="cart in carts | orderBy: ['name']" 
+            analytics-on 
+            analytics-category="Add To Cart" 
+            analytics-event="{{item.orderedfromsource ? item.orderedfromsource : recommendationType}} Cart: {{cart.name}}, Item: {{item.itemnumber}}" 
+            analytics-label="{{currentLocation}} Context Menu" 
+            ng-click="addItemToCart(cart.name, cart.id, item)">
+            {{cart.name}}
+          </button>
+          <button 
+            type="button" 
+            class="btn btn-default" 
+            analytics-on 
+            analytics-category="Create Cart" 
+            analytics-event="{{item.orderedfromsource ? item.orderedfromsource : recommendationType}}, Item: {{item.itemnumber}}" 
+            analytics-label="{{currentLocation}} Context Menu" 
+            ng-click="createCartWithItem(item)">
+            New Cart...
+          </button>
         </div>
       </ul>
     </div>
@@ -30,8 +49,26 @@
       </button>
       <ul class="dropdown-menu" role="menu">
         <div class="btn-group-vertical">
-          <button ng-repeat="list in lists | sortLists" analytics-on analytics-category="Add To List" analytics-event="{{item.orderedfromsource ? item.orderedfromsource : recommendationType}} List: {{list.name}}, Item: {{item.itemnumber}}" analytics-label="{{currentLocation}} Context Menu" ng-if="list.permissions.canAddItems && !list.permissions.specialDisplay" type="button" class="btn btn-default" ng-click="addItemToList(item, list)">{{list.name}}</button>
-          <button type="button" class="btn btn-default" analytics-on analytics-category="Create List" analytics-event="Create List Item: {{item.itemnumber}}, {{item.orderedfromsource ? item.orderedfromsource : recommendationType}}" analytics-event="Create List" analytics-label="{{currentLocation}} Context Menu" ng-click="createListWithItem(item)">New List...</button>
+          <button
+            type="button" 
+            class="btn btn-default" 
+            ng-click="addItemToList(item, list)"
+            ng-repeat="list in lists | sortLists" 
+            analytics-on 
+            analytics-category="{{item.orderedfromsource ? item.orderedfromsource : recommendationType}} Add To List From {{currentLocation}} On Desktop" 
+            analytics-event="Added {{item.orderedfromsource ? item.orderedfromsource : recommendationType}} Item {{item.itemnumber}} to {{list.name}} From Context Menu" 
+            ng-if="list.permissions.canAddItems && !list.permissions.specialDisplay">
+            {{list.name}}
+          </button>
+          <button 
+            type="button" 
+            class="btn btn-default" 
+            analytics-on 
+            analytics-category="item.orderedfromsource ? item.orderedfromsource : recommendationType}} Create List From {{currentLocation}} On Desktop" 
+            analytics-event="Created List With {{item.orderedfromsource ? item.orderedfromsource : recommendationType}} with Item {{item.itemnumber}} From Context Menu" 
+            ng-click="createListWithItem(item)">
+            New List...
+          </button>
         </div>
       </ul>
     </div>
@@ -43,7 +80,17 @@
       </button>
       <ul class="dropdown-menu" role="menu">
         <div class="btn-group-vertical">
-          <button ng-repeat="order in changeOrders" type="button" class="btn btn-default" analytics-on analytics-category="Add To Change Order" analytics-event="{{item.orderedfromsource ? item.orderedfromsource : recommendationType}} Order: {{order.invoicenumber}}, Item: {{item.itemnumber}}" analytics-label="{{currentLocation}} Context Menu" ng-click="addItemToChangeOrder(order, item)"><span ng-if="!order.ponumber"># {{order.invoicenumber}}</span><span ng-if="order.ponumber">{{order.ponumber}}</span></button>
+          <button 
+            ng-repeat="order in changeOrders" 
+            type="button" 
+            class="btn btn-default" 
+            analytics-on 
+            analytics-category="{{item.orderedfromsource ? item.orderedfromsource : recommendationType}} Add To Change Order From {{currentLocation}} From {{currentLocation}} On Desktop" 
+            analytics-event="Added {{item.orderedfromsource ? item.orderedfromsource : recommendationType}} Item {{item.itemnumber}} to {{order.invoicenumber}} From Context Menu" 
+            ng-click="addItemToChangeOrder(order, item)">
+            <span ng-if="!order.ponumber"># {{order.invoicenumber}}</span>
+            <span ng-if="order.ponumber">{{order.ponumber}}</span>
+          </button>
         </div>
       </ul>
     </div>

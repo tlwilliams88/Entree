@@ -75,15 +75,10 @@
                       ng-repeat="category in recommendedCategories | limitTo: 4" 
                       class="item-holder"
                       analytics-on 
-                      analytics-category="{{category.type | uppercase}}-Categories-Homepage-Desktop" 
-                      analytics-event="{{category.type | uppercase}} Categories Clicked" 
-                      analytics-label="{{category.categoryDescription}}">
+                      analytics-category="{{category.type | uppercase}} Categories Homepage Desktop" 
+                      analytics-event="{{category.categoryDescription}} Category Clicked">
                       <div 
                         class="featured-item text-center" 
-                        analytics-on 
-                        analytics-category="{{category.type | uppercase}}-Categories-Homepage-Desktop" 
-                        analytics-event="{{category.type | uppercase}} Categories Clicked" 
-                        analytics-label="{{category.categoryDescription}}"
                         style="min-width: 0px;
                         margin: 0 auto;">
                         <img 
@@ -212,16 +207,11 @@
                 ng-repeat="category in recommendedCategories | limitTo: 4" 
                 class="item-holder"
                 analytics-on 
-                analytics-category="{{category.type | uppercase}}-Categories-Homepage-Mobile" 
-                analytics-event="{{category.type | uppercase}} Categories Clicked"  
-                analytics-label="{{category.itemnumber}}">
+                analytics-category="{{category.type | uppercase}} Categories Homepage Mobile" 
+                analytics-event="{{category.name}} Category Clicked">
                 <div 
                   class="featured-item text-center" 
-                  analytics-on 
-                  analytics-category="{{category.type | uppercase}}-Categories-Homepage-Mobile"  
-                  analytics-event="{{category.type | uppercase}} Categories Clicked"
-                  analytics-label="{{category.name}}"
-                  style="    min-width: 0px;
+                  style="min-width: 0px;
                   margin: 0 auto;">
                   <img 
                     class="hand"
