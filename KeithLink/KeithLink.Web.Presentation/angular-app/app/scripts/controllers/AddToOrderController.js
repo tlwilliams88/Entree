@@ -34,7 +34,7 @@ angular.module('bekApp')
           }
           guiders.hideAll();
 
-          $interval.cancel(getRecommendations);
+          // $interval.cancel(getRecommendations);
       });
 
       $scope.showPagination = function(status) {
@@ -259,9 +259,9 @@ angular.module('bekApp')
 
     var getRecommendations;
 
-    $scope.cancelRecommendedItemsInterval = function() {
-      $interval.cancel(getRecommendations);
-    };
+    // $scope.cancelRecommendedItemsInterval = function() {
+    //   $interval.cancel(getRecommendations);
+    // };
   
     $scope.getRecommendedItems = function() {
       var listItemsWithQuantity = $filter('filter')($scope.selectedList.items, function(value) {
@@ -275,9 +275,9 @@ angular.module('bekApp')
       }
     }
 
-    $scope.setRecommendedItemsInterval = function() {
-      getRecommendations = $interval($scope.getRecommendedItems, 15000, 120);
-    }
+    // $scope.setRecommendedItemsInterval = function() {
+    //   getRecommendations = $interval($scope.getRecommendedItems, 15000, 120);
+    // }
 
     $scope.showRecommendedItems = ENV.showRecommendedItems;
     $scope.recommendedItems = [];
@@ -526,7 +526,7 @@ angular.module('bekApp')
           return;
         }
 
-        $scope.setRecommendedItemsInterval();
+        // $scope.setRecommendedItemsInterval();
         $scope.updateRecommendedItems($scope.selectedCart.items);
       });
     }
