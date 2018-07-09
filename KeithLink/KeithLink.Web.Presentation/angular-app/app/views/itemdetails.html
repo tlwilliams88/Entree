@@ -454,8 +454,8 @@
             heading="Recommendations" 
             class="hidden-lg" 
             analytics-on 
-            analytics-category="RecommendedItem-Item-Details" 
-            analytics-event="Open Recommended Item Tab"
+            analytics-category="CartIQ Item Details Mobile" 
+            analytics-event="CartIQ Tab Opened"
             ng-if="recommendedItems.length > 0">
             <tab-heading class="recommendedItemsStyling"><span class="icon-thumbsup" style="padding-right: 5px;"></span>Recommendations<span class="icon-help" style="padding-left: 5px; padding-top: 2px;" tooltip="Recommended Items are based on what is currently in your cart."></span></tab-heading>
                 <table class="table item-details__table table-striped-rows no-margin hidden-lg" style="table-layout: fixed">
@@ -481,8 +481,8 @@
                               class="icon-plus2" 
                               style="padding-right:10px;"
                               analytics-on 
-                              analytics-category="RecommendedItem-Item-Details-Mobile" 
-                              analytics-event="Add Recommended Item To Cart">
+                              analytics-category="CartIQ Item Details Mobile" 
+                              analytics-event="Added {{item.itemnumber}} CartIQ Item To Cart">
                             </a>
                           </span>
                         </td>
