@@ -310,6 +310,8 @@ namespace KeithLink.Svc.Impl.ETL
                 KeithLink.Common.Impl.Email.ExceptionEmail.Send(e,
                                                                 "ETL: Error Importing catalog -- whole process failed.");
             }
+
+            ImportUNFIEastCatalog();
         }
 
         private MSCommerceCatalogCollection2Catalog[] BuildUNFIEastCatalogs()
