@@ -184,25 +184,8 @@ namespace KeithLink.Svc.InternalSvc
         }
 
         public bool ProcessUNFICatalogData() {
-            var task = Task.Run(() => ProcessRegularUNFICatalogData());
 
-            var task2 = new Task(() => ProcessUNFIEastCatalogData());
-            task2.RunSynchronously();
-
-            return true;
-        }
-
-        private bool ProcessRegularUNFICatalogData()
-        {
             Task.Factory.StartNew(() => categoryLogic.ImportUNFICatalog()).ContinueWith((t) =>
-            { (new ErrorHandler()).HandleError(t.Exception); }, TaskContinuationOptions.OnlyOnFaulted);
-
-            return true;
-        }
-
-        private bool ProcessUNFIEastCatalogData()
-        {
-            Task.Factory.StartNew(() => categoryLogic.ImportUNFIEastCatalog()).ContinueWith((t) =>
             { (new ErrorHandler()).HandleError(t.Exception); }, TaskContinuationOptions.OnlyOnFaulted);
 
             return true;
