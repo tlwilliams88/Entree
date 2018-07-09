@@ -184,29 +184,54 @@ namespace KeithLink.Svc.InternalSvc
         }
 
         public bool ProcessUNFICatalogData() {
-            Task.Factory.StartNew(() => categoryLogic.ImportUNFICatalog()).ContinueWith((t) => { (new ErrorHandler()).HandleError(t.Exception); }, TaskContinuationOptions.OnlyOnFaulted);
+            var task = Task.Run(() => ProcessRegularUNFICatalogData());
+
+            var task2 = new Task(() => ProcessUNFIEastCatalogData());
+            task2.RunSynchronously();
+
+            return true;
+        }
+
+        private bool ProcessRegularUNFICatalogData()
+        {
+            Task.Factory.StartNew(() => categoryLogic.ImportUNFICatalog()).ContinueWith((t) =>
+            { (new ErrorHandler()).HandleError(t.Exception); }, TaskContinuationOptions.OnlyOnFaulted);
+
+            return true;
+        }
+
+        private bool ProcessUNFIEastCatalogData()
+        {
+            Task.Factory.StartNew(() => categoryLogic.ImportUNFIEastCatalog()).ContinueWith((t) =>
+            { (new ErrorHandler()).HandleError(t.Exception); }, TaskContinuationOptions.OnlyOnFaulted);
 
             return true;
         }
 
         public bool ProcessUNFIElasticSearchData()
-		{
-			Task.Factory.StartNew(() => _esItemImportLogic.ImportUNFIItems()).ContinueWith((t) =>
-			{ (new ErrorHandler()).HandleError(t.Exception); }, TaskContinuationOptions.OnlyOnFaulted);
-
-			Task.Factory.StartNew(() => _esCategoriesImportLogic.ImportUnfiCategories()).ContinueWith((t) =>
-			{ (new ErrorHandler()).HandleError(t.Exception); }, TaskContinuationOptions.OnlyOnFaulted);
-			return true;
-		}
-
-        public bool ProcessUNFIEastCatalogData()
         {
-            Task.Factory.StartNew(() => categoryLogic.ImportUNFIEastCatalog()).ContinueWith((t) => { (new ErrorHandler()).HandleError(t.Exception); }, TaskContinuationOptions.OnlyOnFaulted);
+            var task = Task.Run(() => ProcessRegularUNFIElasticSearchData());
+
+            var task2 = new Task(() => ProcessUNFIEastElasticSearchData());
+            task2.RunSynchronously();
 
             return true;
         }
 
-        public bool ProcessUNFIEastElasticSearchData()
+        private bool ProcessRegularUNFIElasticSearchData()
+        {
+            Task.Factory.StartNew(() => _esItemImportLogic.ImportUNFIItems()).ContinueWith((t) =>
+            { (new ErrorHandler()).HandleError(t.Exception); }, TaskContinuationOptions.OnlyOnFaulted);
+
+            Task.Factory.StartNew(() => _esCategoriesImportLogic.ImportUnfiCategories()).ContinueWith((t) =>
+            { (new ErrorHandler()).HandleError(t.Exception); }, TaskContinuationOptions.OnlyOnFaulted);
+
+            ProcessUNFIEastElasticSearchData();
+
+            return true;
+        }
+
+        private bool ProcessUNFIEastElasticSearchData()
         {
             Task.Factory.StartNew(() => _esItemImportLogic.ImportUNFIEastItems()).ContinueWith((t) =>
             { (new ErrorHandler()).HandleError(t.Exception); }, TaskContinuationOptions.OnlyOnFaulted);
