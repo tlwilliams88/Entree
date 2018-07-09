@@ -409,10 +409,11 @@ namespace KeithLink.Svc.WebApi.Controllers {
             ProductsReturn recommendedItems =  _catalogService.GetRecommendedItemsForCart(this.SelectedUserContext, 
                                                               request.CartItems, 
                                                               this.AuthenticatedUser, 
-                                                              request.hasimages);
+                                                              request.PageSize,
+                                                              request.GetImages);
 
-            if (request.pagesize.HasValue) {
-                recommendedItems.Products = recommendedItems.Products.Take(request.pagesize.Value).ToList();
+            if (request.PageSize.HasValue) {
+                //recommendedItems.Products = recommendedItems.Products.Take(request.PageSize.Value).ToList();
                 recommendedItems.TotalCount = recommendedItems.Products.Count();
                 recommendedItems.Count = recommendedItems.Products.Count();
             }

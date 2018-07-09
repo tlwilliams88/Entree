@@ -577,8 +577,8 @@
           class="text-center"  
           ng-click="getRecommendedItems(); showPagination('false'); cancelRecommendedItemsInterval();"
           analytics-on 
-          analytics-category="Recommended-Item-Add-To-Order" 
-          analytics-event="Open Recommended Items Tab">
+          analytics-category="CartIQ Add To Order Tab" 
+          analytics-event="CartIQ Tab Opened">
             <tab-heading ng-class="{ recommendedItemsStyling : recommendedItems.length > 0 }"><span class="icon-thumbsup" style="padding-right: 5px;"></span>Recommended Items <span ng-show="recommendedItems.length > 0">({{recommendedItems.length}})</span><span class="icon-help" style="padding-left: 5px; padding-top: 2px;" tooltip="Recommended Items are based on what is currently in your cart."></span></tab-heading>
             <table
             class="table table-border"
