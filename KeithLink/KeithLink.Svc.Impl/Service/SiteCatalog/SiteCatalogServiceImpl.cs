@@ -210,7 +210,10 @@ namespace KeithLink.Svc.Impl.Service.SiteCatalog
                     }
                 }
 
-                validProducts.Add(product);
+                if ((getImages.Equals(true) && hasImages == true) || (getImages.HasValue == false || getImages.Equals(false)))
+                {
+                    validProducts.Add(product);
+                }
 
                 if (pageSize.HasValue && validProducts.Count >= pageSize)
                 {
