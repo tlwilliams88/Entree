@@ -12,8 +12,8 @@
   DTS:LocaleID="1033"
   DTS:ObjectName="UNFIETLProcess_DEV"
   DTS:PackageType="5"
-  DTS:VersionBuild="142"
-  DTS:VersionGUID="{13E0D60F-4312-480E-950D-26CE944F9943}">
+  DTS:VersionBuild="144"
+  DTS:VersionGUID="{29F88880-C22D-468B-AD41-266F16E44DB6}">
   <DTS:Property
     DTS:Name="PackageFormatVersion">8</DTS:Property>
   <DTS:ConnectionManagers>
@@ -772,11 +772,11 @@
             <DTS:Property
               DTS:Name="ServerPassword"
               Sensitive="1"
-              Encrypted="1">AQAAANCMnd8BFdERjHoAwE/Cl+sBAAAAXNK8DzCMwUSdTLI29vfI8wAAAAAIAAAARABUAFMAAAADZgAAwAAAABAAAAB/upVmHIr4aG6nvjWaOBZlAAAAAASAAACgAAAAEAAAAK9nvhoKOuAvkjQ7Zpjm2RsIAAAA8Rz8hkWSh/AUAAAATcCis7wPl06FmkrkFgcKMxXiU8M</DTS:Property>
+              Encrypted="1">AQAAANCMnd8BFdERjHoAwE/Cl+sBAAAAXNK8DzCMwUSdTLI29vfI8wAAAAAIAAAARABUAFMAAAADZgAAwAAAABAAAAAHrG/el/XlqROe6tfosQnaAAAAAASAAACgAAAAEAAAANyoJTpD5iXap/0piZb5NwgIAAAAoRKm/H3WwLUUAAAAgng6WYapTB+FXfoCIp35NuUPejQ</DTS:Property>
             <DTS:Property
               DTS:Name="ProxyPassword"
               Sensitive="1"
-              Encrypted="1">AQAAANCMnd8BFdERjHoAwE/Cl+sBAAAAXNK8DzCMwUSdTLI29vfI8wAAAAAIAAAARABUAFMAAAADZgAAwAAAABAAAACz2nXV2GNWixlWhU3+v4emAAAAAASAAACgAAAAEAAAAHWcQjS+jESkVQT3cA9SJukIAAAADLSFDBFAGV4UAAAACo1YMWZbgJdVYKz5lYLiLaOA2iw</DTS:Property>
+              Encrypted="1">AQAAANCMnd8BFdERjHoAwE/Cl+sBAAAAXNK8DzCMwUSdTLI29vfI8wAAAAAIAAAARABUAFMAAAADZgAAwAAAABAAAAB5B0nGkObbAIxbA0VcY5h5AAAAAASAAACgAAAAEAAAAMK9CkKJ9LDXbBL7reemWmYIAAAAGik9KA1e7IMUAAAAAk4SaZfjI51WlLONu+roHXN+lAY</DTS:Property>
           </DTS:HttpConnection>
         </DTS:ConnectionManager>
       </DTS:ObjectData>
@@ -3310,26 +3310,12 @@
                           name="Conditional Split Input">
                           <inputColumns>
                             <inputColumn
-                              refId="Package\Sequence Container Stage Data\Sequence Container UNFI EAST\Stage UNFI Products\Conditional Split.Inputs[Conditional Split Input].Columns[Type]"
-                              cachedCodepage="1252"
-                              cachedDataType="str"
-                              cachedLength="50"
-                              cachedName="Type"
-                              lineageId="Package\Sequence Container Stage Data\Sequence Container UNFI EAST\Stage UNFI Products\Flat File Source.Outputs[Flat File Source Output].Columns[Type]" />
-                            <inputColumn
                               refId="Package\Sequence Container Stage Data\Sequence Container UNFI EAST\Stage UNFI Products\Conditional Split.Inputs[Conditional Split Input].Columns[Category]"
                               cachedCodepage="1252"
                               cachedDataType="str"
                               cachedLength="50"
                               cachedName="Category"
                               lineageId="Package\Sequence Container Stage Data\Sequence Container UNFI EAST\Stage UNFI Products\Flat File Source.Outputs[Flat File Source Output].Columns[Category]" />
-                            <inputColumn
-                              refId="Package\Sequence Container Stage Data\Sequence Container UNFI EAST\Stage UNFI Products\Conditional Split.Inputs[Conditional Split Input].Columns[Sub-Category]"
-                              cachedCodepage="1252"
-                              cachedDataType="str"
-                              cachedLength="50"
-                              cachedName="Sub-Category"
-                              lineageId="Package\Sequence Container Stage Data\Sequence Container UNFI EAST\Stage UNFI Products\Flat File Source.Outputs[Flat File Source Output].Columns[Sub-Category]" />
                           </inputColumns>
                           <externalMetadataColumns />
                         </input>
@@ -3349,13 +3335,13 @@
                               containsID="true"
                               dataType="System.String"
                               description="Specifies the expression. This expression version uses lineage identifiers instead of column names."
-                              name="Expression">#{Package\Sequence Container Stage Data\Sequence Container UNFI EAST\Stage UNFI Products\Flat File Source.Outputs[Flat File Source Output].Columns[Type]} != "HEALTH &amp; BEAUTY" &amp;&amp; #{Package\Sequence Container Stage Data\Sequence Container UNFI EAST\Stage UNFI Products\Flat File Source.Outputs[Flat File Source Output].Columns[Type]} != "NON FOODS" &amp;&amp; #{Package\Sequence Container Stage Data\Sequence Container UNFI EAST\Stage UNFI Products\Flat File Source.Outputs[Flat File Source Output].Columns[Type]} != "NUTRITION" &amp;&amp; #{Package\Sequence Container Stage Data\Sequence Container UNFI EAST\Stage UNFI Products\Flat File Source.Outputs[Flat File Source Output].Columns[Type]} != "PET PRODUCTS" &amp;&amp; #{Package\Sequence Container Stage Data\Sequence Container UNFI EAST\Stage UNFI Products\Flat File Source.Outputs[Flat File Source Output].Columns[Category]} != "SEASONAL ONLY" &amp;&amp; #{Package\Sequence Container Stage Data\Sequence Container UNFI EAST\Stage UNFI Products\Flat File Source.Outputs[Flat File Source Output].Columns[Category]} != "PET FOODS" &amp;&amp; #{Package\Sequence Container Stage Data\Sequence Container UNFI EAST\Stage UNFI Products\Flat File Source.Outputs[Flat File Source Output].Columns[Sub-Category]} != "EASTER" &amp;&amp; #{Package\Sequence Container Stage Data\Sequence Container UNFI EAST\Stage UNFI Products\Flat File Source.Outputs[Flat File Source Output].Columns[Sub-Category]} != "PETFOOD" &amp;&amp; #{Package\Sequence Container Stage Data\Sequence Container UNFI EAST\Stage UNFI Products\Flat File Source.Outputs[Flat File Source Output].Columns[Sub-Category]} != "FUNCTIONAL GELS/SHOTS/GUM" &amp;&amp; #{Package\Sequence Container Stage Data\Sequence Container UNFI EAST\Stage UNFI Products\Flat File Source.Outputs[Flat File Source Output].Columns[Sub-Category]} != "BABY" &amp;&amp; #{Package\Sequence Container Stage Data\Sequence Container UNFI EAST\Stage UNFI Products\Flat File Source.Outputs[Flat File Source Output].Columns[Sub-Category]} != "CHRISTMAS" &amp;&amp; #{Package\Sequence Container Stage Data\Sequence Container UNFI EAST\Stage UNFI Products\Flat File Source.Outputs[Flat File Source Output].Columns[Sub-Category]} != "OTHER"</property>
+                              name="Expression">#{Package\Sequence Container Stage Data\Sequence Container UNFI EAST\Stage UNFI Products\Flat File Source.Outputs[Flat File Source Output].Columns[Category]} != "AMINO ACIDS" &amp;&amp; #{Package\Sequence Container Stage Data\Sequence Container UNFI EAST\Stage UNFI Products\Flat File Source.Outputs[Flat File Source Output].Columns[Category]} != "BATH/SHOWER PREPARATIONS" &amp;&amp; #{Package\Sequence Container Stage Data\Sequence Container UNFI EAST\Stage UNFI Products\Flat File Source.Outputs[Flat File Source Output].Columns[Category]} != "CLOTHING" &amp;&amp; #{Package\Sequence Container Stage Data\Sequence Container UNFI EAST\Stage UNFI Products\Flat File Source.Outputs[Flat File Source Output].Columns[Category]} != "DEODORANTS" &amp;&amp; #{Package\Sequence Container Stage Data\Sequence Container UNFI EAST\Stage UNFI Products\Flat File Source.Outputs[Flat File Source Output].Columns[Category]} != "FACIAL CARE" &amp;&amp; #{Package\Sequence Container Stage Data\Sequence Container UNFI EAST\Stage UNFI Products\Flat File Source.Outputs[Flat File Source Output].Columns[Category]} != "FEMININE HYGIENE" &amp;&amp; #{Package\Sequence Container Stage Data\Sequence Container UNFI EAST\Stage UNFI Products\Flat File Source.Outputs[Flat File Source Output].Columns[Category]} != "HOMEOPATHIC" &amp;&amp; #{Package\Sequence Container Stage Data\Sequence Container UNFI EAST\Stage UNFI Products\Flat File Source.Outputs[Flat File Source Output].Columns[Category]} != "MINERAL &amp; MINERAL COMPLEXES" &amp;&amp; #{Package\Sequence Container Stage Data\Sequence Container UNFI EAST\Stage UNFI Products\Flat File Source.Outputs[Flat File Source Output].Columns[Category]} != "MULTIVITAMINS" &amp;&amp; #{Package\Sequence Container Stage Data\Sequence Container UNFI EAST\Stage UNFI Products\Flat File Source.Outputs[Flat File Source Output].Columns[Category]} != "VITAMIN A&amp;D BETA CAROTENE" &amp;&amp; #{Package\Sequence Container Stage Data\Sequence Container UNFI EAST\Stage UNFI Products\Flat File Source.Outputs[Flat File Source Output].Columns[Category]} != "VITAMIN B &amp; B COMPLEX" &amp;&amp; #{Package\Sequence Container Stage Data\Sequence Container UNFI EAST\Stage UNFI Products\Flat File Source.Outputs[Flat File Source Output].Columns[Category]} != "VITAMIN C &amp; C COMPLEX" &amp;&amp; #{Package\Sequence Container Stage Data\Sequence Container UNFI EAST\Stage UNFI Products\Flat File Source.Outputs[Flat File Source Output].Columns[Category]} != "OILS,ESSENTIAL/BODY/MASSAGE" &amp;&amp; #{Package\Sequence Container Stage Data\Sequence Container UNFI EAST\Stage UNFI Products\Flat File Source.Outputs[Flat File Source Output].Columns[Category]} != "OINTMENTS &amp; MEDICINAL CREAMS" &amp;&amp; #{Package\Sequence Container Stage Data\Sequence Container UNFI EAST\Stage UNFI Products\Flat File Source.Outputs[Flat File Source Output].Columns[Category]} != "ORAL HYGIENE" &amp;&amp; #{Package\Sequence Container Stage Data\Sequence Container UNFI EAST\Stage UNFI Products\Flat File Source.Outputs[Flat File Source Output].Columns[Category]} != "DIGEST AIDS/FIBER/INTEST CLNSR" &amp;&amp; #{Package\Sequence Container Stage Data\Sequence Container UNFI EAST\Stage UNFI Products\Flat File Source.Outputs[Flat File Source Output].Columns[Category]} != "OVER-THE-COUNTER MEDICATIONS" &amp;&amp; #{Package\Sequence Container Stage Data\Sequence Container UNFI EAST\Stage UNFI Products\Flat File Source.Outputs[Flat File Source Output].Columns[Category]} != "SPORT SUPPLEMENTS" &amp;&amp; #{Package\Sequence Container Stage Data\Sequence Container UNFI EAST\Stage UNFI Products\Flat File Source.Outputs[Flat File Source Output].Columns[Category]} != "MERCHANDISING AIDS" &amp;&amp; #{Package\Sequence Container Stage Data\Sequence Container UNFI EAST\Stage UNFI Products\Flat File Source.Outputs[Flat File Source Output].Columns[Category]} != "SUN CARE"</property>
                             <property
                               containsID="true"
                               dataType="System.String"
                               description="Specifies the friendly version of the expression. This expression version uses column names."
                               expressionType="Notify"
-                              name="FriendlyExpression">Type != "HEALTH &amp; BEAUTY" &amp;&amp; Type != "NON FOODS" &amp;&amp; Type != "NUTRITION" &amp;&amp; Type != "PET PRODUCTS" &amp;&amp; Category != "SEASONAL ONLY" &amp;&amp; Category != "PET FOODS" &amp;&amp; [Sub-Category] != "EASTER" &amp;&amp; [Sub-Category] != "PETFOOD" &amp;&amp; [Sub-Category] != "FUNCTIONAL GELS/SHOTS/GUM" &amp;&amp; [Sub-Category] != "BABY" &amp;&amp; [Sub-Category] != "CHRISTMAS" &amp;&amp; [Sub-Category] != "OTHER"</property>
+                              name="FriendlyExpression">Category != "AMINO ACIDS" &amp;&amp; Category != "BATH/SHOWER PREPARATIONS" &amp;&amp; Category != "CLOTHING" &amp;&amp; Category != "DEODORANTS" &amp;&amp; Category != "FACIAL CARE" &amp;&amp; Category != "FEMININE HYGIENE" &amp;&amp; Category != "HOMEOPATHIC" &amp;&amp; Category != "MINERAL &amp; MINERAL COMPLEXES" &amp;&amp; Category != "MULTIVITAMINS" &amp;&amp; Category != "VITAMIN A&amp;D BETA CAROTENE" &amp;&amp; Category != "VITAMIN B &amp; B COMPLEX" &amp;&amp; Category != "VITAMIN C &amp; C COMPLEX" &amp;&amp; Category != "OILS,ESSENTIAL/BODY/MASSAGE" &amp;&amp; Category != "OINTMENTS &amp; MEDICINAL CREAMS" &amp;&amp; Category != "ORAL HYGIENE" &amp;&amp; Category != "DIGEST AIDS/FIBER/INTEST CLNSR" &amp;&amp; Category != "OVER-THE-COUNTER MEDICATIONS" &amp;&amp; Category != "SPORT SUPPLEMENTS" &amp;&amp; Category != "MERCHANDISING AIDS" &amp;&amp; Category != "SUN CARE"</property>
                             <property
                               dataType="System.Int32"
                               description="Specifies the position of the condition in the list of conditions that the transformation evaluates. The evaluation order is from the lowest to the highest value."
@@ -5276,32 +5262,6 @@
                   SQLTask:SqlStatementSource="TRUNCATE TABLE [ETL].[Staging_UNFIEastProducts]" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
               </DTS:ObjectData>
             </DTS:Executable>
-            <DTS:Executable
-              DTS:refId="Package\Sequence Container Stage Data\Sequence Container UNFI EAST\Update UNFI Item Numbers from BEK stocked items"
-              DTS:CreationName="Microsoft.ExecuteSQLTask"
-              DTS:Description="Execute SQL Task"
-              DTS:DTSID="{c7cf1516-1a06-4953-be1a-2c3624d7b02b}"
-              DTS:ExecutableType="Microsoft.ExecuteSQLTask"
-              DTS:LocaleID="-1"
-              DTS:ObjectName="Update UNFI Item Numbers from BEK stocked items"
-              DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2012; © 2007 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
-              DTS:ThreadHint="1">
-              <DTS:Variables />
-              <DTS:LoggingOptions
-                DTS:FilterKind="0" />
-              <DTS:ObjectData>
-                <SQLTask:SqlTaskData
-                  SQLTask:Connection="{3EB2E657-5262-440C-9522-057C127A38FC}"
-                  SQLTask:SqlStatementSource="EXEC ETL.ProcessBEKItemNumbersForUNFIByVendorId ?" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask">
-                  <SQLTask:ParameterBinding
-                    SQLTask:ParameterName="@vendorId"
-                    SQLTask:DtsVariableName="User::ItemLookupVendorId"
-                    SQLTask:ParameterDirection="Input"
-                    SQLTask:DataType="129"
-                    SQLTask:ParameterSize="-1" />
-                </SQLTask:SqlTaskData>
-              </DTS:ObjectData>
-            </DTS:Executable>
           </DTS:Executables>
           <DTS:PrecedenceConstraints>
             <DTS:PrecedenceConstraint
@@ -5312,14 +5272,6 @@
               DTS:LogicalAnd="True"
               DTS:ObjectName="Constraint"
               DTS:To="Package\Sequence Container Stage Data\Sequence Container UNFI EAST\Stage UNFI Products" />
-            <DTS:PrecedenceConstraint
-              DTS:refId="Package\Sequence Container Stage Data\Sequence Container UNFI EAST.PrecedenceConstraints[Constraint 1]"
-              DTS:CreationName=""
-              DTS:DTSID="{9f736893-468a-4669-8416-617f7b8054ac}"
-              DTS:From="Package\Sequence Container Stage Data\Sequence Container UNFI EAST\Stage UNFI Products"
-              DTS:LogicalAnd="True"
-              DTS:ObjectName="Constraint 1"
-              DTS:To="Package\Sequence Container Stage Data\Sequence Container UNFI EAST\Update UNFI Item Numbers from BEK stocked items" />
           </DTS:PrecedenceConstraints>
         </DTS:Executable>
       </DTS:Executables>
@@ -5454,35 +5406,9 @@
           Size="188,42"
           Id="Package\Sequence Container Stage Data\Sequence Container UNFI EAST\Truncate Staging Table"
           TopLeft="74.5,5.5" />
-        <NodeLayout
-          Size="326,42"
-          Id="Package\Sequence Container Stage Data\Sequence Container UNFI EAST\Update UNFI Item Numbers from BEK stocked items"
-          TopLeft="5.50000000000003,209.5" />
         <EdgeLayout
           Id="Package\Sequence Container Stage Data\Sequence Container UNFI EAST.PrecedenceConstraints[Constraint]"
           TopLeft="168.5,47.5">
-          <EdgeLayout.Curve>
-            <mssgle:Curve
-              StartConnector="{assembly:Null}"
-              EndConnector="0,60"
-              Start="0,0"
-              End="0,52.5">
-              <mssgle:Curve.Segments>
-                <mssgle:SegmentCollection
-                  Capacity="5">
-                  <mssgle:LineSegment
-                    End="0,52.5" />
-                </mssgle:SegmentCollection>
-              </mssgle:Curve.Segments>
-            </mssgle:Curve>
-          </EdgeLayout.Curve>
-          <EdgeLayout.Labels>
-            <EdgeLabelCollection />
-          </EdgeLayout.Labels>
-        </EdgeLayout>
-        <EdgeLayout
-          Id="Package\Sequence Container Stage Data\Sequence Container UNFI EAST.PrecedenceConstraints[Constraint 1]"
-          TopLeft="168.5,149.5">
           <EdgeLayout.Curve>
             <mssgle:Curve
               StartConnector="{assembly:Null}"
@@ -5551,6 +5477,40 @@
           </EdgeLayout.Labels>
         </EdgeLayout>
         <EdgeLayout
+          Id="Package.PrecedenceConstraints[Constraint 1]"
+          TopLeft="420.333333333333,532">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="-122.666666666667,221.944444444445"
+              Start="0,0"
+              End="-122.666666666667,214.444444444445">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,105.883256678262" />
+                  <mssgle:CubicBezierSegment
+                    Point1="0,105.883256678262"
+                    Point2="0,109.883256678262"
+                    Point3="-4,109.883256678262" />
+                  <mssgle:LineSegment
+                    End="-118.666666666667,109.883256678262" />
+                  <mssgle:CubicBezierSegment
+                    Point1="-118.666666666667,109.883256678262"
+                    Point2="-122.666666666667,109.883256678262"
+                    Point3="-122.666666666667,113.883256678262" />
+                  <mssgle:LineSegment
+                    End="-122.666666666667,214.444444444445" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
           Id="Package.PrecedenceConstraints[Constraint 2]"
           TopLeft="748,720.944444444445">
           <EdgeLayout.Curve>
@@ -5584,40 +5544,6 @@
             <mssgm:EdgeLabel
               BoundingBox="-214.074680989583,24.6109785202864,30.4826953125,9.7490234375"
               RelativePosition="Any" />
-          </EdgeLayout.Labels>
-        </EdgeLayout>
-        <EdgeLayout
-          Id="Package.PrecedenceConstraints[Constraint 1]"
-          TopLeft="420.333333333333,532">
-          <EdgeLayout.Curve>
-            <mssgle:Curve
-              StartConnector="{assembly:Null}"
-              EndConnector="-122.666666666667,221.944444444445"
-              Start="0,0"
-              End="-122.666666666667,214.444444444445">
-              <mssgle:Curve.Segments>
-                <mssgle:SegmentCollection
-                  Capacity="5">
-                  <mssgle:LineSegment
-                    End="0,105.883256678262" />
-                  <mssgle:CubicBezierSegment
-                    Point1="0,105.883256678262"
-                    Point2="0,109.883256678262"
-                    Point3="-4,109.883256678262" />
-                  <mssgle:LineSegment
-                    End="-118.666666666667,109.883256678262" />
-                  <mssgle:CubicBezierSegment
-                    Point1="-118.666666666667,109.883256678262"
-                    Point2="-122.666666666667,109.883256678262"
-                    Point3="-122.666666666667,113.883256678262" />
-                  <mssgle:LineSegment
-                    End="-122.666666666667,214.444444444445" />
-                </mssgle:SegmentCollection>
-              </mssgle:Curve.Segments>
-            </mssgle:Curve>
-          </EdgeLayout.Curve>
-          <EdgeLayout.Labels>
-            <EdgeLabelCollection />
           </EdgeLayout.Labels>
         </EdgeLayout>
       </GraphLayout>
