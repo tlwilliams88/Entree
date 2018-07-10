@@ -683,7 +683,7 @@ angular.module('bekApp')
 
     $scope.saveBeforeListChange = function(list, cart){
 
-      if($scope.addToOrderForm.$valid){
+      if(($scope.addToOrderForm.$dirty || $scope.tempCartName) && $scope.addToOrderForm.$valid){
         $scope.saveAndRetainQuantity().then(function(){
           redirect(list, cart);
         });
