@@ -1,15 +1,21 @@
 <div page-header-bar>
   <div header-message>
-    We appreciate your feedback!
+      <div>Please fill out the form below {{formMessage}}</div>
   </div>
 </div>
 
 <div class="row page-content">
 
     <div class="col-md-7">
+
       <form name="userFeedbackForm" class="style-validation-errors form-horizontal" role="form">
 
         <p class="text-red">{{submitUserFeedbackErrorMessage}}</p>
+
+        <div class="form-group">
+            <label class="col-md-3 control-label"></label>
+            <div class="col-md-9">We appreciate your feedback! If you need immediate assistance, please use the information to the right.</div>
+        </div>
 
         <div class="form-group">
           <label for="subject" class="col-md-3 control-label">Subject</label>
