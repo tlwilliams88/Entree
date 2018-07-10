@@ -54,17 +54,17 @@
     <div class="col-md-1"></div>
 
     <div class="col-md-4">
-      <h3>Technical Support - {{branch.branchsupport.branchname}}</h3>
-      <h4>Phone Number</h4>
+      <h3 ng-if="branch.branchsupport">Technical Support - {{branch.branchsupport.branchname}}</h3>
+      <h4 ng-if="branch.branchsupport.supportphonenumber">Phone Number</h4>
       <a ng-href="{{'tel:' + branch.branchsupport.supportphonenumber}}">{{branch.branchsupport.supportphonenumber | phoneNumber}}</a>
 
-      <h4>Alternate/After Hours</h4>
+      <h4 ng-if="branch.branchsupport.tollfreenumber">Alternate/After Hours</h4>
       <a ng-href="{{'tel:' + branch.branchsupport.tollfreenumber}}">{{branch.branchsupport.tollfreenumber | phoneNumber}}</a>
 
       <!--<h4>Email</h4>
       <a ui-sref="menu.userfeedback({audience: 'BranchSupport'})" ng-click="closeModal()">{{branch.branchsupport.email}}</a>-->
 
-      <h3>Sales Representative</h3>
+      <h3 ng-if="selectedUserContext.customer.dsr">Sales Representative</h3>
       <h4>{{::selectedUserContext.customer.dsr.name}}</h4>
       <a ng-href="{{::'tel:' + selectedUserContext.customer.dsr.phonenumber}}">{{::selectedUserContext.customer.dsr.phonenumber | phoneNumber}}</a>
 
