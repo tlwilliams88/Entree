@@ -181,28 +181,50 @@ namespace KeithLink.Svc.Impl.Service.SiteCatalog
         #endregion
 
         #region recommended items
-        public ProductsReturn GetRecommendedItemsForCart(UserSelectedContext catalogInfo, List<string> cartItems, UserProfile profile, bool? hasImages)
+        public ProductsReturn GetRecommendedItemsForCart(UserSelectedContext catalogInfo, List<string> cartItems, UserProfile profile, int? pageSize, bool? getImages)
         {
             List<RecommendedItemsModel> recommendedItems = _recommendedItemsRepository.GetRecommendedItemsForCustomer(catalogInfo.CustomerId, catalogInfo.BranchId, cartItems, 50);
 
-            ProductsReturn productsReturn = _catalogRepository.GetProductsByIdsWithoutProprietaryItems(catalogInfo.BranchId, recommendedItems.Select(x => x.RecommendedItem)
-                                                                                                                .ToList());
-            AddPricingInfo(productsReturn, catalogInfo);
-            GetAdditionalProductInfo(profile, productsReturn, catalogInfo);
-            ApplyRecommendedTagging(productsReturn);
+            ProductsReturn productsReturn = _catalogRepository.GetProductsByIdsWithoutProprietaryItems(catalogInfo.BranchId, recommendedItems.Select(x => x.RecommendedItem).ToList());
+            List<Product> validProducts = new List<Product>();
 
-            for (int productIndex = productsReturn.Products.Count() - 1; productIndex > -1; productIndex--)
+            AddPricingInfo(productsReturn, catalogInfo);
+
+            foreach (Product product in productsReturn.Products)
             {
-                if (hasImages.HasValue && hasImages.Value == true) {
-                    if (productsReturn.Products[productIndex].ProductImages.Any() == false) {
-                        productsReturn.Products.RemoveAt(productIndex);
-                    }
-                } else if (productsReturn.Products[productIndex].CasePrice.Equals("0.00") == true &&
-                    productsReturn.Products[productIndex].PackagePrice.Equals("0.00")) {
-                    productsReturn.Products.RemoveAt(productIndex);
+                bool hasImages = false;
+                bool hasPricing = false;
+
+                if (product.HasPrice)
+                {
+                    hasPricing = true;
                 }
 
+                if (product.HasPrice && getImages.HasValue == true && getImages.Value == true)
+                {
+                    _catalogLogic.AddProductImageInfo(product);
+                    
+                    if (product.ProductImages.Any() == true)
+                    {
+                        hasImages = true;
+                    }
+                }
+
+                if ((getImages.Equals(true) && hasImages == true) || (getImages.HasValue == false || getImages.Equals(false)))
+                {
+                    validProducts.Add(product);
+                }
+
+                if (pageSize.HasValue && validProducts.Count >= pageSize)
+                {
+                    break;
+                }
             }
+
+            productsReturn.Products = validProducts;
+
+            GetAdditionalProductInfo(profile, productsReturn, catalogInfo, false);
+            ApplyRecommendedTagging(productsReturn);
 
             return productsReturn;
         }
@@ -273,8 +295,61 @@ namespace KeithLink.Svc.Impl.Service.SiteCatalog
         #endregion
 
         #region common
-        private ProductsReturn ApplySpecialFilters(UserSelectedContext catalogInfo, UserProfile profile, List<string> specialFilters, SearchInputModel searchModel,
-                                                   ProductsReturn returnProducts)
+        public void AddPricingInfo(ProductsReturn prods, UserSelectedContext context, SearchInputModel searchModel = null)
+        {
+            if (context == null ||
+                string.IsNullOrEmpty(context.CustomerId))
+            {
+                return;
+            }
+
+            PriceReturn pricingInfo = GetPricingInfoForProducts(prods, context);
+
+            AddPricingInfoToProducts(prods, pricingInfo);
+
+            if (searchModel != null)
+            {
+                AddSortForPricingWhenApplicable(prods, searchModel);
+            }
+        }
+
+        private void AddPricingInfoToProducts(ProductsReturn prods, PriceReturn pricingInfo)
+        {
+            foreach (Price p in pricingInfo.Prices)
+            {
+                Product prod = prods.Products.Find(x => x.ItemNumber == p.ItemNumber);
+
+                prod.CasePrice = p.CasePrice.ToString();
+                prod.CasePriceNumeric = p.CasePrice;
+                prod.PackagePrice = p.PackagePrice.ToString();
+                prod.PackagePriceNumeric = p.PackagePrice;
+                prod.DeviatedCost = p.DeviatedCost ? "Y" : "N";
+                //}
+            }
+        }
+
+        private void AddSortForPricingWhenApplicable(ProductsReturn prods, SearchInputModel searchModel)
+        {
+            if (searchModel.SField == "caseprice"
+                ||
+                searchModel.SField == "unitprice") // sort pricing info first
+            {
+                if (searchModel.SDir == "asc")
+                {
+                    SortAscendingByPrices(prods, searchModel);
+                } else
+                {
+                    SortDescendingByPrices(prods, searchModel);
+                }
+            }
+        }
+
+        private void ApplyRecommendedTagging(ProductsReturn ret)
+        {
+            ret.Products.ForEach(delegate(Product prod) { prod.OrderedFromSource = Constants.RECOMMENDED_CART_ITEM; });
+        }
+
+        private ProductsReturn ApplySpecialFilters(UserSelectedContext catalogInfo, UserProfile profile, List<string> specialFilters, SearchInputModel searchModel, ProductsReturn returnProducts)
         {
             if (specialFilters != null &&
                 specialFilters.Count > 0)
@@ -339,6 +414,43 @@ namespace KeithLink.Svc.Impl.Service.SiteCatalog
                               .ToList();
         }
 
+        private void GetAdditionalProductInfo(UserProfile profile, ProductsReturn ret, UserSelectedContext catalogInfo, bool loadProductImages = true)
+        {
+            if (profile != null)
+            {
+                List<InHistoryReturnModel> history = _historyLogic.ItemsInHistoryList(catalogInfo, ret.Products.Select(p => p.ItemNumber)
+                                                                                                      .ToList());
+
+                ret.Products.ForEach(delegate(Product prod)
+                                     {
+                                         prod.InHistory = history.Where(h => h.ItemNumber.Equals(prod.ItemNumber))
+                                                                 .FirstOrDefault()
+                                                                 .InHistory;
+
+                                         if (loadProductImages)
+                                         {
+                                             _catalogLogic.AddProductImageInfo(prod);
+                                         }
+                                     });
+            }
+        }
+
+        private void GetPreviouslyOrderedProductInfo(UserProfile profile, ProductsReturn ret, UserSelectedContext catalogInfo)
+        {
+            if (profile != null)
+            {
+                List<InHistoryReturnModel> history = _historyLogic.ItemsInHistoryList(catalogInfo, ret.Products.Select(p => p.ItemNumber)
+                                                                                                      .ToList());
+
+                ret.Products.ForEach(delegate(Product prod)
+                                     {
+                                         prod.InHistory = history.Where(h => h.ItemNumber.Equals(prod.ItemNumber))
+                                                                 .FirstOrDefault()
+                                                                 .InHistory;
+                                     });
+            }
+        }
+        
         private PriceReturn GetPricingInfoForProducts(ProductsReturn prods, UserSelectedContext context)
         {
             PriceReturn pricingInfo = null;
@@ -356,66 +468,6 @@ namespace KeithLink.Svc.Impl.Service.SiteCatalog
             return pricingInfo;
         }
 
-        public void AddPricingInfo(ProductsReturn prods, UserSelectedContext context, SearchInputModel searchModel = null)
-        {
-            if (context == null ||
-                string.IsNullOrEmpty(context.CustomerId))
-            {
-                return;
-            }
-
-            PriceReturn pricingInfo = GetPricingInfoForProducts(prods, context);
-
-            AddPricingInfoToProducts(prods, pricingInfo);
-
-            if (searchModel != null)
-            {
-                AddSortForPricingWhenApplicable(prods, searchModel);
-            }
-        }
-
-        private void AddPricingInfoToProducts(ProductsReturn prods, PriceReturn pricingInfo)
-        {
-            foreach (Price p in pricingInfo.Prices)
-            {
-                Product prod = prods.Products.Find(x => x.ItemNumber == p.ItemNumber);
-
-                prod.CasePrice = p.CasePrice.ToString();
-                prod.CasePriceNumeric = p.CasePrice;
-                prod.PackagePrice = p.PackagePrice.ToString();
-                prod.PackagePriceNumeric = p.PackagePrice;
-                prod.DeviatedCost = p.DeviatedCost ? "Y" : "N";
-                //}
-            }
-        }
-
-        private void AddSortForPricingWhenApplicable(ProductsReturn prods, SearchInputModel searchModel)
-        {
-            if (searchModel.SField == "caseprice"
-                ||
-                searchModel.SField == "unitprice") // sort pricing info first
-            {
-                if (searchModel.SDir == "asc")
-                {
-                    SortAscendingByPrices(prods, searchModel);
-                } else
-                {
-                    SortDescendingByPrices(prods, searchModel);
-                }
-            }
-        }
-
-        private void SortDescendingByPrices(ProductsReturn prods, SearchInputModel searchModel)
-        {
-            if (searchModel.SField == "caseprice")
-            {
-                prods.Products.Sort((x, y) => y.CasePriceNumeric.CompareTo(x.CasePriceNumeric));
-            } else
-            {
-                prods.Products.Sort((x, y) => y.UnitCost.CompareTo(x.UnitCost));
-            }
-        }
-
         private void SortAscendingByPrices(ProductsReturn prods, SearchInputModel searchModel)
         {
             if (searchModel.SField == "caseprice")
@@ -427,42 +479,14 @@ namespace KeithLink.Svc.Impl.Service.SiteCatalog
             }
         }
 
-        private void GetAdditionalProductInfo(UserProfile profile, ProductsReturn ret, UserSelectedContext catalogInfo)
+        private void SortDescendingByPrices(ProductsReturn prods, SearchInputModel searchModel)
         {
-            if (profile != null)
+            if (searchModel.SField == "caseprice")
             {
-                List<InHistoryReturnModel> history = _historyLogic.ItemsInHistoryList(catalogInfo, ret.Products.Select(p => p.ItemNumber)
-                                                                                                      .ToList());
-
-                ret.Products.ForEach(delegate(Product prod)
-                                     {
-                                         prod.InHistory = history.Where(h => h.ItemNumber.Equals(prod.ItemNumber))
-                                                                 .FirstOrDefault()
-                                                                 .InHistory;
-
-                                         _catalogLogic.AddProductImageInfo(prod);
-                                     });
-            }
-        }
-
-        private void ApplyRecommendedTagging(ProductsReturn ret)
-        {
-            ret.Products.ForEach(delegate(Product prod) { prod.OrderedFromSource = Constants.RECOMMENDED_CART_ITEM; });
-        }
-
-        private void GetPreviouslyOrderedProductInfo(UserProfile profile, ProductsReturn ret, UserSelectedContext catalogInfo)
-        {
-            if (profile != null)
+                prods.Products.Sort((x, y) => y.CasePriceNumeric.CompareTo(x.CasePriceNumeric));
+            } else
             {
-                List<InHistoryReturnModel> history = _historyLogic.ItemsInHistoryList(catalogInfo, ret.Products.Select(p => p.ItemNumber)
-                                                                                                      .ToList());
-
-                ret.Products.ForEach(delegate(Product prod)
-                                     {
-                                         prod.InHistory = history.Where(h => h.ItemNumber.Equals(prod.ItemNumber))
-                                                                 .FirstOrDefault()
-                                                                 .InHistory;
-                                     });
+                prods.Products.Sort((x, y) => y.UnitCost.CompareTo(x.UnitCost));
             }
         }
         #endregion
