@@ -159,7 +159,7 @@ namespace KeithLink.Svc.WebApi.Controllers
         private Customer GetCustomer(UserSelectedContext userContext, UserProfile user)
         {
             Customer customer =
-                _profileLogic.GetCustomerForUser(userContext.CustomerId, userContext.BranchId, user.UserId)
+                _profileLogic.GetCustomerByCustomerNumber(userContext.CustomerId, userContext.BranchId)
                 ?? user.DefaultCustomer;
             return customer;
         }
