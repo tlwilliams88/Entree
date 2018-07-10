@@ -159,9 +159,9 @@
     <Compile Include="Migrations\v2018.05.00\Migration0071.cs" />
     <Compile Include="Migrations\v2018.07.00\Migration0077.cs" />
     <Compile Include="Migrations\v2018.07.00\Migration0075.cs" />
+    <Compile Include="Migrations\v2018.07.00\Migration0079.cs" />
     <Compile Include="Migrations\v2018.07.00\Migration0078.cs" />
     <Compile Include="Migrations\v2018.07.00\Migration0076.cs" />
-
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -542,6 +542,12 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Scripts\AppData\ETL\Stored Procedures\ProcessContractItemList\ProcessContractItemList_0023_2017.04-00_down.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Scripts\AppData\ETL\Stored Procedures\ProcessContractItemList\ProcessContractItemList_0079_2018.07.00_down.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Scripts\AppData\ETL\Stored Procedures\ProcessContractItemList\ProcessContractItemList_0079_2018.07.00_up.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Scripts\AppData\ETL\Stored Procedures\ProcessContractItemList\ProcessContractItemList_0044_2017.06.00_up.sql">
