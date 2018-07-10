@@ -1,8 +1,8 @@
 'use strict';
 
 angular.module('bekApp')
-  .controller('UserFeedbackController', ['$scope', '$state', 'UserFeedbackService', 'SessionService',
-    function ($scope, $state, UserFeedbackService, SessionService) {
+  .controller('UserFeedbackController', ['$scope', '$state', 'UserFeedbackService', 'SessionService', 'BranchService',
+    function ($scope, $state, UserFeedbackService, SessionService, BranchService) {
 
       var init = function () {
         $scope.userProfile = SessionService.userProfile; //Get current users profile from LocalStorage
