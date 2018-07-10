@@ -304,6 +304,8 @@ angular.module('bekApp')
         else{
           $scope.pageChanged(page, visited);
         }
+
+        $scope.saveAndRetainQuantity();
       });
     };
 
@@ -681,7 +683,7 @@ angular.module('bekApp')
 
     $scope.saveBeforeListChange = function(list, cart){
 
-      if(($scope.addToOrderForm.$dirty || $scope.tempCartName) && $scope.addToOrderForm.$valid){
+      if($scope.addToOrderForm.$valid){
         $scope.saveAndRetainQuantity().then(function(){
           redirect(list, cart);
         });
@@ -820,6 +822,7 @@ angular.module('bekApp')
       if (!processingUpdateCart && cart.items) {
         processingUpdateCart = true;
         return CartService.updateCart(cart, null, selectedList).then(function(updatedCart) {
+          $scope.updateRecommendedItems(updatedCart.items);
           setSelectedCart(updatedCart);
           $scope.setCartItemsDisplayFlag();
           flagDuplicateCartItems($scope.selectedCart.items, $scope.selectedList.items);
@@ -829,8 +832,8 @@ angular.module('bekApp')
 
           var newItemCount = updatedCart.items.length - $scope.origItemCount;
           $scope.origItemCount = updatedCart.items.length;
-           processingUpdateCart = false;
-           return updatedCart;
+          processingUpdateCart = false;
+          return updatedCart;
         }, function() {
           $scope.displayMessage('error', 'Error adding items to cart.');
         }).finally(function() {
@@ -853,6 +856,7 @@ angular.module('bekApp')
         $analytics.eventTrack('Create Order', {  category: 'Orders', label: 'From List' });
         var processingSaveCart = true;
         return CartService.createCart(items, shipDate, name).then(function(cart) {
+            $scope.updateRecommendedItems(cart.items);
             CartService.getCartHeaders().finally(function(cartHeaders) {
               $scope.loadingCarts = false;
               $scope.carts = CartService.cartHeaders;
@@ -942,6 +946,7 @@ angular.module('bekApp')
         processingSaveChangeOrder = true;
 
         return OrderService.updateOrder(order, null, selectedList.listid).then(function(cart) {
+          $scope.updateRecommendedItems(cart.items);
           setSelectedCart(cart);
           $scope.setCartItemsDisplayFlag();
           flagDuplicateCartItems($scope.selectedCart.items, $scope.selectedList.items);
@@ -1024,8 +1029,6 @@ angular.module('bekApp')
 
     //Function includes support for saving items while filtering and saving cart when changing ship date
     $scope.saveAndRetainQuantity = function(noParentFunction) {
-
-      $scope.updateRecommendedItems($scope.selectedCart.items);
 
       if($scope.selectedList && $scope.selectedList.items){
         $stateParams.listItems = $scope.selectedList.items;

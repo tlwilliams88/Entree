@@ -143,7 +143,7 @@
     <div class="table-addtoorder">
       <tabset class="tabset tab-border pull-left" style="width: 100%; padding-bottom: 10px;">
 
-        <tab class="text-center" ng-init="showPagination('true')" ng-click="showPagination('true'); setRecommendedItemsInterval();">
+        <tab class="text-center" ng-init="showPagination('true')" ng-click="showPagination('true');">
           <tab-heading><span class="icon-text" style="padding-right: 5px; color: #3E9DCD"></span>{{selectedList.name}}</tab-heading>
             <form name="orderSearchForm" class="hidden-print">
                 <div class="input-group input-group-lg">
@@ -456,7 +456,7 @@
           </table>
         </tab>
 
-        <tab class="text-center" ng-click="showPagination('false'); cancelRecommendedItemsInterval();" active="cartItems.active">
+        <tab class="text-center" ng-click="showPagination('false');" active="cartItems.active">
           <tab-heading><span class="icon-cart" style="padding-right: 5px;" ng-style="selectedCart.items.length > 0 && { 'color': '#3E9DCD' }"></span>Cart <span class="icon-help" tooltip="Displays all current items in cart"></span></span></tab-heading>
           <table
           class="table table-striped-rows table-border"
@@ -575,7 +575,7 @@
       <tab
           ng-if="showRecommendedItems == true"
           class="text-center"  
-          ng-click="getRecommendedItems(); showPagination('false'); cancelRecommendedItemsInterval();"
+          ng-click="getRecommendedItems(); showPagination('false');"
           analytics-on 
           analytics-category="CartIQ Add To Order Tab" 
           analytics-event="CartIQ Tab Opened">
