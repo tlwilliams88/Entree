@@ -47,6 +47,10 @@ angular.module('bekApp')
       UNFI: 'UNFI',
       ES: 'E&S'
     },
+
+    emptyValue: {
+      emptyGUID: '00000000-0000-0000-0000-000000000000'
+    },
     
     exportType: {
       invoiceExport: 'invoiceExport',

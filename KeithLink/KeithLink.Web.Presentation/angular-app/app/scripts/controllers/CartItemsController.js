@@ -19,6 +19,14 @@ angular.module('bekApp')
       $state.go('menu.cart.items', {cartId: basketId}, {location:'replace', inherit:false, notify: false});
     }
 
+    var savedCartAfterOffline = false;
+    $scope.$on('Online', function(){
+      if(savedCartAfterOffline == false) {
+          $scope.saveCart($scope.currentCart);
+          savedCartAfterOffline = true;
+      }
+    })
+
     // update cartHeaders in MenuController
     $scope.$parent.$parent.cartHeaders = CartService.cartHeaders;
 
@@ -290,6 +298,15 @@ angular.module('bekApp')
           });
           $scope.currentCart.items = updatedCart.items;
           $scope.currentCart.items = $filter('filter')($scope.currentCart.items, {status: '!Deleted'});
+          var currentCartHeaders = $filter('filter')(CartService.cartHeaders, {id: updatedCart.id});
+          currentCartHeaders[0].items.forEach(function(cartItem) {
+            updatedCart.items.forEach(function(item) {
+              if(item.itemnumber == cartItem.itemnumber && item.each == cartItem.each) {
+                item.cartitemid = cartItem.cartitemid;
+              }
+            })
+          })
+
           $scope.resetSubmitDisableFlag(true);
           return CartService.updateCart(updatedCart).then(function(savedCart) {
             $scope.currentCart.isRenaming = false;
@@ -638,6 +655,8 @@ angular.module('bekApp')
         }
         $scope.changeAllSelectedItems(items, false);
       }
+
+      saveCart($scope.currentCart);
       
       updateRecommendedItems();
     };
