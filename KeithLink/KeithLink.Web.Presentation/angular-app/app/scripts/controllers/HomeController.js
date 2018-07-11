@@ -24,10 +24,9 @@ angular.module('bekApp')
         guiders.hideAll();
     });
 
-    var isMobile = UtilityService.isMobileDevice();
     var isMobileApp = ENV.mobileApp;
 
-    if(isMobile == false || isMobileApp == false || ENV.name != 'debug' || ENV.name != 'dev'){
+    if((ENV.name == 'test' || ENV.name == 'prod') && isMobileApp == false){
       SessionRecordingService.identify(SessionService.userProfile.emailaddress);
       SessionRecordingService.tagEmail(SessionService.userProfile.emailaddress);
     };
