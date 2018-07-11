@@ -89,7 +89,7 @@ angular.module('bekApp')
           newCart.isNew = true;
 
           newCart.items.forEach(function(item) {
-            item.cartitemid = "Constants.emptyValue.emptyGUID";
+            item.cartitemid = Constants.emptyValue.emptyGUID;
             item.isNew = true;
           });
           //newCart.name = name;
@@ -123,7 +123,7 @@ angular.module('bekApp')
           // flag new items and give them a temp id 
           cart.items.forEach(function(item) {
             if (!item.cartitemid) {
-              item.cartitemid = "Constants.emptyValue.emptyGUID";
+              item.cartitemid = Constants.emptyValue.emptyGUID;
               item.isNew = true;
             }
           });
@@ -182,11 +182,11 @@ angular.module('bekApp')
             item.quantity = 1;
           }
           delete item.cartitemid;
-          item.cartitemid = "Constants.emptyValue.emptyGUID";
+          item.cartitemid = Constants.emptyValue.emptyGUID;
 
           var updatedCart = Service.findCartById(cartId);
           if (updatedCart && updatedCart.items) {
-            item.cartitemid = "Constants.emptyValue.emptyGUID";
+            item.cartitemid = Constants.emptyValue.emptyGUID;
             updatedCart.items.push(item);
             updatedCart.isChanged = true;
           }
@@ -206,7 +206,7 @@ angular.module('bekApp')
             cartFound.isChanged = true;
             
             items.forEach(function(item) {
-              item.cartitemid = "Constants.emptyValue.emptyGUID";
+              item.cartitemid = Constants.emptyValue.emptyGUID;
               item.isNew = true;
             });
 
