@@ -27,7 +27,7 @@ angular.module('bekApp')
     var isMobile = UtilityService.isMobileDevice();
     var isMobileApp = ENV.mobileApp;
 
-    if(isMobile == false || isMobileApp == false || ENV.name == 'debug' || ENV.name == 'dev'){
+    if(isMobile == false || isMobileApp == false || ENV.name != 'debug' || ENV.name != 'dev'){
       SessionRecordingService.identify(SessionService.userProfile.emailaddress);
       SessionRecordingService.tagEmail(SessionService.userProfile.emailaddress);
     };
