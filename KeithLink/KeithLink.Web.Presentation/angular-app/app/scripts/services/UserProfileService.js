@@ -30,9 +30,9 @@ angular.module('bekApp')
 
               LocalStorage.setSelectedCustomerInfo(userSelectedContext);
 
-              var isMobile = UtilityService.isMobileDevice();
               var isMobileApp = ENV.mobileApp;
-              if(isMobile == false || isMobileApp == false || ENV.name != 'debug' || ENV.name != 'dev'){
+
+              if((ENV.name == 'test' || ENV.name == 'prod') && isMobileApp == false){
                 SessionRecordingService.tagCustomer(userSelectedContext.id);
               };
               
