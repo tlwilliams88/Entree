@@ -8,8 +8,8 @@
  * Service of the bekApp
  */
 angular.module('bekApp')
-  .factory('UserProfileService', [ '$http', '$q', '$log', '$upload', 'toaster', 'LocalStorage', 'UtilityService', 'AccessService', 'SessionService', 'SessionRecordingService',
-    function ($http, $q, $log, $upload, toaster, LocalStorage, UtilityService, AccessService, SessionService, SessionRecordingService) {
+  .factory('UserProfileService', [ '$http', '$q', '$log', '$upload', 'toaster', 'LocalStorage', 'UtilityService', 'AccessService', 'SessionService', 'SessionRecordingService', 'ENV',
+    function ($http, $q, $log, $upload, toaster, LocalStorage, UtilityService, AccessService, SessionService, SessionRecordingService, ENV) {
 
     var Service = {
 
@@ -30,7 +30,12 @@ angular.module('bekApp')
 
               LocalStorage.setSelectedCustomerInfo(userSelectedContext);
 
-              SessionRecordingService.tagCustomer(userSelectedContext.id);
+              var isMobileApp = ENV.mobileApp;
+
+              if((ENV.name == 'test' || ENV.name == 'prod') && isMobileApp == false){
+                SessionRecordingService.tagCustomer(userSelectedContext.id);
+              };
+              
             }
 
           } else {

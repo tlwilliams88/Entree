@@ -17,9 +17,6 @@ angular.module('bekApp')
                                        SessionService.userProfile.iskbitcustomer.toString(), 
                                        SessionService.userProfile.ispowermenucustomer.toString());
 
-    SessionRecordingService.identify(SessionService.userProfile.emailaddress);
-    SessionRecordingService.tagEmail(SessionService.userProfile.emailaddress);
-
     $scope.isHomePage = isHomePage;
 
     $scope.$on('$stateChangeStart',
@@ -27,8 +24,12 @@ angular.module('bekApp')
         guiders.hideAll();
     });
 
-    var isMobile = UtilityService.isMobileDevice();
     var isMobileApp = ENV.mobileApp;
+
+    if((ENV.name == 'test' || ENV.name == 'prod') && isMobileApp == false){
+      SessionRecordingService.identify(SessionService.userProfile.emailaddress);
+      SessionRecordingService.tagEmail(SessionService.userProfile.emailaddress);
+    };
 
     CartService.getCartHeaders().then(function(carts){
         $scope.cartHeaders = carts;
