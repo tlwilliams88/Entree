@@ -593,7 +593,7 @@ angular.module('bekApp')
 
     $scope.clearFilter = function(){
       $scope.selectedList.active = true;
-      $scope.orderSearchTerm = '';
+      angular.element('#searchBar')[0].value = '';
       $stateParams.searchTerm = '';
       if($scope.addToOrderForm.$pristine){
         $scope.filterItems( $scope.orderSearchTerm);
@@ -620,7 +620,11 @@ angular.module('bekApp')
       });
 
       Mousetrap.bind(['alt+z'], function(e) {
-        angular.element(orderSearchForm.searchBar).focus();
+        angular.element('#searchBar').focus();
+        $timeout(function() {
+          angular.element('#searchBar')[0].value = '';
+        }, 0)
+
       });
 
       Mousetrap.bind(['alt+o'], function(e){
