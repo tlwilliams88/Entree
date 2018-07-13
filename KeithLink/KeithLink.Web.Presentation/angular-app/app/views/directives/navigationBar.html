@@ -1,0 +1,157 @@
+<div ng-click="isSidebarOpen = false">
+  <button class="btn-no-style"
+          type="button"
+          ng-disabled="::!isOrderEntryCustomer"
+          ui-sref="menu.home"
+          ui-sref-active="is-selected">
+    <li>
+      <span class="icon-house sidebar-nav__icon"></span>
+      Home
+    </li>
+  </button>
+  <span ng-if="::!isOrderEntryCustomer" tooltip="A dashboard of orders, account balance, and recent activity. Contact your DSR for more information." class="glyphicon glyphicon-info-sign pull-right btn-info-sidebar"></span>
+  <button class="btn-no-style"
+          type="button"
+          ng-disabled="::!canViewOrders"
+          ui-sref="menu.order"
+          ng-class="{'is-selected': $state.includes('menu.order') || $state.includes('menu.orderitems')}">
+    <li>
+      <span class="icon-clipboard sidebar-nav__icon"></span>
+      Orders
+    </li>
+  </button>
+  <span ng-if="::!canViewOrders" tooltip="Create and manage orders. Contact your DSR for more information." class="glyphicon glyphicon-info-sign pull-right btn-info-sidebar"></span>
+</div>
+
+<div>
+  <li ng-if="selectedUserContext.customer.canViewUNFI"
+      ng-class="{'is-selected': $state.includes('menu.catalog') && ($state.params.catalogType == constants.catalogType.UNFI || $state.params.catalogType == constants.catalogType.ES)}"
+      ng-show="showSpecialtyCatalogs">
+    <button class="btn-no-style"
+            type="button"
+            ng-disabled="::!canBrowseCatalog"
+            ng-click="toggleSpecialCatalogSubmenu()">
+      <span class="sidebar-nav__icon"><span class="icon-leaf"></span></span>
+      Specialty Catalogs
+      <span ng-class="{'icon-angle-up sidebar-nav__collapse-arrow': !specialCatalogOpen, 'icon-angle-down sidebar-nav__collapse-arrow': specialCatalogOpen}"></span>
+    </button>
+    <ul ng-show="specialCatalogOpen">
+      <button class="btn-no-style sub-btn"
+              ng-click="toggleSidebarMenu()" ;
+              type="button"
+              ui-sref="menu.catalog.home({catalogType: constants.catalogType.UNFI})"
+              ng-class="{'is-sub-selected': $state.includes('menu.catalog') && $state.params.catalogType == constants.catalogType.UNFI}">
+        <li>Natural and Organic</li>
+      </button>
+      <button class="btn-no-style sub-btn"
+              ng-click="toggleSidebarMenu(); openExternalLink(flipsnackUrl)" ;
+              type="button"
+              ng-class="{'is-sub-selected': $state.includes('menu.catalog') && $state.params.catalogType == constants.catalogType.UNFI}">
+        <li>Equipment and Supplies</li>
+      </button>
+    </ul>
+  </li>
+</div>
+
+<div ng-click="isSidebarOpen = false">
+  <li class="btn-no-style"
+      analytics-on
+      analytics-category="External Applications"
+      analytics-event="Menumax"
+      ng-click="redirectToMenumax()"
+      target="_blank">
+    <span class="icon-spoon-knife sidebar-nav__icon"></span>
+    Menumax
+  </li>
+  <a analytics-on
+     analytics-category="External Applications"
+     analytics-event="Emenumanage"
+     ng-if="::userProfile.ispowermenucustomer"
+     ng-href="{{userProfile.powermenuloginurl}}"
+     target="_blank">
+    <li>
+      <span class="icon-food sidebar-nav__icon"></span>
+      eMenu Manage
+    </li>
+  </a>
+  <a analytics-on
+     analytics-category="External Applications"
+     analytics-event="Kbit"
+     ng-if="userProfile.iskbitcustomer"
+     ng-click="openExternalLink(cognosUrl)">
+    <li>
+      <span class="icon-stats-dots sidebar-nav__icon"></span>
+      KBIT
+    </li>
+  </a>
+  <button class="btn-no-style"
+          type="button"
+          ng-disabled="::!canRunReports || !canSeePrices"
+          ui-sref="menu.reports"
+          ng-class="{'is-selected': $state.includes('menu.reports')}">
+    <li>
+      <span class="icon-pie sidebar-nav__icon"></span>
+      Reports
+    </li>
+  </button>
+  <span ng-if="::!canRunReports || !canSeePrices" tooltip="Item Usage report and & KBIT access. Contact your DSR for more information." class="glyphicon glyphicon-info-sign pull-right btn-info-sidebar"></span>
+
+  <button class="btn-no-style"
+          type="button"
+          ng-disabled="!canViewInvoices"
+          ui-sref="menu.invoice"
+          ui-sref-active="is-selected">
+    <li>
+      <span class="icon-dollar sidebar-nav__icon"></span>
+      Invoices
+    </li>
+  </button>
+  <span ng-if="!canViewInvoices" tooltip="View and pay invoices. Contact your DSR for more information." class="glyphicon glyphicon-info-sign pull-right btn-info-sidebar"></span>
+
+  <button class="btn-no-style"
+          type="button"
+          ng-disabled="::!canManageLists"
+          ui-sref="menu.lists.items()"
+          ng-class="{'is-selected': $state.includes('menu.lists')}">
+    <li>
+      <span class="icon-text sidebar-nav__icon"></span>
+      My Lists
+    </li>
+  </button>
+  <span ng-if="::!canManageLists" tooltip="Create custom lists of items. Contact your DSR for more information." class="glyphicon glyphicon-info-sign pull-right btn-info-sidebar"></span>
+
+  <button class="btn-no-style"
+          type="button"
+          ng-if="::canViewCustomerGroupDashboard || canViewCustomerGroups"
+          ng-click="goToAdminLandingPage()"
+          ng-class="{'is-selected': $state.includes('menu.admin') }">
+    <li>
+      <span class="icon-cog sidebar-nav__icon"></span>
+      Admin
+    </li>
+  </button>
+  <button class="btn-no-style"
+          type="button"
+          ng-if="::canViewMarketing"
+          ui-sref="menu.marketing"
+          ui-sref-active="is-selected">
+    <li>
+      <span class="icon-user sidebar-nav__icon"></span>
+      Marketing
+    </li>
+  </button>
+  <button class="btn-no-style hidden-md hidden-lg"
+          type="button"
+          ng-disabled="!isOrderEntryCustomer"
+          ui-sref="menu.notifications"
+          ui-sref-active="is-selected"
+          analytics-on
+          analytics-category="Menu-Notifications-Mobile"
+          analytics-event="Notification">
+    <li>
+      <div class="sidebar-nav__icon"><span class="icon-bell user-bar-buttons"></span></div>
+      <span ng-if="userBar.userNotificationsCount.unread && userBar.userNotificationsCount.unread > 0" class="badge">{{userBar.userNotificationsCount.unread}}</span>
+      Notifications
+    </li>
+  </button>
+</div>

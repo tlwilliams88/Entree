@@ -125,16 +125,21 @@
               Specialty Catalogs
               <span ng-class="{'icon-angle-up sidebar-nav__collapse-arrow': !specialCatalogOpen, 'icon-angle-down sidebar-nav__collapse-arrow': specialCatalogOpen}"></span>
           </button>
-            <ul ng-show="specialCatalogOpen">
-                <button
-                    class="btn-no-style sub-btn"
+          <ul ng-show="specialCatalogOpen">
+            <button class="btn-no-style sub-btn"
                     ng-click="toggleSidebarMenu()";
                     type="button"
                     ui-sref="menu.catalog.home({catalogType: constants.catalogType.UNFI})"
                     ng-class="{'is-sub-selected': $state.includes('menu.catalog') && $state.params.catalogType == constants.catalogType.UNFI}">
-                    <li>Natural and Organic</li>
-                </button>
-            </ul>
+              <li>Natural and Organic</li>
+            </button>
+            <button class="btn-no-style sub-btn"
+                    ng-click="toggleSidebarMenu(); openExternalLink(flipsnackUrl)" ;
+                    type="button"
+                    ng-class="{'is-sub-selected': $state.includes('menu.catalog') && $state.params.catalogType == constants.catalogType.UNFI}">
+              <li>Equipment and Supplies</li>
+            </button>
+          </ul>
           </li>
         </div>
         <div ng-click="isSidebarOpen = false">

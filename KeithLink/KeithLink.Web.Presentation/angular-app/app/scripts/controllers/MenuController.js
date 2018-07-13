@@ -63,6 +63,8 @@ angular.module('bekApp')
   // define search term in user bar so it can be cleared in the SearchController after a user searches
   $scope.userBar = {};
   $scope.userBar.universalSearchTerm = '';
+  $scope.userBar.userNotificationsCount = NotificationService.userNotificationsCount;
+
   $scope.userGuideUrl = '/Assets/help/User_Guide.pdf';
   $scope.systemUpdates = NotificationService.systemUpdates;
   ENV.username = localStorageService.get('userName');
@@ -102,7 +104,8 @@ angular.module('bekApp')
   var usernameToken = $scope.userProfile.usernametoken;
   $scope.cognosUrl = ENV.cognosUrl + '?username=' + usernameToken;
 
-  $scope.userBar.userNotificationsCount = NotificationService.userNotificationsCount;
+  $scope.flipsnackUrl = ENV.flipsnackUrl;
+
   $scope.specialCatalogOpen = false;
   $scope.showSpecialtyCatalogs = true;
 
