@@ -161,9 +161,9 @@ namespace KeithLink.Svc.Impl.Repository.SiteCatalog
                             "parentcategoryname_not_analyzed",
                             "categoryid",
                             "parentcategoryid",
-                            "pricelistcode",
-                            "parentpricelistcode",
-                            "pricelistcodecategoryname"
+                            "pricelistcode.keyword",
+                            "parentpricelistcode.keyword",
+                            "pricelistcodecategoryname.keyword"
                         }
                     }
             };
