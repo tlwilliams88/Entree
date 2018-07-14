@@ -1,6 +1,6 @@
 ﻿using KeithLink.Common.Core;
 using KeithLink.Common.Impl.Repository.Settings;
-using KeithLink.Svc.Core;
+using Entree.Core;
 using KeithLink.Svc.Impl.Repository.Configurations;
 using System;
 using System.Collections.Generic;

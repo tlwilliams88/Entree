@@ -381,9 +381,9 @@
       <Project>{e272da17-c7f8-4f35-a4b0-e97d03d35754}</Project>
       <Name>KeithLink.Svc.Core</Name>
     </ProjectReference>
-    <ProjectReference Include="..\KeithLink.Svc.Impl\KeithLink.Svc.Impl.csproj">
+    <ProjectReference Include="..\KeithLink.Svc.Impl\Entree.Core.csproj">
       <Project>{878aa2e7-769b-409c-8285-3a7faca750f9}</Project>
-      <Name>KeithLink.Svc.Impl</Name>
+      <Name>Entree.Core</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

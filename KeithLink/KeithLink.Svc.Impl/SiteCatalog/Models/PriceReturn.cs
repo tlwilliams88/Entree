@@ -1,0 +1,31 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Runtime.Serialization;
+
+namespace Entree.Core.SiteCatalog.Models
+{
+    [DataContract(Name = "PriceReturn")]
+    public class PriceReturn
+    {
+
+        #region ctor
+        public PriceReturn()
+        {
+            Prices = new List<Price>();
+        }
+        #endregion
+
+        #region properties
+        [DataMember(Name = "Prices")]
+        public List<Price> Prices { get; set; }
+        #endregion
+
+        public PriceReturn AddRange(PriceReturn price)
+        {
+            if (price != null) {
+                this.Prices.AddRange(price.Prices);
+            }
+            return this;
+        }
+    }
+}

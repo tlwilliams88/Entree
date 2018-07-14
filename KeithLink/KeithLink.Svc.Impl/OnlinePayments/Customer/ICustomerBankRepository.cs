@@ -1,0 +1,11 @@
+﻿using Entree.Core.Models.OnlinePayments.Customer.EF;
+using System;
+using System.Collections.Generic;
+
+namespace Entree.Core.Interface.OnlinePayments.Customer {
+    public interface ICustomerBankRepository {
+        List<CustomerBank> GetAllCustomerBanks(string division, string customerNumber);
+
+        CustomerBank GetBankAccount(string division, string customerNumber, string accountNumber);
+    }
+}
