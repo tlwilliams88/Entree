@@ -40,6 +40,7 @@ using KeithLink.Svc.Core.Interface.Reports;
 using KeithLink.Svc.Core.Interface.SingleSignOn;
 using KeithLink.Svc.Core.Interface.SiteCatalog;
 using KeithLink.Svc.Core.Interface.SpecialOrders;
+using KeithLink.Svc.Core.Interface.UserFeedback;
 
 using KeithLink.Svc.Impl.Service.ShoppingCart;
 using KeithLink.Svc.Impl.Service;
@@ -61,6 +62,7 @@ using KeithLink.Svc.Impl.Logic.Profile.PasswordRequest;
 using KeithLink.Svc.Impl.Logic.Reports;
 using KeithLink.Svc.Impl.Logic.SingleSignOn;
 using KeithLink.Svc.Impl.Logic.SiteCatalog;
+using KeithLink.Svc.Impl.Logic.UserFeedback;
 
 using KeithLink.Svc.Impl.Repository.BranchSupports;
 using KeithLink.Svc.Impl.Repository.Brands;
@@ -90,6 +92,7 @@ using KeithLink.Svc.Impl.Repository.SingleSignOn;
 using KeithLink.Svc.Impl.Repository.Queue;
 using KeithLink.Svc.Impl.Repository.Reports;
 using KeithLink.Svc.Impl.Repository.SiteCatalog;
+using KeithLink.Svc.Impl.Repository.UserFeedback;
 
 using Autofac;
 using Autofac.Features.Indexed;
@@ -106,9 +109,11 @@ using KeithLink.Svc.Core.Interface.Templates;
 using KeithLink.Svc.Impl.Helpers;
 using KeithLink.Svc.Impl.Logic.Cache;
 using KeithLink.Svc.Impl.Repository.DataConnection;
+using KeithLink.Svc.Impl.Repository.Documents;
 using KeithLink.Svc.Impl.Service.Invoices;
 using KeithLink.Svc.Impl.Service.SiteCatalog;
 using KeithLink.Svc.Impl.Service.List;
+using KeithLink.Svc.Core.Interface.Documents;
 
 namespace KeithLink.Svc.Impl.Repository.SmartResolver
 {
@@ -123,6 +128,13 @@ namespace KeithLink.Svc.Impl.Repository.SmartResolver
             builder.Register(ctx => new DapperDatabaseConnection(Configuration.BEKDBConnectionString))
                    .As<IDapperDatabaseConnection>()
                    .InstancePerRequest();
+
+            // Azure connection
+            builder.Register(ctx => new AzureContainerConnection(Configuration.AzureConnectionString))
+                   .As<IAzureContainerConnection>()
+                   .InstancePerRequest();
+            builder.RegisterType<AzureContainerRepositoryImpl>().As<IAzureContainerRepository>();
+
 
             // cart
             builder.RegisterType<BasketRepositoryImpl>().As<IBasketRepository>();
@@ -244,6 +256,13 @@ namespace KeithLink.Svc.Impl.Repository.SmartResolver
             builder.RegisterType<UserMessagingPreferenceRepositoryImpl>().As<IUserMessagingPreferenceRepository>();
             builder.RegisterType<UserProfileRepository>().As<IUserProfileRepository>();
 
+            // user feedback 
+            builder.RegisterType<UserFeedbackRepository>().As<IUserFeedbackRepository>();
+
+            // FlipSnack API client
+            builder.RegisterType<FlipSnackApiClient>().As<FlipSnackApiClient>();
+
+
             ///////////////////////////////////////////////////////////////////////////////
             // Logic Classes
             ///////////////////////////////////////////////////////////////////////////////
@@ -305,6 +324,7 @@ namespace KeithLink.Svc.Impl.Repository.SmartResolver
             builder.RegisterType<EtaNotificationHandlerImpl>().Keyed<INotificationHandler>(NotificationType.Eta);
             builder.RegisterType<PaymentConfirmationNotificationHandlerImpl>().Keyed<INotificationHandler>(NotificationType.PaymentConfirmation);
             builder.RegisterType<HasNewsNotificationHandlerImpl>().Keyed<INotificationHandler>(NotificationType.HasNews);
+            builder.RegisterType<UserFeedbackNotificationHandlerImpl>().Keyed<INotificationHandler>(NotificationType.UserFeedback);
             builder.Register<Func<NotificationType, INotificationHandler>>(
                 c => {
                     var handlers = c.Resolve<IIndex<NotificationType, INotificationHandler>>();
@@ -346,6 +366,10 @@ namespace KeithLink.Svc.Impl.Repository.SmartResolver
             // reports
             builder.RegisterType<InventoryValuationReportLogicImpl>().As<IInventoryValuationReportLogic>();
             builder.RegisterType<ReportLogic>().As<IReportLogic>();
+
+            // user feedback 
+            builder.RegisterType<UserFeedbackLogicImpl>().As<IUserFeedbackLogic>();
+
 
             ///////////////////////////////////////////////////////////////////////////////
             // Service Classes

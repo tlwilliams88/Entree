@@ -1,0 +1,62 @@
+	<div page-header-bar>
+		<div header-message>
+			Documents for {{selectedUserContext.customer.customerName}}
+		</div>
+	</div>
+
+<div class="page-content">
+	<div class="row">
+		<div class="col-xs-5">
+			<div style="margin-left:10px; border-bottom: none;" class="row page-subheader-bar hidden-xs hidden-sm hidden-print">
+				<h3>Available Documents</h3>
+				<div class="col-md-12 page-subheader-bar__container">						
+					<span class="page-subheader-bar__message col-md-12">			
+						<div ng-show="breadcrumbs.length > 1" ng-repeat="bc in breadcrumbs">
+							<a ng-click="getFolder(bc)">{{bc.name}}</a> <span>>></span>
+						</div>
+					</span>
+				</div>
+			</div>
+			<table class="table table-border table-striped-rows" style="border-top: 1px solid #c3bc9c;">
+				<thead>
+					<tr>
+						<th class="sort-col-header" ng-click="sort('name', sortDescending)">
+							<span>Name<span sort-icons field="'name'" sortorder="sortDescending" sortby="sortField"></span></span>
+						</th>
+						<th class="sort-col-header" ng-click="sort('modified', sortDescending)">
+							<span>Uploaded On <span sort-icons field="'modified'" sortorder="sortDescending" sortby="sortField"></span></span>
+						</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr ng-repeat="document in documents" ng-class="{ odd : $odd, even: $even }">
+						<td>
+							<div style="display: inline-block;">
+								<div style="margin-top: 15px;">
+									<a ng-show="document.type !== 'folder'" href="{{document.url}}"  target="_blank"> 
+										<span ng-show="document.type == 'pdf'" class="icon-file-pdf large-icon text-light"></span>
+										<span ng-show="document.type == 'text'" class="icon-file-text large-icon text-light"></span>
+										<span ng-show="document.type == 'zip'" class="icon-file-zip large-icon text-light"></span>
+										<span ng-show="document.type == 'word'" class="icon-file-word large-icon text-light"></span>
+										<span ng-show="document.type == 'excel'" class="icon-file-excel large-icon text-light"></span>
+										<span ng-show="document.type == 'image'" class="icon-file-picture large-icon text-light"></span>
+										<span ng-show="document.type == 'other'" class="icon-file-text2 large-icon text-light"></span>
+										&nbsp;&nbsp; <span style="padding-bottom: 10px;">{{document.name}}</span>
+									</a>
+									<a ng-show="document.type == 'folder'" ng-click="getFolder(document)">
+										<span class="icon-folder large-icon text-light"></span>&nbsp;&nbsp;<span style="padding-bottom: 10px;">{{document.name}}</span>
+									</a>
+								</div>
+							</div>  
+						</td>
+						<td>
+							<div style="display: inline-block; margin-top: 15px;">
+									<span>{{document.modified | formatDate}}</span>
+							</div>
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+	</div>
+</div>

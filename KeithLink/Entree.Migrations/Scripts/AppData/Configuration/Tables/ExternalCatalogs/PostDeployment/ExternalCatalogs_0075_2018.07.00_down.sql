@@ -1,0 +1,1 @@
+﻿DELETE [Configuration].[ExternalCatalogs] WHERE [BekBranchId]='FEL'

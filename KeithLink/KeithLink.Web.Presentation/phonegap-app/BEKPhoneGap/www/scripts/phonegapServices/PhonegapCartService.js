@@ -1,8 +1,8 @@
 'use strict';
 
 angular.module('bekApp')
-  .factory('PhonegapCartService', ['$http', '$q', '$log', 'CartService', 'PhonegapLocalStorageService', 'PhonegapDbService', 'PricingService', 'Cart',
-    function($http, $q, $log, CartService, PhonegapLocalStorageService, PhonegapDbService, PricingService, Cart) {
+  .factory('PhonegapCartService', ['$http', '$q', '$log', 'CartService', 'PhonegapLocalStorageService', 'PhonegapDbService', 'PricingService', 'Cart', '$rootScope', 'Constants',
+    function($http, $q, $log, CartService, PhonegapLocalStorageService, PhonegapDbService, PricingService, Cart, $rootScope, Constants) {
 
       var originalCartService = angular.copy(CartService);
 
@@ -89,7 +89,7 @@ angular.module('bekApp')
           newCart.isNew = true;
 
           newCart.items.forEach(function(item) {
-            item.cartitemid = generateId();
+            item.cartitemid = Constants.emptyValue.emptyGUID;
             item.isNew = true;
           });
           //newCart.name = name;
@@ -123,10 +123,12 @@ angular.module('bekApp')
           // flag new items and give them a temp id 
           cart.items.forEach(function(item) {
             if (!item.cartitemid) {
-              item.cartitemid = generateId();
+              item.cartitemid = Constants.emptyValue.emptyGUID;
               item.isNew = true;
             }
           });
+
+          cart.itemcount = cart.items.length;
 
           PhonegapDbService.setItem(db_table_name_carts, cart.id, cart);
           updateCachedCarts(cart);
@@ -180,10 +182,11 @@ angular.module('bekApp')
             item.quantity = 1;
           }
           delete item.cartitemid;
-          item.cartitemid = generateId();
+          item.cartitemid = Constants.emptyValue.emptyGUID;
 
           var updatedCart = Service.findCartById(cartId);
           if (updatedCart && updatedCart.items) {
+            item.cartitemid = Constants.emptyValue.emptyGUID;
             updatedCart.items.push(item);
             updatedCart.isChanged = true;
           }
@@ -203,7 +206,7 @@ angular.module('bekApp')
             cartFound.isChanged = true;
             
             items.forEach(function(item) {
-              item.cartitemid = generateId();
+              item.cartitemid = Constants.emptyValue.emptyGUID;
               item.isNew = true;
             });
 
@@ -222,7 +225,6 @@ angular.module('bekApp')
 
       Service.updateCartsFromLocal = function() {
         $log.debug('updating carts after back online');
-        debugger;
 
         PhonegapDbService.getAllItems(db_table_name_carts).then(function(storedCarts) {
           
@@ -268,6 +270,11 @@ angular.module('bekApp')
           $q.all(promises).then(function() {
             $log.debug('carts updated!');
             originalCartService.updateNetworkStatus();
+
+            if(window.location.href.indexOf('cart') !== -1) {
+              $rootScope.$broadcast('Online');
+            }
+            
             //update from server and remove deleted array
             Service.getAllCartsForOffline();
 

@@ -8,8 +8,8 @@
  * Service of the bekApp
  */
 angular.module('bekApp')
-  .factory('UserProfileService', [ '$http', '$q', '$log', '$upload', 'toaster', 'LocalStorage', 'UtilityService', 'AccessService', 'SessionService', 
-    function ($http, $q, $log, $upload, toaster, LocalStorage, UtilityService, AccessService, SessionService) {
+  .factory('UserProfileService', [ '$http', '$q', '$log', '$upload', 'toaster', 'LocalStorage', 'UtilityService', 'AccessService', 'SessionService', 'SessionRecordingService', 'ENV',
+    function ($http, $q, $log, $upload, toaster, LocalStorage, UtilityService, AccessService, SessionService, SessionRecordingService, ENV) {
 
     var Service = {
 
@@ -29,6 +29,13 @@ angular.module('bekApp')
               };
 
               LocalStorage.setSelectedCustomerInfo(userSelectedContext);
+
+              var isMobileApp = ENV.mobileApp;
+
+              if((ENV.name == 'test' || ENV.name == 'prod') && isMobileApp == false){
+                SessionRecordingService.tagCustomer(userSelectedContext.id);
+              };
+              
             }
 
           } else {
@@ -52,6 +59,13 @@ angular.module('bekApp')
         var promise = $http.post('/profile/forgotpassword/validatetoken/', { token: token });
         return UtilityService.resolvePromise(promise);
 
+      },
+
+      generateMenuMaxAuthToken: function() {
+        var promise = $http.get('/profile/generatemenumaxauthtoken');
+        return UtilityService.resolvePromise(promise).then(function(successResponse) {
+          return successResponse;
+        });
       },
 
       resetPassword: function(email) {

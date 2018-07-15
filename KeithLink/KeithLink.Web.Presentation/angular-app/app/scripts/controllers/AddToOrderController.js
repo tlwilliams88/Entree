@@ -34,7 +34,7 @@ angular.module('bekApp')
           }
           guiders.hideAll();
 
-          $interval.cancel(getRecommendations);
+          // $interval.cancel(getRecommendations);
       });
 
       $scope.showPagination = function(status) {
@@ -259,9 +259,9 @@ angular.module('bekApp')
 
     var getRecommendations;
 
-    $scope.cancelRecommendedItemsInterval = function() {
-      $interval.cancel(getRecommendations);
-    };
+    // $scope.cancelRecommendedItemsInterval = function() {
+    //   $interval.cancel(getRecommendations);
+    // };
   
     $scope.getRecommendedItems = function() {
       var listItemsWithQuantity = $filter('filter')($scope.selectedList.items, function(value) {
@@ -275,9 +275,9 @@ angular.module('bekApp')
       }
     }
 
-    $scope.setRecommendedItemsInterval = function() {
-      getRecommendations = $interval($scope.getRecommendedItems, 15000, 120);
-    }
+    // $scope.setRecommendedItemsInterval = function() {
+    //   getRecommendations = $interval($scope.getRecommendedItems, 15000, 120);
+    // }
 
     $scope.showRecommendedItems = ENV.showRecommendedItems;
     $scope.recommendedItems = [];
@@ -304,6 +304,8 @@ angular.module('bekApp')
         else{
           $scope.pageChanged(page, visited);
         }
+
+        $scope.saveAndRetainQuantity();
       });
     };
 
@@ -526,7 +528,7 @@ angular.module('bekApp')
           return;
         }
 
-        $scope.setRecommendedItemsInterval();
+        // $scope.setRecommendedItemsInterval();
         $scope.updateRecommendedItems($scope.selectedCart.items);
       });
     }
@@ -591,7 +593,7 @@ angular.module('bekApp')
 
     $scope.clearFilter = function(){
       $scope.selectedList.active = true;
-      $scope.orderSearchTerm = '';
+      angular.element('#searchBar')[0].value = '';
       $stateParams.searchTerm = '';
       if($scope.addToOrderForm.$pristine){
         $scope.filterItems( $scope.orderSearchTerm);
@@ -618,7 +620,11 @@ angular.module('bekApp')
       });
 
       Mousetrap.bind(['alt+z'], function(e) {
-        angular.element(orderSearchForm.searchBar).focus();
+        angular.element('#searchBar').focus();
+        $timeout(function() {
+          angular.element('#searchBar')[0].value = '';
+        }, 0)
+
       });
 
       Mousetrap.bind(['alt+o'], function(e){
@@ -820,6 +826,7 @@ angular.module('bekApp')
       if (!processingUpdateCart && cart.items) {
         processingUpdateCart = true;
         return CartService.updateCart(cart, null, selectedList).then(function(updatedCart) {
+          $scope.updateRecommendedItems(updatedCart.items);
           setSelectedCart(updatedCart);
           $scope.setCartItemsDisplayFlag();
           flagDuplicateCartItems($scope.selectedCart.items, $scope.selectedList.items);
@@ -829,8 +836,8 @@ angular.module('bekApp')
 
           var newItemCount = updatedCart.items.length - $scope.origItemCount;
           $scope.origItemCount = updatedCart.items.length;
-           processingUpdateCart = false;
-           return updatedCart;
+          processingUpdateCart = false;
+          return updatedCart;
         }, function() {
           $scope.displayMessage('error', 'Error adding items to cart.');
         }).finally(function() {
@@ -853,6 +860,7 @@ angular.module('bekApp')
         $analytics.eventTrack('Create Order', {  category: 'Orders', label: 'From List' });
         var processingSaveCart = true;
         return CartService.createCart(items, shipDate, name).then(function(cart) {
+            $scope.updateRecommendedItems(cart.items);
             CartService.getCartHeaders().finally(function(cartHeaders) {
               $scope.loadingCarts = false;
               $scope.carts = CartService.cartHeaders;
@@ -942,6 +950,7 @@ angular.module('bekApp')
         processingSaveChangeOrder = true;
 
         return OrderService.updateOrder(order, null, selectedList.listid).then(function(cart) {
+          $scope.updateRecommendedItems(cart.items);
           setSelectedCart(cart);
           $scope.setCartItemsDisplayFlag();
           flagDuplicateCartItems($scope.selectedCart.items, $scope.selectedList.items);
@@ -1025,8 +1034,6 @@ angular.module('bekApp')
     //Function includes support for saving items while filtering and saving cart when changing ship date
     $scope.saveAndRetainQuantity = function(noParentFunction) {
 
-      $scope.updateRecommendedItems($scope.selectedCart.items);
-
       if($scope.selectedList && $scope.selectedList.items){
         $stateParams.listItems = $scope.selectedList.items;
       }
@@ -1071,7 +1078,7 @@ angular.module('bekApp')
       var invalidItemFound = false;
 
       updatedCart.items.forEach(function(cartitem){
-        if (!cartitem.extPrice && !(cartitem.extPrice > 0) && !((cartitem.quantity === 0 || cartitem.quantity == '') && cartitem.status && cartitem.status.toUpperCase() === 'OUT OF STOCK')){
+        if (!cartitem.extPrice && !(cartitem.extPrice > 0) && !((cartitem.quantity === 0 || cartitem.quantity == '' && !(isMobileApp || isMobile)) && cartitem.status && cartitem.status.toUpperCase() === 'OUT OF STOCK')){
           invalidItemFound = true;
           $scope.displayMessage('error', 'Cannot create cart. Item ' + cartitem.itemnumber +' is invalid.  Please contact DSR for more information.');
         }

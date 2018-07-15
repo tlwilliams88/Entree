@@ -21,6 +21,8 @@ angular.module('bekApp')
   'OrderService', 'mandatoryMessages', 
   'localStorageService', 'CategoryService', 
   'BranchService', 'ConfigSettingsService',
+  'DocumentService',
+  'UserProfileService',
     function (
       $scope, $timeout, $rootScope, $modalStack, $state, $q, $log, $window,  // built in angular services
       $modal,   // ui-bootstrap library
@@ -37,14 +39,17 @@ angular.module('bekApp')
       localStorageService,
       CategoryService,
       BranchService,
-      ConfigSettingsService
+      ConfigSettingsService,
+      DocumentService,
+      UserProfileService
     ) {
 
   $scope.$state = $state;
   $scope.isMobile = UtilityService.isMobileDevice();
-  $scope.isMobileApp = ENV.mobileApp;
+  $scope.isMobileApp = ENV.mobileApp;  
   $scope.mandatoryMessages = mandatoryMessages;
   $scope.branches = branches;
+
   if(!$scope.branches) {
     BranchService.getBranches().then(function(resp){
       $scope.branches = resp;
@@ -190,6 +195,10 @@ angular.module('bekApp')
   } else {
     $scope.setSelectedUserContext(LocalStorage.getBranchId());
   }
+
+  DocumentService.getAllDocuments($scope.selectedUserContext.customer.customerNumber + '-' + $scope.selectedUserContext.customer.customerBranch).then(function(links){
+    $scope.showDocuments = links.length > 0 && ENV.showDocumentsPage;
+  });
 
   $scope.customerInfiniteScroll = {
     from: 0,
@@ -392,6 +401,18 @@ angular.module('bekApp')
     }, function (error) {
       $log.debug('Scanning failed: ' + error);
     });
+  };
+
+  // Menumax
+  $scope.redirectToMenumax = function() {
+    UserProfileService.generateMenuMaxAuthToken().then(function(resp) {
+
+      var payload = '{"email":"' + $scope.userProfile.emailaddress + '",' + '"entreeSSOToken":"' + resp + '"}';
+      var url = ENV.menuMaxUrl;
+
+      $scope.openExternalLinkWithPost(url, "_blank", payload);
+
+    })
   };
 
   /**********

@@ -1,12 +1,12 @@
 'use strict';
 
 angular.module('bekApp')
-.controller('ItemUsageSummaryModalController', ['$scope', '$modalInstance', 'item', 'ProductService',
-  function ($scope, $modalInstance, item, ProductService) {
+.controller('ItemUsageSummaryModalController', ['$scope', '$modalInstance', 'item', 'ProductService', 'Constants',
+  function ($scope, $modalInstance, item, ProductService, Constants) {
 
  $scope.item = item;
  
-    ProductService.getProductDetails(item.itemnumber, 'BEK').then(function(item) {
+    ProductService.getProductDetails(item.itemnumber, Constants.catalogType.BEK).then(function(item) {
       $scope.item = item;
        // used to determine if the item has order history in the view
       $scope.orderHistory =[];

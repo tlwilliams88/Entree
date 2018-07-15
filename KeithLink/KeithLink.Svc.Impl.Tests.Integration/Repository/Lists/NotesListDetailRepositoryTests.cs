@@ -339,7 +339,7 @@ namespace KeithLink.Svc.Impl.Tests.Integration.Repository.Lists {
                 Action act = () => { repo.Save(detail); };
 
                 // assert
-                act.ShouldThrow<SqlException>();
+                act.Should().Throw<SqlException>();
             }
         }
     } // Class
