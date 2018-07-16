@@ -77,7 +77,7 @@
       "apiKey": "web_prod_v1",
       "apiEndpoint": "https://shop.benekeith.com/api",
       "cognosUrl": "https://kbitcustomer.benekeith.com/cognos10/setCookie.htm",
-      "menuMaxUrl": "https://menumax.com/public/dologin.cfm",
+      "menuMaxUrl": "https://www.menumax.com/public/dologin.cfm",
       "lastListStorageTimeout": "48",
       "mobileApp": false,
       "enableDebugInfo": false,
