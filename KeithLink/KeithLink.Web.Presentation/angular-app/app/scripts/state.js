@@ -57,7 +57,7 @@ angular.module('bekApp')
         isHomePage: ['$stateParams', 'ConfigSettingsService', 'ENV', 'LocalStorage', function($stateParams, ConfigSettingsService, ENV, LocalStorage) {
           ConfigSettingsService.getSetting('ShowRecommendedItems').then(function(setting) {
             var currentCustomer = LocalStorage.getCurrentCustomer();
-            ENV.showRecommendedItems = setting && currentCustomer.customer.nationalId == '';
+            ENV.showRecommendedItems = setting && currentCustomer.customer && currentCustomer.customer.nationalId == '';
           });
 
           ConfigSettingsService.getSetting('ShowDocumentsPage').then(function(setting) {

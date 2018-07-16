@@ -62,6 +62,11 @@ namespace KeithLink.Svc.WebApi.Controllers
 
                 _log.WriteErrorLog("Exception encountered while reading feature flag", ex);
             }
+            if (AuthenticatedUser.RoleName.Equals(Constants.ROLE_NAME_GUEST, StringComparison.CurrentCultureIgnoreCase))
+            {
+                retVal.SuccessResponse = false;
+                retVal.ErrorMessage = "Guest users have no access to customer information";
+            }
 
             return retVal;
         }
