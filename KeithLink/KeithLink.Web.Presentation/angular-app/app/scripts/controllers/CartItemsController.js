@@ -9,9 +9,9 @@
  */
 angular.module('bekApp')
   .controller('CartItemsController', ['$scope', '$state', '$stateParams', '$filter', '$modal', '$q', 'ENV', 'Constants', 'LocalStorage',
-   'CartService', 'OrderService', 'UtilityService', 'PricingService', 'DateService', 'changeOrders', 'originalBasket', 'criticalItemsLists', 'AnalyticsService', 'ProductService', '$timeout',
+   'CartService', 'OrderService', 'UtilityService', 'PricingService', 'DateService', 'changeOrders', 'originalBasket', 'criticalItemsLists', 'AnalyticsService', 'ProductService', '$timeout', 'SessionRecordingService',
     function($scope, $state, $stateParams, $filter, $modal, $q, ENV, Constants, LocalStorage, CartService, OrderService, UtilityService,
-     PricingService, DateService, changeOrders, originalBasket, criticalItemsLists, AnalyticsService, ProductService, $timeout) {
+     PricingService, DateService, changeOrders, originalBasket, criticalItemsLists, AnalyticsService, ProductService, $timeout, SessionRecordingService) {
 
     // redirect to url with correct ID as a param
     var basketId = originalBasket.id || originalBasket.ordernumber;
@@ -394,6 +394,8 @@ angular.module('bekApp')
                                                $scope.selectedUserContext.customer.customerNumber,
                                                $scope.selectedUserContext.customer.customerBranch);
 
+            SessionRecordingService.tagOrder(orderNumber);
+
             $state.go('menu.orderitems', { invoiceNumber: orderNumber });
             $scope.displayMessage(status, message);
             }, function(error) {
@@ -511,6 +513,9 @@ angular.module('bekApp')
           processingSaveChangeOrder = false;
         });
       }
+
+      SessionRecordingService.tagChangeOrder(order.orderNumber);
+
     };
 
     var processingResubmitOrder = false;

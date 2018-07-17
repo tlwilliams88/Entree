@@ -2,9 +2,9 @@
 
 angular.module('bekApp')
   .controller('AddToOrderController', ['$rootScope', '$scope', '$state', '$modal', '$q', '$stateParams', '$filter', '$timeout', '$interval', 'blockUI', 
-   'lists', 'selectedList', 'selectedCart', 'Constants', 'CartService', 'ListService', 'OrderService', 'UtilityService', 'DateService', 'PricingService', 'ListPagingModel', 'LocalStorage', '$analytics', 'toaster', 'ENV', 'SessionService', 'ProductService',
+   'lists', 'selectedList', 'selectedCart', 'Constants', 'CartService', 'ListService', 'OrderService', 'UtilityService', 'DateService', 'PricingService', 'ListPagingModel', 'LocalStorage', '$analytics', 'toaster', 'ENV', 'SessionService', 'ProductService', 'SessionRecordingService',
     function ($rootScope, $scope, $state, $modal, $q, $stateParams, $filter, $timeout, $interval, blockUI, lists, selectedList, selectedCart, Constants,
-     CartService, ListService, OrderService, UtilityService, DateService, PricingService, ListPagingModel, LocalStorage, $analytics, toaster, ENV, SessionService, ProductService) {
+     CartService, ListService, OrderService, UtilityService, DateService, PricingService, ListPagingModel, LocalStorage, $analytics, toaster, ENV, SessionService, ProductService, SessionRecordingService) {
 
       $scope.$on('$stateChangeStart', function(event, toState, toParams, fromState, fromParams){
           var toCart = (toState.name == 'menu.cart.items' || fromState.name == 'menu.cart.items'),
@@ -1029,6 +1029,8 @@ angular.module('bekApp')
 
       calculatePieces($scope.selectedCart.items);
       
+      SessionRecordingService.tagAddRecommendedItem('CartIQ;' + item.itemnumber);
+    
     }
 
     //Function includes support for saving items while filtering and saving cart when changing ship date

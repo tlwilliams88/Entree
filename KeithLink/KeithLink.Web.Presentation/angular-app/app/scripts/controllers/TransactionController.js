@@ -1,8 +1,8 @@
 'use strict';
 
 angular.module('bekApp')
-  .controller('TransactionController', ['$scope', '$state', '$modal', 'TransactionService', 'LocalStorage', 'CustomerService', 'PagingModel',
-    function ($scope, $state, $modal, TransactionService, LocalStorage, CustomerService, PagingModel) {
+  .controller('TransactionController', ['$scope', '$state', '$modal', 'TransactionService', 'LocalStorage', 'CustomerService', 'PagingModel', 'SessionRecordingService',
+    function ($scope, $state, $modal, TransactionService, LocalStorage, CustomerService, PagingModel, SessionRecordingService) {
 
   // set context to all customers
   var tempContext = {
@@ -52,6 +52,8 @@ angular.module('bekApp')
 
       //persist the context change to Local Storage to prevent the stateChangeStart listener from reverting the context change
       LocalStorage.setSelectedCustomerInfo(generatedUserContext);
+
+      SessionRecordingService.tagCustomer(LocalStorage.getCustomerNumber());
 
       //refresh the page
       $state.transitionTo(stateName, stateParams, {

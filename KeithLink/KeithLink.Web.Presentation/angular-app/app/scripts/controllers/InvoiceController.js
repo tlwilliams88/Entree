@@ -1,8 +1,8 @@
   'use strict';
 
 angular.module('bekApp')
-  .controller('InvoiceController', ['$q', '$scope', '$filter', '$modal', 'Constants', 'InvoiceService', '$rootScope', 'DateService', 'LocalStorage', 'CartService', 'CustomerService', '$state', 'PagingModel', 'BankAccountService', 'blockUI', 'canPayInvoices',
-    function ($q, $scope, $filter, $modal, Constants, InvoiceService, $rootScope, DateService, LocalStorage, CartService, CustomerService, $state, PagingModel, BankAccountService, blockUI, canPayInvoices) {
+  .controller('InvoiceController', ['$q', '$scope', '$filter', '$modal', 'Constants', 'InvoiceService', '$rootScope', 'DateService', 'LocalStorage', 'CartService', 'CustomerService', '$state', 'PagingModel', 'BankAccountService', 'blockUI', 'canPayInvoices', 'SessionRecordingService',
+    function ($q, $scope, $filter, $modal, Constants, InvoiceService, $rootScope, DateService, LocalStorage, CartService, CustomerService, $state, PagingModel, BankAccountService, blockUI, canPayInvoices, SessionRecordingService) {
 
   CartService.getCartHeaders().then(function(cartHeaders){
       $scope.cartHeaders = cartHeaders;
@@ -654,6 +654,8 @@ angular.module('bekApp')
 
       //persist the context change to Local Storage to prevent the stateChangeStart listener from reverting the context change
       LocalStorage.setSelectedCustomerInfo(generatedUserContext);
+      
+      SessionRecordingService.tagCustomer(LocalStorage.getCustomerNumber());
 
       //refresh the page
       $state.transitionTo(stateName, stateParams, {
