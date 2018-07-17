@@ -40,12 +40,14 @@ angular.module('bekApp')
         
         tagOrder: function(orderNumber){
             if(meetsRequirements()){
+                __insp.push(['tagSession', 'order' ]);
                 __insp.push(['tagSession', 'order=' + orderNumber ]);
             }
         },
         
         tagChangeOrder: function(orderNumber){
             if(meetsRequirements()){
+                __insp.push(['tagSession', 'order' ]);
                 __insp.push(['tagSession', 'order=' + orderNumber ]);
                 __insp.push(['tagSession', 'changeorder=' + orderNumber ]);
             }
@@ -53,6 +55,7 @@ angular.module('bekApp')
         
         tagCampaignView: function(campaignName){
             if(meetsRequirements()){
+                __insp.push(['tagSession', 'campaign' ]);
                 __insp.push(['tagSession', 'campaign=' + campaignName ]);
             }
         },
