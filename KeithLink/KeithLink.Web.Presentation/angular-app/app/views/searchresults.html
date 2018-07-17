@@ -218,7 +218,7 @@
       <div class="col-sm-12" id="categoriesSection">
         <h3>Categories<span ng-show="filterCount > 0" style="font-size:.65em;"><a class="pull-right" ng-click="clearFacets()">Clear Filters</a></span></h3>
           <ul class="nav search-results__category" style="max-height: 300px;">
-            <li class="row margin-left-10" ng-repeat="parentcategory in parentcategories.available | orderBy : 'code'">
+            <li class="margin-left-10" ng-repeat="parentcategory in parentcategories.available | orderBy : 'code'">
             <div>
               <input
                 type="checkbox"
