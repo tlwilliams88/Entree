@@ -1,4 +1,4 @@
-<div ng-click="isSidebarOpen = false">
+<div ng-click="toggleSidebarMenu()">
   <button class="btn-no-style"
           type="button"
           ng-disabled="::!isOrderEntryCustomer"
@@ -24,7 +24,7 @@
 </div>
 
 <div>
-  <li ng-if="selectedUserContext.customer.canViewUNFI"
+  <li ng-if="userContext.customer.canViewUNFI"
       ng-class="{'is-selected': $state.includes('menu.catalog') && ($state.params.catalogType == constants.catalogType.UNFI || $state.params.catalogType == constants.catalogType.ES)}"
       ng-show="showSpecialtyCatalogs">
     <button class="btn-no-style"
@@ -53,7 +53,7 @@
   </li>
 </div>
 
-<div ng-click="isSidebarOpen = false">
+<div ng-click="toggleSidebarMenu()">
   <li class="btn-no-style"
       analytics-on
       analytics-category="External Applications"

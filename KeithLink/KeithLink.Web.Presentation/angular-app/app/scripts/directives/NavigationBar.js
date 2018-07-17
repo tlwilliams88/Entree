@@ -6,12 +6,15 @@ angular.module('bekApp')
       restrict: 'E',
       // replace : true,
       scope: {
-        openScope: '=',
-        isDisabled: '='
+        isSidebarOpen: '=isSidebarOpen',  //Two-way data binding
+        userContext: '=userContext',      //Two-way data binding
+        userProfile: '=userProfile',      //Two-way data binding
       },
-      templateUrl: 'views/directives/navigatioBar.html',
-      controller: ['$scope', '$stateParams', '$modal', 'OrderService', '$state', 'ApplicationSettingsService', 'UtilityService', 'LocalStorage', 'ListService', 'CartService',
-        function ($scope, $stateParams, $modal, OrderService, $state, ApplicationSettingsService, UtilityService, LocalStorage, ListService, CartService) {
+      templateUrl: 'views/directives/navigationBar.html',
+      controller: ['$scope', '$rootScope', '$stateParams', '$state',
+        'AccessService', 'NotificationService', 'UserProfileService', 'ENV', 
+        function ($scope, $rootScope, $stateParams, $state,
+          AccessService, NotificationService, UserProfileService, ENV) {
 
           $scope.isOrderEntryCustomer = AccessService.isOrderEntryCustomer();
           $scope.canBrowseCatalog = AccessService.canBrowseCatalog();
@@ -26,28 +29,23 @@ angular.module('bekApp')
 
           $scope.specialCatalogOpen = false;
           $scope.showSpecialtyCatalogs = true;
+          $scope.flipsnackUrl = ENV.flipsnackUrl;
+
+          $scope.openExternalLink = $rootScope.openExternalLink;
+          $scope.openExternalLinkWithPost = $rootScope.openExternalLinkWithPost;
 
           $scope.userBar = {};
           $scope.userBar.universalSearchTerm = '';
           $scope.userBar.userNotificationsCount = NotificationService.userNotificationsCount;
 
 
-
           $scope.toggleSidebarMenu = function () {
             $scope.isSidebarOpen = !$scope.isSidebarOpen;
           };
 
-          $scope.checkModal = function () {
-            if ($modal) {
-              $modalStack.dismissAll();
-            }
-          };
-
           //Submenu for specialty catalogs
           $scope.toggleSpecialCatalogSubmenu = function () {
-            if ($scope.$state !== undefined) {
-              $scope.specialCatalogOpen = !$scope.specialCatalogOpen;
-            }
+            $scope.specialCatalogOpen = !$scope.specialCatalogOpen;
           };
 
           // Menumax
@@ -58,7 +56,6 @@ angular.module('bekApp')
               var url = ENV.menuMaxUrl;
 
               $scope.openExternalLinkWithPost(url, "_blank", payload);
-
             })
           };
 
@@ -72,9 +69,6 @@ angular.module('bekApp')
               $state.go('menu.admin.customergroupdashboard', { customerGroupId: null });
             }
           };
-
-
-
 
 
         }]

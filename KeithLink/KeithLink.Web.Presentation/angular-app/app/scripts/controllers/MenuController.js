@@ -22,7 +22,6 @@ angular.module('bekApp')
   'localStorageService', 'CategoryService', 
   'BranchService', 'ConfigSettingsService',
   'DocumentService',
-  'UserProfileService',
     function (
       $scope, $timeout, $rootScope, $modalStack, $state, $q, $log, $window,  // built in angular services
       $modal,   // ui-bootstrap library
@@ -41,7 +40,6 @@ angular.module('bekApp')
       BranchService,
       ConfigSettingsService,
       DocumentService,
-      UserProfileService
     ) {
 
   $scope.$state = $state;
@@ -64,6 +62,8 @@ angular.module('bekApp')
   $scope.userBar = {};
   $scope.userBar.universalSearchTerm = '';
   $scope.userBar.userNotificationsCount = NotificationService.userNotificationsCount;
+
+  $scope.isSidebarOpen = false;
 
   $scope.userGuideUrl = '/Assets/help/User_Guide.pdf';
   $scope.systemUpdates = NotificationService.systemUpdates;
@@ -103,8 +103,6 @@ angular.module('bekApp')
   // KBIT ACCESS
   var usernameToken = $scope.userProfile.usernametoken;
   $scope.cognosUrl = ENV.cognosUrl + '?username=' + usernameToken;
-
-  $scope.flipsnackUrl = ENV.flipsnackUrl;
 
   $scope.specialCatalogOpen = false;
   $scope.showSpecialtyCatalogs = true;
@@ -305,17 +303,6 @@ angular.module('bekApp')
     }
   };
 
-  $scope.goToAdminLandingPage = function() {
-    // internal bek admin user
-    if ($scope.canViewCustomerGroups) {
-      $state.go('menu.admin.customergroup');
-
-    // external owner admin
-    } else {
-      $state.go('menu.admin.customergroupdashboard', { customerGroupId: null });
-    }
-  };
-
   function refreshPage() {
     location.replace('#/home/');
     location.reload();
@@ -333,13 +320,6 @@ angular.module('bekApp')
     LocalStorage.setSelectedCustomerInfo(selectedUserContext);
     $state.go('menu.home');
     refreshPage();
-  };
-
-  //Submenu for specialty catalogs
-  $scope.toggleSpecialCatalogSubmenu = function() {
-    if ($scope.$state !== undefined) {
-      $scope.specialCatalogOpen = !$scope.specialCatalogOpen;
-    }
   };
 
   $scope.toggleSidebarMenu = function() {
@@ -404,18 +384,6 @@ angular.module('bekApp')
     }, function (error) {
       $log.debug('Scanning failed: ' + error);
     });
-  };
-
-  // Menumax
-  $scope.redirectToMenumax = function() {
-    UserProfileService.generateMenuMaxAuthToken().then(function(resp) {
-
-      var payload = '{"email":"' + $scope.userProfile.emailaddress + '",' + '"entreeSSOToken":"' + resp + '"}';
-      var url = ENV.menuMaxUrl;
-
-      $scope.openExternalLinkWithPost(url, "_blank", payload);
-
-    })
   };
 
   /**********
