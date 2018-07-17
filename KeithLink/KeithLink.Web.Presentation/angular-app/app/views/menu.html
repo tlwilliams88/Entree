@@ -334,36 +334,37 @@
           <span class="nav-description text-light padding-right-5" style="font-size: 15px; color: #EDBB51;">Products</span>
           <span class="caret text-light" style="color: #EDBB51;"></span>
           <ul class="dropdown-menu" role="menu">
-            <li ng-repeat="department in departments" ng-if="department.name != 'All'" analytics-on analytics-category="Menu-Products-Dropdown" analytics-event="Products Dropdown" analytics-label="{{department.name}}">
-              <span>
-                <a class="col-xs-8" ui-sref="menu.catalog.products.list({
-                catalogType: constants.catalogType.BEK, type: 'category',
-                id: department.search_name,
-                dept: department.id,
-                category: department.name,
-                brand: null,
-                parentcategories: undefined,
-                subcategories: undefined,
-                brands: undefined,
-                manufacturers: undefined,
-                dietary: undefined,
-                itemspecs: undefined,
-                temp_zones: undefined,
-                specialfilters: undefined,
-                startingPoint: undefined,
-                currentPage: undefined,
-                recommendationType: undefined})">
-                  {{department.name}}
-                </a>
-                <a class="col-xs-4" title="Equipment and Supplies Portfolio"
-                   ng-if="department.category_image != null && department.name == 'Equip & Supply'"
-                   ng-click="openExternalLink(flipsnackUrl)">
-                  <img src="{{department.category_image.url}}" width="30" height="30" />
-                </a>
-              </span>
+            <li ng-repeat="department in departments" ng-if="department.name != 'All'"
+                analytics-on analytics-category="Menu-Products-Dropdown" analytics-event="Products Dropdown" analytics-label="{{department.name}}">
+              <a ui-sref="menu.catalog.products.list({
+                    catalogType: constants.catalogType.BEK, type: 'category',
+                    id: department.search_name,
+                    dept: department.id,
+                    category: department.name,
+                    brand: null,
+                    parentcategories: undefined,
+                    subcategories: undefined,
+                    brands: undefined,
+                    manufacturers: undefined,
+                    dietary: undefined,
+                    itemspecs: undefined,
+                    temp_zones: undefined,
+                    specialfilters: undefined,
+                    startingPoint: undefined,
+                    currentPage: undefined,
+                    recommendationType: undefined})">
+                {{department.name}}
+              </a>
+              <a class="pull-right" title="Equipment and Supplies Portfolio"
+                  ng-if="department.name == 'Equip & Supply'"
+                  ng-click="openExternalLink(flipsnackUrl)">
+                <img src="images/Keith-Kitchen-Essentials.jpg" />
+              </a>
             </li>
-            <li class="hand-pointer" ng-if="selectedUserContext.customer.canViewUNFI" style="padding-left: 10px; padding-top: 10px; padding-bottom: 10px;" analytics-on analytics-category="Menu-Products-Dropdown" analytics-event="Products Dropdown" analytics-label="UNFI catalog">
-              <span ui-sref="menu.catalog.home({catalogType: constants.catalogType.UNFI})" style="color: green;"><span class="icon-leaf padding-right-5"></span>Natural and Organic</span>
+            <li class="hand-pointer" ng-if="selectedUserContext.customer.canViewUNFI"
+                style="padding-left: 10px; padding-top: 10px; padding-bottom: 10px;"
+                analytics-on analytics-category="Menu-Products-Dropdown" analytics-event="Products Dropdown" analytics-label="UNFI catalog">
+              <a ui-sref="menu.catalog.home({catalogType: constants.catalogType.UNFI})" style="color: green;"><span class="icon-leaf padding-right-5"></span>Natural and Organic</a>
             </li>
           </ul>
         </div>

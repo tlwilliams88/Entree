@@ -218,7 +218,7 @@
       <div class="col-sm-12" id="categoriesSection">
         <h3>Categories<span ng-show="filterCount > 0" style="font-size:.65em;"><a class="pull-right" ng-click="clearFacets()">Clear Filters</a></span></h3>
           <ul class="nav search-results__category" style="max-height: 300px;">
-            <li class="margin-left-10" ng-repeat="parentcategory in parentcategories.available | orderBy : 'code'">
+            <li class="row margin-left-10" ng-repeat="parentcategory in parentcategories.available | orderBy : 'code'">
             <div>
               <input
                 type="checkbox"
@@ -228,11 +228,16 @@
                 id="categoryId_{{parentcategory.name}}"
                 ng-checked="  parentcategories.selected.indexOf(parentcategory.name) > -1 || parentcategory.name === featuredBreadcrumb.displayText"
                 ng-click="toggleSelection(true, parentcategories.selected, parentcategory.name, '', $index); $event.stopPropagation();">
-              <label
-                ng-class="{active:   parentcategories.selected.indexOf(parentcategory.name) > -1}">
-                <span class="category-description-md">
+              <label class="width-100Percent"
+                     ng-class="{active:   parentcategories.selected.indexOf(parentcategory.name) > -1}">
+                <span class="pull-left margin-top-10 category-description-md">
                   {{::parentcategory.name}} <span ng-show="parentcategory.count > 0">({{parentcategory.count}})</span>
                 </span>
+                <a class="pull-right margin-right-10" title="Equipment and Supplies Portfolio"
+                   ng-if="parentcategory.name == 'Equip & Supply'"
+                   ng-click="openExternalLink(flipsnackUrl)">
+                  <img src="images/Keith-Kitchen-Essentials.jpg" />
+                </a>
               </label>
             </div>
             <ul class="subcategories_{{$index}} subcategory-description-md">

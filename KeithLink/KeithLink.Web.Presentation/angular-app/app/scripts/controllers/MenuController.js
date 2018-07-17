@@ -39,7 +39,7 @@ angular.module('bekApp')
       CategoryService,
       BranchService,
       ConfigSettingsService,
-      DocumentService,
+      DocumentService
     ) {
 
   $scope.$state = $state;
@@ -64,6 +64,8 @@ angular.module('bekApp')
   $scope.userBar.userNotificationsCount = NotificationService.userNotificationsCount;
 
   $scope.isSidebarOpen = false;
+
+  $scope.flipsnackUrl = ENV.flipsnackUrl;
 
   $scope.userGuideUrl = '/Assets/help/User_Guide.pdf';
   $scope.systemUpdates = NotificationService.systemUpdates;
@@ -103,9 +105,6 @@ angular.module('bekApp')
   // KBIT ACCESS
   var usernameToken = $scope.userProfile.usernametoken;
   $scope.cognosUrl = ENV.cognosUrl + '?username=' + usernameToken;
-
-  $scope.specialCatalogOpen = false;
-  $scope.showSpecialtyCatalogs = true;
 
   if (AccessService.isOrderEntryCustomer()) {
 

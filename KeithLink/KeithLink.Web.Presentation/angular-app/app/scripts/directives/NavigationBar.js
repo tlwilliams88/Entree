@@ -16,6 +16,13 @@ angular.module('bekApp')
         function ($scope, $rootScope, $stateParams, $state,
           AccessService, NotificationService, UserProfileService, ENV) {
 
+          if (typeof $scope.isSidebarOpen === "undefined")
+            alert("The attribute, 'is-sidebar-open', was not defined in the element, 'navigation-bar'.");
+          if (typeof $scope.userContext === "undefined")
+            alert("The attribute, 'user-context', was not defined in the element, 'navigation-bar'.");
+          if (typeof $scope.userProfile === "undefined")
+            alert("The attribute, 'user-profile', was not defined in the element, 'navigation-bar'.");
+
           $scope.isOrderEntryCustomer = AccessService.isOrderEntryCustomer();
           $scope.canBrowseCatalog = AccessService.canBrowseCatalog();
           $scope.canViewOrders = AccessService.canViewOrders();

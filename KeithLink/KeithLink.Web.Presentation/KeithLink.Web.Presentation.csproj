@@ -78,8 +78,7 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="angular-app\app\scripts\directives\" />
-    <Folder Include="angular-app\app\views\directives\" />
+    <Folder Include="angular-app\app\" />
     <Folder Include="app\" />
     <Folder Include="App_Data\" />
     <Folder Include="App_Start\" />
