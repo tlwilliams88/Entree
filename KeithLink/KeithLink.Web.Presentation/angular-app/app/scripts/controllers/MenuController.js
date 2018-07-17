@@ -93,6 +93,7 @@ angular.module('bekApp')
   $scope.displayGlobalMessage = true;
   $scope.userProfile = userProfile;
   $scope.isBEKSysAdmin = userProfile.rolename == 'beksysadmin' ? true : false;
+  $scope.showDocuments = false;
   refreshAccessPermissions($scope.userProfile);
 
   // Application version for use on sidebar menu
@@ -196,9 +197,11 @@ angular.module('bekApp')
     $scope.setSelectedUserContext(LocalStorage.getBranchId());
   }
 
-  DocumentService.getAllDocuments($scope.selectedUserContext.customer.customerNumber + '-' + $scope.selectedUserContext.customer.customerBranch).then(function(links){
-    $scope.showDocuments = links.length > 0 && ENV.showDocumentsPage;
-  });
+  if($scope.selectedUserContext.customer && ENV.showDocumentsPage){
+    DocumentService.getAllDocuments($scope.selectedUserContext.customer.customerNumber + '-' + $scope.selectedUserContext.customer.customerBranch).then(function(links){
+      $scope.showDocuments = links.length > 0;
+    });
+  }
 
   $scope.customerInfiniteScroll = {
     from: 0,

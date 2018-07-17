@@ -21,29 +21,25 @@ angular.module('bekApp')
     $scope.loadingrecentlyOrderedUnfiItems = true;
     $scope.loadingCategories = true;
     $scope.loadingBrands = true;
-    $scope.loadingRecommendedItems = true;
 
     if ($state.params.catalogType === Constants.catalogType.BEK) {
+
       $scope.pageTitle = 'Product Catalog';
       ProductService.getRecentlyViewedItems().then(function(items) {
         $scope.recentlyViewedItems = items;
         $scope.loadingRecentlyViewedItems = false;
+      });    
 
-        ListService.getRecommendedItems().then(function(items) {
-          $scope.recommendedItems = items;
-          $scope.loadingRecommendedItems = false;
-
-          CategoryService.getCategories($state.params.catalogType).then(function(categories) {
-            $scope.categories = categories;
-            $scope.loadingCategories = false;
-
-            BrandService.getHouseBrands().then(function(data){
-              $scope.brands = data;
-              $scope.loadingBrands = false;
-            });
-          });
-        });
+      CategoryService.getCategories($state.params.catalogType).then(function(categories) {
+        $scope.categories = categories;
+        $scope.loadingCategories = false;
       });
+
+      BrandService.getHouseBrands().then(function(data){
+        $scope.brands = data;
+        $scope.loadingBrands = false;
+      });     
+        
     } else {
       $scope.pageTitle = 'Specialty Catalog';
       CategoryService.getCategories($state.params.catalogType).then(function(categories) {
