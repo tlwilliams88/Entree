@@ -13,6 +13,8 @@ using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using System.Net;
+using System.IO;
 
 using KeithLink.Svc.Impl.Seams;
 
@@ -869,23 +871,55 @@ namespace KeithLink.Svc.Impl.Repository.SiteCatalog
 
             string branch = catalogInfo.BranchId.ToLower();
 
-            try {
-                ElasticsearchResponse<DynamicResponse> res = _eshelper.ElasticClient.LowLevel.Search<DynamicResponse>(branch.ToLower(), "product", termSearchExpression);
-                if (res.Body["hits"]["total"] != null) {
-                    if (res.Success) {
-                        return Convert.ToInt32(res.Body["hits"]["total"]
-                                                  .Value);
-                    } else {
-                        throw new Exception(string.Format("Error executing ES Query: {0} : {1}", res.ServerError.Error, res.ServerError.Status));
-                    }
-                } else {
-                    return 0;
+            try
+            {
+                ElasticsearchResponse<DynamicResponse> response = _eshelper.ElasticClient.LowLevel.Search<DynamicResponse>(branch.ToLower(), "product", termSearchExpression);
+                if (response.Success
+                    && response.Body != null
+                    && response.Body["hits"]["total"] != null)
+                {
+                    return Convert.ToInt32(response.Body["hits"]["total"].Value);
+                }
+                else
+                {
+                    var errorMessage = string.Format("Error executing ES Query: {0} : {1}", response.ServerError.Error, response.ServerError.Status) + Environment.NewLine;
+                    if (response.OriginalException != null)
+                        errorMessage += ParseException(response.OriginalException);
+
+                    throw new ApplicationException(errorMessage);
                 }
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                throw;
+                var errorMessage = "Error executing ES Query: ";
+                errorMessage += ParseException(ex);
+
+                throw new ApplicationException(errorMessage, ex);
             }
+        }
+
+        private string ParseException(Exception ex)
+        {
+            var errorMessage = ex.GetType().Name + ": " + ex.Message + Environment.NewLine;
+
+            var webException = ex as WebException;
+            if (webException != null)
+                errorMessage += ParseWebException(webException);
+
+            return errorMessage;
+        }
+
+        private string ParseWebException(WebException ex)
+        {
+            var responseText = "";
+            var responseStream = ex.Response.GetResponseStream();
+            if (responseStream != null && responseStream.CanRead)
+            {
+                var reader = new StreamReader(responseStream);
+                responseText = "  Response text: " + reader.ReadToEnd() + Environment.NewLine;
+            }
+
+            return responseText;
         }
 
         //private delegate TResult Func<in T, out TResult>();
