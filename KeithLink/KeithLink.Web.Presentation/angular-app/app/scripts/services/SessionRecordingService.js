@@ -47,7 +47,7 @@ angular.module('bekApp')
         
         tagChangeOrder: function(orderNumber){
             if(meetsRequirements()){
-                __insp.push(['tagSession', 'order' ]);
+                __insp.push(['tagSession', 'changeorder' ]);
                 __insp.push(['tagSession', 'order=' + orderNumber ]);
                 __insp.push(['tagSession', 'changeorder=' + orderNumber ]);
             }
