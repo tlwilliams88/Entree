@@ -462,7 +462,7 @@ namespace KeithLink.Svc.Impl.Repository.SiteCatalog
 
             List<dynamic> filterTerms = BuildFilterTerms(searchModel.Facets, catalogInfo);
 
-            dynamic categorySearchExpression = BuildBoolMultiMatchQuery(searchModel, filterTerms, new List<string>() { "brand_control_label" }, brandControlLabel, "or");
+            dynamic categorySearchExpression = BuildBoolMultiMatchQuery(searchModel, filterTerms, new List<string>() { "brand_control_label.keyword" }, brandControlLabel, "or");
 
             return GetProductsFromElasticSearch(catalogInfo.BranchId.ToLower(), true, "", categorySearchExpression);
         }
