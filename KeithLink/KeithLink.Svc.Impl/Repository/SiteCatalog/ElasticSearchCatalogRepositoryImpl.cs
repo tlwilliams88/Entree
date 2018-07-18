@@ -882,9 +882,18 @@ namespace KeithLink.Svc.Impl.Repository.SiteCatalog
                 }
                 else
                 {
-                    var errorMessage = string.Format("Error executing ES Query: {0} : {1}", response.ServerError.Error, response.ServerError.Status) + Environment.NewLine;
+                    var errorMessage = "Error executing ES Query: ";
+
                     if (response.OriginalException != null)
                         errorMessage += ParseException(response.OriginalException);
+
+                    var error = response.ServerError.Error;
+
+                    errorMessage += error.Type + ": " + error.Reason + Environment.NewLine;
+                    foreach (var cause in error.RootCause)
+                    {
+                        errorMessage += cause.Type + ": " + cause.Reason + " for index " + cause.Index + Environment.NewLine;
+                    }
 
                     throw new ApplicationException(errorMessage);
                 }
