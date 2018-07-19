@@ -4,17 +4,14 @@ using KeithLink.Svc.Core.Models.SiteCatalog;
 
 using Elasticsearch.Net;
 using Nest;
-using RestSharp;
+using Newtonsoft.Json;
 
 using System;
 using System.Collections.Generic;
 using System.Dynamic;
-using System.Linq;
-using System.Text;
-using System.Text.RegularExpressions;
-using System.Threading.Tasks;
-using System.Net;
 using System.IO;
+using System.Linq;
+using System.Net;
 
 using KeithLink.Svc.Impl.Seams;
 
@@ -548,7 +545,7 @@ namespace KeithLink.Svc.Impl.Repository.SiteCatalog
             dynamic categorySearchExpression = BuildBoolFunctionScoreQuery(from, size, searchModel.SField, searchModel.SDir,
                 filterTerms);
 
-            var query = Newtonsoft.Json.JsonConvert.SerializeObject(categorySearchExpression);
+            var query = JsonConvert.SerializeObject(categorySearchExpression);
 
             List<string> specialFilters = SeekSpecialFilters(searchModel.Facets);
 
@@ -562,14 +559,14 @@ namespace KeithLink.Svc.Impl.Repository.SiteCatalog
                 categorySearchExpression = BuildBoolFunctionScoreQueryNoFields(from, size, searchModel.SField, searchModel.SDir,
                     filterTerms);
 
-                query = Newtonsoft.Json.JsonConvert.SerializeObject(categorySearchExpression);
+                query = JsonConvert.SerializeObject(categorySearchExpression);
 
                 size = GetCountProductFromElasticSearch(catalogInfo.BranchId, true, "", categorySearchExpression);
 
                 categorySearchExpression = BuildBoolFunctionScoreQuery(from, size, searchModel.SField, searchModel.SDir,
                     filterTerms);
 
-                query = Newtonsoft.Json.JsonConvert.SerializeObject(categorySearchExpression);
+                query = JsonConvert.SerializeObject(categorySearchExpression);
 
                 ret = GetProductsFromElasticSearch(catalogInfo.BranchId, true, "", categorySearchExpression);
             }
@@ -605,14 +602,14 @@ namespace KeithLink.Svc.Impl.Repository.SiteCatalog
             dynamic categorySearchExpression = BuildBoolFunctionScoreQueryNoFields(from, size, searchModel.SField, searchModel.SDir,
                 filterTerms);
 
-            var query = Newtonsoft.Json.JsonConvert.SerializeObject(categorySearchExpression);
+            var query = JsonConvert.SerializeObject(categorySearchExpression);
 
             size = GetCountProductFromElasticSearch(catalogInfo.BranchId, true, "", categorySearchExpression);
 
             categorySearchExpression = BuildBoolFunctionScoreQueryNoFields(from, size, searchModel.SField, searchModel.SDir,
                 filterTerms);
 
-            query = Newtonsoft.Json.JsonConvert.SerializeObject(categorySearchExpression);
+            query = JsonConvert.SerializeObject(categorySearchExpression);
 
             return GetProductNumbersFromElasticSearch(catalogInfo.BranchId, true, "", categorySearchExpression);
         }
@@ -675,7 +672,7 @@ namespace KeithLink.Svc.Impl.Repository.SiteCatalog
                 aggregations = ElasticSearchAggregations
             };
 
-            string query = Newtonsoft.Json.JsonConvert.SerializeObject(q);
+            string query = JsonConvert.SerializeObject(q);
 
             ProductsReturn returnValue = GetProductsFromElasticSearch(branch, false, query);
 
@@ -706,7 +703,7 @@ namespace KeithLink.Svc.Impl.Repository.SiteCatalog
 
             termSearchExpression = BuildBoolMultiMatchQuery(searchModel, filterTerms, fieldsToSearch, termSearch);
 
-            var query = Newtonsoft.Json.JsonConvert.SerializeObject(termSearchExpression);
+            var query = JsonConvert.SerializeObject(termSearchExpression);
 
             string branch = catalogInfo.BranchId.ToLower();
 
@@ -735,7 +732,7 @@ namespace KeithLink.Svc.Impl.Repository.SiteCatalog
 
             termSearchExpression = BuildBoolMultiMatchQueryNoFields(searchModel, filterTerms, fieldsToSearch, termSearch);
 
-            var query = Newtonsoft.Json.JsonConvert.SerializeObject(termSearchExpression);
+            var query = JsonConvert.SerializeObject(termSearchExpression);
 
             string branch = catalogInfo.BranchId.ToLower();
 
@@ -747,30 +744,46 @@ namespace KeithLink.Svc.Impl.Repository.SiteCatalog
             string requestToJSON = "";
             if (searchBodyD == null)
             {
-                requestToJSON = Newtonsoft.Json.JsonConvert.SerializeObject(searchBody);
+                requestToJSON = JsonConvert.SerializeObject(searchBody);
             }
             else
             {
-                requestToJSON = Newtonsoft.Json.JsonConvert.SerializeObject(searchBodyD);
+                requestToJSON = JsonConvert.SerializeObject(searchBodyD);
             }
 
-            ElasticsearchResponse<DynamicResponse> res = null;
+            ElasticsearchResponse<DynamicResponse> response = null;
 
             if (searchBodyD == null)
-                res = _eshelper.ElasticClient.LowLevel.Search<DynamicResponse>(branch.ToLower(), "product", searchBody);
+                response = _eshelper.ElasticClient.LowLevel.Search<DynamicResponse>(branch.ToLower(), "product", searchBody);
             else
-                res = _eshelper.ElasticClient.LowLevel.Search<DynamicResponse>(branch.ToLower(), "product", searchBodyD);
+                response = _eshelper.ElasticClient.LowLevel.Search<DynamicResponse>(branch.ToLower(), "product", searchBodyD);
 
-            List<Product> products = new List<Product>();
-            foreach (var oProd in res.Body["hits"]["hits"])
+            if (response.Success && response.Body != null)
             {
-                Product p = LoadProductFromElasticSearchProduct(listonly, oProd);
-                products.Add(p);
-            }
-            ExpandoObject facets = LoadFacetsFromElasticSearchResponse(res);
-            int totalCount = Convert.ToInt32(res.Body["hits"]["total"].Value);
+                List<Product> products = new List<Product>();
 
-            return new ProductsReturn() { Products = products, Facets = facets, TotalCount = totalCount, Count = products.Count };
+                foreach (var oProd in response.Body["hits"]["hits"])
+                {
+                    Product p = LoadProductFromElasticSearchProduct(listonly, oProd);
+                    products.Add(p);
+                }
+
+                ExpandoObject facets = LoadFacetsFromElasticSearchResponse(response);
+                int totalCount = Convert.ToInt32(response.Body["hits"]["total"].Value);
+
+                return new ProductsReturn() { Products = products, Facets = facets, TotalCount = totalCount, Count = products.Count };
+            }
+            else
+            {
+                var errorMessage = "Error in GetProductsFromElasticSearch: ";
+
+                if (response.OriginalException != null)
+                    errorMessage += ParseException(response.OriginalException);
+
+                errorMessage += ParseServerError(response.ServerError);
+
+                throw new ApplicationException(errorMessage);
+            }
         }
 
         private ProductsReturn GetProductNumbersFromElasticSearch(string branch, bool listonly, string searchBody, object searchBodyD = null)
@@ -778,29 +791,45 @@ namespace KeithLink.Svc.Impl.Repository.SiteCatalog
             string requestToJSON = "";
             if (searchBodyD == null)
             {
-                requestToJSON = Newtonsoft.Json.JsonConvert.SerializeObject(searchBody);
+                requestToJSON = JsonConvert.SerializeObject(searchBody);
             }
             else
             {
-                requestToJSON = Newtonsoft.Json.JsonConvert.SerializeObject(searchBodyD);
+                requestToJSON = JsonConvert.SerializeObject(searchBodyD);
             }
 
-            ElasticsearchResponse<DynamicResponse> res = null;
+            ElasticsearchResponse<DynamicResponse> response = null;
 
             if (searchBodyD == null)
-                res = _eshelper.ElasticClient.LowLevel.Search<DynamicResponse>(branch.ToLower(), "product", searchBody);
+                response = _eshelper.ElasticClient.LowLevel.Search<DynamicResponse>(branch.ToLower(), "product", searchBody);
             else
-                res = _eshelper.ElasticClient.LowLevel.Search<DynamicResponse>(branch.ToLower(), "product", searchBodyD);
+                response = _eshelper.ElasticClient.LowLevel.Search<DynamicResponse>(branch.ToLower(), "product", searchBodyD);
 
-            List<Product> products = new List<Product>();
-            foreach (var oProd in res.Body["hits"]["hits"])
+            if (response.Success && response.Body != null)
             {
-                products.Add(new Product() { ItemNumber = oProd._id, CatalogId = oProd._index });
-            }
-            ExpandoObject facets = LoadFacetsFromElasticSearchResponse(res);
-            int totalCount = Convert.ToInt32(res.Body["hits"]["total"].Value);
+                List<Product> products = new List<Product>();
 
-            return new ProductsReturn() { Products = products, Facets = facets, TotalCount = totalCount, Count = products.Count };
+                foreach (var oProd in response.Body["hits"]["hits"])
+                {
+                    products.Add(new Product() { ItemNumber = oProd._id, CatalogId = oProd._index });
+                }
+
+                ExpandoObject facets = LoadFacetsFromElasticSearchResponse(response);
+                int totalCount = Convert.ToInt32(response.Body["hits"]["total"].Value);
+
+                return new ProductsReturn() { Products = products, Facets = facets, TotalCount = totalCount, Count = products.Count };
+            }
+            else
+            {
+                var errorMessage = "Error in GetProductNumbersFromElasticSearch: ";
+
+                if (response.OriginalException != null)
+                    errorMessage += ParseException(response.OriginalException);
+
+                errorMessage += ParseServerError(response.ServerError);
+
+                throw new ApplicationException(errorMessage);
+            }
         }
 
         private int GetCountProductFromElasticSearch(string branch, bool listonly, string searchBody, object searchBodyD = null)
@@ -808,23 +837,37 @@ namespace KeithLink.Svc.Impl.Repository.SiteCatalog
             string requestToJSON = "";
             if (searchBodyD == null)
             {
-                requestToJSON = Newtonsoft.Json.JsonConvert.SerializeObject(searchBody);
+                requestToJSON = JsonConvert.SerializeObject(searchBody);
             }
             else
             {
-                requestToJSON = Newtonsoft.Json.JsonConvert.SerializeObject(searchBodyD);
+                requestToJSON = JsonConvert.SerializeObject(searchBodyD);
             }
 
-            ElasticsearchResponse<DynamicResponse> res = null;
+            ElasticsearchResponse<DynamicResponse> response = null;
 
             if (searchBodyD == null)
-                res = _eshelper.ElasticClient.LowLevel.Search<DynamicResponse>(branch.ToLower(), "product", searchBody);
+                response = _eshelper.ElasticClient.LowLevel.Search<DynamicResponse>(branch.ToLower(), "product", searchBody);
             else
-                res = _eshelper.ElasticClient.LowLevel.Search<DynamicResponse>(branch.ToLower(), "product", searchBodyD);
+                response = _eshelper.ElasticClient.LowLevel.Search<DynamicResponse>(branch.ToLower(), "product", searchBodyD);
 
-            int totalCount = Convert.ToInt32(res.Body["hits"]["total"].Value);
+            if (response.Success && response.Body != null)
+            {
+                int totalCount = Convert.ToInt32(response.Body["hits"]["total"].Value);
 
-            return totalCount;
+                return totalCount;
+            }
+            else
+            {
+                var errorMessage = "Error in GetCountProductFromElasticSearch: ";
+
+                if (response.OriginalException != null)
+                    errorMessage += ParseException(response.OriginalException);
+
+                errorMessage += ParseServerError(response.ServerError);
+
+                throw new ApplicationException(errorMessage);
+            }
         }
 
         public int GetHitsForSearchInIndex(UserSelectedContext catalogInfo, string searchTerm, SearchInputModel searchModel)
@@ -867,7 +910,7 @@ namespace KeithLink.Svc.Impl.Repository.SiteCatalog
 
             termSearchExpression = BuildBoolMultiMatchQuery(searchModel, newFilterTerms, fieldsToSearch, termSearch);
             //dynamic termSearchExpression = BuildFunctionScoreQuery(searchModel, filterTerms, fieldsToSearch, termSearch);
-            var query = Newtonsoft.Json.JsonConvert.SerializeObject(termSearchExpression);
+            var query = JsonConvert.SerializeObject(termSearchExpression);
 
             string branch = catalogInfo.BranchId.ToLower();
 
@@ -882,29 +925,37 @@ namespace KeithLink.Svc.Impl.Repository.SiteCatalog
                 }
                 else
                 {
-                    var errorMessage = "Error executing ES Query: ";
+                    var errorMessage = "Error in GetHitsForSearchInIndex: ";
 
                     if (response.OriginalException != null)
                         errorMessage += ParseException(response.OriginalException);
 
-                    var error = response.ServerError.Error;
-
-                    errorMessage += error.Type + ": " + error.Reason + Environment.NewLine;
-                    foreach (var cause in error.RootCause)
-                    {
-                        errorMessage += cause.Type + ": " + cause.Reason + " for index " + cause.Index + Environment.NewLine;
-                    }
+                    errorMessage += ParseServerError(response.ServerError);
 
                     throw new ApplicationException(errorMessage);
                 }
             }
             catch (Exception ex)
             {
-                var errorMessage = "Error executing ES Query: ";
+                var errorMessage = "Error in GetHitsForSearchInIndex: ";
                 errorMessage += ParseException(ex);
 
                 throw new ApplicationException(errorMessage, ex);
             }
+        }
+
+        private string ParseServerError(ServerError serverError)
+        {
+            var error = serverError.Error;
+
+            var errorMessage = error.Type + ": " + error.Reason + Environment.NewLine;
+
+            foreach (var cause in error.RootCause)
+            {
+                errorMessage += cause.Type + ": " + cause.Reason + " for index " + cause.Index + Environment.NewLine;
+            }
+
+            return errorMessage;
         }
 
         private string ParseException(Exception ex)
