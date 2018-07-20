@@ -780,7 +780,8 @@ namespace KeithLink.Svc.Impl.Repository.SiteCatalog
                 if (response.OriginalException != null)
                     errorMessage += ParseException(response.OriginalException);
 
-                errorMessage += ParseServerError(response.ServerError);
+                if (response.ServerError != null)
+                    errorMessage += ParseServerError(response.ServerError);
 
                 throw new ApplicationException(errorMessage);
             }
@@ -826,7 +827,8 @@ namespace KeithLink.Svc.Impl.Repository.SiteCatalog
                 if (response.OriginalException != null)
                     errorMessage += ParseException(response.OriginalException);
 
-                errorMessage += ParseServerError(response.ServerError);
+                if (response.ServerError != null)
+                    errorMessage += ParseServerError(response.ServerError);
 
                 throw new ApplicationException(errorMessage);
             }
@@ -864,7 +866,8 @@ namespace KeithLink.Svc.Impl.Repository.SiteCatalog
                 if (response.OriginalException != null)
                     errorMessage += ParseException(response.OriginalException);
 
-                errorMessage += ParseServerError(response.ServerError);
+                if (response.ServerError != null)
+                    errorMessage += ParseServerError(response.ServerError);
 
                 throw new ApplicationException(errorMessage);
             }
@@ -930,7 +933,8 @@ namespace KeithLink.Svc.Impl.Repository.SiteCatalog
                     if (response.OriginalException != null)
                         errorMessage += ParseException(response.OriginalException);
 
-                    errorMessage += ParseServerError(response.ServerError);
+                    if (response.ServerError != null)
+                        errorMessage += ParseServerError(response.ServerError);
 
                     throw new ApplicationException(errorMessage);
                 }
