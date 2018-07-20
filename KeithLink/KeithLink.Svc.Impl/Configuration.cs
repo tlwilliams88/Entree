@@ -188,7 +188,7 @@ namespace KeithLink.Svc.Impl
 
         //Single Sign On
         private const string KEY_SSO_KBIT_CONNECTIONSTRING = "KbitCustomer";
-        private const string KEY_SSO_KEY = "MenuMaxSharedKey";
+        private const string KEY_SSO_MENUMAX = "MenuMaxSharedKey";
 
         // Imaging (ImageNow/WebNow)
         private const string KEY_IMG_PASSWORD = "ImagingUserPassword";
@@ -888,11 +888,11 @@ namespace KeithLink.Svc.Impl
             }
         }
 
-        public static string SSOSharedKey
+        public static string MenuMaxSharedKey
         {
             get
             {
-                string value = DBAppSettingsRepositoryImpl.GetValue(KEY_SSO_KEY, string.Empty);
+                string value = DBAppSettingsRepositoryImpl.GetValue(KEY_SSO_MENUMAX, string.Empty);
                 return value;
             }
         }

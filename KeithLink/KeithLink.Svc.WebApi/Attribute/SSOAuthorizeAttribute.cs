@@ -26,7 +26,7 @@ namespace KeithLink.Svc.WebApi.Attribute
             {
                 var email = actionContext.Request.Headers.GetValues("username").First();
 
-                string keyandemail = String.Concat(email.ToString(), Impl.Configuration.SSOSharedKey.ToString());
+                string keyandemail = String.Concat(email.ToString(), Impl.Configuration.MenuMaxSharedKey.ToString());
 
                 SHA512 sha512 = SHA512.Create();
                 byte[] bytes = System.Text.Encoding.UTF8.GetBytes(keyandemail);
