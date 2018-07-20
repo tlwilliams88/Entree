@@ -16,6 +16,9 @@ using System;
 using System.Linq;
 using System.Web.Http;
 using KeithLink.Svc.WebApi.Attribute;
+using KeithLink.Svc.Core.Models.Paging;
+using System.Collections.Generic;
+using KeithLink.Svc.Core.Enumerations.Profile;
 
 namespace KeithLink.Svc.WebApi.Controllers
 {
@@ -26,22 +29,19 @@ namespace KeithLink.Svc.WebApi.Controllers
 	public class SSOController : BaseController
     {
         #region attributes
-        private readonly IUserFeedbackLogic _userFeedbackLogic;
         private readonly IUserProfileLogic _profileLogic;
-        private readonly IDivisionLogic _divisionLogic;
-        private readonly IEventLogRepository _log;
-        private readonly INotificationHandler _notificationHandler;
+
+        /// <summary>
+        /// SSOUser in SSOController
+        /// </summary>
+        public UserProfile SSOUser { get; set; }
         #endregion
 
         #region ctor
         /// <summary>
         /// ctor
         /// </summary>
-        /// <param name="userFeedbackLogic"></param>
         /// <param name="profileLogic"></param>
-        /// <param name="divisionLogic"></param>
-        /// <param name="notificationHandlerFactory"></param>
-        /// <param name="logRepo"></param>
         public SSOController(
             IUserProfileLogic profileLogic
             ) : base(profileLogic)
@@ -51,35 +51,67 @@ namespace KeithLink.Svc.WebApi.Controllers
         #endregion
 
         #region methods
+
         /// <summary>
-        /// Submit user feedback
+        /// Paged search of customers
         /// </summary>
-        /// <param name="userFeedback">User Feedback</param>
-        /// <returns></returns>
-        [HttpPost]
-        [ApiKeyedRoute("sso/customers")]
-        public OperationReturnModel<string> GetCustomers()
+        /// <param name="paging">Paging information</param>
+        /// <param name="sort">Sort object</param>
+        /// <param name="account">Account</param>
+        /// <param name="terms">Search text</param>
+        /// <param name="type">The type of text we are searching for. Is converted to CustomerSearchType enumerator</param>
+        /// <returns>search results as a paged list of customers</returns>
+        [HttpGet]
+        [ApiKeyedRoute("sso/customer/")]
+        public OperationReturnModel<PagedResults<Customer>> SearchCustomers([FromUri] PagingModel paging, [FromUri] SortInfo sort, [FromUri] string account = "",
+                                                                                    [FromUri] string terms = "", [FromUri] string type = "1")
         {
-            var retVal = new OperationReturnModel<string>() { IsSuccess = false };
+            OperationReturnModel<PagedResults<Customer>> retVal = new OperationReturnModel<PagedResults<Customer>>();
+
+            try
+            {
+                if (paging.Sort == null && sort != null && !String.IsNullOrEmpty(sort.Order) && !String.IsNullOrEmpty(sort.Field))
+                {
+                    paging.Sort = new List<SortInfo>() { sort };
+                }
+
+                int typeVal;
+                if (!int.TryParse(type, out typeVal))
+                {
+                    typeVal = 1;
+                }
+
+                var headers = this.ControllerContext.Request.Headers;
+
+                if (headers.Contains("username"))
+                {
+                    var email = headers.GetValues("username").First();
+
+                    UserProfileReturn users = _profileLogic.GetUserProfile(email);
+                    SSOUser = users.UserProfiles[0];
+                }
+
+                retVal.SuccessResponse = _profileLogic.CustomerSearch(SSOUser, terms, paging, account, (CustomerSearchType)typeVal);
+
+                // Set the customers UNFI viewing capabilities
+                retVal.SuccessResponse.Results.ForEach(x => x.CanViewUNFI = _profileLogic.CheckCanViewUNFI(this.AuthenticatedUser, x.CustomerNumber, x.CustomerBranch));
+
+                retVal.IsSuccess = true;
+            }
+            catch (ApplicationException axe)
+            {
+                retVal.ErrorMessage = axe.Message;
+                retVal.IsSuccess = false;
+                //_log.WriteErrorLog("Application exception", axe);
+            }
+            catch (Exception ex)
+            {
+                retVal.ErrorMessage = "Could not complete the request. " + ex.Message;
+                retVal.IsSuccess = false;
+                //_log.WriteErrorLog("Unhandled exception", ex);
+            }
 
             return retVal;
-        }
-
-        public OperationReturnModel<string> Fail()
-        {
-            var retVal = new OperationReturnModel<string>() { IsSuccess = false };
-
-            retVal.ErrorMessage = "Invalid Credentials";
-
-            return retVal;
-        }
-
-        private Customer GetCustomer(UserSelectedContext userContext, UserProfile user)
-        {
-            Customer customer =
-                _profileLogic.GetCustomerByCustomerNumber(userContext.CustomerId, userContext.BranchId)
-                ?? user.DefaultCustomer;
-            return customer;
         }
 
         #endregion
