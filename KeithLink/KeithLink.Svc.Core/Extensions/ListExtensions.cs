@@ -192,6 +192,24 @@ namespace KeithLink.Svc.Core.Extensions
 
             return items;
         }
+        public static ListModelShallowPrices ToShallowPricesModel(this ListModel list)
+        {
+            return new ListModelShallowPrices()
+            {
+                Name = list.Name,
+                CustomerNumber = list.CustomerNumber,
+                BranchId = list.BranchId,
+                Type = list.Type,
+                Items = list.Items.OrderBy(m => m.Position).Select(i => new ListItemModelShallowPrice()
+                {
+                    ItemNumber = i.ItemNumber,
+                    Pack = i.Pack,
+                    Size = i.Size,
+                    CasePrice = i.CasePrice
+                }).ToList()
+            };
+        }
+
         #endregion
     }
 }
