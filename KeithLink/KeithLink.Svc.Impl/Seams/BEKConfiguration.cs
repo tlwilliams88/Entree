@@ -11,6 +11,9 @@ namespace KeithLink.Svc.Impl.Seams
     {
         #region attributes
         private static Dictionary<string,string> _dict;
+
+        // Catalog Camapign
+        public const string KEY_CAMPAIGN_IMAGES_URL = "CampaignImagesUrl";
         #endregion
 
         #region methods
@@ -28,15 +31,23 @@ namespace KeithLink.Svc.Impl.Seams
         #endregion
 
         #region properties
-        public static string Get(string key) {
+        public static string Get(string key, string strDefault = null) {
             string value = null;
             if (_dict != null &&
                 _dict.ContainsKey(key)) {
                 value = _dict[key];
             } else {
-                value = DBAppSettingsRepositoryImpl.GetValue(key, string.Empty);
+                value = DBAppSettingsRepositoryImpl.GetValue(key, (strDefault != null) ? strDefault : string.Empty);
             }
             return value;
+        }
+
+        public static string CatalogCampaignImagesUrl
+        {
+            get
+            {
+                return Get(KEY_CAMPAIGN_IMAGES_URL);
+            }
         }
         #endregion
     }
