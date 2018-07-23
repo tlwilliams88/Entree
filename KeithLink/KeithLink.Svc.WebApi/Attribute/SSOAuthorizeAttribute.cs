@@ -21,7 +21,7 @@ namespace KeithLink.Svc.WebApi.Attribute
         /// <param name="actionContext"></param>
 		public override void OnActionExecuting(HttpActionContext actionContext)
         {
-            if (actionContext.Request.Headers.Contains("ssoToken") &&
+            if (actionContext.Request.Headers.Contains("authentication") &&
                 actionContext.Request.Headers.Contains("username"))
             {
                 var email = actionContext.Request.Headers.GetValues("username").First();
@@ -40,7 +40,7 @@ namespace KeithLink.Svc.WebApi.Attribute
 
                 var generatedToken = authtoken.ToString();
 
-                var givenToken = actionContext.Request.Headers.GetValues("ssoToken").First();
+                var givenToken = actionContext.Request.Headers.GetValues("authentication").First();
 
                 if (generatedToken.Equals(givenToken) == false)
                 {
