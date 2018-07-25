@@ -5,6 +5,7 @@ using FluentAssertions;
 using KeithLink.Svc.Core.Enumerations.List;
 using KeithLink.Svc.Core.Interface.Configurations;
 using KeithLink.Svc.Core.Models.Configuration.EF;
+using KeithLink.Svc.Core.Models.ModelExport;
 using KeithLink.Svc.Impl.Logic.Configurations;
 using KeithLink.Svc.Impl.Repository.EF.Operational;
 using Moq;
@@ -23,14 +24,14 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic.Configuration
             {
                 // arrange
                 var mockDependents = new MockDependents();
-                var testunit = MakeTestsLogic(true, ref mockDependents);
+                IExportSettingLogic testunit = MakeTestsLogic(true, ref mockDependents);
                 var testGuid = new Guid();
                 var testExportType = ExportType.CartDetail;
                 var testListType = ListType.Contract;
                 var expected = "Detail";
 
                 // act
-                var results = testunit.ReadCustomExportOptions(testGuid, testExportType, testListType);
+                ExportOptionsModel results = testunit.ReadCustomExportOptions(testGuid, testExportType, testListType);
 
                 // assert
                 results.Fields
@@ -46,14 +47,14 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic.Configuration
             {
                 // arrange
                 var mockDependents = new MockDependents();
-                var testunit = MakeTestsLogic(true, ref mockDependents);
+                IExportSettingLogic testunit = MakeTestsLogic(true, ref mockDependents);
                 var testGuid = new Guid();
                 var testExportType = ExportType.CartDetail;
                 var testListType = ListType.Contract;
                 var expected = "Each";
 
                 // act
-                var results = testunit.ReadCustomExportOptions(testGuid, testExportType, testListType);
+                ExportOptionsModel results = testunit.ReadCustomExportOptions(testGuid, testExportType, testListType);
 
                 // assert
                 results.Fields
@@ -69,14 +70,14 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic.Configuration
             {
                 // arrange
                 var mockDependents = new MockDependents();
-                var testunit = MakeTestsLogic(true, ref mockDependents);
+                IExportSettingLogic testunit = MakeTestsLogic(true, ref mockDependents);
                 var testGuid = new Guid();
                 var testExportType = ExportType.List;
                 var testListType = ListType.Contract;
                 var expected = "Detail";
 
                 // act
-                var results = testunit.ReadCustomExportOptions(testGuid, testExportType, testListType);
+                ExportOptionsModel results = testunit.ReadCustomExportOptions(testGuid, testExportType, testListType);
 
                 // assert
                 results.Fields
@@ -92,14 +93,14 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic.Configuration
             {
                 // arrange
                 var mockDependents = new MockDependents();
-                var testunit = MakeTestsLogic(true, ref mockDependents);
+                IExportSettingLogic testunit = MakeTestsLogic(true, ref mockDependents);
                 var testGuid = new Guid();
                 var testExportType = ExportType.List;
                 var testListType = ListType.Contract;
                 var expected = "Each";
 
                 // act
-                var results = testunit.ReadCustomExportOptions(testGuid, testExportType, testListType);
+                ExportOptionsModel results = testunit.ReadCustomExportOptions(testGuid, testExportType, testListType);
 
                 // assert
                 results.Fields
@@ -115,14 +116,14 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic.Configuration
             {
                 // arrange
                 var mockDependents = new MockDependents();
-                var testunit = MakeTestsLogic(true, ref mockDependents);
+                IExportSettingLogic testunit = MakeTestsLogic(true, ref mockDependents);
                 var testGuid = new Guid();
                 var testExportType = ExportType.List;
                 var testListType = ListType.Custom;
                 var expected = "Detail";
 
                 // act
-                var results = testunit.ReadCustomExportOptions(testGuid, testExportType, testListType);
+                ExportOptionsModel results = testunit.ReadCustomExportOptions(testGuid, testExportType, testListType);
 
                 // assert
                 results.Fields
@@ -138,14 +139,14 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic.Configuration
             {
                 // arrange
                 var mockDependents = new MockDependents();
-                var testunit = MakeTestsLogic(true, ref mockDependents);
+                IExportSettingLogic testunit = MakeTestsLogic(true, ref mockDependents);
                 var testGuid = new Guid();
                 var testExportType = ExportType.List;
                 var testListType = ListType.Custom;
                 var expected = "Each";
 
                 // act
-                var results = testunit.ReadCustomExportOptions(testGuid, testExportType, testListType);
+                ExportOptionsModel results = testunit.ReadCustomExportOptions(testGuid, testExportType, testListType);
 
                 // assert
                 results.Fields
@@ -161,14 +162,14 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic.Configuration
             {
                 // arrange
                 var mockDependents = new MockDependents();
-                var testunit = MakeTestsLogic(true, ref mockDependents);
+                IExportSettingLogic testunit = MakeTestsLogic(true, ref mockDependents);
                 var testGuid = new Guid();
                 var testExportType = ExportType.List;
                 var testListType = ListType.Favorite;
                 var expected = "Detail";
 
                 // act
-                var results = testunit.ReadCustomExportOptions(testGuid, testExportType, testListType);
+                ExportOptionsModel results = testunit.ReadCustomExportOptions(testGuid, testExportType, testListType);
 
                 // assert
                 results.Fields
@@ -184,14 +185,14 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic.Configuration
             {
                 // arrange
                 var mockDependents = new MockDependents();
-                var testunit = MakeTestsLogic(true, ref mockDependents);
+                IExportSettingLogic testunit = MakeTestsLogic(true, ref mockDependents);
                 var testGuid = new Guid();
                 var testExportType = ExportType.List;
                 var testListType = ListType.Favorite;
                 var expected = "Each";
 
                 // act
-                var results = testunit.ReadCustomExportOptions(testGuid, testExportType, testListType);
+                ExportOptionsModel results = testunit.ReadCustomExportOptions(testGuid, testExportType, testListType);
 
                 // assert
                 results.Fields
@@ -207,14 +208,14 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic.Configuration
             {
                 // arrange
                 var mockDependents = new MockDependents();
-                var testunit = MakeTestsLogic(true, ref mockDependents);
+                IExportSettingLogic testunit = MakeTestsLogic(true, ref mockDependents);
                 var testGuid = new Guid();
                 var testExportType = ExportType.InvoiceDetail;
                 var testListType = ListType.Contract;
                 var expected = "Detail";
 
                 // act
-                var results = testunit.ReadCustomExportOptions(testGuid, testExportType, testListType);
+                ExportOptionsModel results = testunit.ReadCustomExportOptions(testGuid, testExportType, testListType);
 
                 // assert
                 results.Fields
@@ -230,14 +231,14 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic.Configuration
             {
                 // arrange
                 var mockDependents = new MockDependents();
-                var testunit = MakeTestsLogic(true, ref mockDependents);
+                IExportSettingLogic testunit = MakeTestsLogic(true, ref mockDependents);
                 var testGuid = new Guid();
                 var testExportType = ExportType.InvoiceDetail;
                 var testListType = ListType.Contract;
                 var expected = "Each";
 
                 // act
-                var results = testunit.ReadCustomExportOptions(testGuid, testExportType, testListType);
+                ExportOptionsModel results = testunit.ReadCustomExportOptions(testGuid, testExportType, testListType);
 
                 // assert
                 results.Fields
@@ -253,14 +254,14 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic.Configuration
             {
                 // arrange
                 var mockDependents = new MockDependents();
-                var testunit = MakeTestsLogic(true, ref mockDependents);
+                IExportSettingLogic testunit = MakeTestsLogic(true, ref mockDependents);
                 var testGuid = new Guid();
                 var testExportType = ExportType.Invoice;
                 var testListType = ListType.Contract;
                 var expected = "Detail";
 
                 // act
-                var results = testunit.ReadCustomExportOptions(testGuid, testExportType, testListType);
+                ExportOptionsModel results = testunit.ReadCustomExportOptions(testGuid, testExportType, testListType);
 
                 // assert
                 results.Fields
@@ -276,14 +277,14 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic.Configuration
             {
                 // arrange
                 var mockDependents = new MockDependents();
-                var testunit = MakeTestsLogic(true, ref mockDependents);
+                IExportSettingLogic testunit = MakeTestsLogic(true, ref mockDependents);
                 var testGuid = new Guid();
                 var testExportType = ExportType.Invoice;
                 var testListType = ListType.Contract;
                 var expected = "Each";
 
                 // act
-                var results = testunit.ReadCustomExportOptions(testGuid, testExportType, testListType);
+                ExportOptionsModel results = testunit.ReadCustomExportOptions(testGuid, testExportType, testListType);
 
                 // assert
                 results.Fields
@@ -299,14 +300,14 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic.Configuration
             {
                 // arrange
                 var mockDependents = new MockDependents();
-                var testunit = MakeTestsLogic(true, ref mockDependents);
+                IExportSettingLogic testunit = MakeTestsLogic(true, ref mockDependents);
                 var testGuid = new Guid();
                 var testExportType = ExportType.ItemUsage;
                 var testListType = ListType.Contract;
                 var expected = "Detail";
 
                 // act
-                var results = testunit.ReadCustomExportOptions(testGuid, testExportType, testListType);
+                ExportOptionsModel results = testunit.ReadCustomExportOptions(testGuid, testExportType, testListType);
 
                 // assert
                 results.Fields
@@ -322,14 +323,14 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic.Configuration
             {
                 // arrange
                 var mockDependents = new MockDependents();
-                var testunit = MakeTestsLogic(true, ref mockDependents);
+                IExportSettingLogic testunit = MakeTestsLogic(true, ref mockDependents);
                 var testGuid = new Guid();
                 var testExportType = ExportType.ItemUsage;
                 var testListType = ListType.Contract;
                 var expected = "Each";
 
                 // act
-                var results = testunit.ReadCustomExportOptions(testGuid, testExportType, testListType);
+                ExportOptionsModel results = testunit.ReadCustomExportOptions(testGuid, testExportType, testListType);
 
                 // assert
                 results.Fields
@@ -345,14 +346,14 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic.Configuration
             {
                 // arrange
                 var mockDependents = new MockDependents();
-                var testunit = MakeTestsLogic(true, ref mockDependents);
+                IExportSettingLogic testunit = MakeTestsLogic(true, ref mockDependents);
                 var testGuid = new Guid();
                 var testExportType = ExportType.MarketingPreferences;
                 var testListType = ListType.Contract;
                 var expected = "Detail";
 
                 // act
-                var results = testunit.ReadCustomExportOptions(testGuid, testExportType, testListType);
+                ExportOptionsModel results = testunit.ReadCustomExportOptions(testGuid, testExportType, testListType);
 
                 // assert
                 results.Fields
@@ -368,14 +369,14 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic.Configuration
             {
                 // arrange
                 var mockDependents = new MockDependents();
-                var testunit = MakeTestsLogic(true, ref mockDependents);
+                IExportSettingLogic testunit = MakeTestsLogic(true, ref mockDependents);
                 var testGuid = new Guid();
                 var testExportType = ExportType.MarketingPreferences;
                 var testListType = ListType.Contract;
                 var expected = "Each";
 
                 // act
-                var results = testunit.ReadCustomExportOptions(testGuid, testExportType, testListType);
+                ExportOptionsModel results = testunit.ReadCustomExportOptions(testGuid, testExportType, testListType);
 
                 // assert
                 results.Fields
@@ -391,14 +392,14 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic.Configuration
             {
                 // arrange
                 var mockDependents = new MockDependents();
-                var testunit = MakeTestsLogic(true, ref mockDependents);
+                IExportSettingLogic testunit = MakeTestsLogic(true, ref mockDependents);
                 var testGuid = new Guid();
                 var testExportType = ExportType.OrderDetail;
                 var testListType = ListType.Contract;
                 var expected = "Detail";
 
                 // act
-                var results = testunit.ReadCustomExportOptions(testGuid, testExportType, testListType);
+                ExportOptionsModel results = testunit.ReadCustomExportOptions(testGuid, testExportType, testListType);
 
                 // assert
                 results.Fields
@@ -414,14 +415,14 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic.Configuration
             {
                 // arrange
                 var mockDependents = new MockDependents();
-                var testunit = MakeTestsLogic(true, ref mockDependents);
+                IExportSettingLogic testunit = MakeTestsLogic(true, ref mockDependents);
                 var testGuid = new Guid();
                 var testExportType = ExportType.OrderDetail;
                 var testListType = ListType.Contract;
                 var expected = "Each";
 
                 // act
-                var results = testunit.ReadCustomExportOptions(testGuid, testExportType, testListType);
+                ExportOptionsModel results = testunit.ReadCustomExportOptions(testGuid, testExportType, testListType);
 
                 // assert
                 results.Fields
@@ -437,14 +438,14 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic.Configuration
             {
                 // arrange
                 var mockDependents = new MockDependents();
-                var testunit = MakeTestsLogic(true, ref mockDependents);
+                IExportSettingLogic testunit = MakeTestsLogic(true, ref mockDependents);
                 var testGuid = new Guid();
                 var testExportType = ExportType.PendingTransactions;
                 var testListType = ListType.Contract;
                 var expected = "Detail";
 
                 // act
-                var results = testunit.ReadCustomExportOptions(testGuid, testExportType, testListType);
+                ExportOptionsModel results = testunit.ReadCustomExportOptions(testGuid, testExportType, testListType);
 
                 // assert
                 results.Fields
@@ -460,14 +461,14 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic.Configuration
             {
                 // arrange
                 var mockDependents = new MockDependents();
-                var testunit = MakeTestsLogic(true, ref mockDependents);
+                IExportSettingLogic testunit = MakeTestsLogic(true, ref mockDependents);
                 var testGuid = new Guid();
                 var testExportType = ExportType.PendingTransactions;
                 var testListType = ListType.Contract;
                 var expected = "Each";
 
                 // act
-                var results = testunit.ReadCustomExportOptions(testGuid, testExportType, testListType);
+                ExportOptionsModel results = testunit.ReadCustomExportOptions(testGuid, testExportType, testListType);
 
                 // assert
                 results.Fields
@@ -483,14 +484,14 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic.Configuration
             {
                 // arrange
                 var mockDependents = new MockDependents();
-                var testunit = MakeTestsLogic(true, ref mockDependents);
+                IExportSettingLogic testunit = MakeTestsLogic(true, ref mockDependents);
                 var testGuid = new Guid();
                 var testExportType = ExportType.Products;
                 var testListType = ListType.Contract;
                 var expected = "Detail";
 
                 // act
-                var results = testunit.ReadCustomExportOptions(testGuid, testExportType, testListType);
+                ExportOptionsModel results = testunit.ReadCustomExportOptions(testGuid, testExportType, testListType);
 
                 // assert
                 results.Fields
@@ -506,14 +507,14 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic.Configuration
             {
                 // arrange
                 var mockDependents = new MockDependents();
-                var testunit = MakeTestsLogic(true, ref mockDependents);
+                IExportSettingLogic testunit = MakeTestsLogic(true, ref mockDependents);
                 var testGuid = new Guid();
                 var testExportType = ExportType.Products;
                 var testListType = ListType.Contract;
                 var expected = "Each";
 
                 // act
-                var results = testunit.ReadCustomExportOptions(testGuid, testExportType, testListType);
+                ExportOptionsModel results = testunit.ReadCustomExportOptions(testGuid, testExportType, testListType);
 
                 // assert
                 results.Fields
@@ -576,12 +577,12 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic.Configuration
         {
             if (useAutoFac)
             {
-                var cb = GetTestsContainer();
+                ContainerBuilder cb = GetTestsContainer();
 
                 // Register mocks
                 MockDependents.RegisterInContainer(ref cb);
 
-                var testcontainer = cb.Build();
+                IContainer testcontainer = cb.Build();
 
                 return testcontainer.Resolve<IExportSettingLogic>();
             }

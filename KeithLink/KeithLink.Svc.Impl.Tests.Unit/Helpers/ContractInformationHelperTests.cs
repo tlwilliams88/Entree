@@ -22,7 +22,7 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Helpers
             public void AnyProductCustomerHasNoContract_Completes()
             {
                 // arrange
-                var prod = TestOtherProd;
+                Product prod = TestOtherProd;
 
                 // act
                 ContractInformationHelper.GetContractCategoriesFromLists(new UserSelectedContext(), prod,
@@ -38,7 +38,7 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Helpers
             public void BadProduct_ExpectNullCategory()
             {
                 // arrange
-                var prod = TestOtherProd;
+                Product prod = TestOtherProd;
 
                 // act
                 ContractInformationHelper.GetContractCategoriesFromLists(new UserSelectedContext(), prod,
@@ -54,7 +54,7 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Helpers
             public void BadProduct_ExpectNullDetail()
             {
                 // arrange
-                var prod = TestOtherProd;
+                Product prod = TestOtherProd;
 
                 // act
                 ContractInformationHelper.GetContractCategoriesFromLists(new UserSelectedContext(), prod,
@@ -70,7 +70,7 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Helpers
             public void GoodProduct_ExpectCategory()
             {
                 // arrange
-                var prod = TestProd;
+                Product prod = TestProd;
                 var expected = "Category 1";
 
                 // act
@@ -87,7 +87,7 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Helpers
             public void GoodProduct_ExpectDetail()
             {
                 // arrange
-                var prod = TestProd;
+                Product prod = TestProd;
                 var expected = "Fake Name / 111111 / Fake Brand / Category 1 / Fake Pack / Fake Size";
 
                 // act
@@ -113,7 +113,7 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Helpers
             public void AnyProductCustomerHasNoContract_Completes()
             {
                 // arrange
-                var prods = TestProducts;
+                List<Product> prods = TestProducts;
 
                 // act
                 ContractInformationHelper.GetContractCategoriesFromLists(new UserSelectedContext(), prods,
@@ -128,7 +128,7 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Helpers
             public void BadProductFromList_ExpectNullCategory()
             {
                 // arrange
-                var prods = TestProducts;
+                List<Product> prods = TestProducts;
 
                 // act
                 ContractInformationHelper.GetContractCategoriesFromLists(new UserSelectedContext(), prods,
@@ -146,7 +146,7 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Helpers
             public void BadProductFromList_ExpectNullDetail()
             {
                 // arrange
-                var prods = TestProducts;
+                List<Product> prods = TestProducts;
 
                 // act
                 ContractInformationHelper.GetContractCategoriesFromLists(new UserSelectedContext(), prods,
@@ -164,7 +164,7 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Helpers
             public void GoodProductFromList_ExpectCategory()
             {
                 // arrange
-                var prods = TestProducts;
+                List<Product> prods = TestProducts;
                 var expected = "Category 1";
 
                 // act
@@ -183,7 +183,7 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Helpers
             public void GoodProductFromList_ExpectDetail()
             {
                 // arrange
-                var prods = TestProducts;
+                List<Product> prods = TestProducts;
                 var expected = "Fake Name / 111111 / Fake Brand / Category 1 / Fake Pack / Fake Size";
 
                 // act
@@ -227,7 +227,7 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Helpers
             public void AnyProductCustomerHasNoContract_Completes()
             {
                 // arrange
-                var prods = TestShoppingCartItems;
+                List<ShoppingCartItem> prods = TestShoppingCartItems;
 
                 // act
                 ContractInformationHelper.GetContractCategoriesFromLists(new UserSelectedContext(), prods,
@@ -242,7 +242,7 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Helpers
             public void BadProductFromList_ExpectNullDetail()
             {
                 // arrange
-                var prods = TestShoppingCartItems;
+                List<ShoppingCartItem> prods = TestShoppingCartItems;
 
                 // act
                 ContractInformationHelper.GetContractCategoriesFromLists(new UserSelectedContext(), prods,
@@ -260,7 +260,7 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Helpers
             public void GoodProductFromList_ExpectDetail()
             {
                 // arrange
-                var prods = TestShoppingCartItems;
+                List<ShoppingCartItem> prods = TestShoppingCartItems;
                 var expected = "Fake Name / 111111 / Fake Brand / Category 1 / Fake Pack / Fake Size";
 
                 // act
@@ -308,7 +308,7 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Helpers
             public void AnyProductCustomerHasNoContract_Completes()
             {
                 // arrange
-                var prods = TestOrderLines;
+                List<OrderLine> prods = TestOrderLines;
 
                 // act
                 ContractInformationHelper.GetContractCategoriesFromLists(new UserSelectedContext(), prods,
@@ -323,7 +323,7 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Helpers
             public void BadProductFromList_ExpectNullDetail()
             {
                 // arrange
-                var prods = TestOrderLines;
+                List<OrderLine> prods = TestOrderLines;
 
                 // act
                 ContractInformationHelper.GetContractCategoriesFromLists(new UserSelectedContext(), prods,
@@ -341,7 +341,7 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Helpers
             public void GoodProductFromList_ExpectDetail()
             {
                 // arrange
-                var prods = TestOrderLines;
+                List<OrderLine> prods = TestOrderLines;
                 var expected = "Fake Name / 111111 / Fake Brand / Category 1 / Fake Pack / Fake Size";
 
                 // act
@@ -390,7 +390,7 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Helpers
             public void AnyProductCustomerHasNoContract_Completes()
             {
                 // arrange
-                var prods = TestItemUsageReportItemModels;
+                List<ItemUsageReportItemModel> prods = TestItemUsageReportItemModels;
 
                 // act
                 ContractInformationHelper.GetContractCategoriesFromLists(new UserSelectedContext(), prods,
@@ -405,7 +405,7 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Helpers
             public void BadProductFromList_ExpectNullDetail()
             {
                 // arrange
-                var prods = TestItemUsageReportItemModels;
+                List<ItemUsageReportItemModel> prods = TestItemUsageReportItemModels;
 
                 // act
                 ContractInformationHelper.GetContractCategoriesFromLists(new UserSelectedContext(), prods,
@@ -423,7 +423,7 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Helpers
             public void GoodProductFromList_ExpectDetail()
             {
                 // arrange
-                var prods = TestItemUsageReportItemModels;
+                List<ItemUsageReportItemModel> prods = TestItemUsageReportItemModels;
                 var expected = "Fake Name / 111111 / Fake Brand / Category 1 / Fake Pack / Fake Size";
 
                 // act
@@ -454,8 +454,9 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Helpers
 
         private static IListService TestListSvcNoContract()
         {
-            var nocontract = Mock.Of<IListService>(s => s.GetContractInformation(It.IsAny<UserSelectedContext>()) ==
-                                                        new Dictionary<string, string>());
+            var nocontract = Mock.Of<IListService>(s =>
+                s.GetContractInformation(It.IsAny<UserSelectedContext>()) ==
+                new Dictionary<string, string>());
             return nocontract;
         }
 

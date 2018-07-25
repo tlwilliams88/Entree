@@ -23,7 +23,7 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic.Cache
             {
                 // arrange
                 var mockDependents = new MockDependents();
-                var testunit = MakeTestsLogic(false, ref mockDependents);
+                ICacheListLogic testunit = MakeTestsLogic(false, ref mockDependents);
                 var testContext = new UserSelectedContext
                 {
                     BranchId = "FUT",
@@ -31,7 +31,7 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic.Cache
                 };
 
                 // act
-                var results = testunit.GetCachedContractInformation(testContext);
+                Dictionary<string, string> results = testunit.GetCachedContractInformation(testContext);
 
                 // assert
                 mockDependents.CacheRepository.Verify(
@@ -51,7 +51,7 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic.Cache
             {
                 // arrange
                 var mockDependents = new MockDependents();
-                var testunit = MakeTestsLogic(false, ref mockDependents);
+                ICacheListLogic testunit = MakeTestsLogic(false, ref mockDependents);
                 var testContext = new UserSelectedContext
                 {
                     BranchId = "FUT",
@@ -59,7 +59,7 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic.Cache
                 };
 
                 // act
-                var results = testunit.GetCachedLabels(testContext);
+                List<string> results = testunit.GetCachedLabels(testContext);
 
                 // assert
                 mockDependents.CacheRepository.Verify(
@@ -79,7 +79,7 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic.Cache
             {
                 // arrange
                 var mockDependents = new MockDependents();
-                var testunit = MakeTestsLogic(false, ref mockDependents);
+                ICacheListLogic testunit = MakeTestsLogic(false, ref mockDependents);
                 var testContext = new UserSelectedContext
                 {
                     BranchId = "FUT",
@@ -111,7 +111,7 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic.Cache
             {
                 // arrange
                 var mockDependents = new MockDependents();
-                var testunit = MakeTestsLogic(false, ref mockDependents);
+                ICacheListLogic testunit = MakeTestsLogic(false, ref mockDependents);
                 var testContext = new UserSelectedContext
                 {
                     BranchId = "FUT",
@@ -121,7 +121,7 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic.Cache
                 var testHeaderOnly = false;
 
                 // act
-                var results = testunit.GetCachedTypedLists(testContext, testtype, testHeaderOnly);
+                List<ListModel> results = testunit.GetCachedTypedLists(testContext, testtype, testHeaderOnly);
 
                 // assert
                 mockDependents.CacheRepository.Verify(
@@ -141,7 +141,7 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic.Cache
             {
                 // arrange
                 var mockDependents = new MockDependents();
-                var testunit = MakeTestsLogic(false, ref mockDependents);
+                ICacheListLogic testunit = MakeTestsLogic(false, ref mockDependents);
                 var testContext = new UserSelectedContext
                 {
                     BranchId = "FUT",
@@ -175,7 +175,7 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic.Cache
             {
                 // arrange
                 var mockDependents = new MockDependents();
-                var testunit = MakeTestsLogic(false, ref mockDependents);
+                ICacheListLogic testunit = MakeTestsLogic(false, ref mockDependents);
                 var testContext = new UserSelectedContext
                 {
                     BranchId = "FUT",
@@ -183,7 +183,7 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic.Cache
                 };
 
                 // act
-                var results = testunit.GetCachedCustomerLists(testContext);
+                List<ListModel> results = testunit.GetCachedCustomerLists(testContext);
 
                 // assert
                 mockDependents.CacheRepository.Verify(
@@ -203,7 +203,7 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic.Cache
             {
                 // arrange
                 var mockDependents = new MockDependents();
-                var testunit = MakeTestsLogic(false, ref mockDependents);
+                ICacheListLogic testunit = MakeTestsLogic(false, ref mockDependents);
                 var testContext = new UserSelectedContext
                 {
                     BranchId = "FUT",
@@ -235,7 +235,7 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic.Cache
             {
                 // arrange
                 var mockDependents = new MockDependents();
-                var testunit = MakeTestsLogic(false, ref mockDependents);
+                ICacheListLogic testunit = MakeTestsLogic(false, ref mockDependents);
                 var testContext = new UserSelectedContext
                 {
                     BranchId = "FUT",
@@ -244,7 +244,7 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic.Cache
                 var testtype = ListType.Contract;
 
                 // act
-                var results = testunit.GetCachedSpecificList(testContext, testtype, 4);
+                ListModel results = testunit.GetCachedSpecificList(testContext, testtype, 4);
 
                 // assert
                 mockDependents.CacheRepository.Verify(
@@ -264,7 +264,7 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic.Cache
             {
                 // arrange
                 var mockDependents = new MockDependents();
-                var testunit = MakeTestsLogic(false, ref mockDependents);
+                ICacheListLogic testunit = MakeTestsLogic(false, ref mockDependents);
                 var testContext = new UserSelectedContext
                 {
                     BranchId = "FUT",
@@ -297,7 +297,7 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic.Cache
             {
                 // arrange
                 var mockDependents = new MockDependents();
-                var testunit = MakeTestsLogic(false, ref mockDependents);
+                ICacheListLogic testunit = MakeTestsLogic(false, ref mockDependents);
                 var testContext = new UserSelectedContext
                 {
                     BranchId = "FUT",
@@ -344,7 +344,7 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic.Cache
             {
                 // arrange
                 var mockDependents = new MockDependents();
-                var testunit = MakeTestsLogic(false, ref mockDependents);
+                ICacheListLogic testunit = MakeTestsLogic(false, ref mockDependents);
                 var testContext = new UserSelectedContext
                 {
                     BranchId = "FUT",
@@ -391,7 +391,7 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic.Cache
             {
                 // arrange
                 var mockDependents = new MockDependents();
-                var testunit = MakeTestsLogic(false, ref mockDependents);
+                ICacheListLogic testunit = MakeTestsLogic(false, ref mockDependents);
                 var testList = new ListModel
                 {
                     BranchId = "FUT",
@@ -422,7 +422,7 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic.Cache
             {
                 // arrange
                 var mockDependents = new MockDependents();
-                var testunit = MakeTestsLogic(false, ref mockDependents);
+                ICacheListLogic testunit = MakeTestsLogic(false, ref mockDependents);
                 var testContext = new UserSelectedContext
                 {
                     BranchId = "FUT",
@@ -452,7 +452,7 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic.Cache
             {
                 // arrange
                 var mockDependents = new MockDependents();
-                var testunit = MakeTestsLogic(false, ref mockDependents);
+                ICacheListLogic testunit = MakeTestsLogic(false, ref mockDependents);
                 var testContext = new UserSelectedContext
                 {
                     BranchId = "FUT",
@@ -481,7 +481,7 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic.Cache
             {
                 // arrange
                 var mockDependents = new MockDependents();
-                var testunit = MakeTestsLogic(false, ref mockDependents);
+                ICacheListLogic testunit = MakeTestsLogic(false, ref mockDependents);
                 var testContext = new UserSelectedContext
                 {
                     BranchId = "FUT",
@@ -526,12 +526,12 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic.Cache
         {
             if (useAutoFac)
             {
-                var cb = GetTestsContainer();
+                ContainerBuilder cb = GetTestsContainer();
 
                 // Register mocks
                 MockDependents.RegisterInContainer(ref cb);
 
-                var testcontainer = cb.Build();
+                IContainer testcontainer = cb.Build();
 
                 return testcontainer.Resolve<ICacheListLogic>();
             }

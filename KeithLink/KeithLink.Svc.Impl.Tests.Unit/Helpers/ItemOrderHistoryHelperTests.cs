@@ -54,7 +54,7 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Helpers
                         ItemNumber = "222222"
                     }
                 };
-                var expected = string.Empty;
+                string expected = string.Empty;
 
                 // act
                 ItemOrderHistoryHelper.GetItemOrderHistories(TestCatalogLogic, testcontext, testprods);
@@ -117,7 +117,7 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Helpers
                         ItemNumber = "222222"
                     }
                 };
-                var expected = string.Empty;
+                string expected = string.Empty;
 
                 // act
                 ItemOrderHistoryHelper.GetItemOrderHistories(TestCatalogLogic, testcontext, testprods);
@@ -180,7 +180,7 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Helpers
                         ItemNumber = "222222"
                     }
                 };
-                var expected = string.Empty;
+                string expected = string.Empty;
 
                 // act
                 ItemOrderHistoryHelper.GetItemOrderHistories(TestCatalogLogic, testcontext, testprods);
@@ -243,7 +243,7 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Helpers
                         ItemNumber = "222222"
                     }
                 };
-                var expected = string.Empty;
+                string expected = string.Empty;
 
                 // act
                 ItemOrderHistoryHelper.GetItemOrderHistories(TestCatalogLogic, testcontext, testprods);
@@ -306,7 +306,7 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Helpers
                         ItemNumber = "222222"
                     }
                 };
-                var expected = string.Empty;
+                string expected = string.Empty;
 
                 // act
                 ItemOrderHistoryHelper.GetItemOrderHistories(TestCatalogLogic, testcontext, testprods);
@@ -369,7 +369,7 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Helpers
                         ItemNumber = "222222"
                     }
                 };
-                var expected = string.Empty;
+                string expected = string.Empty;
 
                 // act
                 ItemOrderHistoryHelper.GetItemOrderHistories(TestCatalogLogic, testcontext, testprods);
