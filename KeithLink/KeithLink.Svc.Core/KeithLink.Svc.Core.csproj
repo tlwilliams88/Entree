@@ -224,6 +224,7 @@
     <Compile Include="Interface\ApplicationHealth\IApplicationHealthLogic.cs" />
     <Compile Include="Interface\Cache\ICacheListLogic.cs" />
     <Compile Include="Interface\Cart\IShoppingCartService.cs" />
+    <Compile Include="Interface\Customers\MinimumOrderAmountRepository.cs" />
     <Compile Include="Interface\DataConnection\IAzureContainerConnection.cs" />
     <Compile Include="Interface\DataConnection\IDapperDatabaseConnection.cs" />
     <Compile Include="Interface\Common\IGenericSubscriptionQueueRepository.cs" />
@@ -406,6 +407,7 @@
     <Compile Include="Models\Customers\EF\ItemHistory.cs" />
     <Compile Include="Models\Customers\GrowthAndRecoveriesModel.cs" />
     <Compile Include="Models\Customers\GrowthAndRecoveryTypeEnum.cs" />
+    <Compile Include="Models\Customers\MinimumOrderAmountModel.cs" />
     <Compile Include="Models\Customers\ItemHistoryModel.cs" />
     <Compile Include="Models\Customers\GrowthAndRecoveriesReturnModel.cs" />
     <Compile Include="Models\Customers\RecommendedItemsModel.cs" />
@@ -505,6 +507,7 @@
     <Compile Include="Models\Profile\ValidateTokenReturn.cs" />
     <Compile Include="Models\Reports\InventoryValuationModel.cs" />
     <Compile Include="Models\Reports\InventoryValuationRequestModel.cs" />
+    <Compile Include="Models\ShoppingCart\ApprovedCartModel.cs" />
     <Compile Include="Models\SiteCatalog\ShallowProduct.cs" />
     <Compile Include="Models\ShoppingCart\ShoppingCartItemReportModel.cs" />
     <Compile Include="Models\ShoppingCart\ShoppingCartReportModel.cs" />

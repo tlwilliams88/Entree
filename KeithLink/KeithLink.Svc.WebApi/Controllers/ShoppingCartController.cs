@@ -45,6 +45,7 @@ namespace KeithLink.Svc.WebApi.Controllers
         private readonly IEventLogRepository _log;
         private readonly IListService _listService;
         private readonly ICatalogLogic _catalogLogic;
+        private readonly IShoppingCartService _shoppingCartService;
         #endregion
 
         #region ctor
@@ -381,9 +382,16 @@ namespace KeithLink.Svc.WebApi.Controllers
             Models.OperationReturnModel<ShoppingCart> retVal = new Models.OperationReturnModel<ShoppingCart>();
             try
             {
-                _shoppingCartLogic.UpdateCart(this.SelectedUserContext, this.AuthenticatedUser, updatedCart, deleteomitted);
-                retVal.SuccessResponse = updatedCart;
-                retVal.IsSuccess = true;
+                ApprovedCartModel cartApproved = _shoppingCartService.ValidateCartAmount(this.SelectedUserContext, updatedCart.SubTotal);
+
+                if(cartApproved.ApprovedOrDenied == true)
+                {
+                    _shoppingCartLogic.UpdateCart(this.SelectedUserContext, this.AuthenticatedUser, updatedCart, deleteomitted);
+                    updatedCart.Approval = cartApproved;
+                    retVal.SuccessResponse = updatedCart;
+                    retVal.IsSuccess = true;
+                }
+
             }
             catch (Exception ex)
             {
