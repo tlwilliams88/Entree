@@ -27,6 +27,7 @@ using KeithLink.Svc.Core.Interface.Lists;
 using KeithLink.Svc.Core.Interface.SiteCatalog;
 using KeithLink.Svc.Core.Models.Paging;
 using KeithLink.Svc.Impl.Helpers;
+using KeithLink.Svc.Impl.Service;
 
 using Newtonsoft.Json;
 
@@ -57,14 +58,18 @@ namespace KeithLink.Svc.WebApi.Controllers
         /// <param name="logRepo"></param>
         /// <param name="userActiveCartLogic"></param>
         /// <param name="exportSettingsLogic"></param>
+        /// <param name="cartService"></param>
+        /// <param name="catalogLogic"></param>
+        /// <param name="listService"></param>
         public ShoppingCartController(IShoppingCartLogic shoppingCartLogic, IUserProfileLogic profileLogic, IEventLogRepository logRepo, IListService listService, ICatalogLogic catalogLogic,
-                                      IUserActiveCartLogic userActiveCartLogic, IExportSettingLogic exportSettingsLogic) : base(profileLogic) {
+                                      IUserActiveCartLogic userActiveCartLogic, IExportSettingLogic exportSettingsLogic, IShoppingCartService cartService) : base(profileLogic) {
             _activeCartLogic = userActiveCartLogic;
 			_shoppingCartLogic = shoppingCartLogic;
             _exportLogic = exportSettingsLogic;
             _listService = listService;
             _catalogLogic = catalogLogic;
             _log = logRepo;
+            _shoppingCartService = cartService;
         }
         #endregion
 

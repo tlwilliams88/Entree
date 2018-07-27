@@ -33,13 +33,14 @@ namespace KeithLink.Svc.Impl.Service.ShoppingCart
         #endregion
 
         #region constructor
-        public ShoppingCartServiceImpl(IShoppingCartLogic cartLogic, ICustomerRepository customerRepo, IUserProfileLogic profileLogic, IEventLogRepository log, IShipDateRepository shipDateRepo)
+        public ShoppingCartServiceImpl(IShoppingCartLogic cartLogic, ICustomerRepository customerRepo, IUserProfileLogic profileLogic, IEventLogRepository log, IShipDateRepository shipDateRepo, IMinimumOrderAmountRepository minimumAmountRepo)
         {
             _shoppingCartLogic = cartLogic;
             _customerRepo = customerRepo;
             _profileLogic = profileLogic;
             _shipDateRepository = shipDateRepo;
             _log = log;
+            _minimumAmountRepo = minimumAmountRepo;
         }
         #endregion
 
