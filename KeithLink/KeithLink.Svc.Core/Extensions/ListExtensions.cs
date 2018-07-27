@@ -196,6 +196,7 @@ namespace KeithLink.Svc.Core.Extensions
         {
             return new ListModelShallowPrices()
             {
+                ListId = list.ListId,
                 Name = list.Name,
                 CustomerNumber = list.CustomerNumber,
                 BranchId = list.BranchId,

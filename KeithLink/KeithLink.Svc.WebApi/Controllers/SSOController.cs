@@ -25,10 +25,7 @@ namespace KeithLink.Svc.WebApi.Controllers
 	public class SSOController : BaseController
     {
         #region attributes
-        private readonly IUserFeedbackLogic _userFeedbackLogic;
         private readonly IUserProfileLogic _profileLogic;
-        private readonly IEventLogRepository _log;
-        private readonly INotificationHandler _notificationHandler;
         private readonly IListService _listService;
 
         /// <summary>
@@ -98,14 +95,13 @@ namespace KeithLink.Svc.WebApi.Controllers
         }
 
         /// <summary>
-        /// Retrieve list by type for the SSO user
+        /// Retrieve all list for the SSO user
         /// </summary>
-        /// <param name="type">List type</param>
-        /// <param name="headerOnly">Header only or details?</param>
+        /// <param name="headeronly">Headonly only or details?</param>
         /// <returns></returns>
         [HttpGet]
-        [ApiKeyedRoute("sso/list/type")]
-        public OperationReturnModel<List<ListModelShallowPrices>> List([FromUri] ListType type = ListType.Worksheet, [FromUri] bool headerOnly = false)
+        [ApiKeyedRoute("sso/list")]
+        public OperationReturnModel<List<ListModelShallowPrices>> List(bool headeronly = false)
         {
             OperationReturnModel<List<ListModelShallowPrices>> ret = new OperationReturnModel<List<ListModelShallowPrices>>();
 
@@ -113,9 +109,9 @@ namespace KeithLink.Svc.WebApi.Controllers
 
             try
             {
-                var lists = _listService.ReadListByType(SSOUser, this.SelectedUserContext, type, headerOnly);
+                var lists = _listService.ReadUserList(SSOUser, this.SelectedUserContext, headeronly);
                 ret.SuccessResponse = new List<ListModelShallowPrices>();
-                foreach(var list in lists)
+                foreach (var list in lists)
                 {
                     ret.SuccessResponse.Add(list.ToShallowPricesModel());
                 }
@@ -125,11 +121,39 @@ namespace KeithLink.Svc.WebApi.Controllers
             {
                 ret.IsSuccess = false;
                 ret.ErrorMessage = ex.Message;
-                //_elRepo.WriteErrorLog("List", ex);
             }
             return ret;
         }
 
+
+        /// <summary>
+        /// Retrieve a specific list
+        /// </summary>
+        /// <param name="listId">Lsit id</param>
+        /// <param name="includePrice">Include item prices?</param>
+        /// <returns></returns>
+        [HttpGet]
+        [ApiKeyedRoute("sso/list/{type}/{listId}")]
+        public OperationReturnModel<ListModelShallowPrices> List(ListType type, long listId, bool includePrice = true)
+        {
+            OperationReturnModel<ListModelShallowPrices> ret = new OperationReturnModel<ListModelShallowPrices>();
+
+            GetSSOUser();
+
+            try
+            {
+                var list = _listService.ReadList(SSOUser, this.SelectedUserContext, type, listId, includePrice);
+
+                ret.SuccessResponse = list.ToShallowPricesModel();
+                ret.IsSuccess = true;
+            }
+            catch (Exception ex)
+            {
+                ret.IsSuccess = false;
+                ret.ErrorMessage = ex.Message;
+            }
+            return ret;
+        }
         #endregion
     }
 }

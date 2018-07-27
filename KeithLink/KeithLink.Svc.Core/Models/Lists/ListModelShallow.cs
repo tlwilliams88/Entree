@@ -22,6 +22,9 @@ namespace KeithLink.Svc.Core.Models.Lists {
 
 
         #region properties
+        [DataMember(Name = "listid")]
+        public long ListId { get; set; }
+
         [DataMember(Name = "branchid")]
         public string BranchId { get; set; }
 
@@ -31,7 +34,7 @@ namespace KeithLink.Svc.Core.Models.Lists {
         [DataMember(Name = "name")]
         public string Name { get; set; }
 
-        [DataMember]
+        [DataMember(Name = "type")]
 		public ListType Type { get; set; }
 
         [DataMember(Name = "items")]
