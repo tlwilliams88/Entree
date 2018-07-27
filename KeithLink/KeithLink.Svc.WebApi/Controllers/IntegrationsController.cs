@@ -19,14 +19,15 @@ using KeithLink.Svc.WebApi.Attribute;
 using KeithLink.Svc.Core.Models.Paging;
 using System.Collections.Generic;
 using KeithLink.Svc.Core.Enumerations.Profile;
+using Newtonsoft.Json;
 
 namespace KeithLink.Svc.WebApi.Controllers
 {
-    [SSOAuthorize]
     /// <summary>
-    /// end points for handling user feedback
+    /// Endpoints for application integrations
     /// </summary>
-	public class SSOController : BaseController
+    [SSOAuthorize]
+	public class IntegrationsController : BaseController
     {
         #region attributes
         private readonly IUserProfileLogic _profileLogic;
@@ -34,7 +35,7 @@ namespace KeithLink.Svc.WebApi.Controllers
         /// <summary>
         /// SSOUser in SSOController
         /// </summary>
-        public UserProfile SSOUser { get; set; }
+        public UserProfile SsoUser { get; set; }
         #endregion
 
         #region ctor
@@ -42,7 +43,7 @@ namespace KeithLink.Svc.WebApi.Controllers
         /// ctor
         /// </summary>
         /// <param name="profileLogic"></param>
-        public SSOController(
+        public IntegrationsController(
             IUserProfileLogic profileLogic
             ) : base(profileLogic)
         {
@@ -51,6 +52,27 @@ namespace KeithLink.Svc.WebApi.Controllers
         #endregion
 
         #region methods
+
+        private void GetSsoUser()
+        {
+            var headers = ControllerContext.Request.Headers;
+
+            if (headers.Contains("username"))
+            {
+                var email = headers.GetValues("username").First();
+
+                UserProfileReturn users = _profileLogic.GetUserProfile(email);
+                SsoUser = users.UserProfiles[0];
+
+                if (Request.Headers.Contains("userSelectedContext"))
+                {
+                    this.SelectedUserContext = JsonConvert.DeserializeObject<UserSelectedContext>
+                        (Request.Headers.GetValues("userSelectedContext").FirstOrDefault().ToString());
+                }
+
+
+            }
+        }
 
         /// <summary>
         /// Paged search of customers
@@ -62,11 +84,14 @@ namespace KeithLink.Svc.WebApi.Controllers
         /// <param name="type">The type of text we are searching for. Is converted to CustomerSearchType enumerator</param>
         /// <returns>search results as a paged list of customers</returns>
         [HttpGet]
-        [ApiKeyedRoute("sso/customer/")]
-        public OperationReturnModel<PagedResults<Customer>> SearchCustomers([FromUri] PagingModel paging, [FromUri] SortInfo sort, [FromUri] string account = "",
+        [ApiKeyedRoute("integrations/customer/")]
+        public OperationReturnModel<PagedResults<Customer>> SearchCustomers([FromUri] PagingModel paging, [FromUri] SortInfo sort,
                                                                                     [FromUri] string terms = "", [FromUri] string type = "1")
         {
             OperationReturnModel<PagedResults<Customer>> retVal = new OperationReturnModel<PagedResults<Customer>>();
+            string account = "";
+
+            GetSsoUser();
 
             try
             {
@@ -81,20 +106,7 @@ namespace KeithLink.Svc.WebApi.Controllers
                     typeVal = 1;
                 }
 
-                var headers = this.ControllerContext.Request.Headers;
-
-                if (headers.Contains("username"))
-                {
-                    var email = headers.GetValues("username").First();
-
-                    UserProfileReturn users = _profileLogic.GetUserProfile(email);
-                    SSOUser = users.UserProfiles[0];
-                }
-
-                retVal.SuccessResponse = _profileLogic.CustomerSearch(SSOUser, terms, paging, account, (CustomerSearchType)typeVal);
-
-                // Set the customers UNFI viewing capabilities
-                retVal.SuccessResponse.Results.ForEach(x => x.CanViewUNFI = _profileLogic.CheckCanViewUNFI(this.AuthenticatedUser, x.CustomerNumber, x.CustomerBranch));
+                retVal.SuccessResponse = _profileLogic.CustomerSearch(SsoUser, terms, paging, account, (CustomerSearchType)typeVal);
 
                 retVal.IsSuccess = true;
             }
@@ -102,13 +114,11 @@ namespace KeithLink.Svc.WebApi.Controllers
             {
                 retVal.ErrorMessage = axe.Message;
                 retVal.IsSuccess = false;
-                //_log.WriteErrorLog("Application exception", axe);
             }
             catch (Exception ex)
             {
                 retVal.ErrorMessage = "Could not complete the request. " + ex.Message;
                 retVal.IsSuccess = false;
-                //_log.WriteErrorLog("Unhandled exception", ex);
             }
 
             return retVal;
