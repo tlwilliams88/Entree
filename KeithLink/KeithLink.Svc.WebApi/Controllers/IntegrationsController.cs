@@ -19,6 +19,7 @@ using KeithLink.Svc.WebApi.Attribute;
 using KeithLink.Svc.Core.Models.Paging;
 using System.Collections.Generic;
 using KeithLink.Svc.Core.Enumerations.Profile;
+using KeithLink.Svc.Core.Extensions.Customers;
 using Newtonsoft.Json;
 
 namespace KeithLink.Svc.WebApi.Controllers
@@ -85,10 +86,10 @@ namespace KeithLink.Svc.WebApi.Controllers
         /// <returns>search results as a paged list of customers</returns>
         [HttpGet]
         [ApiKeyedRoute("integrations/customer/")]
-        public OperationReturnModel<PagedResults<Customer>> SearchCustomers([FromUri] PagingModel paging, [FromUri] SortInfo sort,
+        public OperationReturnModel<PagedResults<CustomerShallow>> SearchCustomers([FromUri] PagingModel paging, [FromUri] SortInfo sort,
                                                                                     [FromUri] string terms = "", [FromUri] string type = "1")
         {
-            OperationReturnModel<PagedResults<Customer>> retVal = new OperationReturnModel<PagedResults<Customer>>();
+            OperationReturnModel<PagedResults<CustomerShallow>> retVal = new OperationReturnModel<PagedResults<CustomerShallow>>();
             string account = "";
 
             GetSsoUser();
@@ -106,7 +107,9 @@ namespace KeithLink.Svc.WebApi.Controllers
                     typeVal = 1;
                 }
 
-                retVal.SuccessResponse = _profileLogic.CustomerSearch(SsoUser, terms, paging, account, (CustomerSearchType)typeVal);
+                PagedResults<Customer> customers =
+                    _profileLogic.CustomerSearch(SsoUser, terms, paging, account, (CustomerSearchType) typeVal);
+                retVal.SuccessResponse = customers.ToPagedCustomerShallow();
 
                 retVal.IsSuccess = true;
             }

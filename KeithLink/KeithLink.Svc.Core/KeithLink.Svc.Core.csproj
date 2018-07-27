@@ -193,6 +193,7 @@
     <Compile Include="Events\EventHandlers\EventHandlers.cs" />
     <Compile Include="Enumerations\List.cs" />
     <Compile Include="Exceptions\Queue\QueueDataError.cs" />
+    <Compile Include="Extensions\Customers\CustomerExtensions.cs" />
     <Compile Include="Extensions\Customers\GrowthAndRecoveryModelExtensions.cs" />
     <Compile Include="Extensions\CustomInventoryItems\CustomInventoryItemExtensionscs.cs" />
     <Compile Include="Extensions\LinqSortHelpers.cs" />
@@ -490,6 +491,7 @@
     <Compile Include="Models\PowerMenu\Order\VendorPurchaseOrderRequest.cs" />
     <Compile Include="Models\Orders\SaveOrderReturn.cs" />
     <Compile Include="Models\Orders\OrderTotalByMonth.cs" />
+    <Compile Include="Models\Profile\CustomerShallow.cs" />
     <Compile Include="Models\Profile\DsrAliasModel.cs" />
     <Compile Include="Models\Profile\EF\DsrAlias.cs" />
     <Compile Include="Models\Profile\EF\MarketingPreference.cs" />
