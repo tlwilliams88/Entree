@@ -18,11 +18,11 @@ using System.Web.Http;
 
 namespace KeithLink.Svc.WebApi.Controllers
 {
-    [SSOAuthorize]
     /// <summary>
-    /// end points for handling user feedback
+    /// Endpoints for application integrations
     /// </summary>
-	public class SSOController : BaseController
+    [SSOAuthorize]
+	public class IntegrationsController : BaseController
     {
         #region attributes
         private readonly IUserProfileLogic _profileLogic;
@@ -31,7 +31,7 @@ namespace KeithLink.Svc.WebApi.Controllers
         /// <summary>
         /// SSOUser in SSOController
         /// </summary>
-        public UserProfile SSOUser { get; set; }
+        public UserProfile SsoUser { get; set; }
         #endregion
 
         #region ctor
@@ -40,7 +40,7 @@ namespace KeithLink.Svc.WebApi.Controllers
         /// </summary>
         /// <param name="profileLogic"></param>
         /// <param name="listService"></param>
-        public SSOController(
+        public IntegrationsController(
             IUserProfileLogic profileLogic,
             IListService listService
             ) : base(profileLogic)
@@ -49,7 +49,7 @@ namespace KeithLink.Svc.WebApi.Controllers
             _listService = listService;
         }
 
-        private void GetSSOUser()
+        private void GetSsoUser()
         {
             var headers = ControllerContext.Request.Headers;
 
@@ -58,7 +58,7 @@ namespace KeithLink.Svc.WebApi.Controllers
                 var email = headers.GetValues("username").First();
 
                 UserProfileReturn users = _profileLogic.GetUserProfile(email);
-                SSOUser = users.UserProfiles[0];
+                SsoUser = users.UserProfiles[0];
 
                 if (Request.Headers.Contains("userSelectedContext"))
                 {
@@ -73,9 +73,8 @@ namespace KeithLink.Svc.WebApi.Controllers
 
         #region methods
         /// <summary>
-        /// Submit user feedback
+        /// Get customers user has access to
         /// </summary>
-        /// <param name="userFeedback">User Feedback</param>
         /// <returns></returns>
         [HttpPost]
         [ApiKeyedRoute("sso/customers")]
@@ -86,30 +85,22 @@ namespace KeithLink.Svc.WebApi.Controllers
             return retVal;
         }
 
-        private Customer GetCustomer(UserSelectedContext userContext, UserProfile user)
-        {
-            Customer customer =
-                _profileLogic.GetCustomerByCustomerNumber(userContext.CustomerId, userContext.BranchId)
-                ?? user.DefaultCustomer;
-            return customer;
-        }
-
         /// <summary>
         /// Retrieve all list for the SSO user
         /// </summary>
         /// <param name="headeronly">Headonly only or details?</param>
         /// <returns></returns>
         [HttpGet]
-        [ApiKeyedRoute("sso/list")]
+        [ApiKeyedRoute("integrations/list")]
         public OperationReturnModel<List<ListModelShallowPrices>> List(bool headeronly = false)
         {
             OperationReturnModel<List<ListModelShallowPrices>> ret = new OperationReturnModel<List<ListModelShallowPrices>>();
 
-            GetSSOUser();
+            GetSsoUser();
 
             try
             {
-                var lists = _listService.ReadUserList(SSOUser, this.SelectedUserContext, headeronly);
+                var lists = _listService.ReadUserList(SsoUser, this.SelectedUserContext, headeronly);
                 ret.SuccessResponse = new List<ListModelShallowPrices>();
                 foreach (var list in lists)
                 {
@@ -133,16 +124,16 @@ namespace KeithLink.Svc.WebApi.Controllers
         /// <param name="includePrice">Include item prices?</param>
         /// <returns></returns>
         [HttpGet]
-        [ApiKeyedRoute("sso/list/{type}/{listId}")]
+        [ApiKeyedRoute("integrations/list/{type}/{listId}")]
         public OperationReturnModel<ListModelShallowPrices> List(ListType type, long listId, bool includePrice = true)
         {
             OperationReturnModel<ListModelShallowPrices> ret = new OperationReturnModel<ListModelShallowPrices>();
 
-            GetSSOUser();
+            GetSsoUser();
 
             try
             {
-                var list = _listService.ReadList(SSOUser, this.SelectedUserContext, type, listId, includePrice);
+                var list = _listService.ReadList(SsoUser, this.SelectedUserContext, type, listId, includePrice);
 
                 ret.SuccessResponse = list.ToShallowPricesModel();
                 ret.IsSuccess = true;
