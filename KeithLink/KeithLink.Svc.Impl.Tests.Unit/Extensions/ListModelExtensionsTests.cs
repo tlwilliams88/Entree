@@ -1,26 +1,29 @@
 ﻿using FluentAssertions;
-
 using KeithLink.Svc.Core;
 using KeithLink.Svc.Core.Enumerations.List;
 using KeithLink.Svc.Core.Models.Lists;
 using KeithLink.Svc.Core.Models.Profile;
 using KeithLink.Svc.Impl.Extensions;
-
 using Xunit;
 
-namespace KeithLink.Svc.Impl.Tests.Unit.Extensions {
-    public class ListModelExtensionsTests {
+namespace KeithLink.Svc.Impl.Tests.Unit.Extensions
+{
+    public class ListModelExtensionsTests
+    {
         [Fact]
-        public void UsingListAsBranchIs_SetListReadOnlyAsExpected() {
+        public void UsingListAsBranchIs_SetListReadOnlyAsExpected()
+        {
             // arrange
-            ListModel list = new ListModel {
+            var list = new ListModel
+            {
                 Type = ListType.Mandatory,
                 ReadOnly = true
             };
-            UserProfile user = new UserProfile {
+            var user = new UserProfile
+            {
                 RoleName = Constants.ROLE_NAME_BRANCHIS
             };
-            bool expected = true;
+            var expected = true;
 
             // act
 
@@ -32,16 +35,19 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Extensions {
         }
 
         [Fact]
-        public void UsingListAsDsm_SetListReadOnlyAsExpected() {
+        public void UsingListAsDsm_SetListReadOnlyAsExpected()
+        {
             // arrange
-            ListModel list = new ListModel {
+            var list = new ListModel
+            {
                 Type = ListType.Mandatory,
                 ReadOnly = true
             };
-            UserProfile user = new UserProfile {
+            var user = new UserProfile
+            {
                 RoleName = Constants.ROLE_NAME_DSM
             };
-            bool expected = true;
+            var expected = true;
 
             // act
 
@@ -53,16 +59,19 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Extensions {
         }
 
         [Fact]
-        public void UsingListAsDsr_SetListReadOnlyAsExpected() {
+        public void UsingListAsDsr_SetListReadOnlyAsExpected()
+        {
             // arrange
-            ListModel list = new ListModel {
+            var list = new ListModel
+            {
                 Type = ListType.Mandatory,
                 ReadOnly = true
             };
-            UserProfile user = new UserProfile {
+            var user = new UserProfile
+            {
                 RoleName = Constants.ROLE_NAME_DSR
             };
-            bool expected = false;
+            var expected = false;
 
             // act
 
@@ -74,16 +83,19 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Extensions {
         }
 
         [Fact]
-        public void UsingListAsGuest_SetListReadOnlyAsExpected() {
+        public void UsingListAsGuest_SetListReadOnlyAsExpected()
+        {
             // arrange
-            ListModel list = new ListModel {
+            var list = new ListModel
+            {
                 Type = ListType.Mandatory,
                 ReadOnly = true
             };
-            UserProfile user = new UserProfile {
+            var user = new UserProfile
+            {
                 RoleName = Constants.ROLE_NAME_GUEST
             };
-            bool expected = true;
+            var expected = true;
 
             // act
 
@@ -95,16 +107,19 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Extensions {
         }
 
         [Fact]
-        public void UsingListAsKbitAdmin_SetListReadOnlyAsExpected() {
+        public void UsingListAsKbitAdmin_SetListReadOnlyAsExpected()
+        {
             // arrange
-            ListModel list = new ListModel {
+            var list = new ListModel
+            {
                 Type = ListType.Mandatory,
                 ReadOnly = true
             };
-            UserProfile user = new UserProfile {
+            var user = new UserProfile
+            {
                 RoleName = Constants.ROLE_NAME_KBITADMIN
             };
-            bool expected = true;
+            var expected = true;
 
             // act
 
@@ -116,16 +131,19 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Extensions {
         }
 
         [Fact]
-        public void UsingListAsMarketing_SetListReadOnlyAsExpected() {
+        public void UsingListAsMarketing_SetListReadOnlyAsExpected()
+        {
             // arrange
-            ListModel list = new ListModel {
+            var list = new ListModel
+            {
                 Type = ListType.Mandatory,
                 ReadOnly = true
             };
-            UserProfile user = new UserProfile {
+            var user = new UserProfile
+            {
                 RoleName = Constants.ROLE_NAME_MARKETING
             };
-            bool expected = true;
+            var expected = true;
 
             // act
 
@@ -137,16 +155,19 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Extensions {
         }
 
         [Fact]
-        public void UsingListAsPoweruser_SetListReadOnlyAsExpected() {
+        public void UsingListAsPoweruser_SetListReadOnlyAsExpected()
+        {
             // arrange
-            ListModel list = new ListModel {
+            var list = new ListModel
+            {
                 Type = ListType.Mandatory,
                 ReadOnly = true
             };
-            UserProfile user = new UserProfile {
+            var user = new UserProfile
+            {
                 RoleName = Constants.ROLE_NAME_POWERUSER
             };
-            bool expected = true;
+            var expected = true;
 
             // act
 
@@ -158,16 +179,19 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Extensions {
         }
 
         [Fact]
-        public void UsingListAsSysAdmin_SetListReadOnlyAsExpected() {
+        public void UsingListAsSysAdmin_SetListReadOnlyAsExpected()
+        {
             // arrange
-            ListModel list = new ListModel {
+            var list = new ListModel
+            {
                 Type = ListType.Mandatory,
                 ReadOnly = true
             };
-            UserProfile user = new UserProfile {
+            var user = new UserProfile
+            {
                 RoleName = Constants.ROLE_NAME_SYSADMIN
             };
-            bool expected = false;
+            var expected = false;
 
             // act
 
