@@ -198,25 +198,25 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Service.SiteCatalog
 
         public class GetGrowthAndRecoveryItemsForCustomer
         {
-            [Fact]
-            public void BadBranchId_ReturnsEmptyList()
-            {
-                // arrange
-                MockDependents mockDependents = new MockDependents();
-                ISiteCatalogService testunit = MakeTestsService(false, ref mockDependents);
-                UserSelectedContext testcontext = new UserSelectedContext
-                {
-                    BranchId = "XXX",
-                    CustomerId = "123456"
-                };
-                UserProfile fakeProfile = new UserProfile();
-                int testPageSize = 20;
-                bool testImages = true;
-                // act
-                var results = testunit.GetGrowthAndRecoveryItemsForCustomer(testcontext, fakeProfile, testPageSize, testImages);
+            //[Fact]
+            //public void BadBranchId_ReturnsEmptyList()
+            //{
+            //    // arrange
+            //    MockDependents mockDependents = new MockDependents();
+            //    ISiteCatalogService testunit = MakeTestsService(false, ref mockDependents);
+            //    UserSelectedContext testcontext = new UserSelectedContext
+            //    {
+            //        BranchId = "XXX",
+            //        CustomerId = "123456"
+            //    };
+            //    UserProfile fakeProfile = new UserProfile();
+            //    int testPageSize = 20;
+            //    bool testImages = true;
+            //    // act
+            //    var results = testunit.GetGrowthAndRecoveryItemsForCustomer(testcontext, fakeProfile, testPageSize, testImages);
 
-                // assert
-            }
+            //    // assert--not finished I guess
+            //}
 
         }
 

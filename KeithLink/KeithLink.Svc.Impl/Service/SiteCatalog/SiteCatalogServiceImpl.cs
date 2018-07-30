@@ -122,7 +122,6 @@ namespace KeithLink.Svc.Impl.Service.SiteCatalog
                                                   UserProfile profile)
         {
             ProductsReturn ret;
-            Dictionary<string, int> catalogCounts = _catalogLogic.GetHitsForCatalogs(catalogInfo, search, searchModel);
             UserSelectedContext tempCatalogInfo = new UserSelectedContext();
             tempCatalogInfo.CustomerId = catalogInfo.CustomerId;
             tempCatalogInfo.BranchId = _catalogLogic.GetBranchId(catalogInfo.BranchId, searchModel.CatalogType);
@@ -133,21 +132,22 @@ namespace KeithLink.Svc.Impl.Service.SiteCatalog
             if (searchModel.SField == "caseprice" ||
                 searchModel.SField == "unitprice")
             {
-                ret = _catalogRepository.GetProductsBySearch(tempCatalogInfo,
-                                                             search,
-                                                             new SearchInputModel
-                                                             {
-                                                                 Facets = searchModel.Facets,
-                                                                 From = searchModel.From,
-                                                                 Size = Configuration.MaxSortByPriceItemCount,
-                                                                 Dept = searchModel.Dept,
-                                                                 CatalogType = searchModel.CatalogType
-                                                             }
-                                                            );
-            } else if (specialFilters.Count > 0)
+                var nonSortingSearchModel = new SearchInputModel
+                {
+                    CatalogType = searchModel.CatalogType,
+                    Dept = searchModel.Dept,
+                    Facets = searchModel.Facets,
+                    From = searchModel.From,
+                    Size = Configuration.MaxSortByPriceItemCount,
+                };
+
+                ret = _catalogRepository.GetProductsBySearch(tempCatalogInfo, search, nonSortingSearchModel);
+            }
+            else if (specialFilters.Count > 0)
             {
                 ret = GetAllProductsBySearchShallow(search, searchModel, tempCatalogInfo);
-            } else
+            }
+            else
             {
                 ret = _catalogRepository.GetProductsBySearch(tempCatalogInfo, search, searchModel);
             }
@@ -158,7 +158,7 @@ namespace KeithLink.Svc.Impl.Service.SiteCatalog
 
             GetAdditionalProductInfo(profile, ret, catalogInfo);
 
-            ret.CatalogCounts = catalogCounts;
+            ret.CatalogCounts = _catalogLogic.GetHitsForCatalogs(catalogInfo, search, searchModel);
 
             foreach (Product product in ret.Products)
             {

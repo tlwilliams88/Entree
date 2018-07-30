@@ -1,5 +1,5 @@
-﻿DELETE FROM BEK_Commerce_AppData.[Configuration].AppSettings
+﻿DELETE FROM [Configuration].AppSettings
 WHERE [Key] = 'ValidPublicApiTokens'
-DELETE FROM BEK_Commerce_AppData.[Configuration].AppSettings
+DELETE FROM [Configuration].AppSettings
 WHERE [Key] = 'ServePublicApi'
 

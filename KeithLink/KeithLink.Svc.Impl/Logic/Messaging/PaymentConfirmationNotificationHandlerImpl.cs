@@ -399,8 +399,8 @@ namespace KeithLink.Svc.Impl.Logic.Messaging
                         if (recipients != null && recipients.Count > 0) {
                             if (complexPayment) // mask out payeremail recipient from the regular recipients
                             {
-                                payerRecipient = recipients.Where(r => r.UserEmail == payerEmail).ToList();
-                                recipients = recipients.Where(r => r.UserEmail != payerEmail).ToList();
+                                payerRecipient = recipients.Where(r => r.UserEmail.ToLower() == payerEmail.ToLower()).ToList();
+                                recipients = recipients.Where(r => r.UserEmail.ToLower() != payerEmail.ToLower()).ToList();
                             }
 
                             if(recipients.Count > 0)
