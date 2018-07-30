@@ -282,6 +282,7 @@
     <Compile Include="Attribute\AuthorizationAttribute.cs" />
     <Compile Include="Attribute\RequireHttpsAttribute.cs" />
     <Compile Include="CommerceFoundationServiceAgent.cs" />
+    <Compile Include="Controllers\BaseIntegrationsController.cs" />
     <Compile Include="Controllers\DocumentsController.cs" />
     <Compile Include="Controllers\AdminController.cs" />
     <Compile Include="Controllers\BaseController.cs" />

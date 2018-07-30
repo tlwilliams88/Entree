@@ -1,5 +1,4 @@
 ﻿using KeithLink.Common.Core.Interfaces.Logging;
-
 using KeithLink.Svc.Core.Enumerations.Messaging;
 using KeithLink.Svc.Core.Interface.Messaging;
 using KeithLink.Svc.Core.Interface.Profile;
@@ -18,8 +17,12 @@ using System.Web.Http;
 using KeithLink.Svc.WebApi.Attribute;
 using KeithLink.Svc.Core.Models.Paging;
 using System.Collections.Generic;
+using KeithLink.Svc.Core.Enumerations.List;
 using KeithLink.Svc.Core.Enumerations.Profile;
+using KeithLink.Svc.Core.Extensions;
 using KeithLink.Svc.Core.Extensions.Customers;
+using KeithLink.Svc.Core.Interface.Lists;
+using KeithLink.Svc.Core.Models.Lists;
 using Newtonsoft.Json;
 
 namespace KeithLink.Svc.WebApi.Controllers
@@ -28,15 +31,11 @@ namespace KeithLink.Svc.WebApi.Controllers
     /// Endpoints for application integrations
     /// </summary>
     [SSOAuthorize]
-	public class IntegrationsController : BaseController
+	public class IntegrationsController : BaseIntegrationsController
     {
         #region attributes
         private readonly IUserProfileLogic _profileLogic;
-
-        /// <summary>
-        /// SSOUser in SSOController
-        /// </summary>
-        public UserProfile SsoUser { get; set; }
+        private readonly IListService _listService;
         #endregion
 
         #region ctor
@@ -44,55 +43,34 @@ namespace KeithLink.Svc.WebApi.Controllers
         /// ctor
         /// </summary>
         /// <param name="profileLogic"></param>
+        /// <param name="listService"></param>
         public IntegrationsController(
-            IUserProfileLogic profileLogic
+            IUserProfileLogic profileLogic,
+            IListService listService
             ) : base(profileLogic)
         {
             _profileLogic = profileLogic;
+            _listService = listService;
         }
         #endregion
 
         #region methods
-
-        private void GetSsoUser()
-        {
-            var headers = ControllerContext.Request.Headers;
-
-            if (headers.Contains("username"))
-            {
-                var email = headers.GetValues("username").First();
-
-                UserProfileReturn users = _profileLogic.GetUserProfile(email);
-                SsoUser = users.UserProfiles[0];
-
-                if (Request.Headers.Contains("userSelectedContext"))
-                {
-                    this.SelectedUserContext = JsonConvert.DeserializeObject<UserSelectedContext>
-                        (Request.Headers.GetValues("userSelectedContext").FirstOrDefault().ToString());
-                }
-
-
-            }
-        }
 
         /// <summary>
         /// Paged search of customers
         /// </summary>
         /// <param name="paging">Paging information</param>
         /// <param name="sort">Sort object</param>
-        /// <param name="account">Account</param>
         /// <param name="terms">Search text</param>
         /// <param name="type">The type of text we are searching for. Is converted to CustomerSearchType enumerator</param>
         /// <returns>search results as a paged list of customers</returns>
         [HttpGet]
         [ApiKeyedRoute("integrations/customer/")]
-        public OperationReturnModel<PagedResults<CustomerShallow>> SearchCustomers([FromUri] PagingModel paging, [FromUri] SortInfo sort,
+        public OperationReturnModel<PagedResultsForCustomersIntegration<CustomerIntegrationsReturnModel>> SearchCustomers([FromUri] PagingModel paging, [FromUri] SortInfo sort,
                                                                                     [FromUri] string terms = "", [FromUri] string type = "1")
         {
-            OperationReturnModel<PagedResults<CustomerShallow>> retVal = new OperationReturnModel<PagedResults<CustomerShallow>>();
+            OperationReturnModel<PagedResultsForCustomersIntegration<CustomerIntegrationsReturnModel>> retVal = new OperationReturnModel<PagedResultsForCustomersIntegration<CustomerIntegrationsReturnModel>>();
             string account = "";
-
-            GetSsoUser();
 
             try
             {
@@ -109,7 +87,7 @@ namespace KeithLink.Svc.WebApi.Controllers
 
                 PagedResults<Customer> customers =
                     _profileLogic.CustomerSearch(SsoUser, terms, paging, account, (CustomerSearchType) typeVal);
-                retVal.SuccessResponse = customers.ToPagedCustomerShallow();
+                retVal.SuccessResponse = customers.ToPagedForCustomersIntegration();
 
                 retVal.IsSuccess = true;
             }
@@ -127,6 +105,62 @@ namespace KeithLink.Svc.WebApi.Controllers
             return retVal;
         }
 
+        /// <summary>
+        /// Retrieve all list for the SSO user
+        /// </summary>
+        /// <param name="headeronly">Headonly only or details?</param>
+        /// <returns></returns>
+        [HttpGet]
+        [ApiKeyedRoute("integrations/lists")]
+        public OperationReturnModel<List<ListModelIntegrationsReturnModel>> List(bool headeronly = true)
+        {
+            OperationReturnModel<List<ListModelIntegrationsReturnModel>> ret = new OperationReturnModel<List<ListModelIntegrationsReturnModel>>();
+
+            try
+            {
+                var lists = _listService.ReadUserList(SsoUser, this.SelectedUserContext, headeronly);
+                ret.SuccessResponse = new List<ListModelIntegrationsReturnModel>();
+                foreach (var list in lists)
+                {
+                    ret.SuccessResponse.Add(list.ToListModelIntegrationsReturnModel());
+                }
+                ret.IsSuccess = true;
+            }
+            catch (Exception ex)
+            {
+                ret.IsSuccess = false;
+                ret.ErrorMessage = ex.Message;
+            }
+            return ret;
+        }
+
+
+        /// <summary>
+        /// Retrieve a specific list
+        /// </summary>
+        /// <param name="listId">Lsit id</param>
+        /// <param name="includePrice">Include item prices?</param>
+        /// <returns></returns>
+        [HttpGet]
+        [ApiKeyedRoute("integrations/list/{type}/{listId}")]
+        public OperationReturnModel<ListModelIntegrationsReturnModel> List(ListType type, long listId, bool includePrice = true)
+        {
+            OperationReturnModel<ListModelIntegrationsReturnModel> ret = new OperationReturnModel<ListModelIntegrationsReturnModel>();
+
+            try
+            {
+                var list = _listService.ReadList(SsoUser, this.SelectedUserContext, type, listId, includePrice);
+
+                ret.SuccessResponse = list.ToListModelIntegrationsReturnModel();
+                ret.IsSuccess = true;
+            }
+            catch (Exception ex)
+            {
+                ret.IsSuccess = false;
+                ret.ErrorMessage = ex.Message;
+            }
+            return ret;
+        }
         #endregion
     }
 }
