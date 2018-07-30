@@ -43,7 +43,7 @@ namespace KeithLink.Svc.Impl.Repository.Lists
             return ReadSP<ReminderItemsListDetail>(SPNAME_GETALL, PARMNAME_HEADERID, parentHeaderId);
         }
 
-        public long? SaveReminderListDetail(ReminderItemsListDetail model) {
+        public void SaveReminderListDetail(ReminderItemsListDetail model) {
             DynamicParameters parms = new DynamicParameters();
             parms.Add(PARMNAME_ACTIVE, model.Active);
             parms.Add(PARMNAME_CATALOG, model.CatalogId);
@@ -55,9 +55,7 @@ namespace KeithLink.Svc.Impl.Repository.Lists
 
             parms.Add(PARMNAME_RETURNVALUE, direction: ParameterDirection.Output, dbType: DbType.Int64);
 
-            ExecuteSPCommand(SPNAME_SAVE, parms);
-
-            return parms.Get<long?>(PARMNAME_RETURNVALUE);
+            ExecuteSPCommand(SPNAME_SAVE, parms);            
         }
         #endregion
     }
