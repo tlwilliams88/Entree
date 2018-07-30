@@ -8,6 +8,6 @@ namespace KeithLink.Svc.Core.Interface.Lists {
 
         List<ReminderItemsListDetail> GetRemindersDetails(long headerId);
 
-        long SaveReminderListDetail(ReminderItemsListDetail model);
+        long? SaveReminderListDetail(ReminderItemsListDetail model);
     }
 }
