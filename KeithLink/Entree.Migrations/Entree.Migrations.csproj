@@ -162,6 +162,7 @@
     <Compile Include="Migrations\v2018.07.00\Migration0079.cs" />
     <Compile Include="Migrations\v2018.07.00\Migration0078.cs" />
     <Compile Include="Migrations\v2018.07.00\Migration0076.cs" />
+    <Compile Include="Migrations\v2018.08.00\Migration0081.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -2201,6 +2202,10 @@
     </Content>
     <Content Include="Scripts\AppData\Orders\Tables\OrderHistoryHeader\OrderHistoryHeader_0001_0001.11.00_up.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Scripts\AppData\Orders\Tables\OrderHistoryHeader\OrderHistoryHeader_0081_2018.08.00_down.sql" />
+    <Content Include="Scripts\AppData\Orders\Tables\OrderHistoryHeader\OrderHistoryHeader_0081_2018.08.00_up.sql">
+      <SubType>Component</SubType>
     </Content>
     <Content Include="Scripts\AppData\Orders\Tables\RecommendedItemsOrderedAnalytics\RecommendedItemsOrderedAnalytics_0073_2018.05.00_down.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
