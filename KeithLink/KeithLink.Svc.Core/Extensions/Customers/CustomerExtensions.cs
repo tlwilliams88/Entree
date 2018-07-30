@@ -13,11 +13,11 @@ namespace KeithLink.Svc.Core.Extensions.Customers
 {
     public static class CustomerExtensions
     {
-        public static PagedResults<CustomerShallow> ToPagedCustomerShallow(this PagedResults<Customer> pagedCustomers) {
-            PagedResults<CustomerShallow> returnValue = new PagedResults<CustomerShallow>();
-            returnValue.Results = new List<CustomerShallow>();
+        public static PagedResultsForCustomersIntegration<CustomerIntegrationsReturnModel> ToPagedForCustomersIntegration(this PagedResults<Customer> pagedCustomers) {
+            PagedResultsForCustomersIntegration<CustomerIntegrationsReturnModel> returnValue = new PagedResultsForCustomersIntegration<CustomerIntegrationsReturnModel>();
+            returnValue.Results = new List<CustomerIntegrationsReturnModel>();
             foreach (Customer model in pagedCustomers.Results) {
-                CustomerShallow returnCustomer = new CustomerShallow();
+                CustomerIntegrationsReturnModel returnCustomer = new CustomerIntegrationsReturnModel();
                 returnCustomer.CustomerName = model.CustomerName;
                 returnCustomer.CustomerNumber = model.CustomerNumber;
                 returnCustomer.BranchId = model.CustomerBranch;

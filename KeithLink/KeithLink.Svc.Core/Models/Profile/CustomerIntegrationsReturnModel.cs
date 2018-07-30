@@ -10,7 +10,7 @@ namespace KeithLink.Svc.Core.Models.Profile
 {
     [DataContract(Name = "customer")]
 	[Serializable]
-    public class CustomerShallow
+    public class CustomerIntegrationsReturnModel
     {
         [DataMember(Name = "customernumber")]
         public string CustomerNumber { get; set; }

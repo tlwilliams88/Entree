@@ -486,6 +486,7 @@
     <Compile Include="Models\Orders\OrderedItemFromList.cs" />
     <Compile Include="Models\Orders\OrderedFromList.cs" />
     <Compile Include="Models\Orders\RecommendedItemsOrderedAnalyticsModel.cs" />
+    <Compile Include="Models\Paging\PagedResultsForCustomersIntegration.cs" />
     <Compile Include="Models\PowerMenu\Order\LoginModel.cs" />
     <Compile Include="Models\PowerMenu\Order\OrderHeaderModel.cs" />
     <Compile Include="Models\PowerMenu\Order\OrderItemModel.cs" />
@@ -493,7 +494,7 @@
     <Compile Include="Models\PowerMenu\Order\VendorPurchaseOrderRequest.cs" />
     <Compile Include="Models\Orders\SaveOrderReturn.cs" />
     <Compile Include="Models\Orders\OrderTotalByMonth.cs" />
-    <Compile Include="Models\Profile\CustomerShallow.cs" />
+    <Compile Include="Models\Profile\CustomerIntegrationsReturnModel.cs" />
     <Compile Include="Models\Profile\DsrAliasModel.cs" />
     <Compile Include="Models\Profile\EF\DsrAlias.cs" />
     <Compile Include="Models\Profile\EF\MarketingPreference.cs" />
