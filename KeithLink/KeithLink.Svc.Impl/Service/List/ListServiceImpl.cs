@@ -347,6 +347,7 @@ namespace KeithLink.Svc.Impl.Service.List
                 list = cachedList;
             }
 
+
             if (headerOnly) // if call is for headeronly, we get rid of item information
             {
                 foreach (var ilist in list)

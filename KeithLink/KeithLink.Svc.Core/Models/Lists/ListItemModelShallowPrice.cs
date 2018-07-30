@@ -29,14 +29,6 @@ namespace KeithLink.Svc.Core.Models.Lists
         [DataMember(Name = "caseprice", EmitDefaultValue = false)]
         [Description("Price")]
         public string CasePrice { get; set; }
-
-        [DataMember(Name = "pack")]
-        [Description("Pack")]
-        public string Pack { get; set; }
-
-        [DataMember(Name = "size")]
-        [Description("Size")]
-        public string Size { get; set; }
         #endregion
     }
 }

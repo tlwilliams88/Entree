@@ -25,12 +25,6 @@ namespace KeithLink.Svc.Core.Models.Lists {
         [DataMember(Name = "listid")]
         public long ListId { get; set; }
 
-        [DataMember(Name = "branchid")]
-        public string BranchId { get; set; }
-
-        [DataMember(Name = "customernumber")]
-        public string CustomerNumber { get; set; }
-
         [DataMember(Name = "name")]
         public string Name { get; set; }
 

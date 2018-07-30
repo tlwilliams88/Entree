@@ -91,8 +91,8 @@ namespace KeithLink.Svc.WebApi.Controllers
         /// <param name="headeronly">Headonly only or details?</param>
         /// <returns></returns>
         [HttpGet]
-        [ApiKeyedRoute("integrations/list")]
-        public OperationReturnModel<List<ListModelShallowPrices>> List(bool headeronly = false)
+        [ApiKeyedRoute("integrations/lists")]
+        public OperationReturnModel<List<ListModelShallowPrices>> List(bool headeronly = true)
         {
             OperationReturnModel<List<ListModelShallowPrices>> ret = new OperationReturnModel<List<ListModelShallowPrices>>();
 

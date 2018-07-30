@@ -198,14 +198,10 @@ namespace KeithLink.Svc.Core.Extensions
             {
                 ListId = list.ListId,
                 Name = list.Name,
-                CustomerNumber = list.CustomerNumber,
-                BranchId = list.BranchId,
                 Type = list.Type,
                 Items = list.Items.OrderBy(m => m.Position).Select(i => new ListItemModelShallowPrice()
                 {
                     ItemNumber = i.ItemNumber,
-                    Pack = i.Pack,
-                    Size = i.Size,
                     CasePrice = i.CasePrice
                 }).ToList()
             };
