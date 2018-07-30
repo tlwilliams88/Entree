@@ -13,10 +13,11 @@ using System.Xml.Serialization;
 
 namespace KeithLink.Svc.Core.Models.Lists {
     [DataContract(Name = "List")]
-    public class ListModelShallowPrices {
+    public class ListModelIntegrationsReturnModel
+    {
         #region ctor
-        public ListModelShallowPrices() {
-            Items = new List<ListItemModelShallowPrice>();
+        public ListModelIntegrationsReturnModel() {
+            Items = new List<ListItemIntegrationsReturnModel>();
         }
         #endregion
 
@@ -32,7 +33,7 @@ namespace KeithLink.Svc.Core.Models.Lists {
 		public ListType Type { get; set; }
 
         [DataMember(Name = "items")]
-        public List<ListItemModelShallowPrice> Items { get; set; }
+        public List<ListItemIntegrationsReturnModel> Items { get; set; }
 
         #endregion
     }

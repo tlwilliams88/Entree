@@ -22,16 +22,11 @@ namespace KeithLink.Svc.WebApi.Controllers
     /// Endpoints for application integrations
     /// </summary>
     [SSOAuthorize]
-	public class IntegrationsController : BaseController
+	public class IntegrationsController : BaseIntegrationsController
     {
         #region attributes
         private readonly IUserProfileLogic _profileLogic;
         private readonly IListService _listService;
-
-        /// <summary>
-        /// SSOUser in SSOController
-        /// </summary>
-        public UserProfile SsoUser { get; set; }
         #endregion
 
         #region ctor
@@ -47,27 +42,6 @@ namespace KeithLink.Svc.WebApi.Controllers
         {
             _profileLogic = profileLogic;
             _listService = listService;
-        }
-
-        private void GetSsoUser()
-        {
-            var headers = ControllerContext.Request.Headers;
-
-            if (headers.Contains("username"))
-            {
-                var email = headers.GetValues("username").First();
-
-                UserProfileReturn users = _profileLogic.GetUserProfile(email);
-                SsoUser = users.UserProfiles[0];
-
-                if (Request.Headers.Contains("userSelectedContext"))
-                {
-                    this.SelectedUserContext = JsonConvert.DeserializeObject<UserSelectedContext>
-                        (Request.Headers.GetValues("userSelectedContext").FirstOrDefault().ToString());
-                }
-
-
-            }
         }
         #endregion
 
@@ -92,19 +66,17 @@ namespace KeithLink.Svc.WebApi.Controllers
         /// <returns></returns>
         [HttpGet]
         [ApiKeyedRoute("integrations/lists")]
-        public OperationReturnModel<List<ListModelShallowPrices>> List(bool headeronly = true)
+        public OperationReturnModel<List<ListModelIntegrationsReturnModel>> List(bool headeronly = true)
         {
-            OperationReturnModel<List<ListModelShallowPrices>> ret = new OperationReturnModel<List<ListModelShallowPrices>>();
-
-            GetSsoUser();
+            OperationReturnModel<List<ListModelIntegrationsReturnModel>> ret = new OperationReturnModel<List<ListModelIntegrationsReturnModel>>();
 
             try
             {
                 var lists = _listService.ReadUserList(SsoUser, this.SelectedUserContext, headeronly);
-                ret.SuccessResponse = new List<ListModelShallowPrices>();
+                ret.SuccessResponse = new List<ListModelIntegrationsReturnModel>();
                 foreach (var list in lists)
                 {
-                    ret.SuccessResponse.Add(list.ToShallowPricesModel());
+                    ret.SuccessResponse.Add(list.ToListModelIntegrationsReturnModel());
                 }
                 ret.IsSuccess = true;
             }
@@ -125,17 +97,15 @@ namespace KeithLink.Svc.WebApi.Controllers
         /// <returns></returns>
         [HttpGet]
         [ApiKeyedRoute("integrations/list/{type}/{listId}")]
-        public OperationReturnModel<ListModelShallowPrices> List(ListType type, long listId, bool includePrice = true)
+        public OperationReturnModel<ListModelIntegrationsReturnModel> List(ListType type, long listId, bool includePrice = true)
         {
-            OperationReturnModel<ListModelShallowPrices> ret = new OperationReturnModel<ListModelShallowPrices>();
-
-            GetSsoUser();
+            OperationReturnModel<ListModelIntegrationsReturnModel> ret = new OperationReturnModel<ListModelIntegrationsReturnModel>();
 
             try
             {
                 var list = _listService.ReadList(SsoUser, this.SelectedUserContext, type, listId, includePrice);
 
-                ret.SuccessResponse = list.ToShallowPricesModel();
+                ret.SuccessResponse = list.ToListModelIntegrationsReturnModel();
                 ret.IsSuccess = true;
             }
             catch (Exception ex)

@@ -192,14 +192,14 @@ namespace KeithLink.Svc.Core.Extensions
 
             return items;
         }
-        public static ListModelShallowPrices ToShallowPricesModel(this ListModel list)
+        public static ListModelIntegrationsReturnModel ToListModelIntegrationsReturnModel(this ListModel list)
         {
-            return new ListModelShallowPrices()
+            return new ListModelIntegrationsReturnModel()
             {
                 ListId = list.ListId,
                 Name = list.Name,
                 Type = list.Type,
-                Items = list.Items.OrderBy(m => m.Position).Select(i => new ListItemModelShallowPrice()
+                Items = list.Items.OrderBy(m => m.Position).Select(i => new ListItemIntegrationsReturnModel()
                 {
                     ItemNumber = i.ItemNumber,
                     CasePrice = i.CasePrice

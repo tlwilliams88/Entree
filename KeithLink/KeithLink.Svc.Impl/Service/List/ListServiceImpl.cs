@@ -320,7 +320,7 @@ namespace KeithLink.Svc.Impl.Service.List
         {
             List<ListModel> list = new List<ListModel>();
 
-            List<ListModel> cachedList = CACHELISTS ? _cacheListLogic.GetCachedCustomerLists(catalogInfo) : null;
+            List<ListModel> cachedList = CACHELISTS ? _cacheListLogic.GetCachedCustomerLists(catalogInfo, headerOnly) : null;
 
             if (cachedList == null)
             {
@@ -330,30 +330,21 @@ namespace KeithLink.Svc.Impl.Service.List
                 }
 
                 // must cache with all the details
-                AddListsIfNotNull(user, catalogInfo, ListType.Worksheet, list, false);
-                AddListsIfNotNull(user, catalogInfo, ListType.Contract, list, false);
-                AddListsIfNotNull(user, catalogInfo, ListType.Favorite, list, false);
-                AddListsIfNotNull(user, catalogInfo, ListType.Reminder, list, false);
-                AddListsIfNotNull(user, catalogInfo, ListType.Mandatory, list, false);
-                AddListsIfNotNull(user, catalogInfo, ListType.Custom, list, false);
+                AddListsIfNotNull(user, catalogInfo, ListType.Worksheet, list, headerOnly);
+                AddListsIfNotNull(user, catalogInfo, ListType.Contract, list, headerOnly);
+                AddListsIfNotNull(user, catalogInfo, ListType.Favorite, list, headerOnly);
+                AddListsIfNotNull(user, catalogInfo, ListType.Reminder, list, headerOnly);
+                AddListsIfNotNull(user, catalogInfo, ListType.Mandatory, list, headerOnly);
+                AddListsIfNotNull(user, catalogInfo, ListType.Custom, list, headerOnly);
 
                 if (CACHELISTS)
                 {
-                    _cacheListLogic.AddCachedCustomerLists(catalogInfo, list);
+                    _cacheListLogic.AddCachedCustomerLists(catalogInfo, list, headerOnly);
                 }
             }
             else
             {
                 list = cachedList;
-            }
-
-
-            if (headerOnly) // if call is for headeronly, we get rid of item information
-            {
-                foreach (var ilist in list)
-                {
-                    ilist.Items = new List<ListItemModel>();
-                }
             }
 
             return list;

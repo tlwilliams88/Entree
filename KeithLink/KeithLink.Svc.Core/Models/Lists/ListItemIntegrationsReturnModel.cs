@@ -19,7 +19,7 @@ using DocumentFormat.OpenXml.Spreadsheet;
 namespace KeithLink.Svc.Core.Models.Lists
 {
     [DataContract(Name = "ListItem")]
-    public class ListItemModelShallowPrice
+    public class ListItemIntegrationsReturnModel
     {
         #region properties
         [DataMember(Name = "itemnumber")]
