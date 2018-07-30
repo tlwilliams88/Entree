@@ -2203,9 +2203,11 @@
     <Content Include="Scripts\AppData\Orders\Tables\OrderHistoryHeader\OrderHistoryHeader_0001_0001.11.00_up.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Scripts\AppData\Orders\Tables\OrderHistoryHeader\OrderHistoryHeader_0081_2018.08.00_down.sql" />
+    <Content Include="Scripts\AppData\Orders\Tables\OrderHistoryHeader\OrderHistoryHeader_0081_2018.08.00_down.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="Scripts\AppData\Orders\Tables\OrderHistoryHeader\OrderHistoryHeader_0081_2018.08.00_up.sql">
-      <SubType>Component</SubType>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Scripts\AppData\Orders\Tables\RecommendedItemsOrderedAnalytics\RecommendedItemsOrderedAnalytics_0073_2018.05.00_down.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>

@@ -35,7 +35,7 @@ namespace KeithLink.Svc.Impl.Tests.Integration.Logic.Orders
     public class OrderHistoryLogicTests
     {
         #region ParseMainframeFile
-        public class ParseMainframeFile
+        public class ParseMainframeFile : MigratedDatabaseTest
         {
             [Fact]
             public void OrderHistory_HasValidHeadersAndOrderDate()
@@ -58,7 +58,7 @@ namespace KeithLink.Svc.Impl.Tests.Integration.Logic.Orders
 
 
         #region ReadOrderFromQueue
-        public class ReadOrderFromQueue
+        public class ReadOrderFromQueue : MigratedDatabaseTest
         {
             [Fact]
             public void OrderHistory_HasValidHeadersAndOrderDate()
