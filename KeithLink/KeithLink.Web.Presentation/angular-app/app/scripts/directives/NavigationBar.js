@@ -23,6 +23,8 @@ angular.module('bekApp')
           if (typeof $scope.userProfile === "undefined")
             alert("The attribute, 'user-profile', was not defined in the element, 'navigation-bar'.");
 
+          $scope.$state = $state;
+
           $scope.isOrderEntryCustomer = AccessService.isOrderEntryCustomer();
           $scope.canBrowseCatalog = AccessService.canBrowseCatalog();
           $scope.canViewOrders = AccessService.canViewOrders();
