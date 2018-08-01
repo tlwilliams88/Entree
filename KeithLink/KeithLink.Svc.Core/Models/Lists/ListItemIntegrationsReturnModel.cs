@@ -23,12 +23,25 @@ namespace KeithLink.Svc.Core.Models.Lists
     {
         #region properties
         [DataMember(Name = "itemnumber")]
-        [Description("Item")]
         public string ItemNumber { get; set; }
 
+        [DataMember(Name = "name", EmitDefaultValue = false)]
+        public string Name { get; set; }
+
+        [DataMember(Name = "brand", EmitDefaultValue = false)]
+        public string Brand { get; set; }
+
         [DataMember(Name = "caseprice", EmitDefaultValue = false)]
-        [Description("Price")]
         public string CasePrice { get; set; }
+
+        [DataMember(Name = "upc", EmitDefaultValue = false)]
+        public string UPC { get; set; }
+
+        [DataMember(Name = "size", EmitDefaultValue = false)]
+        public string Size { get; set; }
+
+        [DataMember(Name = "pack", EmitDefaultValue = false)]
+        public string Pack { get; set; }
         #endregion
     }
 }

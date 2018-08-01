@@ -202,7 +202,12 @@ namespace KeithLink.Svc.Core.Extensions
                 Items = list.Items.OrderBy(m => m.Position).Select(i => new ListItemIntegrationsReturnModel()
                 {
                     ItemNumber = i.ItemNumber,
-                    CasePrice = i.CasePrice
+                    Name = i.Name,
+                    Brand = i.BrandExtendedDescription,
+                    CasePrice = i.CasePrice,
+                    UPC = i.UPC,
+                    Pack = i.Pack,
+                    Size = i.Size
                 }).ToList()
             };
         }
