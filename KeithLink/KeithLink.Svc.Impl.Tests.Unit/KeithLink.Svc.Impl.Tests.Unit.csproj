@@ -116,6 +116,7 @@
     <Compile Include="Logic\Lists\ReminderItemsListLogicTests.cs" />
     <Compile Include="Logic\OnlinePayments\OnlinePaymentLogicTests.cs" />
     <Compile Include="Logic\Orders\OrderLogicTests.cs" />
+    <Compile Include="Logic\Orders\OrderQueueLogicTests.cs" />
     <Compile Include="Logic\Reports\ReportLogicTests.cs" />
     <Compile Include="Logic\ImportLogicTests.cs" />
     <Compile Include="Logic\ShoppingCartLogicTests.cs" />

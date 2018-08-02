@@ -106,7 +106,8 @@ namespace KeithLink.Svc.Impl.Repository.Orders
         public void Send(string dataRecord)
         {
             if (!_connected) { throw new ApplicationException("Cannot send because a connection has not been established"); }
-            if (dataRecord.Length > Constants.MAINFRAME_ORDER_RECORD_LENGTH) {
+            if (dataRecord.Length > Constants.MAINFRAME_ORDER_RECORD_LENGTH)
+            {
                 throw new ArgumentException(string.Format("Record length exceeds the max size of {0} characters.", Constants.MAINFRAME_ORDER_RECORD_LENGTH));
             }
 
@@ -119,12 +120,12 @@ namespace KeithLink.Svc.Impl.Repository.Orders
             }
         }
 
-        public void StartTransaction(string confirmationNumber)
+        public void StartTransaction(string transactionId, string confirmationNumber)
         {
             if (!_connected) { throw new ApplicationException("Cannot send because a connection has not been established"); }
 
             StringBuilder cmd = new StringBuilder();
-            cmd.Append(Configuration.MainframeOrderTransactionId);
+            cmd.Append(transactionId);
             cmd.Append("                 ");
             cmd.Append(confirmationNumber);
             cmd.Length = 50;

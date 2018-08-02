@@ -192,6 +192,7 @@
     <Compile Include="Events\EventArgs\ReceivedFileEventArgs.cs" />
     <Compile Include="Events\EventHandlers\EventHandlers.cs" />
     <Compile Include="Enumerations\List.cs" />
+    <Compile Include="Exceptions\Orders\HostTransactionFailureException.cs" />
     <Compile Include="Exceptions\Queue\QueueDataError.cs" />
     <Compile Include="Extensions\Customers\GrowthAndRecoveryModelExtensions.cs" />
     <Compile Include="Extensions\CustomInventoryItems\CustomInventoryItemExtensionscs.cs" />
