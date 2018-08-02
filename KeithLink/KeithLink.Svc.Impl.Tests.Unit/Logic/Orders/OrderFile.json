@@ -1,0 +1,50 @@
+﻿{
+    "Header": {
+        "OrderingSystem": 0,
+        "Branch": "FDF",
+        "CustomerNumber": "700766",
+        "DsrNumber": "",
+        "AddressStreet": "",
+        "AddressCity": "",
+        "AddressRegionCode": "",
+        "AddressPostalCode": "",
+        "DeliveryDate": "07/20/2018",
+        "PONumber": "",
+        "Specialinstructions": "",
+        "ControlNumber": 3001329,
+        "OrderType": 0,
+        "InvoiceNumber": "",
+        "OrderCreateDateTime": "2018-07-19T16:34:51",
+        "OrderSendDateTime": "07/19/2018 16:34:52",
+        "UserId": "MDJOINER@BENEKEITH.COM",
+        "OrderFilled": false,
+        "FutureOrder": false,
+        "CatalogType": "BEK"
+    },
+    "Details": [
+        {
+            "ItemNumber": "394690",
+            "OrderedQuantity": 1,
+            "UnitOfMeasure": 0,
+            "UnitCost": 0.0,
+            "SellPrice": 26.53,
+            "Catchweight": false,
+            "LineNumber": 1,
+            "ItemChange": 0,
+            "SubOriginalItemNumber": "",
+            "ReplacedOriginalItemNumber": "",
+            "ShippedQuantity": 0,
+            "ItemStatus": null,
+            "Description": "Bun Hamburger 5 In Sliced",
+            "ManufacturerName": "EUROPNBK"
+        }
+    ],
+    "CreateDateTime": "2018-07-19T16:34:52.8278924-05:00",
+    "MessageId": "c100f011-1adc-48c4-bc11-d10d0421bc7d",
+    "SenderApplicationName": "KeithCom WebApi",
+    "SenderIPAddress": "192.168.16.40",
+    "SenderMachineName": "CORPKECQAS1",
+    "SenderProcessName": "Send order to queue",
+    "ErrorMessage": null,
+    "ErrorStack": null
+}

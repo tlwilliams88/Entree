@@ -116,32 +116,6 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic.Orders
                     .WithMessage("*connection was forcibly closed by the remote host*");
             }
 
-            [Fact]
-            public void HandlesAddressInUse()
-            {
-                // arrange
-                int WSAEADDRINUSE = 10048;
-
-                MockDependents mockDependents = new MockDependents();
-                mockDependents.MockOrderSocketConnectionRepository
-                    .Setup(m => m.Receive())
-                    .Throws(BuildMockException(WSAEADDRINUSE));
-
-                IOrderQueueLogic testunit = MakeUnitToBeTested(true, mockDependents);
-
-                // act
-                string jsonOrderFile = GetMockData("OrderFile.json");
-                OrderFile order = JsonConvert.DeserializeObject<OrderFile>(jsonOrderFile);
-                Action sendToHost = () => testunit.SendToHost(order);
-
-                // assert
-                sendToHost.Should()
-                    .Throw<ApplicationException>()
-                    .WithInnerException<SocketResponseException>()
-                    .WithInnerException<IOException>()
-                    .WithMessage("*one usage of each socket address*");
-            }
-
             private Exception BuildMockException(int errorCode)
             {
                 SocketException socketException = new SocketException(errorCode);

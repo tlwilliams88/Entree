@@ -143,6 +143,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
+    <EmbeddedResource Include="Logic\Orders\OrderFile.json" />
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
