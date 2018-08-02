@@ -116,48 +116,54 @@ namespace KeithLink.Svc.Core.Models.Invoices
         public List<ModelExport.ExportModelConfiguration> DefaultExportConfiguration() {
             var defaultConfig = new List<ExportModelConfiguration>();
 
+            defaultConfig.Add(new ExportModelConfiguration()
+            {
+                Field = "CustomerName",
+                Label = "CustomerName",
+                Order = Constants.PLACEHOLDER_ORDER_01ST
+            });
             defaultConfig.Add(new ExportModelConfiguration() {
                 Field = "CustomerNumber",
                 Label = "CustomerNumber",
-                Order = Constants.PLACEHOLDER_ORDER_01ST
+                Order = Constants.PLACEHOLDER_ORDER_02ND
             });
             defaultConfig.Add(new ExportModelConfiguration() {
                 Field = "BranchId",
                 Label = "BRN",
-                Order = Constants.PLACEHOLDER_ORDER_02ND
+                Order = Constants.PLACEHOLDER_ORDER_03RD
             });
             defaultConfig.Add(new ExportModelConfiguration() {
                 Field = "InvoiceNumber",
                 Label = "Reference #",
-                Order = Constants.PLACEHOLDER_ORDER_03RD
-            });
-            defaultConfig.Add(new ExportModelConfiguration() {
-                Field = "TypeDescription",
                 Order = Constants.PLACEHOLDER_ORDER_04TH
             });
             defaultConfig.Add(new ExportModelConfiguration() {
-                Field = "StatusDescription",
+                Field = "TypeDescription",
                 Order = Constants.PLACEHOLDER_ORDER_05TH
             });
             defaultConfig.Add(new ExportModelConfiguration() {
-                Field = "PONumber",
+                Field = "StatusDescription",
                 Order = Constants.PLACEHOLDER_ORDER_06TH
             });
             defaultConfig.Add(new ExportModelConfiguration() {
-                Field = "InvoiceDate",
+                Field = "PONumber",
                 Order = Constants.PLACEHOLDER_ORDER_07TH
             });
             defaultConfig.Add(new ExportModelConfiguration() {
-                Field = "DueDate",
+                Field = "InvoiceDate",
                 Order = Constants.PLACEHOLDER_ORDER_08TH
             });
             defaultConfig.Add(new ExportModelConfiguration() {
-                Field = "InvoiceAmount",
+                Field = "DueDate",
                 Order = Constants.PLACEHOLDER_ORDER_09TH
             });
             defaultConfig.Add(new ExportModelConfiguration() {
-                Field = "Amount",
+                Field = "InvoiceAmount",
                 Order = Constants.PLACEHOLDER_ORDER_10TH
+            });
+            defaultConfig.Add(new ExportModelConfiguration() {
+                Field = "Amount",
+                Order = Constants.PLACEHOLDER_ORDER_11TH
             });
 
             return defaultConfig;
