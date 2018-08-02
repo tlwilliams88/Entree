@@ -1,25 +1,29 @@
 ﻿using KeithLink.Common.Core.Interfaces.Logging;
 using KeithLink.Common.Impl.Email;
 using KeithLink.Svc.Core.Exceptions.Orders;
+using KeithLink.Svc.Core.Interface.Common;
 using KeithLink.Svc.Core.Interface.Orders;
 using KeithLink.Svc.Core.Interface.Orders.Confirmations;
 using KeithLink.Svc.Core.Interface.Orders.History;
-using KeithLink.Svc.Core.Interface.Common;
 using KeithLink.Svc.Core.Models.Orders.History;
 using KeithLink.Svc.Impl;
 
 using Autofac;
 using Newtonsoft.Json;
+
 using System;
+using System.Collections.Concurrent;
 using System.IO;
 using System.Linq;
 using System.ServiceProcess;
 using System.Text;
 using System.Threading;
+using System.Threading.Tasks;
+
 
 namespace KeithLink.Svc.Windows.OrderService
 {
-    partial class OrderService : ServiceBase
+    public partial class OrderService : ServiceBase
     {
 
         #region attributes
@@ -87,7 +91,7 @@ namespace KeithLink.Svc.Windows.OrderService
             {
                 try
                 {
-                    System.IO.FileStream myFile = System.IO.File.OpenWrite(filePath);
+                    FileStream myFile = System.IO.File.OpenWrite(filePath);
                     myFile.Close();
                     myFile.Dispose();
 
@@ -95,7 +99,7 @@ namespace KeithLink.Svc.Windows.OrderService
                 }
                 catch
                 {
-                    System.Threading.Thread.Sleep(1000);
+                    Thread.Sleep(1000);
                     loopCnt++;
                 }
             }
@@ -145,11 +149,11 @@ namespace KeithLink.Svc.Windows.OrderService
                 msg.AppendLine();
 
                 _log.WriteErrorLog(msg.ToString());
-                KeithLink.Common.Impl.Email.ExceptionEmail.Send(ex, msg.ToString());
+                ExceptionEmail.Send(ex, msg.ToString());
             }
 
             // wait for one minute before allowing the service to continue
-            System.Threading.Thread.Sleep(60000);
+            Thread.Sleep(60000);
         }
 
         private void HandleMissingOrderUpdateWatchPath()
@@ -202,7 +206,7 @@ namespace KeithLink.Svc.Windows.OrderService
                 msg.AppendLine();
 
                 _log.WriteErrorLog(msg.ToString());
-                KeithLink.Common.Impl.Email.ExceptionEmail.Send(ex, msg.ToString());
+                ExceptionEmail.Send(ex, msg.ToString());
             }
             else
             {
@@ -292,7 +296,7 @@ namespace KeithLink.Svc.Windows.OrderService
 
                 _log.WriteErrorLog(logMessage);
 
-                KeithLink.Common.Impl.Email.ExceptionEmail.Send(e, logMessage);
+                ExceptionEmail.Send(e, logMessage);
             }
         }
 
@@ -313,7 +317,7 @@ namespace KeithLink.Svc.Windows.OrderService
 
                 _log.WriteErrorLog(logMessage);
 
-                KeithLink.Common.Impl.Email.ExceptionEmail.Send(e, logMessage);
+                ExceptionEmail.Send(e, logMessage);
             }
         }
 
@@ -358,14 +362,14 @@ namespace KeithLink.Svc.Windows.OrderService
                 catch (Exception ex)
                 {
                     _log.WriteErrorLog("Error processing order update requests", ex);
-                    KeithLink.Common.Impl.Email.ExceptionEmail.Send(ex);
+                    ExceptionEmail.Send(ex);
                 }
 
                 _historyRequestProcessing = false;
             }
         }
 
-        private void ProcessOrderUpdatesTick(object state)
+        public void ProcessOrderUpdatesTick(object state)
         {
             if (!_orderUpdateProcessing)
             {
@@ -401,16 +405,21 @@ namespace KeithLink.Svc.Windows.OrderService
 
                         IGenericQueueRepository repo = _orderScope.Resolve<IGenericQueueRepository>();
 
-                        System.Threading.Tasks.Parallel.ForEach(files, filePath =>
+                        Parallel.ForEach(files, filePath =>
                         {
                             IOrderHistoryLogic logic = _orderScope.Resolve<IOrderHistoryLogic>();
 
                             if (CanOpenFile(filePath))
                             {
-                                var items = new System.Collections.Concurrent.BlockingCollection<string>();
+                                var items = new BlockingCollection<string>();
 
-                                OrderHistoryFileReturn parsedFile = logic.ParseMainframeFile(filePath);
-                                System.Threading.Tasks.Parallel.ForEach(parsedFile.Files, file =>
+                                OrderHistoryFileReturn parsedFile = null;
+                                using (var reader = File.OpenText(filePath))
+                                {
+                                    parsedFile = logic.ParseMainframeFile(reader);
+                                }
+
+                                Parallel.ForEach(parsedFile.Files, file =>
                                 {
 
                                     // do not upload an order file with an invalid header
@@ -423,6 +432,7 @@ namespace KeithLink.Svc.Windows.OrderService
                                         {
                                             var jsonValue = JsonConvert.SerializeObject(file);
                                             items.Add(jsonValue);
+
                                             StringBuilder logMsg = new StringBuilder();
                                             logMsg.AppendLine(string.Format("Publishing order history to queue for message ({0}).", file.MessageId));
                                             logMsg.AppendLine();
@@ -447,7 +457,7 @@ namespace KeithLink.Svc.Windows.OrderService
                                 if (items.Count > 0)
                                     repo.BulkPublishToQueue(items.ToList(), Configuration.RabbitMQConfirmationServer, Configuration.RabbitMQUserNamePublisher, Configuration.RabbitMQUserPasswordPublisher, Configuration.RabbitMQVHostConfirmation, Configuration.RabbitMQExchangeHourlyUpdates);
 
-                                System.IO.File.Delete(filePath);
+                                File.Delete(filePath);
                             } // end if CanOpenFile
                         });
 
@@ -477,7 +487,7 @@ namespace KeithLink.Svc.Windows.OrderService
 
                     while (DateTime.Now.Hour < 5)
                     {
-                        System.Threading.Thread.Sleep(60000);
+                        Thread.Sleep(60000);
                     }
 
                     _log.WriteInformationLog("Script started after processing window");
@@ -510,7 +520,7 @@ namespace KeithLink.Svc.Windows.OrderService
                 catch (Exception ex)
                 {
                     _log.WriteErrorLog("Error processing orders", ex);
-                    KeithLink.Common.Impl.Email.ExceptionEmail.Send(ex, "", "Error processing orders");
+                    ExceptionEmail.Send(ex, "", "Error processing orders");
                 }
 
                 _orderQueueProcessing = false;

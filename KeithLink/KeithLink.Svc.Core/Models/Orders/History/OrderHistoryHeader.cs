@@ -21,6 +21,9 @@ namespace KeithLink.Svc.Core.Models.Orders.History {
         [DataMember(Name="invoicenumber")]
         public string InvoiceNumber { get; set; }
 
+        [DataMember(Name = "orderdatetime")]
+        public string OrderDateTime { get; set; }
+
         [DataMember(Name="deliverydate")]
         public string DeliveryDate { get; set; }
 
