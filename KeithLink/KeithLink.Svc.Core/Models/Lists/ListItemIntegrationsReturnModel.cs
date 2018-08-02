@@ -34,7 +34,7 @@ namespace KeithLink.Svc.Core.Models.Lists
         [DataMember(Name = "caseprice", EmitDefaultValue = false)]
         public string CasePrice { get; set; }
 
-        [DataMember(Name = "upc", EmitDefaultValue = false)]
+        [DataMember(Name = "gtin", EmitDefaultValue = false)]
         public string UPC { get; set; }
 
         [DataMember(Name = "size", EmitDefaultValue = false)]
