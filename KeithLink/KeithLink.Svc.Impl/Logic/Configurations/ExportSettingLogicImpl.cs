@@ -69,6 +69,7 @@ namespace KeithLink.Svc.Impl.Logic.Configurations {
                 case ExportType.Invoice:
                     options.Fields.Add(new ExportModelConfiguration() { Field = "CustomerNumber", Label = "Customer Number" });
                     options.Fields.Add(new ExportModelConfiguration() { Field = "CustomerName", Label = "Customer Name" });
+                    options.Fields.Add(new ExportModelConfiguration() { Field = "BranchId", Label = "Customer Branch" });
                     options.Fields.Add(new ExportModelConfiguration() { Field = "InvoiceNumber", Label = "Invoice #" });
                     options.Fields.Add(new ExportModelConfiguration() { Field = "TypeDescription", Label = "Type" });
                     options.Fields.Add(new ExportModelConfiguration() { Field = "StatusDescription", Label = "Status" });
