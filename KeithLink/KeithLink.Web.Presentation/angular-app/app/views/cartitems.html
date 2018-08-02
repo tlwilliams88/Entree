@@ -391,7 +391,7 @@
                       <div ng-if="::item.isoutofstock" counter ng-model="item.quantityordered" min="0" length="5" ></div>
                     </ng-form>
                   </td>
-                  <td class="hidden-mobile-visible-print input-col">
+                  <td class="hidden-mobile-visible-print input-col" ng-if="!isChangeOrder">
                     <ng-form name="eachForm" ng-if="item.hasPackagePrice && item.isvalid">
                       <input type="checkbox" ng-checked = "!item.hasCasePrice || item.each" ng-disabled = "!item.hasCasePrice" ng-model="item.each" id="each" name="each" />
                       <label for="each"></label>

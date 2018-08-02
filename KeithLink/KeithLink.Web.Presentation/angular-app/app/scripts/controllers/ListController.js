@@ -9,9 +9,9 @@
  */
 angular.module('bekApp')
   .controller('ListController', ['$scope', '$filter', '$timeout', '$state', '$stateParams', '$modal', 'blockUI', 'originalList',
-   'Constants', 'ListService', 'CartService', 'PricingService', 'ListPagingModel', 'LocalStorage', 'UtilityService', 'DateService', 'ProductService', 'OrderService',
+   'Constants', 'ListService', 'CartService', 'PricingService', 'ListPagingModel', 'LocalStorage', 'UtilityService', 'DateService', 'ProductService', 'OrderService', 'toaster',
     function($scope, $filter, $timeout, $state, $stateParams, $modal, blockUI, originalList, Constants, ListService, CartService,
-     PricingService, ListPagingModel, LocalStorage, UtilityService, DateService, ProductService, OrderService) {
+     PricingService, ListPagingModel, LocalStorage, UtilityService, DateService, ProductService, OrderService, toaster) {
          
     $scope.addToQty = 1;
 
@@ -622,8 +622,9 @@ angular.module('bekApp')
     };
 
     $scope.renameList = function (listId, listName) {
-      if(listName === "Non BEK Items"){
-        listName = "Non-BEK Items"
+      if(listName === 'Non BEK Items'){
+       toaster.pop('error', 'Please choose a different name for this list.');
+       return;
       }
       $scope.selectedList.name = listName;
       originalList.name = $scope.selectedList.name;
