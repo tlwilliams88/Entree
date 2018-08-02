@@ -2,10 +2,13 @@
 using KeithLink.Common.Core.Helpers;
 using KeithLink.Common.Core.Interfaces.Logging;
 
+using KeithLink.Svc.Core;
 using KeithLink.Svc.Core.Enumerations;
 using KeithLink.Svc.Core.Enumerations.Order;
 
 using KeithLink.Svc.Core.Events.EventArgs;
+
+using KeithLink.Svc.Core.Exceptions.Queue;
 
 using KeithLink.Svc.Core.Extensions;
 using KeithLink.Svc.Core.Extensions.Enumerations;
@@ -31,21 +34,24 @@ using KeithLink.Svc.Core.Interface.SiteCatalog;
 using KeithLink.Svc.Impl.Helpers;
 
 using KeithLink.Svc.Impl.Repository.EF.Operational;
+using KeithLink.Svc.Impl.Tasks;
 
 using Newtonsoft.Json;
+
 using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using System.Collections.Concurrent;
-using KeithLink.Svc.Core;
 using System.Threading;
-using KeithLink.Svc.Impl.Tasks;
-using KeithLink.Svc.Core.Exceptions.Queue;
 
-namespace KeithLink.Svc.Impl.Logic.Orders {
-    public class OrderHistoryLogicImpl : IOrderHistoryLogic {
+
+namespace KeithLink.Svc.Impl.Logic.Orders
+{
+    public class OrderHistoryLogicImpl : IOrderHistoryLogic
+    {
         #region attributes
         private const int RECORDTYPE_LENGTH = 1;
         private const int RECORDTYPE_STARTPOS = 0;
@@ -69,10 +75,17 @@ namespace KeithLink.Svc.Impl.Logic.Orders {
         #endregion
 
         #region ctor
-        public OrderHistoryLogicImpl(IOrderHistoryHeaderRepsitory headerRepo, IPurchaseOrderRepository poRepo, IKPayInvoiceRepository kpayInvoiceRepository, 
-                                     ICatalogLogic catalogLogic, IOrderHistoryDetailRepository detailRepo, IUnitOfWork unitOfWork, 
-                                     IEventLogRepository log, IGenericQueueRepository queue, IOrderConversionLogic conversionLogic, 
-                                     ICustomerRepository customerRepository, ISocketListenerRepository socket,
+        public OrderHistoryLogicImpl(IOrderHistoryHeaderRepsitory headerRepo, 
+                                     IPurchaseOrderRepository poRepo, 
+                                     IKPayInvoiceRepository kpayInvoiceRepository, 
+                                     ICatalogLogic catalogLogic, 
+                                     IOrderHistoryDetailRepository detailRepo, 
+                                     IUnitOfWork unitOfWork, 
+                                     IEventLogRepository log, 
+                                     IGenericQueueRepository queue, 
+                                     IOrderConversionLogic conversionLogic, 
+                                     ICustomerRepository customerRepository, 
+                                     ISocketListenerRepository socket,
                                      IGenericSubscriptionQueueRepository genericSubscriptionQueue) {
             _log = log;
             _queue = queue;
@@ -102,7 +115,8 @@ namespace KeithLink.Svc.Impl.Logic.Orders {
         #endregion
 
         #region events
-        public void SocketFileReceived(object sender, ReceivedFileEventArgs e) {
+        public void SocketFileReceived(object sender, ReceivedFileEventArgs e)
+        {
             StringBuilder logMsg = new StringBuilder();
             logMsg.AppendLine("Order Update File Received. See below for more details.");
             logMsg.AppendLine();
@@ -113,7 +127,8 @@ namespace KeithLink.Svc.Impl.Logic.Orders {
 
             OrderHistoryFileReturn parsedFiles = ParseFile(lines);
 
-            foreach (OrderHistoryFile parsedFile in parsedFiles.Files) {
+            foreach (OrderHistoryFile parsedFile in parsedFiles.Files)
+            {
                 parsedFile.SenderApplicationName = Configuration.ApplicationName;
                 parsedFile.SenderProcessName = "Process Order History Updates From Mainframe (Socket Connection)";
 
@@ -531,7 +546,7 @@ namespace KeithLink.Svc.Impl.Logic.Orders {
             }
         }
 
-        private string ReadOrderFromQueue()
+        public string ReadOrderFromQueue()
         {
             return
                 KeithLink.Svc.Impl.Helpers.Retry.Do<string>
@@ -591,15 +606,14 @@ namespace KeithLink.Svc.Impl.Logic.Orders {
 
         #endregion
 
-        private void ProcessOrder(string rawOrder)
+        public void ProcessOrder(string rawOrder)
         {
-            OrderHistoryFile historyFile = new OrderHistoryFile();
-
-            historyFile = JsonConvert.DeserializeObject<OrderHistoryFile>(rawOrder);
+            OrderHistoryFile historyFile = JsonConvert.DeserializeObject<OrderHistoryFile>(rawOrder);
 
             _log.WriteInformationLog(string.Format("Consuming order update from queue for message ({0})", historyFile.MessageId));
 
             Create(historyFile, false);
+
             _conversionLogic.SaveOrderHistoryAsConfirmation(historyFile);
 
             Retry.Do<int>(() => _unitOfWork.SaveChangesAndClearContext(), TimeSpan.FromSeconds(5), 5);
@@ -618,157 +632,115 @@ namespace KeithLink.Svc.Impl.Logic.Orders {
 
             for (int i = 0; i < data.Length; i++)
             {
-                if (data[i].Contains("END###")) { break; }
+                string line = data[i];
 
-                currentFile = ParseLineToOrderHistoryFile(data, retVal, currentFile, i);
+                if (line.Contains("END###")) { break; }
+
+                switch (line.Substring(RECORDTYPE_STARTPOS, RECORDTYPE_LENGTH))
+                {
+                    case "H":
+                        if (currentFile != null)
+                        {
+                            SetErrorStatusAndFutureItemsOnFile(currentFile);
+                        }
+
+                        currentFile = ParseNewOrderHistoryFileFromHeaderLine(line);
+                        retVal.Files.Add(currentFile);
+                        break;
+
+                    case "D":
+                        var orderDetail = new OrderHistoryDetail();
+                        orderDetail.Parse(line);
+                        currentFile.Details.Add(orderDetail);
+                        break;
+
+                    default:
+                        break;
+                }
 
             } // end of for loop
 
-            SetErrorStatusAndFutureItemsOnFile(retVal, currentFile);
+            SetErrorStatusAndFutureItemsOnFile(currentFile);
 
             return retVal;
         }
 
-        private OrderHistoryFile ParseLineToOrderHistoryFile(string[] data, OrderHistoryFileReturn retVal, OrderHistoryFile currentFile, int i)
+        private void SetErrorStatusAndFutureItemsOnFile(OrderHistoryFile currentFile)
         {
-            switch (data[i].Substring(RECORDTYPE_STARTPOS, RECORDTYPE_LENGTH))
-            {
-                case "H":
-                    currentFile = ParseNewOrderHistoryFileFromHeaderData(data, retVal, currentFile, i);
-                    break;
-                case "D":
-                    AddOrderDetailFromParsedData(data, currentFile, i);
-                    break;
-                default:
-                    break;
-            }
+            currentFile.Header.ErrorStatus = (from OrderHistoryDetail detail in currentFile.Details
+                                                where detail.ItemStatus != string.Empty
+                                                select true).FirstOrDefault();
+            currentFile.Header.FutureItems = (from OrderHistoryDetail detail in currentFile.Details
+                                                where detail.FutureItem == true
+                                                select true).FirstOrDefault();
+        }
+
+        public OrderHistoryFile ParseNewOrderHistoryFileFromHeaderLine(string line)
+        {
+            var currentFile = new OrderHistoryFile();
+
+            currentFile.Header.Parse(line);
 
             return currentFile;
         }
 
-        private void SetErrorStatusAndFutureItemsOnFile(OrderHistoryFileReturn retVal, OrderHistoryFile currentFile)
+        public OrderHistoryFileReturn ParseMainframeFile(StreamReader reader)
         {
-            if (currentFile != null)
-            {
-                currentFile.Header.ErrorStatus = (from OrderHistoryDetail detail in currentFile.Details
-                                                  where detail.ItemStatus != string.Empty
-                                                  select true).FirstOrDefault();
-                currentFile.Header.FutureItems = (from OrderHistoryDetail detail in currentFile.Details
-                                                  where detail.FutureItem == true
-                                                  select true).FirstOrDefault();
-                retVal.Files.Add(currentFile);
-            }
-        }
-
-        private void AddOrderDetailFromParsedData(string[] data, OrderHistoryFile currentFile, int i)
-        {
-            if (currentFile != null)
-            {
-                OrderHistoryDetail orderDetail = new OrderHistoryDetail();
-                orderDetail.Parse(data[i]);
-
-                currentFile.Details.Add(orderDetail);
-            }
-        }
-
-        private OrderHistoryFile ParseNewOrderHistoryFileFromHeaderData
-            (string[] data, OrderHistoryFileReturn retVal, OrderHistoryFile currentFile, int i)
-        {
-            if (currentFile != null)
-            {
-                currentFile.Header.ErrorStatus = (from OrderHistoryDetail detail in currentFile.Details
-                                                  where detail.ItemStatus != string.Empty
-                                                  select true).FirstOrDefault();
-                currentFile.Header.FutureItems = (from OrderHistoryDetail detail in currentFile.Details
-                                                  where detail.FutureItem == true
-                                                  select true).FirstOrDefault();
-                retVal.Files.Add(currentFile);
-            }
-
-            currentFile = new OrderHistoryFile();
-
-            currentFile.Header.Parse(data[i]);
-            return currentFile;
-        }
-
-        public OrderHistoryFileReturn ParseMainframeFile(string filePath) {
             OrderHistoryFileReturn retVal = new OrderHistoryFileReturn();
 
-            using(System.IO.TextReader txtFile = System.IO.File.OpenText(filePath)) {
-                OrderHistoryFile currentFile = null;
+            OrderHistoryFile currentFile = null;
 
-                while(txtFile.Peek() != -1) {
-                    string data = txtFile.ReadLine();
+            while (reader.Peek() != -1)
+            {
+                string line = reader.ReadLine();
 
-                    switch(data.Substring(RECORDTYPE_STARTPOS, RECORDTYPE_LENGTH)) {
-                        case "H":
-                            currentFile = CreateOrderHistoryFileFromHeaderLine(retVal, currentFile, data);
-                            break;
-                        case "D":
-                            AddOrderHistoryDetailFromDetailLine(currentFile, data);
-                            break;
-                        default:
-                            break;
-                    }
+                switch (line.Substring(RECORDTYPE_STARTPOS, RECORDTYPE_LENGTH))
+                {
+                    case "H":
+                        if (currentFile != null)
+                        {
+                            SetErrorStatusAndFutureItemsOnFile(currentFile);
+                        }
 
-                } // end of while
+                        currentFile = CreateOrderHistoryFileFromHeaderLine(line);
+                        retVal.Files.Add(currentFile);
+                        break;
 
-                if(currentFile != null) {
-                    currentFile.Header.ErrorStatus = (from OrderHistoryDetail detail in currentFile.Details
-                                                      where detail.ItemStatus != string.Empty
-                                                      select true).FirstOrDefault();
-                    currentFile.Header.FutureItems = (from OrderHistoryDetail detail in currentFile.Details
-                                                      where detail.FutureItem == true
-                                                      select true).FirstOrDefault();
-                    retVal.Files.Add(currentFile);
+                    case "D":
+                        var orderDetail = new OrderHistoryDetail();
+                        orderDetail.Parse(line);
+                        currentFile.Details.Add(orderDetail);
+                        break;
+
+                    default:
+                        break;
                 }
-            }
+
+            } // end of while
+
+            SetErrorStatusAndFutureItemsOnFile(currentFile);
 
             return retVal;
         }
 
-        private void AddOrderHistoryDetailFromDetailLine(OrderHistoryFile currentFile, string data)
+        public OrderHistoryFile CreateOrderHistoryFileFromHeaderLine(string line)
         {
-            if (currentFile != null)
-            {
-                OrderHistoryDetail orderDetail = new OrderHistoryDetail();
-                orderDetail.Parse(data);
+            var currentFile = new OrderHistoryFile();
 
-                currentFile.Details.Add(orderDetail);
-            }
-        }
-
-        private OrderHistoryFile CreateOrderHistoryFileFromHeaderLine(OrderHistoryFileReturn retVal, OrderHistoryFile currentFile, string data)
-        {
-            if (currentFile != null)
-            {
-                currentFile.Header.ErrorStatus = (from OrderHistoryDetail detail in currentFile.Details
-                                                  where detail.ItemStatus != string.Empty
-                                                  select true).FirstOrDefault();
-                currentFile.Header.FutureItems = (from OrderHistoryDetail detail in currentFile.Details
-                                                  where detail.FutureItem == true
-                                                  select true).FirstOrDefault();
-                retVal.Files.Add(currentFile);
-            }
-
-            currentFile = new OrderHistoryFile();
+            currentFile.ValidHeader = false;
 
             // check for length of header record to make sure there is data
-            if (data.Trim().Length > 1)
+            if (line.Trim().Length > 1)
             {
                 try
                 {
-                    currentFile.Header.Parse(data);
+                    currentFile.Header.Parse(line);
                     currentFile.ValidHeader = true;
                 }
                 catch
                 {
                     currentFile.ValidHeader = false;
                 }
-            }
-            else
-            {
-                currentFile.ValidHeader = false;
             }
 
             return currentFile;

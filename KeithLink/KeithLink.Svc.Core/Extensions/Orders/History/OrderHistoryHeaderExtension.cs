@@ -7,6 +7,7 @@ using KeithLink.Svc.Core.Models.Orders.History;
 using EF = KeithLink.Svc.Core.Models.Orders.History.EF;
 using KeithLink.Svc.Core.Models.SiteCatalog;
 using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -27,6 +28,7 @@ namespace KeithLink.Svc.Core.Extensions.Orders.History {
         private const int HEADER_LENGTH_ERRSTS = 1;
         private const int HEADER_LENGTH_RTENUM = 3;
         private const int HEADER_LENGTH_STPNUM = 3;
+        private const int HEADER_LENGTH_ORDDATE = 14;
 
         private const int HEADER_STARTPOS_ORDSYS = 1;
         private const int HEADER_STARTPOS_BRANCH = 2;
@@ -40,6 +42,7 @@ namespace KeithLink.Svc.Core.Extensions.Orders.History {
         private const int HEADER_STARTPOS_ERRSTS = 56;
         private const int HEADER_STARTPOS_RTENUM = 57;
         private const int HEADER_STARTPOS_STPNUM = 60;
+        private const int HEADER_STARTPOS_ORDDATE = 63;
         #endregion
 
         #region methods
@@ -52,234 +55,313 @@ namespace KeithLink.Svc.Core.Extensions.Orders.History {
             order.DeliveryOutOfSequence = orderHistory.DeliveryOutOfSequence;
         }
 
-        public static void Parse(this OrderHistoryHeader value, string record) {
-            if (record.Length >= HEADER_STARTPOS_ORDSYS + HEADER_LENGTH_ORDSYS) {
+        public static void Parse(this OrderHistoryHeader header, string record)
+        {
+            if (record.Length >= HEADER_STARTPOS_ORDSYS + HEADER_LENGTH_ORDSYS)
+            {
                 OrderSource tempOrderSource = new OrderSource();
-                value.OrderSystem = tempOrderSource.Parse(record.Substring(HEADER_STARTPOS_ORDSYS, HEADER_LENGTH_ORDSYS)); 
+                header.OrderSystem = tempOrderSource.Parse(record.Substring(HEADER_STARTPOS_ORDSYS, HEADER_LENGTH_ORDSYS)); 
             }
-            if (record.Length >= HEADER_STARTPOS_BRANCH + HEADER_LENGTH_BRANCH) { value.BranchId = record.Substring(HEADER_STARTPOS_BRANCH, HEADER_LENGTH_BRANCH).Trim(); }
-            if (record.Length >= HEADER_STARTPOS_CUSTNUM + HEADER_LENGTH_CUSTNUM) { value.CustomerNumber = record.Substring(HEADER_STARTPOS_CUSTNUM, HEADER_LENGTH_CUSTNUM).Trim(); }
 
-            if (record.Length >= HEADER_STARTPOS_DELVDATE + HEADER_LENGTH_DELVDATE) {
+            if (record.Length >= HEADER_STARTPOS_BRANCH + HEADER_LENGTH_BRANCH)
+            {
+                header.BranchId = record.Substring(HEADER_STARTPOS_BRANCH, HEADER_LENGTH_BRANCH).Trim();
+            }
+
+            if (record.Length >= HEADER_STARTPOS_CUSTNUM + HEADER_LENGTH_CUSTNUM)
+            {
+                header.CustomerNumber = record.Substring(HEADER_STARTPOS_CUSTNUM, HEADER_LENGTH_CUSTNUM).Trim();
+            }
+
+            if (record.Length >= HEADER_STARTPOS_DELVDATE + HEADER_LENGTH_DELVDATE)
+            {
                 string deliveryDate = record.Substring(HEADER_STARTPOS_DELVDATE, HEADER_LENGTH_DELVDATE);
-                value.DeliveryDate = new DateTime(int.Parse(deliveryDate.Substring(0, 4)),
-                                                   int.Parse(deliveryDate.Substring(4, 2)),
-                                                   int.Parse(deliveryDate.Substring(6, 2))).ToLongDateFormat();
+                int year = int.Parse(deliveryDate.Substring(0, 4));
+                int month = int.Parse(deliveryDate.Substring(4, 2));
+                int day = int.Parse(deliveryDate.Substring(6, 2));
+
+                header.DeliveryDate = new DateTime(year, month, day).ToLongDateFormat();
             }
 
-            if (record.Length >= HEADER_STARTPOS_PONUM + HEADER_LENGTH_PONUM) { value.PONumber = record.Substring(HEADER_STARTPOS_PONUM, HEADER_LENGTH_PONUM).Trim(); }
-            if (record.Length >= HEADER_STARTPOS_CTRLNUM + HEADER_LENGTH_CTRLNUM) { value.ControlNumber = record.Substring(HEADER_STARTPOS_CTRLNUM, HEADER_LENGTH_CTRLNUM).Trim(); }
-            if (record.Length >= HEADER_STARTPOS_INVNUM + HEADER_LENGTH_INVNUM) { value.InvoiceNumber = record.Substring(HEADER_STARTPOS_INVNUM, HEADER_LENGTH_INVNUM).Trim(); }
-            if (record.Length >= HEADER_STARTPOS_ORDSTS + HEADER_LENGTH_ORDSTS) { value.OrderStatus = record.Substring(HEADER_STARTPOS_ORDSTS, HEADER_LENGTH_ORDSTS).Trim(); }
+            if (record.Length >= HEADER_STARTPOS_PONUM + HEADER_LENGTH_PONUM)
+            {
+                header.PONumber = record.Substring(HEADER_STARTPOS_PONUM, HEADER_LENGTH_PONUM).Trim();
+            }
+
+            if (record.Length >= HEADER_STARTPOS_CTRLNUM + HEADER_LENGTH_CTRLNUM)
+            {
+                header.ControlNumber = record.Substring(HEADER_STARTPOS_CTRLNUM, HEADER_LENGTH_CTRLNUM).Trim();
+            }
+
+            if (record.Length >= HEADER_STARTPOS_INVNUM + HEADER_LENGTH_INVNUM)
+            {
+                header.InvoiceNumber = record.Substring(HEADER_STARTPOS_INVNUM, HEADER_LENGTH_INVNUM).Trim();
+            }
+
+            if (record.Length >= HEADER_STARTPOS_ORDSTS + HEADER_LENGTH_ORDSTS)
+            {
+                header.OrderStatus = record.Substring(HEADER_STARTPOS_ORDSTS, HEADER_LENGTH_ORDSTS).Trim();
+            }
 
             // don't set Future Item flag here
             // don't set Error Status flag here
 
-            if (record.Length >= HEADER_STARTPOS_RTENUM + HEADER_LENGTH_RTENUM) { value.RouteNumber = record.Substring(HEADER_STARTPOS_RTENUM, HEADER_LENGTH_RTENUM).Trim(); }
-            if (record.Length >= HEADER_STARTPOS_STPNUM + HEADER_LENGTH_STPNUM) { value.StopNumber = record.Substring(HEADER_STARTPOS_STPNUM, HEADER_LENGTH_STPNUM).Trim(); }
+            if (record.Length >= HEADER_STARTPOS_RTENUM + HEADER_LENGTH_RTENUM)
+            {
+                header.RouteNumber = record.Substring(HEADER_STARTPOS_RTENUM, HEADER_LENGTH_RTENUM).Trim();
+            }
+
+            if (record.Length >= HEADER_STARTPOS_STPNUM + HEADER_LENGTH_STPNUM)
+            {
+                header.StopNumber = record.Substring(HEADER_STARTPOS_STPNUM, HEADER_LENGTH_STPNUM).Trim();
+            }
+
+            if (record.Length >= HEADER_STARTPOS_ORDDATE + HEADER_LENGTH_ORDDATE)
+            {
+                string rawOrderDateTime = record.Substring(HEADER_STARTPOS_ORDDATE, HEADER_LENGTH_ORDDATE);
+                if (string.IsNullOrWhiteSpace(rawOrderDateTime) == false)
+                {
+                    //value.OrderDateTime = DateTime.ParseExact(orderDateTime, "yyyyMMddHHmmss", null);
+
+                    int year = int.Parse(rawOrderDateTime.Substring(0, 4));
+                    int month = int.Parse(rawOrderDateTime.Substring(4, 2));
+                    int day = int.Parse(rawOrderDateTime.Substring(6, 2));
+                    int hour = int.Parse(rawOrderDateTime.Substring(8, 2));
+                    int minute = int.Parse(rawOrderDateTime.Substring(10, 2));
+                    int second = int.Parse(rawOrderDateTime.Substring(12, 2));
+                    
+                    var orderDateTime = new DateTime(year, month, day, hour, minute, second, DateTimeKind.Local);
+                    header.OrderDateTime = orderDateTime.ToLongDateFormatWithTime();
+                }
+            }
         }
 
-        public static void MergeWithEntity(this OrderHistoryHeader value, ref EF.OrderHistoryHeader entity) {
-            entity.OrderSystem = value.OrderSystem.ToShortString();
-            entity.BranchId = value.BranchId;
-            entity.CustomerNumber = value.CustomerNumber;
-            entity.InvoiceNumber = value.InvoiceNumber;
-            entity.DeliveryDate = value.DeliveryDate.ToDateTime().Value.ToLongDateFormat();
-            entity.PONumber = value.PONumber ?? entity.PONumber;
-            //entity.ControlNumber = value.ControlNumber.Trim();
+        public static void MergeWithEntity(this OrderHistoryHeader header, ref EF.OrderHistoryHeader entity)
+        {
+            entity.OrderSystem = header.OrderSystem.ToShortString();
+            entity.BranchId = header.BranchId;
+            entity.CustomerNumber = header.CustomerNumber;
+            entity.InvoiceNumber = header.InvoiceNumber;
+            entity.OrderDateTime = header.OrderDateTime;
+            entity.DeliveryDate = header.DeliveryDate.ToDateTime().Value.ToLongDateFormat();
+            entity.PONumber = header.PONumber ?? entity.PONumber;
+            //entity.ControlNumber = header.ControlNumber.Trim();
             // the original control number is actually set from the entity already
             // and because the order history header is actually a converted confirmation
             // it does not know the original control number so it is seeing it as null
             // and screwing up the original control number
-            //entity.OriginalControlNumber = string.IsNullOrEmpty(value.OriginalControlNumber) ? value.ControlNumber.Trim() : value.OriginalControlNumber.Trim();
-            entity.OrderStatus = value.OrderStatus;
-            entity.FutureItems = value.FutureItems;
-            entity.ErrorStatus = value.ErrorStatus;
-            entity.RouteNumber = value.RouteNumber;
-            entity.StopNumber = value.StopNumber;
+            //entity.OriginalControlNumber = string.IsNullOrEmpty(header.OriginalControlNumber) ? header.ControlNumber.Trim() : header.OriginalControlNumber.Trim();
+            entity.OrderStatus = header.OrderStatus;
+            entity.FutureItems = header.FutureItems;
+            entity.ErrorStatus = header.ErrorStatus;
+            entity.RouteNumber = header.RouteNumber;
+            entity.StopNumber = header.StopNumber;
             //entity.IsSpecialOrder = 
 
-            if (string.IsNullOrEmpty(entity.ControlNumber)) {
-                entity.ControlNumber = value.ControlNumber.Trim();
-                if (string.IsNullOrEmpty(entity.OriginalControlNumber)) {
-                    entity.OriginalControlNumber = value.ControlNumber.Trim();
+            if (string.IsNullOrEmpty(entity.ControlNumber))
+            {
+                entity.ControlNumber = header.ControlNumber.Trim();
+                if (string.IsNullOrEmpty(entity.OriginalControlNumber))
+                {
+                    entity.OriginalControlNumber = header.ControlNumber.Trim();
                 }
-            } else {
+            }
+            else
+            {
                 // update the history file with EF data
                 int valueControlNumber;
-                if (!int.TryParse(value.ControlNumber, out valueControlNumber)) {
+                if (!int.TryParse(header.ControlNumber, out valueControlNumber))
+                {
                     valueControlNumber = 0;
                 }
 
                 int entityControlNumber;
-                if (!int.TryParse(entity.ControlNumber, out entityControlNumber)) {
+                if (!int.TryParse(entity.ControlNumber, out entityControlNumber))
+                {
                     entityControlNumber = 0;
                 }
 
-                if (entityControlNumber > valueControlNumber) {
-                    value.ControlNumber = entity.ControlNumber;
-                } else {
-                    entity.ControlNumber = value.ControlNumber;
+                if (entityControlNumber > valueControlNumber)
+                {
+                    header.ControlNumber = entity.ControlNumber;
+                }
+                else
+                {
+                    entity.ControlNumber = header.ControlNumber;
                 }
                 //value.ControlNumber = entityControlNumber >= valueControlNumber? entity.ControlNumber : value.ControlNumber;
-                value.OriginalControlNumber = entity.OriginalControlNumber?? entity.ControlNumber;
+                header.OriginalControlNumber = entity.OriginalControlNumber?? entity.ControlNumber;
             }
         }
 
-        public static EF.OrderHistoryHeader ToEntityFrameworkModel(this OrderHistoryHeader value) {
-            EF.OrderHistoryHeader retVal = new EF.OrderHistoryHeader();
+        public static EF.OrderHistoryHeader ToEntityFrameworkModel(this OrderHistoryHeader header)
+        {
+            EF.OrderHistoryHeader entity = new EF.OrderHistoryHeader();
 
-            retVal.OrderSystem = value.OrderSystem.ToShortString();
-            retVal.BranchId = value.BranchId;
-            retVal.CustomerNumber = value.CustomerNumber;
-            retVal.InvoiceNumber = value.InvoiceNumber;
-            retVal.DeliveryDate = value.DeliveryDate.ToDateTime().Value.ToLongDateFormat();
-            retVal.PONumber = value.PONumber;
-            retVal.ControlNumber = value.ControlNumber;
-            retVal.OriginalControlNumber = string.IsNullOrEmpty(value.OriginalControlNumber) ? value.ControlNumber.Trim() : value.OriginalControlNumber.Trim();
-            retVal.OrderStatus = value.OrderStatus;
-            retVal.FutureItems = value.FutureItems;
-            retVal.ErrorStatus = value.ErrorStatus;
-            retVal.RouteNumber = value.RouteNumber;
-            retVal.StopNumber = value.StopNumber;
+            entity.OrderSystem = header.OrderSystem.ToShortString();
+            entity.BranchId = header.BranchId;
+            entity.CustomerNumber = header.CustomerNumber;
+            entity.InvoiceNumber = header.InvoiceNumber;
+            entity.OrderDateTime = header.OrderDateTime;
+            entity.DeliveryDate = header.DeliveryDate.ToDateTime().Value.ToLongDateFormat();
+            entity.PONumber = header.PONumber;
+            entity.ControlNumber = header.ControlNumber;
+            entity.OriginalControlNumber = string.IsNullOrEmpty(header.OriginalControlNumber) ? header.ControlNumber.Trim() : header.OriginalControlNumber.Trim();
+            entity.OrderStatus = header.OrderStatus;
+            entity.FutureItems = header.FutureItems;
+            entity.ErrorStatus = header.ErrorStatus;
+            entity.RouteNumber = header.RouteNumber;
+            entity.StopNumber = header.StopNumber;
 
-            return retVal;
+            return entity;
         }
 
-		public static Order ToOrder(this EF.OrderHistoryHeader value)
+		public static Order ToOrder(this EF.OrderHistoryHeader entity)
 		{
-			Order retVal = new Order();
+			Order order = new Order();
 
 			//retVal.OrderNumber = value.InvoiceNumber;
-            retVal.OrderNumber = value.ControlNumber;
+            order.OrderNumber = entity.ControlNumber;
 
-			switch (value.OrderStatus.Trim())
+			switch (entity.OrderStatus.Trim())
 			{
 				case "":
-					retVal.Status = "Ordered";
+					order.Status = "Ordered";
 					break;
 				case "I":
-					retVal.Status = "Invoiced";
+					order.Status = "Invoiced";
 					break;
 				case "P":
-					retVal.Status = "Processing";
+					order.Status = "Processing";
 					break;
 				case "D":
-					retVal.Status = "Deleted";
+					order.Status = "Deleted";
 					break;
 				default:
 					break;
 			}
 
-			retVal.DeliveryDate = value.DeliveryDate.ToDateTime().Value.ToLongDateFormat();
-			retVal.InvoiceNumber = value.InvoiceNumber.Trim();
-			retVal.InvoiceStatus = "N/A";
-			retVal.ItemCount = value.OrderDetails == null ? 0 : value.OrderDetails.Count;
-            retVal.CreatedDate = DateTime.SpecifyKind(value.CreatedUtc.ToLocalTime(), DateTimeKind.Unspecified);
-			retVal.RequestedShipDate = value.DeliveryDate.ToDateTime().Value.ToLongDateFormat();
-			retVal.IsChangeOrderAllowed = false;
-			retVal.CommerceId = Guid.Empty;
-            FillEtaInformation(value, retVal);
-			retVal.PONumber = value.PONumber;
-            retVal.IsSpecialOrder = value.IsSpecialOrder;
-		    retVal.OrderTotal = (double)value.OrderSubtotal;
+            order.CreatedDate = DateTime.SpecifyKind(entity.CreatedUtc.ToLocalTime(), DateTimeKind.Unspecified);
+
+            if (string.IsNullOrWhiteSpace(entity.OrderDateTime) == false)
+            {
+                var orderDateTime = entity.OrderDateTime.ToDateTime();
+                if (orderDateTime.HasValue)
+                {
+                    order.CreatedDate = orderDateTime.Value;
+                }
+            }
+
+            order.DeliveryDate = entity.DeliveryDate.ToDateTime().Value.ToLongDateFormat();
+			order.InvoiceNumber = entity.InvoiceNumber.Trim();
+			order.InvoiceStatus = "N/A";
+			order.ItemCount = entity.OrderDetails == null ? 0 : entity.OrderDetails.Count;
+
+            order.RequestedShipDate = entity.DeliveryDate.ToDateTime().Value.ToLongDateFormat();
+			order.IsChangeOrderAllowed = false;
+			order.CommerceId = Guid.Empty;
+            FillEtaInformation(entity, order);
+			order.PONumber = entity.PONumber;
+            order.IsSpecialOrder = entity.IsSpecialOrder;
+		    order.OrderTotal = (double)entity.OrderSubtotal;
             
+            order.OrderSystem = new OrderSource().Parse(entity.OrderSystem).ToString(); 
 
-            retVal.OrderSystem = new OrderSource().Parse(value.OrderSystem).ToString(); 
-
-			if (value.OrderDetails != null && value.OrderDetails.Count > 0)
+			if (entity.OrderDetails != null && entity.OrderDetails.Count > 0)
 			{
-				System.Collections.Concurrent.BlockingCollection<OrderLine> lineItems = new System.Collections.Concurrent.BlockingCollection<OrderLine>();
+				var lineItems = new BlockingCollection<OrderLine>();
 
-                Parallel.ForEach(value.OrderDetails, d => {
-                    lineItems.Add(d.ToOrderLine(value.OrderStatus));
-                });
+                Parallel.ForEach(entity.OrderDetails, d => 
+                    {
+                        lineItems.Add(d.ToOrderLine(entity.OrderStatus));
+                    });
 
-				retVal.Items = lineItems.OrderBy(i => i.LineNumber).ToList();
+				order.Items = lineItems.OrderBy(i => i.LineNumber).ToList();
 			}
 
-			return retVal;
+			return order;
 		}
 
-		public static Order ToOrderHeaderOnly(this EF.OrderHistoryHeader value)
+		public static Order ToOrderHeaderOnly(this EF.OrderHistoryHeader entity)
 		{
-			Order retVal = new Order();
+			Order order = new Order();
 
-			retVal.OrderNumber = value.InvoiceNumber;
+			order.OrderNumber = entity.InvoiceNumber;
 
-			switch (value.OrderStatus.Trim())
+			switch (entity.OrderStatus.Trim())
 			{
 				case "":
-					retVal.Status = "Ordered";
+					order.Status = "Ordered";
 					break;
 				case "I":
-					retVal.Status = "Invoiced";
+					order.Status = "Invoiced";
 					break;
 				case "P":
-					retVal.Status = "Processing";
+					order.Status = "Processing";
 					break;
 				default:
-					retVal.Status = "Unknown";
+					order.Status = "Unknown";
 					break;
 			}
 
-			retVal.DeliveryDate = value.DeliveryDate.ToDateTime().Value.ToLongDateFormat();
-			retVal.InvoiceNumber = value.InvoiceNumber.Trim();
-			retVal.InvoiceStatus = "N/A";
-			retVal.ItemCount = value.OrderDetails == null ? 0 : value.OrderDetails.Count;
-            retVal.OrderTotal = (double)value.OrderDetails.Sum(d => d.ShippedQuantity * d.SellPrice); 
-			retVal.CreatedDate = DateTime.SpecifyKind(value.CreatedUtc.ToLocalTime(), DateTimeKind.Unspecified);
-            retVal.RequestedShipDate = value.DeliveryDate.ToDateTime().Value.ToLongDateFormat();
-			retVal.IsChangeOrderAllowed = false;
-			retVal.CommerceId = Guid.Empty;
-            FillEtaInformation(value, retVal);
+            order.CreatedDate = DateTime.SpecifyKind(entity.CreatedUtc.ToLocalTime(), DateTimeKind.Unspecified);
+            order.DeliveryDate = entity.DeliveryDate.ToDateTime().Value.ToLongDateFormat();
+			order.InvoiceNumber = entity.InvoiceNumber.Trim();
+			order.InvoiceStatus = "N/A";
+			order.ItemCount = entity.OrderDetails == null ? 0 : entity.OrderDetails.Count;
+            order.OrderTotal = (double)entity.OrderDetails.Sum(d => d.ShippedQuantity * d.SellPrice); 
+            order.RequestedShipDate = entity.DeliveryDate.ToDateTime().Value.ToLongDateFormat();
+			order.IsChangeOrderAllowed = false;
+			order.CommerceId = Guid.Empty;
+            FillEtaInformation(entity, order);
 
-			return retVal;
+			return order;
 		}
 
-        public static OrderHistoryHeader ToOrderHistoryHeader(this EF.OrderHistoryHeader value)
+        public static OrderHistoryHeader ToOrderHistoryHeader(this EF.OrderHistoryHeader entity)
         {
-            OrderHistoryHeader retVal = new OrderHistoryHeader();
+            OrderHistoryHeader header = new OrderHistoryHeader();
 
-            retVal.OrderSystem = OrderSource.Entree; // TODO: value.OrderSystem.ToShortString();
-            retVal.BranchId = value.BranchId;
-            retVal.CustomerNumber = value.CustomerNumber;
-            retVal.InvoiceNumber = value.InvoiceNumber;
-            retVal.DeliveryDate = value.DeliveryDate.ToDateTime().Value.ToLongDateFormat();
-            retVal.PONumber = value.PONumber;
-            retVal.ControlNumber = value.ControlNumber;
-            retVal.OriginalControlNumber = string.IsNullOrEmpty(value.OriginalControlNumber) ? value.ControlNumber.Trim() : value.OriginalControlNumber.Trim();
-            retVal.OrderStatus = value.OrderStatus;
-            retVal.FutureItems = value.FutureItems;
-            retVal.ErrorStatus = value.ErrorStatus;
-            retVal.RouteNumber = value.RouteNumber;
-            retVal.StopNumber = value.StopNumber;
+            header.OrderSystem = OrderSource.Entree; // TODO: entity.OrderSystem.ToShortString();
+            header.BranchId = entity.BranchId;
+            header.CustomerNumber = entity.CustomerNumber;
+            header.InvoiceNumber = entity.InvoiceNumber;
+            header.DeliveryDate = entity.DeliveryDate.ToDateTime().Value.ToLongDateFormat();
+            header.PONumber = entity.PONumber;
+            header.ControlNumber = entity.ControlNumber;
+            header.OriginalControlNumber = string.IsNullOrEmpty(entity.OriginalControlNumber) ? entity.ControlNumber.Trim() : entity.OriginalControlNumber.Trim();
+            header.OrderStatus = entity.OrderStatus;
+            header.FutureItems = entity.FutureItems;
+            header.ErrorStatus = entity.ErrorStatus;
+            header.RouteNumber = entity.RouteNumber;
+            header.StopNumber = entity.StopNumber;
 			
-            return retVal;
+            return header;
         }
 
-        public static OrderHistoryHeader ToOrderHistoryHeader(this CS.PurchaseOrder value, UserSelectedContext customerInfo, string specialCatalogId = null) {
-            OrderHistoryHeader retVal = new OrderHistoryHeader();
+        public static OrderHistoryHeader ToOrderHistoryHeader(this CS.PurchaseOrder value, UserSelectedContext customerInfo, string specialCatalogId = null)
+        {
+            OrderHistoryHeader header = new OrderHistoryHeader();
 
-            retVal.OrderSystem = OrderSource.Entree;
+            header.OrderSystem = OrderSource.Entree;
 
             //if (specialCatalogId == null) // TODO: What to do about branch for unfi?
-                retVal.BranchId = customerInfo.BranchId;
+                header.BranchId = customerInfo.BranchId;
             //else
-            //    retVal.BranchId = specialCatalogId;
+            //    header.BranchId = specialCatalogId;
 
-            retVal.CustomerNumber = customerInfo.CustomerId;
-            retVal.InvoiceNumber = value.Properties["MasterNumber"] == null ? "Processing" : value.Properties["MasterNumber"].ToString();
-            retVal.DeliveryDate = value.Properties["RequestedShipDate"].ToString().ToDateTime().Value.ToLongDateFormat();
-            retVal.PONumber = value.Properties["PONumber"] == null ? string.Empty : value.Properties["PONumber"].ToString();
-            retVal.ControlNumber = value.Properties["OrderNumber"].ToString();
-            retVal.OriginalControlNumber = value.Properties["OrderNumber"].ToString();
+            header.CustomerNumber = customerInfo.CustomerId;
+            header.InvoiceNumber = value.Properties["MasterNumber"] == null ? "Processing" : value.Properties["MasterNumber"].ToString();
+            header.DeliveryDate = value.Properties["RequestedShipDate"].ToString().ToDateTime().Value.ToLongDateFormat();
+            header.PONumber = value.Properties["PONumber"] == null ? string.Empty : value.Properties["PONumber"].ToString();
+            header.ControlNumber = value.Properties["OrderNumber"].ToString();
+            header.OriginalControlNumber = value.Properties["OrderNumber"].ToString();
 
             // OrderStatus for Order History is either a blank space (normal), I (invoiced), D (deleted), or P (processing)
-            //retVal.OrderStatus = System.Text.RegularExpressions.Regex.Replace(value.Status, "([a-z])([A-Z])", "$1 $2");
-            retVal.OrderStatus = string.Empty;
+            //header.OrderStatus = System.Text.RegularExpressions.Regex.Replace(header.Status, "([a-z])([A-Z])", "$1 $2");
+            header.OrderStatus = string.Empty;
 
-            return retVal;
+            return header;
         }
         #endregion
     }

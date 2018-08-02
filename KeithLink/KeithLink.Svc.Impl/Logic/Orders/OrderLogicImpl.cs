@@ -232,10 +232,8 @@ namespace KeithLink.Svc.Impl.Logic.Orders {
             UpdateOrderForShipDate(context, null, returnOrder);
             returnOrder.OrderTotal = returnOrder.Items.Sum(i => i.LineTotal);
 
-            try {
-                returnOrder.ListId = _order2ListRepo.Read(returnOrder.OrderNumber)
-                                                    .ListId;
-            } catch {}
+            OrderedFromList o2l = _order2ListRepo.Read(returnOrder.OrderNumber);
+            returnOrder.ListId = o2l?.ListId;
 
             return returnOrder;
         }
