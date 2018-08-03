@@ -183,7 +183,7 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic.Cache
                 };
 
                 // act
-                List<ListModel> results = testunit.GetCachedCustomerLists(testContext);
+                List<ListModel> results = testunit.GetCachedCustomerLists(testContext,false);
 
                 // assert
                 mockDependents.CacheRepository.Verify(
@@ -212,7 +212,7 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic.Cache
                 var lists = new List<ListModel>();
 
                 // act
-                testunit.AddCachedCustomerLists(testContext, lists);
+                testunit.AddCachedCustomerLists(testContext, lists, false);
 
                 // assert
                 mockDependents.CacheRepository.Verify(m => m.AddItem(It.IsAny<string>(),

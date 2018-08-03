@@ -450,7 +450,9 @@
     <Compile Include="Models\Lists\InventoryValuationList\InventoryValuationListHeader.cs" />
     <Compile Include="Models\Lists\CustomInventoryImportModel.cs" />
     <Compile Include="Models\Lists\CustomInventoryImportFileModel.cs" />
+    <Compile Include="Models\Lists\ListItemIntegrationsReturnModel.cs" />
     <Compile Include="Models\Lists\ListItemReportModel.cs" />
+    <Compile Include="Models\Lists\ListModelIntegrationsReturnModel.cs" />
     <Compile Include="Models\Lists\ListReportModel.cs" />
     <Compile Include="Models\EF\PasswordResetRequest.cs" />
     <Compile Include="Models\Lists\MandatoryItems\MandatoryItemsListDetail.cs" />

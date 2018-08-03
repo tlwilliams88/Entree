@@ -192,6 +192,26 @@ namespace KeithLink.Svc.Core.Extensions
 
             return items;
         }
+        public static ListModelIntegrationsReturnModel ToListModelIntegrationsReturnModel(this ListModel list)
+        {
+            return new ListModelIntegrationsReturnModel()
+            {
+                ListId = list.ListId,
+                Name = list.Name,
+                Type = list.Type,
+                Items = list.Items.OrderBy(m => m.Position).Select(i => new ListItemIntegrationsReturnModel()
+                {
+                    ItemNumber = i.ItemNumber,
+                    Name = i.Name,
+                    Brand = i.BrandExtendedDescription,
+                    CasePrice = i.CasePrice,
+                    UPC = i.UPC,
+                    Pack = i.Pack,
+                    Size = i.Size
+                }).ToList()
+            };
+        }
+
         #endregion
     }
 }
