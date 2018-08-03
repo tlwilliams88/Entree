@@ -8,7 +8,7 @@
  * Controller of the bekApp
  */
 angular.module('bekApp')
-  .controller('SearchController', ['$scope', '$state', '$stateParams', '$modal', '$analytics', '$filter', '$timeout', 'ProductService', 'CategoryService', 'Constants', 'PricingService', 'CartService', 'ApplicationSettingsService', 'UtilityService', 'blockUI', 'LocalStorage', 'SessionService', 'campaignInfo', 'ENV', 'AnalyticsService',
+  .controller('SearchController', ['$scope', '$state', '$stateParams', '$modal', '$analytics', '$filter', '$timeout', 'ProductService', 'CategoryService', 'Constants', 'PricingService', 'CartService', 'ApplicationSettingsService', 'UtilityService', 'blockUI', 'LocalStorage', 'SessionService', 'campaignInfo', 'ENV', 'AnalyticsService', 'SessionRecordingService',
     function(
       $scope, $state, $stateParams, // angular dependencies
       $modal, // ui bootstrap library
@@ -21,7 +21,7 @@ angular.module('bekApp')
       SessionService,
       campaignInfo, 
       ENV,
-      AnalyticsService
+      AnalyticsService, SessionRecordingService
     ) {
 
     // $scope.$on('$stateChangeStart',
@@ -72,6 +72,7 @@ angular.module('bekApp')
     if($scope.paramType != null &&
        $scope.paramId != null){
       LocalStorage.setSearchTerms($scope.paramType + ": " + $scope.paramId);
+      SessionRecordingService.tagSearch($scope.paramType + ": " + $scope.paramId);
     }
     else{
       if($scope.$resolve != null &&
@@ -87,7 +88,7 @@ angular.module('bekApp')
           LocalStorage.getCustomerNumber(),
           LocalStorage.getBranchId());
 
-        
+          SessionRecordingService.tagCampaignView($scope.$resolve.campaignInfo.name);
       }
     }
 

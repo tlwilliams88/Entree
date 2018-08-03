@@ -22,6 +22,7 @@ angular.module('bekApp')
   'localStorageService', 'CategoryService', 
   'BranchService', 'ConfigSettingsService',
   'DocumentService',
+  'UserProfileService', 'SessionRecordingService',
     function (
       $scope, $timeout, $rootScope, $modalStack, $state, $q, $log, $window,  // built in angular services
       $modal,   // ui-bootstrap library
@@ -39,7 +40,8 @@ angular.module('bekApp')
       CategoryService,
       BranchService,
       ConfigSettingsService,
-      DocumentService
+      DocumentService,
+      UserProfileService, SessionRecordingService
     ) {
 
   $scope.$state = $state;
@@ -320,6 +322,9 @@ angular.module('bekApp')
   $scope.changeCustomerLocation = function(selectedUserContext) {
     LocalStorage.setTempContext(selectedUserContext);
     LocalStorage.setSelectedCustomerInfo(selectedUserContext);
+
+    SessionRecordingService.tagCustomer(LocalStorage.getCustomerNumber());
+
     $state.go('menu.home');
     refreshPage();
   };

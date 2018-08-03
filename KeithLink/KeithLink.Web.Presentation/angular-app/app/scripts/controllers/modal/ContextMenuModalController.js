@@ -1,8 +1,8 @@
 'use strict';
 
 angular.module('bekApp')
-.controller('ContextMenuModalController', ['$scope', '$state', '$modalInstance', 'item', 'CartService', 'carts', 'lists', 'changeOrders', 'recommendationType', 'trackingkey', '$q', 'ListService', '$rootScope', 'OrderService', 'AnalyticsService', 'Constants', '$filter',
-  function ($scope, $state, $modalInstance, item, CartService, carts, lists, changeOrders, recommendationType, trackingkey, $q, ListService, $rootScope, OrderService, AnalyticsService, Constants, $filter) {
+.controller('ContextMenuModalController', ['$scope', '$state', '$modalInstance', 'item', 'CartService', 'carts', 'lists', 'changeOrders', 'recommendationType', 'trackingkey', '$q', 'ListService', '$rootScope', 'OrderService', 'AnalyticsService', 'Constants', '$filter', 'SessionRecordingService',
+  function ($scope, $state, $modalInstance, item, CartService, carts, lists, changeOrders, recommendationType, trackingkey, $q, ListService, $rootScope, OrderService, AnalyticsService, Constants, $filter, SessionRecordingService) {
 
 	$scope.currentLocation = $state.current.name;
 	
@@ -70,7 +70,9 @@ angular.module('bekApp')
 	
 			if(recommendationType && recommendationType != undefined && newItem.orderedfromsource == null) {
 			  newItem.orderedfromsource = recommendationType;
-			  newItem.trackingkey = trackingkey;
+				newItem.trackingkey = trackingkey;
+				
+				SessionRecordingService.tagAddRecommendedItem(recommendationType + ';' + trackingkey + '=' + item.itemNumber);
 			}
 			CartService.addItemToCart(cartId, newItem).then(function(data) {
 			  $scope.cancel();
@@ -112,7 +114,9 @@ angular.module('bekApp')
 			listToBeUsed = customList[0];
 		  }
 		  
-		  CartService.createCart(items, null, null, null, listToBeUsed.listid, listToBeUsed.type).then(function(data) {
+			SessionRecordingService.tagAddRecommendedItem(recommendationType + ';' + trackingkey + '=' + items[0].itemNumber);
+
+			CartService.createCart(items, null, null, null, listToBeUsed.listid, listToBeUsed.type).then(function(data) {
 			$scope.cancel();
 			$scope.displayMessage('success', 'Successfully created new cart ' + data.name + '.');
 		  }, function() {

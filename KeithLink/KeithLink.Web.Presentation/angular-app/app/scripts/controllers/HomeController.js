@@ -24,12 +24,9 @@ angular.module('bekApp')
         guiders.hideAll();
     });
 
-    var isMobileApp = ENV.mobileApp;
-
-    if((ENV.name == 'test' || ENV.name == 'prod') && isMobileApp == false){
       SessionRecordingService.identify(SessionService.userProfile.emailaddress);
       SessionRecordingService.tagEmail(SessionService.userProfile.emailaddress);
-    };
+      SessionRecordingService.tagEnvironment();
 
     CartService.getCartHeaders().then(function(carts){
         $scope.cartHeaders = carts;
