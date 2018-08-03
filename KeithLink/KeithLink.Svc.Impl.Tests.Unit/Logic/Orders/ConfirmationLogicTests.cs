@@ -50,11 +50,8 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic.Orders
 
                 // act
                 Action listenForMainFrameCalls = () => testunit.ListenForMainFrameCalls();
-                listenForMainFrameCalls.Invoke();
 
                 // assert
-                mockDependents.MockSocketListenerRepository
-                    .Verify(m => m.Listen(It.IsAny<int>()), Times.Once, "not called.");
                 listenForMainFrameCalls.Should().NotThrow();
             }
 

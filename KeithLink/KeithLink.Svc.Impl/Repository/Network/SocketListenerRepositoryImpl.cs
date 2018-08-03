@@ -50,17 +50,26 @@ namespace KeithLink.Svc.Impl.Repository.Network
             _disposed = true;
         }
 
-        private void BindSocketToPort(Socket socket, IPEndPoint endPoint)
+        public void BindSocketToPort(Socket socket, IPEndPoint endPoint)
         {
             int attempts = 0;
 
             while (socket.IsBound == false)
             {
                 attempts++;
-                if (attempts % 60 == 0)
+
+                if (attempts == 300)    // 5 minutes @ 1 attempt per second
                 {
-                    _log.WriteInformationLog
-                        (string.Format("A socket listener is having trouble obtaining a port: {0}", endPoint.Port));
+                    string errorMessage = string.Format("A socket listener has reached a limit of {0} attempts to obtain port {1}.", attempts, endPoint.Port);
+                    _log.WriteErrorLog(errorMessage);
+
+                    throw new ApplicationException(errorMessage);
+                }
+
+                if (attempts % 10 == 0)    // 1 minutes @ 1 attempt per second
+                {
+                    string warningMessage = string.Format("A socket listener has made {0} attempts to obtain port {1}.", attempts, endPoint.Port);
+                    _log.WriteWarningLog(warningMessage);
                 }
 
                 try
