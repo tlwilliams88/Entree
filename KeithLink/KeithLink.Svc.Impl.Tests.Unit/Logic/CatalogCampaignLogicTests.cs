@@ -12,6 +12,7 @@ using KeithLink.Svc.Core.Interface.Marketing;
 using KeithLink.Svc.Core.Models.Marketing;
 using KeithLink.Svc.Core.Models.SiteCatalog;
 using KeithLink.Svc.Impl.Logic;
+using KeithLink.Svc.Impl.Seams;
 
 namespace KeithLink.Svc.Impl.Tests.Unit.Logic {
     public class CatalogCampaignLogicTests {
@@ -199,9 +200,12 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic {
                     CustomerId = "999999"
                 };
                 var expected = 1;
+                BEKConfiguration.Add("CampaignImagesUrl", "http://test/");
 
                 // act
                 var test = logic.GetAllAvailableCampaigns(context);
+
+                BEKConfiguration.Reset();
 
                 // assert
                 test.campaigns
@@ -219,9 +223,12 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic {
                     CustomerId = "123456"
                 };
                 var expected = 2;
+                BEKConfiguration.Add("CampaignImagesUrl", "http://test/");
 
                 // act
                 var test = logic.GetAllAvailableCampaigns(context);
+
+                BEKConfiguration.Reset();
 
                 // assert
                 test.campaigns
@@ -240,9 +247,12 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic {
                     CustomerId = "999999"
                 };
                 var expected = 1;
+                BEKConfiguration.Add("CampaignImagesUrl", "http://test/");
 
                 // act
                 var test = logic.GetAllAvailableCampaigns(context);
+
+                BEKConfiguration.Reset();
 
                 // assert
                 repo.Verify(r => r.GetAll(), 
@@ -259,9 +269,12 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic {
                     CustomerId = "123456"
                 };
                 var expected = 1;
+                BEKConfiguration.Add("CampaignImagesUrl", "http://test/");
 
                 // act
                 var test = logic.GetAllAvailableCampaigns(context);
+
+                BEKConfiguration.Reset();
 
                 // assert
                 repo.Verify(r => r.GetAll(),
@@ -278,9 +291,12 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic {
                     CustomerId = "123456"
                 };
                 var expected = 2;
+                BEKConfiguration.Add("CampaignImagesUrl", "http://test/");
 
                 // act
                 var test = logic.GetAllAvailableCampaigns(context);
+
+                BEKConfiguration.Reset();
 
                 // assert
                 repo.Verify(r => r.GetAllCustomersByCampaign(It.IsAny<long>()),
@@ -297,9 +313,12 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic {
                     CustomerId = "999999"
                 };
                 var expected = 2;
+                BEKConfiguration.Add("CampaignImagesUrl", "http://test/");
 
                 // act
                 var test = logic.GetAllAvailableCampaigns(context);
+
+                BEKConfiguration.Reset();
 
                 // assert
                 repo.Verify(r => r.GetAllCustomersByCampaign(It.IsAny<long>()),
@@ -337,9 +356,12 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic {
                     CustomerId = "123456"
                 };
                 var expected = 1;
+                BEKConfiguration.Add("CampaignImagesUrl", "http://test/");
 
                 // act
                 var test = logic.GetAllAvailableCampaigns(context);
+
+                BEKConfiguration.Reset();
 
                 // assert
                 test.campaigns
@@ -378,9 +400,12 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic {
                 var logic = MakeLogic(headerRepo: headerRepo.Object);
                 var includeItems = false;
                 var expected = 1;
+                BEKConfiguration.Add("CampaignImagesUrl", "http://test/");
 
                 // act
                 logic.GetAllCampaigns(includeItems);
+
+                BEKConfiguration.Reset();
 
                 // assert
                 headerRepo.Verify(r => r.GetAll(),
@@ -394,9 +419,12 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic {
                 var logic = MakeLogic(headerRepo: headerRepo.Object);
                 var includeItems = true;
                 var expected = 1;
+                BEKConfiguration.Add("CampaignImagesUrl", "http://test/");
 
                 // act
                 logic.GetAllCampaigns(includeItems);
+
+                BEKConfiguration.Reset();
 
                 // assert
                 headerRepo.Verify(r => r.GetAll(),
@@ -410,9 +438,12 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic {
                 var logic = MakeLogic(itemRepo: itemRepo.Object);
                 var includeItems = false;
                 var expected = 0;
+                BEKConfiguration.Add("CampaignImagesUrl", "http://test/");
 
                 // act
                 logic.GetAllCampaigns(includeItems);
+
+                BEKConfiguration.Reset();
 
                 // assert
                 itemRepo.Verify(r => r.GetByCampaign(It.IsAny<long>()),
@@ -426,9 +457,12 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic {
                 var logic = MakeLogic(itemRepo: itemRepo.Object);
                 var includeItems = true;
                 var expected = 3;
+                BEKConfiguration.Add("CampaignImagesUrl", "http://test/");
 
                 // act
                 logic.GetAllCampaigns(includeItems);
+
+                BEKConfiguration.Reset();
 
                 // assert
                 itemRepo.Verify(r => r.GetByCampaign(It.IsAny<long>()),
@@ -443,12 +477,22 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic {
                 var logic = MakeLogic();
                 var id = 999;
                 var includeItems = false;
+                BEKConfiguration.Add("CampaignImagesUrl", "http://test/");
 
                 // act
-                Action act = () => logic.GetCampaign(id, includeItems);
-
-                // assert
-                act.Should().Throw<NullReferenceException>();
+                try
+                {
+                    var ret = logic.GetCampaign(id, includeItems);
+                }
+                catch
+                {
+                    // assert
+                    true.Should().BeTrue();
+                }
+                finally
+                {
+                    BEKConfiguration.Reset();
+                }
             }
 
             [Fact]
@@ -457,12 +501,22 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic {
                 var logic = MakeLogic();
                 var id = 999;
                 var includeItems = true;
+                BEKConfiguration.Add("CampaignImagesUrl", "http://test/");
 
                 // act
-                Action act = () => logic.GetCampaign(id, includeItems);
-
-                // assert
-                act.Should().Throw<NullReferenceException>();
+                try
+                {
+                    var ret = logic.GetCampaign(id, includeItems);
+                }
+                catch
+                {
+                    // assert
+                    true.Should().BeTrue();
+                }
+                finally
+                {
+                    BEKConfiguration.Reset();
+                }
             }
 
             [Fact]
@@ -473,9 +527,12 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic {
                 var id = 1;
                 var includeItems = false;
                 var expected = 1;
+                BEKConfiguration.Add("CampaignImagesUrl", "http://test/");
 
                 // act
                 var test = logic.GetCampaign(id, includeItems);
+
+                BEKConfiguration.Reset();
 
                 // assert
                 headerRepo.Verify(r => r.GetHeader(It.Is<int>(i => i == 1)),
@@ -490,9 +547,12 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic {
                 var id = 1;
                 var includeItems = false;
                 var expected = 0;
+                BEKConfiguration.Add("CampaignImagesUrl", "http://test/");
 
                 // act
                 var test = logic.GetCampaign(id, includeItems);
+
+                BEKConfiguration.Reset();
 
                 // assert
                 itemRepo.Verify(r => r.GetByCampaign(It.Is<int>(i => i == 1)), 
@@ -507,9 +567,12 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic {
                 var id = 1;
                 var includeItems = true;
                 var expected = 1;
+                BEKConfiguration.Add("CampaignImagesUrl", "http://test/");
 
                 // act
                 var test = logic.GetCampaign(id, includeItems);
+
+                BEKConfiguration.Reset();
 
                 // assert
                 itemRepo.Verify(r => r.GetByCampaign(It.Is<long>(i => i == 1)),
@@ -524,12 +587,22 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic {
                 var logic = MakeLogic();
                 var uri = "bad uri";
                 var includeItems = false;
+                BEKConfiguration.Add("CampaignImagesUrl", "http://test/");
 
                 // act
-                Action act = () => logic.GetCampaignByUri(uri, includeItems);
-
-                // assert
-                act.Should().Throw<NullReferenceException>();
+                try
+                {
+                    var ret = logic.GetCampaignByUri(uri, includeItems);
+                }
+                catch
+                {
+                    // assert
+                    true.Should().BeTrue();
+                }
+                finally
+                {
+                    BEKConfiguration.Reset();
+                }
             }
 
             [Fact]
@@ -538,12 +611,22 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic {
                 var logic = MakeLogic();
                 var uri = "bad uri";
                 var includeItems = true;
+                BEKConfiguration.Add("CampaignImagesUrl", "http://test/");
 
                 // act
-                Action act = () => logic.GetCampaignByUri(uri, includeItems);
-
-                // assert
-                act.Should().Throw<NullReferenceException>();
+                try
+                {
+                    var ret = logic.GetCampaignByUri(uri, includeItems);
+                }
+                catch
+                {
+                    // assert
+                    true.Should().BeTrue();
+                }
+                finally
+                {
+                    BEKConfiguration.Reset();
+                }
             }
 
             [Fact]
@@ -554,9 +637,12 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic {
                 var uri = "test uri.jpg";
                 var includeItems = false;
                 var expected = 1;
+                BEKConfiguration.Add("CampaignImagesUrl", "http://test/");
 
                 // act
                 var test = logic.GetCampaignByUri(uri, includeItems);
+
+                BEKConfiguration.Reset();
 
                 // assert
                 headerRepo.Verify(r => r.GetByUri(It.Is<string>(s => s == uri)),
@@ -571,9 +657,12 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic {
                 var uri = "test uri.jpg";
                 var includeItems = false;
                 var expected = 0;
+                BEKConfiguration.Add("CampaignImagesUrl", "http://test/");
 
                 // act
                 var test = logic.GetCampaignByUri(uri, includeItems);
+
+                BEKConfiguration.Reset();
 
                 // assert
                 itemRepo.Verify(r => r.GetByCampaign(It.Is<int>(i => i == 1)),
@@ -588,9 +677,12 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic {
                 var uri = "test uri.jpg";
                 var includeItems = true;
                 var expected = 1;
+                BEKConfiguration.Add("CampaignImagesUrl", "http://test/");
 
                 // act
                 var test = logic.GetCampaignByUri(uri, includeItems);
+
+                BEKConfiguration.Reset();
 
                 // assert
                 itemRepo.Verify(r => r.GetByCampaign(It.Is<long>(i => i == 1)),

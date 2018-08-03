@@ -569,7 +569,7 @@ namespace KeithLink.Svc.Impl.Repository.Profile
                 if (cachedallDsrInfo == null) {
                     var dsrInfo = _dsrLogic.GetAllDsrInfo();
 
-                    if(dsrInfo == null || dsrInfo.Count == 0) {
+                     if(dsrInfo == null || dsrInfo.Count == 0) {
                         _logger.WriteErrorLog("No DSRs returned from RetrieveDsrList in CustomerRepository, is BranchSupport.Dsrs populated?");
 
                         return new Dictionary<string, Dsr>();
