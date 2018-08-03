@@ -30,23 +30,14 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic.Orders
 {
     public class OrderQueueLogicTests : BaseDITests
     {
-        #region ParseMainframeFile
+        #region SendToHost
         public class SendToHost
         {
             [Fact]
-            public void NoExceptions()
+            public void WhenOrderTransmissionIsSuccessful_HasNoExceptions()
             {
                 // arrange
-                const string transactionReady = Constants.MAINFRAME_RECEIVE_STATUS_GO;
-                const string received = Constants.MAINFRAME_RECEIVE_STATUS_GOOD_RETURN;
-                const string wait = Constants.MAINFRAME_RECEIVE_STATUS_WAITING;
-                const string cancelled = Constants.MAINFRAME_RECEIVE_STATUS_CANCELLED;
-
-                List<string> successfulResponseSequence = new List<string>
-                {
-                    transactionReady, received, wait, received, wait, received
-                };
-                Queue<string> successfulResponseQueue = new Queue<string>(successfulResponseSequence);
+                Queue<string> successfulResponseQueue = GetSuccessfulResponseQueue();
 
                 MockDependents mockDependents = new MockDependents();
                 mockDependents.MockOrderSocketConnectionRepository
@@ -65,7 +56,52 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic.Orders
             }
 
             [Fact]
-            public void HandlesTimeout()
+            public void WhenOrderTransmissionIsSuccessful_ExecutesInReasonableTimeSpan()
+            {
+                Queue<string> successfulResponseQueue = GetSuccessfulResponseQueue();
+
+                MockDependents mockDependents = new MockDependents();
+                mockDependents.MockOrderSocketConnectionRepository
+                    .Setup(m => m.Receive())
+                    .Returns(() => successfulResponseQueue.Dequeue());
+
+                IOrderQueueLogic testunit = MakeUnitToBeTested(true, mockDependents);
+
+                // act
+                string jsonOrderFile = GetMockData("OrderFile.json");
+                OrderFile order = JsonConvert.DeserializeObject<OrderFile>(jsonOrderFile);
+                Action sendToHost = () => testunit.SendToHost(order);
+
+                // assert
+                sendToHost.ExecutionTime().Should().BeLessOrEqualTo(TimeSpan.FromMilliseconds(1000));
+            }
+
+            [Fact]
+            public void WhenOrderTransmissionIsSuccessful_InvokesReceive()
+            {
+                // arrange
+                Queue<string> successfulResponseQueue = GetSuccessfulResponseQueue();
+
+                MockDependents mockDependents = new MockDependents();
+                mockDependents.MockOrderSocketConnectionRepository
+                    .Setup(m => m.Receive())
+                    .Returns(() => successfulResponseQueue.Dequeue());
+
+                IOrderQueueLogic testunit = MakeUnitToBeTested(true, mockDependents);
+
+                // act
+                string jsonOrderFile = GetMockData("OrderFile.json");
+                OrderFile order = JsonConvert.DeserializeObject<OrderFile>(jsonOrderFile);
+                Action sendToHost = () => testunit.SendToHost(order);
+                sendToHost.Invoke();
+
+                // assert
+                mockDependents.MockOrderSocketConnectionRepository
+                    .Verify(m => m.Receive(), Times.Exactly(6), "not called.");
+            }
+
+            [Fact]
+            public void WhenMainframeDoesNotRespond_ThrowsTimeoutException()
             {
                 // arrange
                 int WSAETIMEDOUT = 10060;
@@ -91,7 +127,7 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic.Orders
             }
 
             [Fact]
-            public void HandlesConnectionReset()
+            public void WhenMainframeTransactionFails_ThrowsHostTransactionFailureException()
             {
                 // arrange
                 int WSAECONNRESET = 10054;
@@ -114,6 +150,22 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic.Orders
                     .WithInnerException<SocketResponseException>()
                     .WithInnerException<IOException>()
                     .WithMessage("*connection was forcibly closed by the remote host*");
+            }
+
+            private Queue<string> GetSuccessfulResponseQueue()
+            {
+                const string transactionReady = Constants.MAINFRAME_RECEIVE_STATUS_GO;
+                const string received = Constants.MAINFRAME_RECEIVE_STATUS_GOOD_RETURN;
+                const string wait = Constants.MAINFRAME_RECEIVE_STATUS_WAITING;
+                const string cancelled = Constants.MAINFRAME_RECEIVE_STATUS_CANCELLED;
+
+                List<string> successfulResponseSequence = new List<string>
+                {
+                    transactionReady, received, wait, received, wait, received
+                };
+                Queue<string> successfulResponseQueue = new Queue<string>(successfulResponseSequence);
+
+                return successfulResponseQueue;
             }
 
             private Exception BuildMockException(int errorCode)
