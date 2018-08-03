@@ -123,7 +123,7 @@
     type="submit"
     class="btn-no-style page-subheader-bar__button button-left"
     ng-disabled="listForm.$invalid"
-    ng-click="saveCustomInventoryList(selectedList)">
+    ng-click="saveCustomInventoryList(selectedList.items)">
     Save
   </button>
 
@@ -1215,6 +1215,6 @@
 
   <a ng-if="isMobileDevice" class='back-to-top icon-arrow-up2 text-blue pull-right' ng-click='scrollToTop()' style='display: inline;'></a>
   <a type="submit"  ng-if="isMobileDevice && selectedList.permissions.canEditList && !isCustomInventoryList" class='floating-save-mobile icon-floppy-disk text-blue' ng-disabled="listForm.$invalid" ng-click='saveList(selectedList)'></a>
-  <a type="submit"  ng-if="isMobileDevice && selectedList.permissions.canEditList && isCustomInventoryList" class='floating-save-mobile icon-floppy-disk text-blue' ng-disabled="listForm.$invalid" ng-click='saveCustomInventoryList(selectedList)'></a>
+  <a type="submit"  ng-if="isMobileDevice && selectedList.permissions.canEditList && isCustomInventoryList" class='floating-save-mobile icon-floppy-disk text-blue' ng-disabled="listForm.$invalid" ng-click='saveCustomInventoryList(selectedList.items)'></a>
 
 </div>

@@ -9,9 +9,9 @@
  */
 angular.module('bekApp')
   .controller('ListController', ['$scope', '$filter', '$timeout', '$state', '$stateParams', '$modal', 'blockUI', 'originalList',
-   'Constants', 'ListService', 'CartService', 'PricingService', 'ListPagingModel', 'LocalStorage', 'UtilityService', 'DateService', 'ProductService', 'OrderService',
+   'Constants', 'ListService', 'CartService', 'PricingService', 'ListPagingModel', 'LocalStorage', 'UtilityService', 'DateService', 'ProductService', 'OrderService', 'toaster',
     function($scope, $filter, $timeout, $state, $stateParams, $modal, blockUI, originalList, Constants, ListService, CartService,
-     PricingService, ListPagingModel, LocalStorage, UtilityService, DateService, ProductService, OrderService) {
+     PricingService, ListPagingModel, LocalStorage, UtilityService, DateService, ProductService, OrderService, toaster) {
          
     $scope.addToQty = 1;
 
@@ -478,6 +478,7 @@ angular.module('bekApp')
         $scope.selectedList.isRenaming = isCustomList ? true : false;
 
         setLastList($scope.selectedList)
+        $scope.isCustomInventoryList = false;
         $state.transitionTo('menu.lists.items',
             {listId: $scope.selectedList.listid, listType: $scope.selectedList.type},
             {location: true, reload: false, notify: false}
@@ -579,52 +580,61 @@ angular.module('bekApp')
 
     var processingSaveList = false;
     $scope.saveList = function(list, addingItem) {
-      var params = {
+      if(list.listid === 'nonbeklist'){
+        return $scope.saveCustomInventoryList(list.items);
+      }
+      else{
+        var params = {
           from: $scope.rangeStart - 1,
           size: $scope.pagingPageSize,
           sort: $scope.sort
         };
 
-      if (!processingSaveList) {
-        processingSaveList = true;
-        $scope.selectedList.items.forEach(function(item){
-            if(item.isEditing == true) {
-                item.isEditing = false;
+        if (!processingSaveList) {
+          processingSaveList = true;
+          $scope.selectedList.items.forEach(function(item){
+              if(item.isEditing == true) {
+                  item.isEditing = false;
+              }
+          })
+
+          unselectAllDraggedItems();
+          var updatedList = angular.copy(list);
+
+          angular.forEach(updatedList.items, function(item, itemIndex) {
+            if (item.listitemid) {
+              if (item.editLabel && item.isEditing) {
+                item.label = item.editLabel;
+              }
+              item.position = item.editPosition;
+              item.isEditing = false;
             }
-        })
-
-        unselectAllDraggedItems();
-        var updatedList = angular.copy(list);
-
-        angular.forEach(updatedList.items, function(item, itemIndex) {
-          if (item.listitemid) {
-            if (item.editLabel && item.isEditing) {
-              item.label = item.editLabel;
-            }
-            item.position = item.editPosition;
-            item.isEditing = false;
-          }
-        });
-
-       blockUI.start('Saving List...').then(function(){
-        return ListService.updateList(updatedList, false, params, addingItem)
-          .then(resetPage(updatedList)).finally(function() {
-            processingSaveList = false;
           });
-        })
-      }
+
+         blockUI.start('Saving List...').then(function(){
+          return ListService.updateList(updatedList, false, params, addingItem)
+            .then(resetPage(updatedList)).finally(function() {
+              processingSaveList = false;
+            });
+          })
+        }
+      }      
     };
 
     $scope.renameList = function (listId, listName) {
-        $scope.selectedList.name = listName;
-        originalList.name = $scope.selectedList.name;
-        $scope.saveList($scope.selectedList);
-        // update cached list name
-        $scope.lists.forEach(function(list) {
-            if (list.listid === listId) {
-                list.name = listName;
-            }
-        });
+      if(listName === 'Non BEK Items'){
+       toaster.pop('error', 'Please choose a different name for this list.');
+       return;
+      }
+      $scope.selectedList.name = listName;
+      originalList.name = $scope.selectedList.name;
+      $scope.saveList($scope.selectedList);
+      // update cached list name
+      $scope.lists.forEach(function(list) {
+          if (list.listid === listId) {
+              list.name = listName;
+          }
+      });
     };
 
     $scope.cancelRenameList = function() {
