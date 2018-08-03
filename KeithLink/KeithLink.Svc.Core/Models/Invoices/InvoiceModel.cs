@@ -190,6 +190,9 @@ namespace KeithLink.Svc.Core.Models.Invoices
                 case "CustomerNumber":
                     width = Constants.OPENXML_EXPORT_WIDTH_PIXELS_20;
                     break;
+                case "CustomerName":
+                    width = Constants.OPENXML_EXPORT_WIDTH_PIXELS_25;
+                    break;
             }
             return width;
         }
