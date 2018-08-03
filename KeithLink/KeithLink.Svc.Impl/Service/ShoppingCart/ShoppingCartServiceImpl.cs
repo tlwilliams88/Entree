@@ -2,6 +2,7 @@
 using KeithLink.Svc.Core.Interface.Cart;
 using KeithLink.Svc.Core.Interface.Profile;
 using KeithLink.Svc.Core.Interface.Orders;
+using KeithLink.Svc.Core.Interface.Customers;
 
 using KeithLink.Svc.Core.Models.Customers;
 using KeithLink.Svc.Core.Models.Orders;
@@ -28,16 +29,18 @@ namespace KeithLink.Svc.Impl.Service.ShoppingCart
         private readonly IShoppingCartLogic _shoppingCartLogic;
         private readonly IShipDateRepository _shipDateRepository;
         private readonly IUserProfileLogic _profileLogic;
+        private readonly IMinimumOrderAmountRepository _minimumAmountRepo;
         #endregion
 
         #region constructor
-        public ShoppingCartServiceImpl(IShoppingCartLogic cartLogic, ICustomerRepository customerRepo, IUserProfileLogic profileLogic, IEventLogRepository log, IShipDateRepository shipDateRepo)
+        public ShoppingCartServiceImpl(IShoppingCartLogic cartLogic, ICustomerRepository customerRepo, IUserProfileLogic profileLogic, IEventLogRepository log, IShipDateRepository shipDateRepo, IMinimumOrderAmountRepository minimumAmountRepo)
         {
             _shoppingCartLogic = cartLogic;
             _customerRepo = customerRepo;
             _profileLogic = profileLogic;
             _shipDateRepository = shipDateRepo;
             _log = log;
+            _minimumAmountRepo = minimumAmountRepo;
         }
         #endregion
 
@@ -76,6 +79,29 @@ namespace KeithLink.Svc.Impl.Service.ShoppingCart
             newCart.RequestedShipDate = validDates.ShipDates.FirstOrDefault().Date;
 
             return _shoppingCartLogic.CreateCart(user, context, newCart);
+        }
+
+        public ApprovedCartModel ValidateCartAmount(UserSelectedContext customer, decimal cartTotal)
+        {
+
+            ApprovedCartModel ret = new ApprovedCartModel();
+
+            try
+            {
+                MinimumOrderAmountModel minimumOrderAmount = _minimumAmountRepo.GetMinimumOrderAmount(customer.CustomerId, customer.BranchId);
+
+                ret.ApprovedAmount = minimumOrderAmount.ApprovedAmount;
+
+                ret.ApprovedOrDenied = ret.ApprovedAmount < cartTotal;
+                
+            }
+            catch (Exception ex)
+            {
+
+            }
+
+            return ret;
+
         }
         #endregion
 
