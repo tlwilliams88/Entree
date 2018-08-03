@@ -228,11 +228,16 @@
                 id="categoryId_{{parentcategory.name}}"
                 ng-checked="  parentcategories.selected.indexOf(parentcategory.name) > -1 || parentcategory.name === featuredBreadcrumb.displayText"
                 ng-click="toggleSelection(true, parentcategories.selected, parentcategory.name, '', $index); $event.stopPropagation();">
-              <label
-                ng-class="{active:   parentcategories.selected.indexOf(parentcategory.name) > -1}">
-                <span class="category-description-md">
+              <label class="width-100Percent"
+                     ng-class="{active:   parentcategories.selected.indexOf(parentcategory.name) > -1}">
+                <span class="pull-left margin-top-10 category-description-md">
                   {{::parentcategory.name}} <span ng-show="parentcategory.count > 0">({{parentcategory.count}})</span>
                 </span>
+                <a class="pull-right margin-right-10" title="Equipment and Supplies Portfolio"
+                   ng-if="parentcategory.name == 'Equip & Supply'"
+                   ng-click="openExternalLink(flipsnackUrl)">
+                  <img src="images/Keith-Kitchen-Essentials.jpg" />
+                </a>
               </label>
             </div>
             <ul class="subcategories_{{$index}} subcategory-description-md">

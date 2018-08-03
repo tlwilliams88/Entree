@@ -21,7 +21,7 @@ using System.Threading.Tasks;
 using KeithLink.Svc.Core.Interface.Lists;
 
 namespace KeithLink.Svc.Windows.QueueService {
-    partial class QueueService : ServiceBase {
+    public partial class QueueService : ServiceBase {
         #region attributes
         private IContainer container;
         private IConfirmationLogic _confirmationLogic;

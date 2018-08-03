@@ -294,11 +294,12 @@ namespace KeithLink.Svc.Impl.Tests.Integration.Repository.Lists {
                 var detail = MakeDetail();
                 var expected = true;
                 var repo = MakeRepo();
+                detail.Id = 5;
 
-                // act
-                var detailId = repo.SaveReminderListDetail(detail);
+                // act                
+                repo.SaveReminderListDetail(detail);
                 var results = repo.GetRemindersDetails(detail.HeaderId);
-                var result = results.Where(r => r.Id == detailId)
+                var result = results.Where(r => r.Id == 5)
                                     .First();
 
                 // assert
@@ -314,11 +315,12 @@ namespace KeithLink.Svc.Impl.Tests.Integration.Repository.Lists {
                 var detail = MakeDetail();
                 var expected = "FRT";
                 var repo = MakeRepo();
+                detail.Id = 5;
 
                 // act
-                var detailId = repo.SaveReminderListDetail(detail);
+                repo.SaveReminderListDetail(detail);
                 var results = repo.GetRemindersDetails(detail.HeaderId);
-                var result = results.Where(r => r.Id == detailId)
+                var result = results.Where(r => r.Id == 5)
                                     .First();
 
                 // assert
@@ -334,11 +336,12 @@ namespace KeithLink.Svc.Impl.Tests.Integration.Repository.Lists {
                 var detail = MakeDetail();
                 var expected = new DateTime(2017, 7, 5, 10, 49, 0, DateTimeKind.Utc);
                 var repo = MakeRepo();
+                detail.Id = 5;
 
                 // act
-                var detailId = repo.SaveReminderListDetail(detail);
+                repo.SaveReminderListDetail(detail);
                 var results = repo.GetRemindersDetails(detail.HeaderId);
-                var result = results.Where(r => r.Id == detailId)
+                var result = results.Where(r => r.Id == 5)
                                     .First();
 
                 // assert
@@ -354,11 +357,12 @@ namespace KeithLink.Svc.Impl.Tests.Integration.Repository.Lists {
                 var detail = MakeDetail();
                 var expected = true;
                 var repo = MakeRepo();
+                detail.Id = 5;
 
                 // act
-                var detailId = repo.SaveReminderListDetail(detail);
+                repo.SaveReminderListDetail(detail);
                 var results = repo.GetRemindersDetails(detail.HeaderId);
-                var result = results.Where(r => r.Id == detailId)
+                var result = results.Where(r => r.Id == 5)
                                     .First();
 
                 // assert
@@ -374,11 +378,12 @@ namespace KeithLink.Svc.Impl.Tests.Integration.Repository.Lists {
                 var detail = MakeDetail();
                 var expected = 1;
                 var repo = MakeRepo();
+                detail.Id = 5;
 
                 // act
-                var detailId = repo.SaveReminderListDetail(detail);
+                repo.SaveReminderListDetail(detail);
                 var results = repo.GetRemindersDetails(detail.HeaderId);
-                var result = results.Where(r => r.Id == detailId)
+                var result = results.Where(r => r.Id == 5)
                                     .First();
 
                 // assert
@@ -394,11 +399,12 @@ namespace KeithLink.Svc.Impl.Tests.Integration.Repository.Lists {
                 var detail = MakeDetail();
                 var expected = "567890";
                 var repo = MakeRepo();
+                detail.Id = 5;
 
                 // act
-                var detailId = repo.SaveReminderListDetail(detail);
+                repo.SaveReminderListDetail(detail);
                 var results = repo.GetRemindersDetails(detail.HeaderId);
-                var result = results.Where(r => r.Id == detailId)
+                var result = results.Where(r => r.Id == 5)
                                     .First();
 
                 // assert
@@ -414,11 +420,12 @@ namespace KeithLink.Svc.Impl.Tests.Integration.Repository.Lists {
                 var detail = MakeDetail();
                 var expected = 5;
                 var repo = MakeRepo();
+                detail.Id = 5;
 
                 // act
-                var detailId = repo.SaveReminderListDetail(detail);
+                repo.SaveReminderListDetail(detail);
                 var results = repo.GetRemindersDetails(detail.HeaderId);
-                var result = results.Where(r => r.Id == detailId)
+                var result = results.Where(r => r.Id == 5)
                                     .First();
 
                 // assert
@@ -434,11 +441,12 @@ namespace KeithLink.Svc.Impl.Tests.Integration.Repository.Lists {
                 var detail = MakeDetail();
                 var expected = new DateTime(2017, 7, 5, 10, 50, 0, DateTimeKind.Utc);
                 var repo = MakeRepo();
+                detail.Id = 5;
 
                 // act
-                var detailId = repo.SaveReminderListDetail(detail);
+                repo.SaveReminderListDetail(detail);
                 var results = repo.GetRemindersDetails(detail.HeaderId);
-                var result = results.Where(r => r.Id == detailId)
+                var result = results.Where(r => r.Id == 5)
                                     .First();
 
                 // assert
@@ -461,11 +469,12 @@ namespace KeithLink.Svc.Impl.Tests.Integration.Repository.Lists {
                     ModifiedUtc = new DateTime(2017, 7, 5, 10, 50, 0, DateTimeKind.Utc)
                 };
                 var repo = MakeRepo();
+                detail.Id = 5;
 
                 // act
-                var detailId = repo.SaveReminderListDetail(detail);
+                repo.SaveReminderListDetail(detail);
                 var results = repo.GetRemindersDetails(detail.HeaderId);
-                var result = results.Where(r => r.Id == detailId)
+                var result = results.Where(r => r.Id == 5)
                                     .First();
 
                 // assert
@@ -488,11 +497,12 @@ namespace KeithLink.Svc.Impl.Tests.Integration.Repository.Lists {
                     ModifiedUtc = new DateTime(2017, 7, 5, 10, 50, 0, DateTimeKind.Utc)
                 };
                 var repo = MakeRepo();
+                detail.Id = 5;
 
                 // act
-                var detailId = repo.SaveReminderListDetail(detail);
+                repo.SaveReminderListDetail(detail);
                 var results = repo.GetRemindersDetails(detail.HeaderId);
-                var result = results.Where(r => r.Id == detailId)
+                var result = results.Where(r => r.Id == 5)
                                     .First();
 
                 // assert

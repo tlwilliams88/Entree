@@ -320,7 +320,7 @@ namespace KeithLink.Svc.Impl.Service.List
         {
             List<ListModel> list = new List<ListModel>();
 
-            List<ListModel> cachedList = CACHELISTS ? _cacheListLogic.GetCachedCustomerLists(catalogInfo) : null;
+            List<ListModel> cachedList = CACHELISTS ? _cacheListLogic.GetCachedCustomerLists(catalogInfo, headerOnly) : null;
 
             if (cachedList == null)
             {
@@ -329,6 +329,7 @@ namespace KeithLink.Svc.Impl.Service.List
                     _contractdictionary = GetContractInformation(catalogInfo);
                 }
 
+                // must cache with all the details
                 AddListsIfNotNull(user, catalogInfo, ListType.Worksheet, list, headerOnly);
                 AddListsIfNotNull(user, catalogInfo, ListType.Contract, list, headerOnly);
                 AddListsIfNotNull(user, catalogInfo, ListType.Favorite, list, headerOnly);
@@ -338,7 +339,7 @@ namespace KeithLink.Svc.Impl.Service.List
 
                 if (CACHELISTS)
                 {
-                    _cacheListLogic.AddCachedCustomerLists(catalogInfo, list);
+                    _cacheListLogic.AddCachedCustomerLists(catalogInfo, list, headerOnly);
                 }
             }
             else

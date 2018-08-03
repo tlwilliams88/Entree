@@ -1,2 +1,2 @@
-﻿DELETE FROM BEK_Commerce_AppData.[Configuration].AppSettings
+﻿DELETE FROM [Configuration].AppSettings
 WHERE [Key] = 'CartOrOrder2ListIdPurgeDays'

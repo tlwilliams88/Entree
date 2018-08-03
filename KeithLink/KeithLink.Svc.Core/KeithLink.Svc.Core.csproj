@@ -193,6 +193,7 @@
     <Compile Include="Events\EventHandlers\EventHandlers.cs" />
     <Compile Include="Enumerations\List.cs" />
     <Compile Include="Exceptions\Queue\QueueDataError.cs" />
+    <Compile Include="Extensions\Customers\CustomerExtensions.cs" />
     <Compile Include="Extensions\Customers\GrowthAndRecoveryModelExtensions.cs" />
     <Compile Include="Extensions\CustomInventoryItems\CustomInventoryItemExtensionscs.cs" />
     <Compile Include="Extensions\LinqSortHelpers.cs" />
@@ -452,7 +453,9 @@
     <Compile Include="Models\Lists\InventoryValuationList\InventoryValuationListHeader.cs" />
     <Compile Include="Models\Lists\CustomInventoryImportModel.cs" />
     <Compile Include="Models\Lists\CustomInventoryImportFileModel.cs" />
+    <Compile Include="Models\Lists\ListItemIntegrationsReturnModel.cs" />
     <Compile Include="Models\Lists\ListItemReportModel.cs" />
+    <Compile Include="Models\Lists\ListModelIntegrationsReturnModel.cs" />
     <Compile Include="Models\Lists\ListReportModel.cs" />
     <Compile Include="Models\EF\PasswordResetRequest.cs" />
     <Compile Include="Models\Lists\MandatoryItems\MandatoryItemsListDetail.cs" />
@@ -485,6 +488,7 @@
     <Compile Include="Models\Orders\OrderedItemFromList.cs" />
     <Compile Include="Models\Orders\OrderedFromList.cs" />
     <Compile Include="Models\Orders\RecommendedItemsOrderedAnalyticsModel.cs" />
+    <Compile Include="Models\Paging\PagedResultsForCustomersIntegration.cs" />
     <Compile Include="Models\PowerMenu\Order\LoginModel.cs" />
     <Compile Include="Models\PowerMenu\Order\OrderHeaderModel.cs" />
     <Compile Include="Models\PowerMenu\Order\OrderItemModel.cs" />
@@ -492,6 +496,7 @@
     <Compile Include="Models\PowerMenu\Order\VendorPurchaseOrderRequest.cs" />
     <Compile Include="Models\Orders\SaveOrderReturn.cs" />
     <Compile Include="Models\Orders\OrderTotalByMonth.cs" />
+    <Compile Include="Models\Profile\CustomerIntegrationsReturnModel.cs" />
     <Compile Include="Models\Profile\DsrAliasModel.cs" />
     <Compile Include="Models\Profile\EF\DsrAlias.cs" />
     <Compile Include="Models\Profile\EF\MarketingPreference.cs" />

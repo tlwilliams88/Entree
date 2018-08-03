@@ -94,14 +94,14 @@ namespace KeithLink.Svc.Impl.Logic.Cache
                 TypedListCacheKey(catalogInfo.CustomerId, catalogInfo.BranchId, type, headerOnly));
         }
 
-        public List<ListModel> GetCachedCustomerLists(UserSelectedContext catalogInfo) {
-            return GetListCacheItem<List<ListModel>>(UserListsCacheKey(catalogInfo.CustomerId, catalogInfo.BranchId));
+        public List<ListModel> GetCachedCustomerLists(UserSelectedContext catalogInfo, bool headerOnly) {
+            return GetListCacheItem<List<ListModel>>(UserListsCacheKey(catalogInfo.CustomerId, catalogInfo.BranchId, headerOnly));
         }
 
-        public void AddCachedCustomerLists(UserSelectedContext catalogInfo, List<ListModel> lists) {
-            AddListCacheItem<List<ListModel>>(UserListsCacheKey(catalogInfo.CustomerId, catalogInfo.BranchId), HOURS_FOR_LISTPAGE_HEADERS_TO_CACHE, lists);
+        public void AddCachedCustomerLists(UserSelectedContext catalogInfo, List<ListModel> lists, bool headerOnly) {
+            AddListCacheItem<List<ListModel>>(UserListsCacheKey(catalogInfo.CustomerId, catalogInfo.BranchId, headerOnly), HOURS_FOR_LISTPAGE_HEADERS_TO_CACHE, lists);
             AddCustomersCachedObjects(catalogInfo.CustomerId, catalogInfo.BranchId, 
-                UserListsCacheKey(catalogInfo.CustomerId, catalogInfo.BranchId));
+                UserListsCacheKey(catalogInfo.CustomerId, catalogInfo.BranchId, headerOnly));
         }
 
         public ListModel GetCachedSpecificList(UserSelectedContext catalogInfo, ListType type, long Id) {
@@ -148,7 +148,7 @@ namespace KeithLink.Svc.Impl.Logic.Cache
                 RemoveListCacheItem(SpecificListCacheKey(customerNumber, branchId, list.Type, list.ListId));
             }
             // customer lists
-            RemoveListCacheItem(UserListsCacheKey(customerNumber, branchId));
+            RemoveListCacheItem(UserListsCacheKey(customerNumber, branchId, false));
 
             // always try to remove inventory valuation lists; they are not in the regular rollup
             RemoveTypeOfListsCache(customerNumber, branchId, ListType.InventoryValuation);
@@ -194,12 +194,13 @@ namespace KeithLink.Svc.Impl.Logic.Cache
                                  headerOnly);
         }
 
-        private string UserListsCacheKey(string customerNumber, string branchId)
+        private string UserListsCacheKey(string customerNumber, string branchId, bool headersOnly)
         {
-            return string.Format("{0}_{1}_{2}",
+            return string.Format("{0}_{1}_{2}_{3}",
                                  CACHEKEY_PREFIX_LISTOFLISTS,
                                  branchId,
-                                 customerNumber);
+                                 customerNumber,
+                                 headersOnly);
         }
 
         private string SpecificListCacheKey(string customerNumber, string branchId, ListType type, long Id)
