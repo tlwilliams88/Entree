@@ -118,6 +118,7 @@
     <Compile Include="Logic\Orders\OrderHistoryLogicSimpleTests.cs" />
     <Compile Include="Logic\Orders\OrderHistoryLogicTests.cs" />
     <Compile Include="Logic\Orders\OrderLogicTests.cs" />
+    <Compile Include="Logic\Orders\OrderQueueLogicTests.cs" />
     <Compile Include="Logic\Reports\ReportLogicTests.cs" />
     <Compile Include="Logic\ImportLogicTests.cs" />
     <Compile Include="Logic\ShoppingCartLogicTests.cs" />
@@ -143,10 +144,10 @@
     <Folder Include="Logic\SingleSignOn\" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="app.config">
-      <SubType>Designer</SubType>
-    </None>
+    <None Include="app.config" />
+    <EmbeddedResource Include="Logic\Orders\OrderFile.json" />
     <EmbeddedResource Include="Logic\Orders\OrderHistoryFile.json" />
+    <EmbeddedResource Include="Logic\Orders\OT780FDF-2018206-10273884.TXT" />
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
@@ -164,10 +165,6 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Logic\Orders\OrderFile.json" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="Logic\Orders\OT780FDF-2018206-10273884.TXT" />
   </ItemGroup>
   <ItemGroup>
     <Analyzer Include="..\packages\xunit.analyzers.0.10.0\analyzers\dotnet\cs\xunit.analyzers.dll" />

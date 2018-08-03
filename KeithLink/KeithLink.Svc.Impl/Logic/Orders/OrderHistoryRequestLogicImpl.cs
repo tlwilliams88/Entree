@@ -11,8 +11,10 @@ using System.IO;
 using System.Linq;
 using System.Text;
 
-namespace KeithLink.Svc.Impl.Logic.Orders {
-    public class OrderHistoryRequestLogicImpl : IOrderHistoryRequestLogic {
+namespace KeithLink.Svc.Impl.Logic.Orders
+{
+    public class OrderHistoryRequestLogicImpl : IOrderHistoryRequestLogic
+    {
 
         #region attributes
         private readonly IEventLogRepository _log;
@@ -21,8 +23,8 @@ namespace KeithLink.Svc.Impl.Logic.Orders {
         #endregion
 
         #region ctor
-		public OrderHistoryRequestLogicImpl(IEventLogRepository logRepo, IGenericQueueRepository queueRepo, IOrderUpdateSocketConnectionRepository socket)
-		{
+        public OrderHistoryRequestLogicImpl(IEventLogRepository logRepo, IGenericQueueRepository queueRepo, IOrderUpdateSocketConnectionRepository socket)
+        {
             _log = logRepo;
             _queue = queueRepo;
             _socket = socket;
@@ -30,14 +32,16 @@ namespace KeithLink.Svc.Impl.Logic.Orders {
         #endregion
 
         #region methods
-        public void ProcessRequests() {
+        public void ProcessRequests()
+        {
 
             string rawRequest = KeithLink.Svc.Impl.Helpers.Retry.Do<string>
-                (() => _queue.ConsumeFromQueue(Configuration.RabbitMQConfirmationServer, Configuration.RabbitMQUserNameConsumer, 
+                (() => _queue.ConsumeFromQueue(Configuration.RabbitMQConfirmationServer, Configuration.RabbitMQUserNameConsumer,
                 Configuration.RabbitMQUserPasswordConsumer, Configuration.RabbitMQVHostConfirmation, Configuration.RabbitMQQueueOrderUpdateRequest),
                 TimeSpan.FromSeconds(1), Constants.QUEUE_REPO_RETRY_COUNT);
 
-            while (!string.IsNullOrEmpty(rawRequest)) {
+            while (!string.IsNullOrEmpty(rawRequest))
+            {
                 OrderHistoryRequest request = JsonConvert.DeserializeObject<OrderHistoryRequest>(rawRequest);
 
                 _log.WriteInformationLog(string.Format("Consuming order history request from queue for message ({0}).", request.MessageId));
@@ -52,17 +56,19 @@ namespace KeithLink.Svc.Impl.Logic.Orders {
                 _log.WriteInformationLog(string.Format("Requesting history from mainframe - Branch: {0}, CustomerNumber: {1}, InvoiceNumber: {2}", request.BranchId, request.CustomerNumber, request.InvoiceNumber));
 
                 _socket.Connect();
-                _socket.StartTransaction(transactionData.ToString());
+                _socket.StartTransaction(Configuration.MainframeHistoryTransactionId, transactionData.ToString());
                 _socket.Close();
 
                 _log.WriteInformationLog(string.Format("Request sent to mainframe - Branch: {0}, CustomerNumber: {1}, InvoiceNumber: {2}", request.BranchId, request.CustomerNumber, request.InvoiceNumber));
 
-				rawRequest = _queue.ConsumeFromQueue(Configuration.RabbitMQConfirmationServer, Configuration.RabbitMQUserNameConsumer, Configuration.RabbitMQUserPasswordConsumer, Configuration.RabbitMQVHostConfirmation, Configuration.RabbitMQQueueOrderUpdateRequest);
+                rawRequest = _queue.ConsumeFromQueue(Configuration.RabbitMQConfirmationServer, Configuration.RabbitMQUserNameConsumer, Configuration.RabbitMQUserPasswordConsumer, Configuration.RabbitMQVHostConfirmation, Configuration.RabbitMQQueueOrderUpdateRequest);
             }
         }
 
-        public void RequestAllOrdersForCustomer(UserSelectedContext context) {
-            OrderHistoryRequest request = new OrderHistoryRequest() {
+        public void RequestAllOrdersForCustomer(UserSelectedContext context)
+        {
+            OrderHistoryRequest request = new OrderHistoryRequest()
+            {
                 SenderApplicationName = Configuration.ApplicationName,
                 SenderProcessName = "Publish Order History Request for customer to queue",
 
@@ -70,14 +76,16 @@ namespace KeithLink.Svc.Impl.Logic.Orders {
                 CustomerNumber = context.CustomerId
             };
 
-			_queue.PublishToQueue(JsonConvert.SerializeObject(request), Configuration.RabbitMQConfirmationServer, Configuration.RabbitMQUserNamePublisher, Configuration.RabbitMQUserPasswordPublisher, Configuration.RabbitMQVHostConfirmation, Configuration.RabbitMQExchangeOrderUpdateRequests);
+            _queue.PublishToQueue(JsonConvert.SerializeObject(request), Configuration.RabbitMQConfirmationServer, Configuration.RabbitMQUserNamePublisher, Configuration.RabbitMQUserPasswordPublisher, Configuration.RabbitMQVHostConfirmation, Configuration.RabbitMQExchangeOrderUpdateRequests);
 
             _log.WriteInformationLog(string.Format("Publishing order history request to queue for message ({0}).", request.MessageId));
             _log.WriteInformationLog(string.Format("Request for all orders sent to queue - Branch: {0}, CustomerNumber: {1}", context.BranchId, context.CustomerId));
         }
 
-        public void RequestOrderForCustomer(UserSelectedContext context, string invoiceNumber) {
-            OrderHistoryRequest request = new OrderHistoryRequest() {
+        public void RequestOrderForCustomer(UserSelectedContext context, string invoiceNumber)
+        {
+            OrderHistoryRequest request = new OrderHistoryRequest()
+            {
                 SenderApplicationName = Configuration.ApplicationName,
                 SenderProcessName = "Publish Order History Request for specific invoice to queue",
 
@@ -86,7 +94,7 @@ namespace KeithLink.Svc.Impl.Logic.Orders {
                 InvoiceNumber = invoiceNumber
             };
 
-			_queue.PublishToQueue(JsonConvert.SerializeObject(request), Configuration.RabbitMQConfirmationServer, Configuration.RabbitMQUserNameConsumer, Configuration.RabbitMQUserPasswordConsumer, Configuration.RabbitMQVHostConfirmation, Configuration.RabbitMQExchangeOrderUpdateRequests);
+            _queue.PublishToQueue(JsonConvert.SerializeObject(request), Configuration.RabbitMQConfirmationServer, Configuration.RabbitMQUserNameConsumer, Configuration.RabbitMQUserPasswordConsumer, Configuration.RabbitMQVHostConfirmation, Configuration.RabbitMQExchangeOrderUpdateRequests);
 
             _log.WriteInformationLog(string.Format("Publishing order history request to queue for message ({0}).", request.MessageId));
             _log.WriteInformationLog(string.Format("Request for order sent to queue - Branch: {0}, CustomerNumber: {1}, InvoiceNumber: {2}", context.BranchId, context.CustomerId, invoiceNumber));
