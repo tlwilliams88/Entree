@@ -1,20 +1,29 @@
 ﻿using KeithLink.Common.Core.Interfaces.Logging;
-using KeithLink.Svc.Core.Enumerations.List;
-using KeithLink.Svc.Core.Extensions;
-using KeithLink.Svc.Core.Interface.Lists;
+using KeithLink.Svc.Core.Enumerations.Messaging;
 using KeithLink.Svc.Core.Interface.Messaging;
 using KeithLink.Svc.Core.Interface.Profile;
+using KeithLink.Svc.Core.Interface.SiteCatalog;
 using KeithLink.Svc.Core.Interface.UserFeedback;
-using KeithLink.Svc.Core.Models.Lists;
+using KeithLink.Svc.Core.Models.Messaging.Queue;
 using KeithLink.Svc.Core.Models.Profile;
+using KeithLink.Svc.Core.Models.UserFeedback;
 using KeithLink.Svc.Core.Models.SiteCatalog;
-using KeithLink.Svc.WebApi.Attribute;
+
 using KeithLink.Svc.WebApi.Models;
-using Newtonsoft.Json;
+
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Web.Http;
+using KeithLink.Svc.WebApi.Attribute;
+using KeithLink.Svc.Core.Models.Paging;
+using System.Collections.Generic;
+using KeithLink.Svc.Core.Enumerations.List;
+using KeithLink.Svc.Core.Enumerations.Profile;
+using KeithLink.Svc.Core.Extensions;
+using KeithLink.Svc.Core.Extensions.Customers;
+using KeithLink.Svc.Core.Interface.Lists;
+using KeithLink.Svc.Core.Models.Lists;
+using Newtonsoft.Json;
 
 namespace KeithLink.Svc.WebApi.Controllers
 {
@@ -46,15 +55,52 @@ namespace KeithLink.Svc.WebApi.Controllers
         #endregion
 
         #region methods
+
         /// <summary>
-        /// Get customers user has access to
+        /// Paged search of customers
         /// </summary>
-        /// <returns></returns>
-        [HttpPost]
-        [ApiKeyedRoute("sso/customers")]
-        public OperationReturnModel<string> GetCustomers()
+        /// <param name="paging">Paging information</param>
+        /// <param name="sort">Sort object</param>
+        /// <param name="terms">Search text</param>
+        /// <param name="type">The type of text we are searching for. Is converted to CustomerSearchType enumerator</param>
+        /// <returns>search results as a paged list of customers</returns>
+        [HttpGet]
+        [ApiKeyedRoute("integrations/customer/")]
+        public OperationReturnModel<PagedResultsForCustomersIntegration<CustomerIntegrationsReturnModel>> SearchCustomers([FromUri] PagingModel paging, [FromUri] SortInfo sort,
+                                                                                    [FromUri] string terms = "", [FromUri] string type = "1")
         {
-            var retVal = new OperationReturnModel<string>() { IsSuccess = false };
+            OperationReturnModel<PagedResultsForCustomersIntegration<CustomerIntegrationsReturnModel>> retVal = new OperationReturnModel<PagedResultsForCustomersIntegration<CustomerIntegrationsReturnModel>>();
+            string account = "";
+
+            try
+            {
+                if (paging.Sort == null && sort != null && !String.IsNullOrEmpty(sort.Order) && !String.IsNullOrEmpty(sort.Field))
+                {
+                    paging.Sort = new List<SortInfo>() { sort };
+                }
+
+                int typeVal;
+                if (!int.TryParse(type, out typeVal))
+                {
+                    typeVal = 1;
+                }
+
+                PagedResults<Customer> customers =
+                    _profileLogic.CustomerSearch(SsoUser, terms, paging, account, (CustomerSearchType) typeVal);
+                retVal.SuccessResponse = customers.ToPagedForCustomersIntegration();
+
+                retVal.IsSuccess = true;
+            }
+            catch (ApplicationException axe)
+            {
+                retVal.ErrorMessage = axe.Message;
+                retVal.IsSuccess = false;
+            }
+            catch (Exception ex)
+            {
+                retVal.ErrorMessage = "Could not complete the request. " + ex.Message;
+                retVal.IsSuccess = false;
+            }
 
             return retVal;
         }
