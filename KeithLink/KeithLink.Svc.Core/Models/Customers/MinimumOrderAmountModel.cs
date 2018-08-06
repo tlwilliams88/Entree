@@ -8,14 +8,14 @@ using System.Runtime.Serialization;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace KeithLink.Svc.Core.Models.Customers {
+namespace KeithLink.Svc.Core.Models.Customers
+{
     [DataContract]
-    public class MinimumOrderAmountModel {
-        #region properties
+    public class MinimumOrderAmountModel
+    {
 
         [DataMember(Name = "approvedamount")]
         public decimal ApprovedAmount { get; set; }
 
-        #endregion
     }
 }
