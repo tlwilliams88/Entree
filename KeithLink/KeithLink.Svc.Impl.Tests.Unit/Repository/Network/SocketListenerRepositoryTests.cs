@@ -37,16 +37,13 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Repository.Network
             public void WhenPortIsFree_HasNoException()
             {
                 // arrange
-                int WSAEADDRINUSE = 10048;
-
                 MockDependents mockDependents = new MockDependents();
 
                 ISocketListenerRepository testunit = MakeUnitToBeTested(true, mockDependents);
 
                 // act
-                IPEndPoint localEndPoint = new IPEndPoint(IPAddress.Any, Configuration.MainframeConfirmationListeningPort);
                 Socket listener = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
-                Action bindSocketToPort = () => testunit.BindSocketToPort(listener, localEndPoint);
+                Action bindSocketToPort = () => testunit.BindSocketToPort(listener, Configuration.MainframeConfirmationListeningPort);
 
                 // assert
                 bindSocketToPort.Should().NotThrow();
@@ -56,30 +53,55 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Repository.Network
             public void WhenPortIsInUse_HasNoException()
             {
                 // arrange
-                int WSAEADDRINUSE = 10048;
-
                 MockDependents mockDependents = new MockDependents();
 
                 ISocketListenerRepository testunit = MakeUnitToBeTested(true, mockDependents);
 
                 var slowClosinglistener = StartListener(Configuration.MainframeConfirmationListeningPort);     // starts the port in use condition
+                if (slowClosinglistener.IsBound == false)
+                    throw new Exception("Test logic failure: failed to start contending listener.");
+
                 Task.Run(() => StopListenerAfterDelay(slowClosinglistener, 30000));     // keep the port in use condition
 
                 // act
-                IPEndPoint localEndPoint = new IPEndPoint(IPAddress.Any, Configuration.MainframeConfirmationListeningPort);
                 Socket listener = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
-                Action bindSocketToPort = () => testunit.BindSocketToPort(listener, localEndPoint);
+                Action bindSocketToPort = () => testunit.BindSocketToPort(listener, Configuration.MainframeConfirmationListeningPort);
 
                 // assert
                 bindSocketToPort.Should().NotThrow();
             }
 
-            private Socket StartListener(int portNumber)
+            private Socket StartListener(int port)
             {
-                IPEndPoint localEndPoint = new IPEndPoint(IPAddress.Any, portNumber);
-                Socket listener = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
-                listener.Bind(localEndPoint);
-                return listener;
+                Socket socket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
+
+                int attempts = 0;
+
+                while (socket.IsBound == false && attempts < 30)
+                {
+                    attempts++;
+
+                    try
+                    {
+                        var endPoint = new IPEndPoint(IPAddress.Any, port);
+                        socket.Bind(endPoint);
+                    }
+                    catch (SocketException ex)
+                    {
+                        int WSAEADDRINUSE = 10048;
+
+                        if (ex.ErrorCode == WSAEADDRINUSE)
+                        {
+                            Thread.Sleep(1000);  // allow port to be released
+                        }
+                        else
+                        {
+                            throw;
+                        }
+                    }
+                }
+
+                return socket;
             }
 
             private void StopListenerAfterDelay(Socket listener, int milliseconds)

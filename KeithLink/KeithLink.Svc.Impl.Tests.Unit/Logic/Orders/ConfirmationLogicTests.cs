@@ -36,12 +36,12 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic.Orders
         public class ListenForMainFrameCalls
         {
             [Fact]
-            public void HandlesAddressInUse()
+            public void WhenPortIsInUse_PercolatesException()
             {
                 // arrange
-                int WSAEADDRINUSE = 10048;
-
                 MockDependents mockDependents = new MockDependents();
+
+                int WSAEADDRINUSE = 10048;
                 mockDependents.MockSocketListenerRepository
                     .Setup(m => m.Listen(It.IsAny<int>()))
                     .Throws(BuildMockException(WSAEADDRINUSE));
@@ -52,7 +52,7 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic.Orders
                 Action listenForMainFrameCalls = () => testunit.ListenForMainFrameCalls();
 
                 // assert
-                listenForMainFrameCalls.Should().NotThrow();
+                listenForMainFrameCalls.Should().Throw<SocketException>().Which.ErrorCode.Should().Be(WSAEADDRINUSE);
             }
 
             private Exception BuildMockException(int errorCode)
@@ -82,7 +82,6 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic.Orders
                 MockOrderConversionLogic = new Mock<IOrderConversionLogic>();
                 MockUnitOfWork = new Mock<IUnitOfWork>();
                 MockGenericSubscriptionQueueRepository = new Mock<IGenericSubscriptionQueueRepository>();
-
             }
         }
 
@@ -130,9 +129,7 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic.Orders
 
             cb.RegisterInstance(mockDependents.MockGenericSubscriptionQueueRepository.Object)
               .As<IGenericSubscriptionQueueRepository>();
-
         }
-
 
         #endregion Setup
     }

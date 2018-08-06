@@ -1,13 +1,11 @@
 ﻿using KeithLink.Svc.Core;
 using KeithLink.Svc.Core.Events.EventArgs;
 using KeithLink.Svc.Core.Events.EventHandlers;
-using KeithLink.Svc.Core.Exceptions.Orders;
 using KeithLink.Svc.Core.Interface.Common;
 
 using System;
 using KeithLink.Common.Core.Interfaces.Logging;
 
-using System.IO;
 using System.Net;
 using System.Net.Sockets;
 using System.Text;
@@ -50,7 +48,7 @@ namespace KeithLink.Svc.Impl.Repository.Network
             _disposed = true;
         }
 
-        public void BindSocketToPort(Socket socket, IPEndPoint endPoint)
+        public void BindSocketToPort(Socket socket, int port)
         {
             int attempts = 0;
 
@@ -60,7 +58,7 @@ namespace KeithLink.Svc.Impl.Repository.Network
 
                 if (attempts == 300)    // 5 minutes @ 1 attempt per second
                 {
-                    string errorMessage = string.Format("A socket listener has reached a limit of {0} attempts to obtain port {1}.", attempts, endPoint.Port);
+                    string errorMessage = string.Format("A socket listener has reached a limit of {0} attempts to obtain port {1}.", attempts, port);
                     _log.WriteErrorLog(errorMessage);
 
                     throw new ApplicationException(errorMessage);
@@ -68,12 +66,13 @@ namespace KeithLink.Svc.Impl.Repository.Network
 
                 if (attempts % 10 == 0)    // 1 minutes @ 1 attempt per second
                 {
-                    string warningMessage = string.Format("A socket listener has made {0} attempts to obtain port {1}.", attempts, endPoint.Port);
+                    string warningMessage = string.Format("A socket listener has made {0} attempts to obtain port {1}.", attempts, port);
                     _log.WriteWarningLog(warningMessage);
                 }
 
                 try
                 {
+                    var endPoint = new IPEndPoint(IPAddress.Any, port);
                     socket.Bind(endPoint);
                 }
                 catch (SocketException ex)
@@ -92,16 +91,15 @@ namespace KeithLink.Svc.Impl.Repository.Network
             }
         }
 
-        public void Listen(int listeningPort)
+        public void Listen(int port)
         {
-            IPEndPoint localEndPoint = new IPEndPoint(IPAddress.Any, listeningPort);
             Socket listener = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
 
             try
             {
                 OnOpeningPort(new EventArgs());
 
-                BindSocketToPort(listener, localEndPoint);
+                BindSocketToPort(listener, port);
 
                 listener.Listen(10);
 
