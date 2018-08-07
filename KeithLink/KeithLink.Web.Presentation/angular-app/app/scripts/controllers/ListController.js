@@ -489,7 +489,7 @@ angular.module('bekApp')
     $scope.createList = function(items) {
       if (!processingCreateList) {
         processingCreateList = true;
-        ListService.createList(items).then(function(newList) {
+        ListService.createList(items, {isCustomInventory: $scope.isCustomInventoryList}).then(function(newList) {
             $scope.selectedList = newList;
             applyNewList();
         }).finally(function() {

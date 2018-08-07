@@ -82,7 +82,7 @@ angular.module('bekApp')
       }
 
       function openContextMenuClickEvent(event) {
-        if (UtilityService.isMobileDevice()) {
+        if (true) {
           // open modal
           ContextMenuService.modalElement = $modal.open({
             templateUrl: 'views/modals/contextmenumodal.html',

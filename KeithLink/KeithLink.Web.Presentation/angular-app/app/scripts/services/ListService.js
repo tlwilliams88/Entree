@@ -515,7 +515,8 @@ angular.module('bekApp')
             itemnumber: item.itemnumber,
             catalog_id: item.catalog_id,
             each: item.each,
-            category: item.category
+            category: item.category,
+            custominventoryitemid: item.id
           };
         },
 
