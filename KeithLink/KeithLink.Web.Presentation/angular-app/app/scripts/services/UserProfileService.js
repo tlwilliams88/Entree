@@ -32,10 +32,7 @@ angular.module('bekApp')
 
               var isMobileApp = ENV.mobileApp;
 
-              if((ENV.name == 'test' || ENV.name == 'prod') && isMobileApp == false){
-                SessionRecordingService.tagCustomer(userSelectedContext.id);
-              };
-              
+              SessionRecordingService.tagCustomer(LocalStorage.getCustomerNumber());
             }
 
           } else {

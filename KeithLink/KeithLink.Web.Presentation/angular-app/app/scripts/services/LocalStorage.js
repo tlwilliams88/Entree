@@ -184,11 +184,6 @@ angular.module('bekApp')
 
     function setCustomerNumber(customerNumber) {
       localStorageService.set(Constants.localStorage.customerNumber, customerNumber);
-      
-      var isMobileApp = ENV.mobileApp;
-      if((ENV.name == 'test' || ENV.name == 'prod') && isMobileApp == false){
-        SessionRecordingService.tagCustomer(customerNumber);
-      };
     }
 
     function setBranchId(branchId) {

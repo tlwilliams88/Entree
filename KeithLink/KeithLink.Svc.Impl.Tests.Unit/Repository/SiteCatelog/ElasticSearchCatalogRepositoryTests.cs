@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Dynamic;
 using System.Linq;
 using FluentAssertions;
 
@@ -9,6 +8,7 @@ using KeithLink.Svc.Core.Models.SiteCatalog;
 using KeithLink.Svc.Impl.Repository.SiteCatalog;
 using KeithLink.Svc.Impl.Seams;
 
+using Newtonsoft.Json.Linq;
 using Xunit;
 
 namespace KeithLink.Svc.Impl.Tests.Unit.Repository.SiteCatelog
@@ -28,12 +28,12 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Repository.SiteCatelog
 
         private static dynamic MakeTestProduct()
         {
-            dynamic testProduct = new ExpandoObject();
+            dynamic testProduct = new JObject();
             testProduct._index = "fsa";
             testProduct._type = "product";
             testProduct._id = "102438";
             testProduct._score = 1.1391112;
-            testProduct._source = new ExpandoObject();
+            testProduct._source = new JObject();
             testProduct._source.categoryid = "46";
             testProduct._source.categoryname = "Beverages Non Dispense";
             testProduct._source.categoryname_not_analyzed = "Beverages Non Dispense";

@@ -10,6 +10,6 @@
 
         void Send(string dataRecord);
 
-        void StartTransaction(string confirmationNumber);
+        void StartTransaction(string transactionId, string confirmationNumber);
     }
 }
