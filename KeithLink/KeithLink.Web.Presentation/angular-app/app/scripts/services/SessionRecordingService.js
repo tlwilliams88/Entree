@@ -14,63 +14,89 @@ angular.module('bekApp')
     var Service = {
 
         identify: function(emailAddress){
-            if(meetsRequirements()){
-                __insp.push(['identify', emailAddress ]);
-            }
+            try{ // do not let this be critical
+                if(meetsRequirements()){
+                    __insp.push(['identify', emailAddress ]);
+                }
+            }catch(ex){}
         },
         
         tagEmail: function(emailAddress){
-            if(meetsRequirements()){
-                __insp.push(['tagSession', {email: emailAddress }]);
-                __insp.push(['tagSession', 'user=' + emailAddress ]);
-            }
+            try{ // do not let this be critical
+                if(meetsRequirements()){
+                    __insp.push(['tagSession', {email: emailAddress }]);
+                    __insp.push(['tagSession', 'user=' + emailAddress ]);
+                }
+            }catch(ex){}
         },
         
         tagCustomer: function(customernumber){
-            if(meetsRequirements()){
-                __insp.push(['tagSession', 'customer=' + customernumber ]);
-            }
+            try{ // do not let this be critical
+                if(meetsRequirements()){
+                    __insp.push(['tagSession', 'customer=' + customernumber ]);
+                }
+            }catch(ex){}
+        },
+        
+        tagBranch: function(branchId){
+            try{ // do not let this be critical
+                if(meetsRequirements()){
+                    __insp.push(['tagSession', 'branch=' + branchId ]);
+                }
+            }catch(ex){}
         },
         
         tagEnvironment: function(){
-            if(meetsRequirements()){
-                __insp.push(['tagSession', 'environment=' + ENV.name ]);
-            }
+            try{ // do not let this be critical
+                if(meetsRequirements()){
+                    __insp.push(['tagSession', 'environment=' + ENV.name ]);
+                }
+            }catch(ex){}
         },
         
         tagOrder: function(orderNumber){
-            if(meetsRequirements()){
-                __insp.push(['tagSession', 'order' ]);
-                __insp.push(['tagSession', 'order=' + orderNumber ]);
-            }
+            try{ // do not let this be critical
+                if(meetsRequirements()){
+                    __insp.push(['tagSession', 'order' ]);
+                    __insp.push(['tagSession', 'order=' + orderNumber ]);
+                }
+            }catch(ex){}
         },
         
         tagChangeOrder: function(orderNumber){
-            if(meetsRequirements()){
-                __insp.push(['tagSession', 'changeorder' ]);
-                __insp.push(['tagSession', 'order=' + orderNumber ]);
-                __insp.push(['tagSession', 'changeorder=' + orderNumber ]);
-            }
+            try{ // do not let this be critical
+                if(meetsRequirements()){
+                    __insp.push(['tagSession', 'changeorder' ]);
+                    __insp.push(['tagSession', 'order=' + orderNumber ]);
+                    __insp.push(['tagSession', 'changeorder=' + orderNumber ]);
+                }
+            }catch(ex){}
         },
         
         tagCampaignView: function(campaignName){
-            if(meetsRequirements()){
-                __insp.push(['tagSession', 'campaign' ]);
-                __insp.push(['tagSession', 'campaign=' + campaignName ]);
-            }
+            try{ // do not let this be critical
+                if(meetsRequirements()){
+                    __insp.push(['tagSession', 'campaign' ]);
+                    __insp.push(['tagSession', 'campaign=' + campaignName ]);
+                }
+            }catch(ex){}
         },
         
         tagSearch: function(campaignName){
-            if(meetsRequirements()){
-                __insp.push(['tagSession', 'search=' + campaignName ]);
-            }
+            try{ // do not let this be critical
+                if(meetsRequirements()){
+                    __insp.push(['tagSession', 'search=' + campaignName ]);
+                }
+            }catch(ex){}
         },
         
         tagAddRecommendedItem: function(item){
-            if(meetsRequirements()){
-                __insp.push(['tagSession', 'addRecommendedItem']);
-                __insp.push(['tagSession', 'addRecommendedItem=' + item ]);
-            }
+            try{ // do not let this be critical
+                if(meetsRequirements()){
+                    __insp.push(['tagSession', 'addRecommendedItem']);
+                    __insp.push(['tagSession', 'addRecommendedItem=' + item ]);
+                }
+            }catch(ex){}
         }
         
     };
