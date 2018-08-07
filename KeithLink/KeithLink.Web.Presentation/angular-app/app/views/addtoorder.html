@@ -20,6 +20,10 @@
   </div>
 </div>
 
+<div class="pull-right padding-right-15">
+  <p class="text-red">{{selectedCart.approval.message}}</p>
+</div>
+
 <div loading-spinner="invalidParams"></div>
 
 <div ng-hide="invalidParams">
@@ -134,11 +138,6 @@
     <div class="col-xs-2">{{combinedItems.length || '0'}} Items</div>
     <div class="col-xs-2 text-right">{{subtotal | currency}}</div>
   </div>
-
-  <div>
-    <p class="text-red">Help</p>
-  </div>
-  
 
   <form
     novalidate
@@ -315,6 +314,7 @@
                       focus-me="$first"
                       ng-if="useParlevel && item.canOrder"
                       ng-blur="confirmQuantity('quantity', item, item.quantity);"
+                      ng-change="validateCart();"
                       class="input-number text-right mousetrap"
                       ng-class="{ tabstop: !useParlevel }"
                       integer
@@ -674,6 +674,7 @@
                       ng-change="updateCartWithRecommendedItems(item); confirmQuantity('quantity', item, item.quantity);"
                       class="input-number text-right mousetrap"
                       ng-class="{ tabstop: !useParlevel }"
+                      ng-change="validateCart();"
                       integer
                       ng-model="item.quantity"
                       row-highlight

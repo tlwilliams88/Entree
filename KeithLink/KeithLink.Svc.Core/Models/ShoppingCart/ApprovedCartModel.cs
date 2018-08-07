@@ -22,8 +22,8 @@ namespace KeithLink.Svc.Core.Models.ShoppingCart {
         [DataMember(Name = "remainingamount")]
         public decimal RemainingAmount { get; set; }
 
-        [DataMember(Name = "approvedordenied")]
-        public bool ApprovedOrDenied { get; set; }
+        [DataMember(Name = "approved")]
+        public bool Approved { get; set; }
     }
 
 

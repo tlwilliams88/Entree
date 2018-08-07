@@ -227,7 +227,7 @@
           </div>
         </div>
       </div>
-      <div class="hidden-lg" style="border: 2px solid #C4BC9E; border-radius: 5px; height: 200px; padding: 5px 10px 10px 20px; margin-top: 200px;">
+      <div class="hidden-lg" style="border: 2px solid #C4BC9E; border-radius: 5px; height: 100%; padding: 5px 10px 10px 20px; margin-top: 200px;">
         <h2 style="padding-left: 25px;">Order Summary</h2>
   
         <div class="row" style="padding-left: 25px;">
@@ -253,12 +253,12 @@
           </div>
         </div>
 
-        <div class="row col-xs-12" style="padding-left: 40px;">
+        <div class="row col-xs-12" style="padding-left: 40px; margin-bottom: 15px;">
             <button 
               ng-if="canSubmitOrders && !isChangeOrder" 
               type="button" 
               class="btn btn-primary btn-mobile col-xs-12 submitOrderBtn submitButton"
-              ng-disabled="cartForm.$invalid || disableSubmitButtons" 
+              ng-disabled="cartForm.$invalid || disableSubmitButtons || currentCart.approval.approved == false" 
               ng-click="submitOrder(currentCart)" 
               analytics-on 
               analytics-category="Orders" 
@@ -271,13 +271,17 @@
               ng-if="canSubmitOrders && isChangeOrder" 
               type="button" 
               class="btn btn-primary btn-mobile col-xs-12 submitOrderBtn submitButton"
-              ng-disabled="cartForm.$invalid || disableSubmitButtons" 
+              ng-disabled="cartForm.$invalid || disableSubmitButtons || currentCart.approval.approved == false" 
               ng-click="resubmitOrder(currentCart)" 
               analytics-on analytics-category="Orders" 
               analytics-event="Submit Changes" 
               analytics-label="Change Order">
               Submit Changes
             </button>
+          </div>
+
+          <div class="row" style="padding-left: 25px; margin: 0 auto; padding-right: 28px;">
+            <p class="text-red" style="font-size: 1.15em;">{{currentCart.approval.message}}</p>
           </div>
         </div>
       </div>
@@ -601,7 +605,7 @@
   
     <div class="col-xs-4 hidden-xs hidden-sm hidden-md container-fluid" style="width: 32%; margin-left: 15px; margin-top: -188px; height: 100%;">
   
-      <div style="border: 2px solid #C4BC9E; border-radius: 5px; height: 200px; padding: 5px 10px 10px 20px; width: 100%">
+      <div style="border: 2px solid #C4BC9E; border-radius: 5px; height: 100%; padding: 5px 10px 10px 20px; width: 100%">
         <h2 style="padding-left: 25px;">Order Summary</h2>
   
         <div class="row" style="padding-left: 25px;">
@@ -627,12 +631,12 @@
           </div>
         </div>
   
-        <div class="row col-xs-12" style="padding-left: 40px;">
+        <div class="row col-xs-12" style="padding-left: 40px; margin-bottom: 15px;">
           <button 
             ng-if="canSubmitOrders && !isChangeOrder" 
             type="button" 
             class="btn btn-primary btn-mobile col-xs-12 submitOrderBtn submitButton"
-            ng-disabled="cartForm.$invalid || disableSubmitButtons" 
+            ng-disabled="cartForm.$invalid || disableSubmitButtons || currentCart.approval.approved == false" 
             ng-click="submitOrder(currentCart)" 
             analytics-on 
             analytics-category="Orders" 
@@ -645,13 +649,17 @@
             ng-if="canSubmitOrders && isChangeOrder" 
             type="button" 
             class="btn btn-primary btn-mobile col-xs-12 submitOrderBtn submitButton"
-            ng-disabled="cartForm.$invalid || disableSubmitButtons" 
+            ng-disabled="cartForm.$invalid || disableSubmitButtons || currentCart.approval.approved == false" 
             ng-click="resubmitOrder(currentCart)" 
             analytics-on analytics-category="Orders" 
             analytics-event="Submit Changes" 
             analytics-label="Change Order">
             Submit Changes
           </button>
+        </div>
+
+        <div class="row" style="margin: 0 auto; padding-left: 25px; padding-right: 28px;">
+          <p class="text-red" style="font-size: 1.15em;">{{currentCart.approval.message}}</p>
         </div>
       </div>
   

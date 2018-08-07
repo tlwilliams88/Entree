@@ -20,20 +20,19 @@ namespace KeithLink.Svc.Impl.Repository.Customers
             connection = dbConnection;
         }
 
-        public MinimumOrderAmountModel GetMinimumOrderAmount(string customerNumber, string branchId)
+        public List<MinimumOrderAmountModel> GetMinimumOrderAmount(string customerNumber, string branchId)
         {
-            MinimumOrderAmountModel results = connection.Query<MinimumOrderAmountModel>(@"
+            List<MinimumOrderAmountModel> results = connection.Query<MinimumOrderAmountModel>(@"
                 SELECT
-                    value
+                    Value AS ApprovedAmount
                 FROM Customers.CustomerOptions
                 WHERE 
 	                CustomerNumber = @CustomerNumber
-                AND	BranchId = @BranchId",
-                new
-                {
-                    CustomerNumber = customerNumber,
-                    BranchId = branchId
-                }).FirstOrDefault();
+                AND	BranchId = @BranchId", new
+            {
+                CustomerNumber = customerNumber,
+                BranchId = branchId
+            }).ToList();
 
             return results;
         }

@@ -47,6 +47,7 @@ namespace KeithLink.Svc.WebApi.Controllers
         private readonly IListService _listService;
         private readonly ICatalogLogic _catalogLogic;
         private readonly IShoppingCartService _shoppingCartService;
+        private readonly IBasketLogic basketLogic;
         #endregion
 
         #region ctor
@@ -86,8 +87,23 @@ namespace KeithLink.Svc.WebApi.Controllers
             Models.OperationReturnModel<bool> retVal = new Models.OperationReturnModel<bool>();
             try
             {
-                retVal.SuccessResponse = _shoppingCartLogic.IsSubmitted(this.AuthenticatedUser, this.SelectedUserContext, cartId);
-                retVal.IsSuccess = true;
+                var basket = basketLogic.RetrieveSharedCustomerBasket(this.AuthenticatedUser, this.SelectedUserContext, cartId);
+
+                ApprovedCartModel cartApproved = _shoppingCartService.ValidateCartAmount(this.SelectedUserContext, basket.SubTotal.Value);
+
+                if(cartApproved.Approved == true)
+                {
+                    retVal.SuccessResponse = _shoppingCartLogic.IsSubmitted(this.AuthenticatedUser, this.SelectedUserContext, cartId);
+                    retVal.IsSuccess = true;
+                }
+                else
+                {
+                    retVal.SuccessResponse = false;
+                    retVal.IsSuccess = false;
+                    retVal.ErrorMessage = "Cart total does not meet or exceed minimum order amount.  Please contact DSR for more information.";
+
+                }
+
             }
             catch (Exception ex)
             {
@@ -138,6 +154,10 @@ namespace KeithLink.Svc.WebApi.Controllers
             {
                 retVal.SuccessResponse = _shoppingCartLogic.ReadCart(this.AuthenticatedUser, this.SelectedUserContext, cartId);
                 retVal.IsSuccess = true;
+
+                ApprovedCartModel cartApproved = _shoppingCartService.ValidateCartAmount(this.SelectedUserContext, retVal.SuccessResponse.SubTotal);
+
+                retVal.SuccessResponse.Approval = cartApproved;
             }
             catch (Exception ex)
             {
@@ -387,15 +407,15 @@ namespace KeithLink.Svc.WebApi.Controllers
             Models.OperationReturnModel<ShoppingCart> retVal = new Models.OperationReturnModel<ShoppingCart>();
             try
             {
-                ApprovedCartModel cartApproved = _shoppingCartService.ValidateCartAmount(this.SelectedUserContext, updatedCart.SubTotal);
+                //ApprovedCartModel cartApproved = _shoppingCartService.ValidateCartAmount(this.SelectedUserContext, updatedCart.SubTotal);
 
-                if(cartApproved.ApprovedOrDenied == true)
-                {
+                //if(cartApproved.Approved == true)
+                //{
                     _shoppingCartLogic.UpdateCart(this.SelectedUserContext, this.AuthenticatedUser, updatedCart, deleteomitted);
-                    updatedCart.Approval = cartApproved;
+                    //updatedCart.Approval = cartApproved;
                     retVal.SuccessResponse = updatedCart;
                     retVal.IsSuccess = true;
-                }
+                //}
 
             }
             catch (Exception ex)
