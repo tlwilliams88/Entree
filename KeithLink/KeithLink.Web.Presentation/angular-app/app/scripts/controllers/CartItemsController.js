@@ -695,6 +695,11 @@ angular.module('bekApp')
 
     function validateCart() {
       $scope.cartSubmissionApproved = $scope.currentCart.subtotal > 0 ? $scope.currentCart.approval.approvedamount <= $scope.currentCart.subtotal : false;
+      $scope.currentCart.approval.remainingamount = $scope.currentCart.approval.approvedamount - $scope.currentCart.subtotal;
+
+      if($scope.cartSubmissionApproved == false && $scope.currentCart.approval.message == null) {
+        $scope.currentCart.approval.message = "The cart total does not meet or exceed the minimum approved amount.  Please contact your DSR for more information.";
+      }
     }
 
     $scope.openErrorMessageModal = function(message) {

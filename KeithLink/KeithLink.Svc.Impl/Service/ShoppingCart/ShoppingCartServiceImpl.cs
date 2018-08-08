@@ -3,6 +3,7 @@ using KeithLink.Svc.Core.Interface.Cart;
 using KeithLink.Svc.Core.Interface.Profile;
 using KeithLink.Svc.Core.Interface.Orders;
 using KeithLink.Svc.Core.Interface.Customers;
+using KeithLink.Svc.Core.Interface.SiteCatalog;
 
 using KeithLink.Svc.Core.Models.Customers;
 using KeithLink.Svc.Core.Models.Orders;
@@ -11,6 +12,7 @@ using KeithLink.Svc.Core.Models.PowerMenu.Order;
 using KeithLink.Svc.Core.Models.ShoppingCart;
 using KeithLink.Svc.Core.Models.SiteCatalog;
 
+using KeithLink.Svc.Core.Helpers;
 using KeithLink.Svc.Core.Extensions.PowerMenu;
 
 using System;
@@ -30,10 +32,11 @@ namespace KeithLink.Svc.Impl.Service.ShoppingCart
         private readonly IShipDateRepository _shipDateRepository;
         private readonly IUserProfileLogic _profileLogic;
         private readonly IMinimumOrderAmountRepository _minimumAmountRepo;
+        private readonly IPriceLogic _priceLogic;
         #endregion
 
         #region constructor
-        public ShoppingCartServiceImpl(IShoppingCartLogic cartLogic, ICustomerRepository customerRepo, IUserProfileLogic profileLogic, IEventLogRepository log, IShipDateRepository shipDateRepo, IMinimumOrderAmountRepository minimumAmountRepo)
+        public ShoppingCartServiceImpl(IShoppingCartLogic cartLogic, ICustomerRepository customerRepo, IUserProfileLogic profileLogic, IEventLogRepository log, IShipDateRepository shipDateRepo, IMinimumOrderAmountRepository minimumAmountRepo, IPriceLogic priceLogic)
         {
             _shoppingCartLogic = cartLogic;
             _customerRepo = customerRepo;
@@ -41,6 +44,7 @@ namespace KeithLink.Svc.Impl.Service.ShoppingCart
             _shipDateRepository = shipDateRepo;
             _log = log;
             _minimumAmountRepo = minimumAmountRepo;
+            _priceLogic = priceLogic;
         }
         #endregion
 
@@ -93,9 +97,26 @@ namespace KeithLink.Svc.Impl.Service.ShoppingCart
 
                 currentCart = _shoppingCartLogic.ReadCart(user, catalogInfo, cartId);
 
+                decimal calcSubtotal = 0;
+
+                foreach(var item in currentCart.Items)
+                {
+                    int qty = (int)item.Quantity;
+                    int pack;
+                    if (!int.TryParse(item.Pack, out pack)) { pack = 1; }
+                    if (item.PackSize != null && item.PackSize.IndexOf("/") > -1)
+                    { // added to aid exporting separate pack and size on cart export
+                        item.Size = item.PackSize.Substring(item.PackSize.IndexOf("/") + 1);
+                    }
+
+                    calcSubtotal += (decimal)PricingHelper.GetPrice(qty, item.CasePriceNumeric, item.PackagePriceNumeric, item.Each, item.CatchWeight, item.AverageWeight, pack);
+                }
+
                 ret.ApprovedAmount = minimumOrderAmount[0].ApprovedAmount;
 
                 ret.Approved = ret.ApprovedAmount <= currentCart.SubTotal;
+
+                ret.RemainingAmount = ret.ApprovedAmount - calcSubtotal;
 
                 if(ret.Approved == false)
                 {

@@ -258,7 +258,7 @@
               ng-if="canSubmitOrders && !isChangeOrder" 
               type="button" 
               class="btn btn-primary btn-mobile col-xs-12 submitOrderBtn submitButton"
-              ng-disabled="cartForm.$invalid || disableSubmitButtons || currentCart.approval.approved == false || cartSubmissionApproved == false" 
+              ng-disabled="cartForm.$invalid || disableSubmitButtons || cartSubmissionApproved == false" 
               ng-click="submitOrder(currentCart)" 
               analytics-on 
               analytics-category="Orders" 
@@ -271,7 +271,7 @@
               ng-if="canSubmitOrders && isChangeOrder" 
               type="button" 
               class="btn btn-primary btn-mobile col-xs-12 submitOrderBtn submitButton"
-              ng-disabled="cartForm.$invalid || disableSubmitButtons || currentCart.approval.approved == false || cartSubmissionApproved == false" 
+              ng-disabled="cartForm.$invalid || disableSubmitButtons || cartSubmissionApproved == false" 
               ng-click="resubmitOrder(currentCart)" 
               analytics-on analytics-category="Orders" 
               analytics-event="Submit Changes" 
@@ -282,6 +282,7 @@
 
           <div class="row" style="padding-left: 25px; margin: 0 auto; padding-right: 28px;">
             <p class="text-red" ng-if="cartSubmissionApproved == false" style="font-size: 1.15em;">{{currentCart.approval.message}}</p>
+            <p class="text-red" ng-if="currentCart.approval.remainingamount > 0" style="font-size: 1.15em;">{{currentCart.approval.remainingamount | currency}} Remaining</p>
           </div>
         </div>
       </div>
@@ -636,7 +637,7 @@
             ng-if="canSubmitOrders && !isChangeOrder" 
             type="button" 
             class="btn btn-primary btn-mobile col-xs-12 submitOrderBtn submitButton"
-            ng-disabled="cartForm.$invalid || disableSubmitButtons || currentCart.approval.approved == false || cartSubmissionApproved == false" 
+            ng-disabled="cartForm.$invalid || disableSubmitButtons || cartSubmissionApproved == false" 
             ng-click="submitOrder(currentCart)" 
             analytics-on 
             analytics-category="Orders" 
@@ -660,6 +661,7 @@
 
         <div class="row" style="margin: 0 auto; padding-left: 25px; padding-right: 28px;">
           <p class="text-red" ng-if="cartSubmissionApproved == false" style="font-size: 1.15em;">{{currentCart.approval.message}}</p>
+          <p class="text-red" ng-if="currentCart.approval.remainingamount > 0" style="font-size: 1.15em;">{{currentCart.approval.remainingamount | currency}} Remaining</p>
         </div>
       </div>
   
