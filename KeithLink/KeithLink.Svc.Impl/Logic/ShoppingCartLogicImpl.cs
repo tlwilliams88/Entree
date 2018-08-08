@@ -505,8 +505,8 @@ namespace KeithLink.Svc.Impl.Logic
                 }
             }
 
-		    if (cart.SubTotal == 0)
-		    { // if we don't already have the subtotal, use the one we just calculated
+		    if (cart.SubTotal != calcSubTotal)
+		    { // the calculated subtotal is changed from the saved total, so use it
 		        cart.SubTotal = calcSubTotal;
 		    }
 
