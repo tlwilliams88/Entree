@@ -258,7 +258,7 @@
               ng-if="canSubmitOrders && !isChangeOrder" 
               type="button" 
               class="btn btn-primary btn-mobile col-xs-12 submitOrderBtn submitButton"
-              ng-disabled="cartForm.$invalid || disableSubmitButtons" 
+              ng-disabled="cartForm.$invalid || disableSubmitButtons || currentCart.approval.approved == false || cartSubmissionApproved == false" 
               ng-click="submitOrder(currentCart)" 
               analytics-on 
               analytics-category="Orders" 
@@ -271,7 +271,7 @@
               ng-if="canSubmitOrders && isChangeOrder" 
               type="button" 
               class="btn btn-primary btn-mobile col-xs-12 submitOrderBtn submitButton"
-              ng-disabled="cartForm.$invalid || disableSubmitButtons || currentCart.approval.approved == false" 
+              ng-disabled="cartForm.$invalid || disableSubmitButtons || currentCart.approval.approved == false || cartSubmissionApproved == false" 
               ng-click="resubmitOrder(currentCart)" 
               analytics-on analytics-category="Orders" 
               analytics-event="Submit Changes" 
@@ -636,7 +636,7 @@
             ng-if="canSubmitOrders && !isChangeOrder" 
             type="button" 
             class="btn btn-primary btn-mobile col-xs-12 submitOrderBtn submitButton"
-            ng-disabled="cartForm.$invalid || disableSubmitButtons" 
+            ng-disabled="cartForm.$invalid || disableSubmitButtons || currentCart.approval.approved == false || cartSubmissionApproved == false" 
             ng-click="submitOrder(currentCart)" 
             analytics-on 
             analytics-category="Orders" 

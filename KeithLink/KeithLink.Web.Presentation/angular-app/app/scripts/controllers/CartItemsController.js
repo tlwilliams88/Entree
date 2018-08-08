@@ -695,7 +695,6 @@ angular.module('bekApp')
 
     function validateCart() {
       $scope.cartSubmissionApproved = $scope.currentCart.subtotal > 0 ? $scope.currentCart.approval.approvedamount <= $scope.currentCart.subtotal : false;
-      console.log($scope.cartSubmissionApproved);
     }
 
     $scope.openErrorMessageModal = function(message) {

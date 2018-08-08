@@ -1114,7 +1114,13 @@ angular.module('bekApp')
     function refreshSubtotal(cartItems, listItems) {
       $scope.combinedItems = getCombinedCartAndListItems(cartItems, listItems);
       $scope.selectedCart.subtotal = PricingService.getSubtotalForItems($scope.combinedItems);
+      validateCart();
+
       return $scope.selectedCart.subtotal;
+    }
+
+    function validateCart() {
+      $scope.cartSubmissionApproved = $scope.selectedCart.subtotal > 0 ? $scope.selectedCart.approval.approvedamount <= $scope.selectedCart.subtotal : false;
     }
 
     // update quantity from on hand amount and par level
