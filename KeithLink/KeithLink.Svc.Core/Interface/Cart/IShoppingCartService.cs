@@ -14,6 +14,6 @@ namespace KeithLink.Svc.Core.Interface.Cart
     public interface IShoppingCartService
     {
         Guid ImportFromPowerMenu(VendorPurchaseOrderRequest po);
-        ApprovedCartModel ValidateCartAmount(UserSelectedContext selectedUserContext, decimal subTotal);
+        ApprovedCartModel ValidateCartAmount(UserProfile user, UserSelectedContext catalogInfo, Guid cartId);
     }
 }

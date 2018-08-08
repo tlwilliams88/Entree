@@ -81,20 +81,26 @@ namespace KeithLink.Svc.Impl.Service.ShoppingCart
             return _shoppingCartLogic.CreateCart(user, context, newCart);
         }
 
-        public ApprovedCartModel ValidateCartAmount(UserSelectedContext customer, decimal cartTotal)
+        public ApprovedCartModel ValidateCartAmount(UserProfile user, UserSelectedContext catalogInfo, Guid cartId)
         {
 
             ApprovedCartModel ret = new ApprovedCartModel();
+            Core.Models.ShoppingCart.ShoppingCart currentCart = new Core.Models.ShoppingCart.ShoppingCart();
 
             try
             {
-                List<MinimumOrderAmountModel> minimumOrderAmount = _minimumAmountRepo.GetMinimumOrderAmount(customer.CustomerId, customer.BranchId);
+                List<MinimumOrderAmountModel> minimumOrderAmount = _minimumAmountRepo.GetMinimumOrderAmount(catalogInfo.CustomerId, catalogInfo.BranchId);
+
+                currentCart = _shoppingCartLogic.ReadCart(user, catalogInfo, cartId);
 
                 ret.ApprovedAmount = minimumOrderAmount[0].ApprovedAmount;
 
-                ret.Approved = ret.ApprovedAmount < cartTotal;
+                ret.Approved = ret.ApprovedAmount <= currentCart.SubTotal;
 
-                ret.Message = ret.Approved == true ?  null : "The cart total does not meet or exceed the minimum approved amount.  Please contact your DSR for more information.";
+                if(ret.Approved == false)
+                {
+                    throw new Exception("The cart total does not meet or exceed the minimum approved amount.  Please contact your DSR for more information.");
+                }
                 
             }
             catch (Exception ex)

@@ -258,7 +258,7 @@
               ng-if="canSubmitOrders && !isChangeOrder" 
               type="button" 
               class="btn btn-primary btn-mobile col-xs-12 submitOrderBtn submitButton"
-              ng-disabled="cartForm.$invalid || disableSubmitButtons || currentCart.approval.approved == false" 
+              ng-disabled="cartForm.$invalid || disableSubmitButtons" 
               ng-click="submitOrder(currentCart)" 
               analytics-on 
               analytics-category="Orders" 
@@ -281,7 +281,7 @@
           </div>
 
           <div class="row" style="padding-left: 25px; margin: 0 auto; padding-right: 28px;">
-            <p class="text-red" style="font-size: 1.15em;">{{currentCart.approval.message}}</p>
+            <p class="text-red" ng-if="cartSubmissionApproved == false" style="font-size: 1.15em;">{{currentCart.approval.message}}</p>
           </div>
         </div>
       </div>
@@ -636,7 +636,7 @@
             ng-if="canSubmitOrders && !isChangeOrder" 
             type="button" 
             class="btn btn-primary btn-mobile col-xs-12 submitOrderBtn submitButton"
-            ng-disabled="cartForm.$invalid || disableSubmitButtons || currentCart.approval.approved == false" 
+            ng-disabled="cartForm.$invalid || disableSubmitButtons" 
             ng-click="submitOrder(currentCart)" 
             analytics-on 
             analytics-category="Orders" 
@@ -659,7 +659,7 @@
         </div>
 
         <div class="row" style="margin: 0 auto; padding-left: 25px; padding-right: 28px;">
-          <p class="text-red" style="font-size: 1.15em;">{{currentCart.approval.message}}</p>
+          <p class="text-red" ng-if="cartSubmissionApproved == false" style="font-size: 1.15em;">{{currentCart.approval.message}}</p>
         </div>
       </div>
   

@@ -9,6 +9,7 @@ using KeithLink.Svc.Core.Interface.Profile;
 using KeithLink.Svc.Core.Models.ModelExport;
 using KeithLink.Svc.Core.Models.Orders;
 using KeithLink.Svc.Core.Models.Paging;
+using KeithLink.Svc.Core.Models.ShoppingCart;
 
 using KeithLink.Svc.Impl.Helpers;
 using KeithLink.Svc.Impl.Logic;
@@ -43,6 +44,7 @@ namespace KeithLink.Svc.WebApi.Controllers
         private readonly IEventLogRepository _log;
         private readonly IOrderHistoryLogic _historyLogic;
         private readonly IListService _listService;
+        private readonly IShoppingCartService _shoppingCartService;
         #endregion
 
         #region ctor
@@ -58,9 +60,11 @@ namespace KeithLink.Svc.WebApi.Controllers
         /// <param name="logRepo"></param>
         /// <param name="historyHeaderRepository"></param>
         /// <param name="orderHistoryLogic"></param>
+        /// <param name="cartService"></param>
         public OrderController(IShoppingCartLogic shoppingCartLogic, IOrderLogic orderLogic, IShipDateRepository shipDayRepo, IListService listService, ICatalogLogic catalogLogic,
                                IOrderHistoryRequestLogic historyRequestLogic, IUserProfileLogic profileLogic, IExportSettingLogic exportSettingsLogic, 
-                               IEventLogRepository logRepo, IOrderHistoryHeaderRepsitory historyHeaderRepository, IOrderHistoryLogic orderHistoryLogic) : base(profileLogic) {
+                               IEventLogRepository logRepo, IOrderHistoryHeaderRepsitory historyHeaderRepository, IOrderHistoryLogic orderHistoryLogic, 
+                               IShoppingCartService cartService) : base(profileLogic) {
             _historyRequestLogic = historyRequestLogic;
 			_orderLogic = orderLogic;
             _shipDayService = shipDayRepo;
@@ -71,6 +75,7 @@ namespace KeithLink.Svc.WebApi.Controllers
             _historyLogic = orderHistoryLogic;
             _listService = listService;
             _catalogLogic = catalogLogic;
+            _shoppingCartService = cartService;
         }
         #endregion
 
@@ -414,8 +419,16 @@ namespace KeithLink.Svc.WebApi.Controllers
             Models.OperationReturnModel<SaveOrderReturn> retVal = new Models.OperationReturnModel<SaveOrderReturn>();
             try
             {
-                retVal.SuccessResponse = _shoppingCartLogic.SaveAsOrder(this.AuthenticatedUser, this.SelectedUserContext, cartId);
-                retVal.IsSuccess = true;
+
+                ApprovedCartModel cartApproved = _shoppingCartService.ValidateCartAmount(this.AuthenticatedUser, this.SelectedUserContext, cartId);
+
+                if(cartApproved.Approved == true)
+                {
+
+                    retVal.SuccessResponse = _shoppingCartLogic.SaveAsOrder(this.AuthenticatedUser, this.SelectedUserContext, cartId);
+                    retVal.IsSuccess = true;
+                }
+
             }
             catch (Exception ex)
             {
