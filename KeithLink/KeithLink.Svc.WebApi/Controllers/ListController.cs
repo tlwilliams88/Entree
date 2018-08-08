@@ -305,10 +305,15 @@ namespace KeithLink.Svc.WebApi.Controllers {
         /// <returns></returns>
         [HttpPost]
         [ApiKeyedRoute("list/")]
-        public OperationReturnModel<ListModel> List(ListModel list, [FromUri] ListType type = ListType.Custom) {
+        public OperationReturnModel<ListModel> List(ListModel list, [FromUri] ListType type = ListType.Custom, [FromUri] bool isCustomInventory = false) {
             OperationReturnModel<ListModel> ret = new OperationReturnModel<ListModel>();
             try
             {
+                List<ListItemModel> items = list.Items;
+                if (isCustomInventory)
+                {
+                    list.Items = new List<ListItemModel>();
+                }
                 ret.SuccessResponse = _listService.CreateList(this.AuthenticatedUser, this.SelectedUserContext, type, list);
 
                 _cacheListLogic.RemoveSpecificCachedList(new ListModel()
@@ -322,7 +327,12 @@ namespace KeithLink.Svc.WebApi.Controllers {
                 _cacheListLogic.RemoveTypeOfListsCache(SelectedUserContext, type);
 
                 _cacheListLogic.ClearCustomersListCaches(this.AuthenticatedUser, this.SelectedUserContext, _listService.ReadUserList(this.AuthenticatedUser, this.SelectedUserContext, true));
-
+                if (isCustomInventory)
+                {
+                    long listid = (ret.SuccessResponse != null) ? ret.SuccessResponse.ListId : list.ListId;
+                    List<long> customInventoryIds = items.Select(i => i.CustomInventoryItemId).ToList();
+                    AddCustomInventoryItems(list.Type, listid, customInventoryIds);
+                }
                 ret.IsSuccess = true;
             }
             catch (Exception ex)

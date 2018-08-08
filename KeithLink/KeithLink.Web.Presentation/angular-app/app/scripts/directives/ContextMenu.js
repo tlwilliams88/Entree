@@ -53,7 +53,7 @@ angular.module('bekApp')
 
       $scope.addItemToList = function(item, selectedList) {
       var newItem = angular.copy(item);
-        if(selectedList && selectedList.iscustominventory){
+        if(selectedList && (selectedList.iscustominventory || $scope.isCustomInventoryList)){
           var newItem = [
             item
           ];
@@ -81,7 +81,7 @@ angular.module('bekApp')
       $scope.createListWithItem = function(item) {
         var newListItem = item;
         $q.all([
-          ListService.createList(newListItem),
+          ListService.createList(newListItem, {isCustomInventory: $scope.isCustomInventoryList}),
           ListService.addItemToFavorites(newListItem)
         ]).then(function(data) {
           ListService.getListHeaders().then(function(listheaders){

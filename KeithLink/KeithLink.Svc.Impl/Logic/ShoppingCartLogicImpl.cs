@@ -486,6 +486,8 @@ namespace KeithLink.Svc.Impl.Logic
             cart.ItemCount = cart.Items.Count;
             cart.PieceCount = (int)cart.Items.Sum(i => i.Quantity);
 
+		    decimal calcSubTotal = 0;
+
             foreach (var item in cart.Items) {
                 int qty = (int)item.Quantity;
                 int pack;
@@ -495,13 +497,18 @@ namespace KeithLink.Svc.Impl.Logic
                     item.Size = item.PackSize.Substring(item.PackSize.IndexOf("/") + 1);
                 }
 
-                cart.SubTotal += (decimal)PricingHelper.GetPrice(qty, item.CasePriceNumeric, item.PackagePriceNumeric, item.Each, item.CatchWeight, item.AverageWeight, pack);
+                calcSubTotal += (decimal)PricingHelper.GetPrice(qty, item.CasePriceNumeric, item.PackagePriceNumeric, item.Each, item.CatchWeight, item.AverageWeight, pack);
 
                 var sourceList = _orderedItemsFromListRepository.Read(cart.CartId.ToString(), item.ItemNumber);
                 if (sourceList != null) {
                     item.OrderedFromSource = sourceList.SourceList;
                 }
             }
+
+		    if (cart.SubTotal != calcSubTotal)
+		    { // the calculated subtotal is changed from the saved total, so use it
+		        cart.SubTotal = calcSubTotal;
+		    }
 
             cart.ContainsSpecialItems = cart.Items.Any(i => i.IsSpecialtyCatalog);
 
