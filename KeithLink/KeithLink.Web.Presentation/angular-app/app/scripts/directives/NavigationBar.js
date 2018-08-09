@@ -11,10 +11,11 @@ angular.module('bekApp')
         userProfile: '=userProfile',      //Two-way data binding
       },
       templateUrl: 'views/directives/navigationBar.html',
-      controller: ['$scope', '$rootScope', '$stateParams', '$state',
+      controller: ['$scope', '$rootScope', '$stateParams', '$state', 'Constants',
         'AccessService', 'NotificationService', 'UserProfileService', 'ENV', 
-        function ($scope, $rootScope, $stateParams, $state,
-          AccessService, NotificationService, UserProfileService, ENV) {
+        function ($scope, $rootScope, $stateParams, $state, Constants,
+          AccessService, NotificationService, UserProfileService, ENV)
+        {
 
           if (typeof $scope.isSidebarOpen === "undefined")
             alert("The attribute, 'is-sidebar-open', was not defined in the element, 'navigation-bar'.");
@@ -24,6 +25,7 @@ angular.module('bekApp')
             alert("The attribute, 'user-profile', was not defined in the element, 'navigation-bar'.");
 
           $scope.$state = $state;
+          $scope.constants = Constants;
 
           $scope.isOrderEntryCustomer = AccessService.isOrderEntryCustomer();
           $scope.canBrowseCatalog = AccessService.canBrowseCatalog();
