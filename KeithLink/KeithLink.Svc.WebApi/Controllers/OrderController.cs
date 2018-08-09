@@ -504,6 +504,8 @@ namespace KeithLink.Svc.WebApi.Controllers
             Models.OperationReturnModel<Order> retVal = new Models.OperationReturnModel<Order>();
             try
             {
+                ApprovedCartModel cartApproved = _shoppingCartService.ValidateCartAmount(this.AuthenticatedUser, this.SelectedUserContext, null, order.OrderTotal);
+
                 retVal.SuccessResponse = _orderLogic.UpdateOrder(this.SelectedUserContext, this.AuthenticatedUser, order, deleteOmitted);
                 retVal.IsSuccess = true;
             }

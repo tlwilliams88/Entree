@@ -85,7 +85,7 @@ namespace KeithLink.Svc.Impl.Service.ShoppingCart
             return _shoppingCartLogic.CreateCart(user, context, newCart);
         }
 
-        public ApprovedCartModel ValidateCartAmount(UserProfile user, UserSelectedContext catalogInfo, Guid cartId)
+        public ApprovedCartModel ValidateCartAmount(UserProfile user, UserSelectedContext catalogInfo, Guid cartId, Decimal orderAmount)
         {
 
             ApprovedCartModel ret = new ApprovedCartModel();
