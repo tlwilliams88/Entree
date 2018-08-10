@@ -420,7 +420,7 @@ namespace KeithLink.Svc.WebApi.Controllers
             try
             {
 
-                ApprovedCartModel cartApproved = _shoppingCartService.ValidateCartAmount(this.AuthenticatedUser, this.SelectedUserContext, cartId);
+                ApprovedCartModel cartApproved = _shoppingCartService.ValidateCartAmount(this.AuthenticatedUser, this.SelectedUserContext, cartId, null);
 
                 if(cartApproved.Approved == true)
                 {
@@ -452,8 +452,14 @@ namespace KeithLink.Svc.WebApi.Controllers
             Models.OperationReturnModel<NewOrderReturn> retVal = new Models.OperationReturnModel<NewOrderReturn>();
             try
             {
-                retVal.SuccessResponse = _orderLogic.SubmitChangeOrder(this.AuthenticatedUser, this.SelectedUserContext, orderNumber);
-                retVal.IsSuccess = true;
+                ApprovedCartModel orderApproved = _shoppingCartService.ValidateCartAmount(this.AuthenticatedUser, this.SelectedUserContext, Guid.Empty, orderNumber);
+
+                if (orderApproved.Approved == true)
+                {
+                    retVal.SuccessResponse = _orderLogic.SubmitChangeOrder(this.AuthenticatedUser, this.SelectedUserContext, orderNumber);
+                    retVal.IsSuccess = true;
+                }
+
             }
             catch (Exception ex)
             {
@@ -504,8 +510,9 @@ namespace KeithLink.Svc.WebApi.Controllers
             Models.OperationReturnModel<Order> retVal = new Models.OperationReturnModel<Order>();
             try
             {
-                ApprovedCartModel cartApproved = _shoppingCartService.ValidateCartAmount(this.AuthenticatedUser, this.SelectedUserContext, null, order.OrderTotal);
+                ApprovedCartModel orderApproved = _shoppingCartService.ValidateCartAmount(this.AuthenticatedUser, this.SelectedUserContext, Guid.Empty, order.OrderNumber);
 
+                retVal.SuccessResponse.Approval = orderApproved;
                 retVal.SuccessResponse = _orderLogic.UpdateOrder(this.SelectedUserContext, this.AuthenticatedUser, order, deleteOmitted);
                 retVal.IsSuccess = true;
             }

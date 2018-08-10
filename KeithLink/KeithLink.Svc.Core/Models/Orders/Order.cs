@@ -1,6 +1,8 @@
 ﻿using DocumentFormat.OpenXml.Spreadsheet;
 using KeithLink.Svc.Core.Interface.ModelExport;
 using KeithLink.Svc.Core.Models.ModelExport;
+using KeithLink.Svc.Core.Models.ShoppingCart;
+
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -93,6 +95,9 @@ namespace KeithLink.Svc.Core.Models.Orders
 
         [DataMember(Name = "isspecialorder")]
         public bool IsSpecialOrder { get; set; }
+
+        [DataMember(Name = "approval")]
+        public ApprovedCartModel Approval { get; set; }
 
         public List<ModelExport.ExportModelConfiguration> DefaultExportConfiguration()
         {

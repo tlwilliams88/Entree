@@ -15,6 +15,8 @@ using KeithLink.Svc.Core.Models.SiteCatalog;
 using KeithLink.Svc.Core.Helpers;
 using KeithLink.Svc.Core.Extensions.PowerMenu;
 
+using KeithLink.Svc.Impl.Logic.Orders;
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -33,10 +35,11 @@ namespace KeithLink.Svc.Impl.Service.ShoppingCart
         private readonly IUserProfileLogic _profileLogic;
         private readonly IMinimumOrderAmountRepository _minimumAmountRepo;
         private readonly IPriceLogic _priceLogic;
+        private readonly IOrderLogic _orderLogic;
         #endregion
 
         #region constructor
-        public ShoppingCartServiceImpl(IShoppingCartLogic cartLogic, ICustomerRepository customerRepo, IUserProfileLogic profileLogic, IEventLogRepository log, IShipDateRepository shipDateRepo, IMinimumOrderAmountRepository minimumAmountRepo, IPriceLogic priceLogic)
+        public ShoppingCartServiceImpl(IShoppingCartLogic cartLogic, ICustomerRepository customerRepo, IUserProfileLogic profileLogic, IEventLogRepository log, IShipDateRepository shipDateRepo, IMinimumOrderAmountRepository minimumAmountRepo, IPriceLogic priceLogic, IOrderLogic orderLogic)
         {
             _shoppingCartLogic = cartLogic;
             _customerRepo = customerRepo;
@@ -45,7 +48,11 @@ namespace KeithLink.Svc.Impl.Service.ShoppingCart
             _log = log;
             _minimumAmountRepo = minimumAmountRepo;
             _priceLogic = priceLogic;
+            _orderLogic = orderLogic;
         }
+
+        public Core.Models.Orders.Order existingOrder { get; private set; }
+        public Core.Models.ShoppingCart.ShoppingCart currentCart { get; private set; }
         #endregion
 
         #region functions
@@ -85,36 +92,65 @@ namespace KeithLink.Svc.Impl.Service.ShoppingCart
             return _shoppingCartLogic.CreateCart(user, context, newCart);
         }
 
-        public ApprovedCartModel ValidateCartAmount(UserProfile user, UserSelectedContext catalogInfo, Guid cartId, Decimal orderAmount)
+        public ApprovedCartModel ValidateCartAmount(UserProfile user, UserSelectedContext catalogInfo, Guid cartId, string orderNumber)
         {
 
             ApprovedCartModel ret = new ApprovedCartModel();
-            Core.Models.ShoppingCart.ShoppingCart currentCart = new Core.Models.ShoppingCart.ShoppingCart();
+
+            bool isCart = cartId != null ? true : false;
+            if(isCart == true)
+            {
+                Core.Models.Orders.Order existingOrder = new Core.Models.Orders.Order();
+            }
+            else
+            {
+                Core.Models.ShoppingCart.ShoppingCart currentCart = new Core.Models.ShoppingCart.ShoppingCart();
+            }
 
             try
             {
                 List<MinimumOrderAmountModel> minimumOrderAmount = _minimumAmountRepo.GetMinimumOrderAmount(catalogInfo.CustomerId, catalogInfo.BranchId);
 
-                currentCart = _shoppingCartLogic.ReadCart(user, catalogInfo, cartId);
-
                 decimal calcSubtotal = 0;
-
-                foreach(var item in currentCart.Items)
-                {
-                    int qty = (int)item.Quantity;
-                    int pack;
-                    if (!int.TryParse(item.Pack, out pack)) { pack = 1; }
-                    if (item.PackSize != null && item.PackSize.IndexOf("/") > -1)
-                    { // added to aid exporting separate pack and size on cart export
-                        item.Size = item.PackSize.Substring(item.PackSize.IndexOf("/") + 1);
-                    }
-
-                    calcSubtotal += (decimal)PricingHelper.GetPrice(qty, item.CasePriceNumeric, item.PackagePriceNumeric, item.Each, item.CatchWeight, item.AverageWeight, pack);
-                }
 
                 ret.ApprovedAmount = minimumOrderAmount[0].ApprovedAmount;
 
-                ret.Approved = ret.ApprovedAmount <= currentCart.SubTotal;
+                if (isCart == true)
+                {
+                    currentCart = _shoppingCartLogic.ReadCart(user, catalogInfo, cartId);
+
+                    foreach (var item in currentCart.Items)
+                    {
+                        int qty = (int)item.Quantity;
+                        int pack;
+                        if (!int.TryParse(item.Pack, out pack)) { pack = 1; }
+                        if (item.PackSize != null && item.PackSize.IndexOf("/") > -1)
+                        { // added to aid exporting separate pack and size on cart export
+                            item.Size = item.PackSize.Substring(item.PackSize.IndexOf("/") + 1);
+                        }
+
+                        calcSubtotal += (decimal)PricingHelper.GetPrice(qty, item.CasePriceNumeric, item.PackagePriceNumeric, item.Each, item.CatchWeight, item.AverageWeight, pack);
+                    }
+                }
+                else
+                {
+                    existingOrder = _orderLogic.ReadOrder(user, catalogInfo, orderNumber, false);
+
+                    foreach (var item in existingOrder.Items)
+                    {
+                        int qty = (int)item.Quantity;
+                        int pack;
+                        if (!int.TryParse(item.Pack, out pack)) { pack = 1; }
+                        if (item.PackSize != null && item.PackSize.IndexOf("/") > -1)
+                        { // added to aid exporting separate pack and size on cart export
+                            item.Size = item.PackSize.Substring(item.PackSize.IndexOf("/") + 1);
+                        }
+
+                        calcSubtotal += (decimal)PricingHelper.GetPrice(qty, item.CasePriceNumeric, item.PackagePriceNumeric, item.Each, item.CatchWeight, item.AverageWeight, pack);
+                    }
+                }
+
+                ret.Approved = ret.ApprovedAmount <= calcSubtotal;
 
                 ret.RemainingAmount = ret.ApprovedAmount - calcSubtotal;
 
