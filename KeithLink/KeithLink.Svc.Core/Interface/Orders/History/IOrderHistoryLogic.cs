@@ -18,7 +18,7 @@ namespace KeithLink.Svc.Core.Interface.Orders.History {
 
         void ProcessOrder(string rawOrder);
 
-        OrderHistoryFileReturn ParseMainframeFile(StreamReader reader);
+        OrderHistoryFileReturn ParseMainframeFile(TextReader reader);
 
         string ReadOrderFromQueue();
 

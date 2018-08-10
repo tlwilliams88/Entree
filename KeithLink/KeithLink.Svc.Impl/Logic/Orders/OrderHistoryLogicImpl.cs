@@ -127,6 +127,12 @@ namespace KeithLink.Svc.Impl.Logic.Orders
 
             OrderHistoryFileReturn parsedFiles = ParseFile(lines);
 
+            if (parsedFiles.Files.Count == 0)
+            {
+                var logMessage = "No instances of OrderHistoryFile were extracted.";
+                _log.WriteWarningLog(logMessage);
+            }
+
             foreach (OrderHistoryFile parsedFile in parsedFiles.Files)
             {
                 parsedFile.SenderApplicationName = Configuration.ApplicationName;
@@ -639,10 +645,7 @@ namespace KeithLink.Svc.Impl.Logic.Orders
                 switch (line.Substring(RECORDTYPE_STARTPOS, RECORDTYPE_LENGTH))
                 {
                     case "H":
-                        if (currentFile != null)
-                        {
-                            SetErrorStatusAndFutureItemsOnFile(currentFile);
-                        }
+                        SetErrorStatusAndFutureItemsOnFile(currentFile);
 
                         currentFile = ParseNewOrderHistoryFileFromHeaderLine(line);
                         retVal.Files.Add(currentFile);
@@ -667,12 +670,15 @@ namespace KeithLink.Svc.Impl.Logic.Orders
 
         private void SetErrorStatusAndFutureItemsOnFile(OrderHistoryFile currentFile)
         {
-            currentFile.Header.ErrorStatus = (from OrderHistoryDetail detail in currentFile.Details
-                                                where detail.ItemStatus != string.Empty
-                                                select true).FirstOrDefault();
-            currentFile.Header.FutureItems = (from OrderHistoryDetail detail in currentFile.Details
-                                                where detail.FutureItem == true
-                                                select true).FirstOrDefault();
+            if (currentFile != null)
+            {
+                currentFile.Header.ErrorStatus = (from OrderHistoryDetail detail in currentFile.Details
+                                                  where detail.ItemStatus != string.Empty
+                                                  select true).FirstOrDefault();
+                currentFile.Header.FutureItems = (from OrderHistoryDetail detail in currentFile.Details
+                                                  where detail.FutureItem == true
+                                                  select true).FirstOrDefault();
+            }
         }
 
         public OrderHistoryFile ParseNewOrderHistoryFileFromHeaderLine(string line)
@@ -684,7 +690,7 @@ namespace KeithLink.Svc.Impl.Logic.Orders
             return currentFile;
         }
 
-        public OrderHistoryFileReturn ParseMainframeFile(StreamReader reader)
+        public OrderHistoryFileReturn ParseMainframeFile(TextReader reader)
         {
             OrderHistoryFileReturn retVal = new OrderHistoryFileReturn();
 
@@ -697,10 +703,7 @@ namespace KeithLink.Svc.Impl.Logic.Orders
                 switch (line.Substring(RECORDTYPE_STARTPOS, RECORDTYPE_LENGTH))
                 {
                     case "H":
-                        if (currentFile != null)
-                        {
-                            SetErrorStatusAndFutureItemsOnFile(currentFile);
-                        }
+                        SetErrorStatusAndFutureItemsOnFile(currentFile);
 
                         currentFile = CreateOrderHistoryFileFromHeaderLine(line);
                         retVal.Files.Add(currentFile);

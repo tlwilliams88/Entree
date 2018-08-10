@@ -411,7 +411,8 @@ namespace KeithLink.Svc.Windows.OrderService
 
                             if (CanOpenFile(filePath))
                             {
-                                var items = new BlockingCollection<string>();
+                                var logMessage = "Processing " + filePath + ".";
+                                _log.WriteInformationLog(logMessage);
 
                                 OrderHistoryFileReturn parsedFile = null;
                                 using (var reader = File.OpenText(filePath))
@@ -419,9 +420,16 @@ namespace KeithLink.Svc.Windows.OrderService
                                     parsedFile = logic.ParseMainframeFile(reader);
                                 }
 
+                                if (parsedFile.Files.Count == 0)
+                                {
+                                    logMessage = "No instances of OrderHistoryFile were extracted from " + filePath + ".";
+                                    _log.WriteWarningLog(logMessage);
+                                }
+
+                                var serializedFiles = new BlockingCollection<string>();
+
                                 Parallel.ForEach(parsedFile.Files, file =>
                                 {
-
                                     // do not upload an order file with an invalid header
                                     if (file.ValidHeader)
                                     {
@@ -430,15 +438,15 @@ namespace KeithLink.Svc.Windows.OrderService
 
                                         try
                                         {
-                                            var jsonValue = JsonConvert.SerializeObject(file);
-                                            items.Add(jsonValue);
+                                            var serializedFile = JsonConvert.SerializeObject(file);
+                                            serializedFiles.Add(serializedFile);
 
-                                            StringBuilder logMsg = new StringBuilder();
-                                            logMsg.AppendLine(string.Format("Publishing order history to queue for message ({0}).", file.MessageId));
-                                            logMsg.AppendLine();
-                                            logMsg.AppendLine(jsonValue);
+                                            //StringBuilder logMsg = new StringBuilder();
+                                            //logMsg.AppendLine(string.Format("Serializing order history message ({0}).", file.MessageId));
+                                            //logMsg.AppendLine();
+                                            //logMsg.AppendLine(serializedFile);
 
-                                            _log.WriteInformationLog(logMsg.ToString());
+                                            //_log.WriteInformationLog(logMsg.ToString());
 
                                             _silenceOrderUpdateMessages = false;
                                         }
@@ -454,13 +462,20 @@ namespace KeithLink.Svc.Windows.OrderService
                                     }
                                 });
 
-                                if (items.Count > 0)
-                                    repo.BulkPublishToQueue(items.ToList(), Configuration.RabbitMQConfirmationServer, Configuration.RabbitMQUserNamePublisher, Configuration.RabbitMQUserPasswordPublisher, Configuration.RabbitMQVHostConfirmation, Configuration.RabbitMQExchangeHourlyUpdates);
+                                if (serializedFiles.Count > 0)
+                                {
+                                    logMessage = "Publishing " + serializedFiles.Count + " order history messages to queue.";
+                                    _log.WriteInformationLog(logMessage);
+
+                                    repo.BulkPublishToQueue(serializedFiles.ToList(), Configuration.RabbitMQConfirmationServer, Configuration.RabbitMQUserNamePublisher, Configuration.RabbitMQUserPasswordPublisher, Configuration.RabbitMQVHostConfirmation, Configuration.RabbitMQExchangeHourlyUpdates);
+                                }
 
                                 File.Delete(filePath);
+
+                                logMessage = "Deleted " + filePath + ".";
+                                _log.WriteInformationLog(logMessage);
                             } // end if CanOpenFile
                         });
-
 
                         _orderScope.Dispose();
                     }
