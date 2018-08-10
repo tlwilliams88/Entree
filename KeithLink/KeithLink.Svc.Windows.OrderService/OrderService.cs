@@ -441,12 +441,12 @@ namespace KeithLink.Svc.Windows.OrderService
                                             var serializedFile = JsonConvert.SerializeObject(file);
                                             serializedFiles.Add(serializedFile);
 
-                                            StringBuilder logMsg = new StringBuilder();
-                                            logMsg.AppendLine(string.Format("Publishing order history to queue for message ({0}).", file.MessageId));
-                                            logMsg.AppendLine();
-                                            logMsg.AppendLine(serializedFile);
+                                            //StringBuilder logMsg = new StringBuilder();
+                                            //logMsg.AppendLine(string.Format("Serializing order history message ({0}).", file.MessageId));
+                                            //logMsg.AppendLine();
+                                            //logMsg.AppendLine(serializedFile);
 
-                                            _log.WriteInformationLog(logMsg.ToString());
+                                            //_log.WriteInformationLog(logMsg.ToString());
 
                                             _silenceOrderUpdateMessages = false;
                                         }
@@ -463,7 +463,12 @@ namespace KeithLink.Svc.Windows.OrderService
                                 });
 
                                 if (serializedFiles.Count > 0)
+                                {
+                                    logMessage = "Publishing " + serializedFiles.Count + " order history messages to queue.";
+                                    _log.WriteInformationLog(logMessage);
+
                                     repo.BulkPublishToQueue(serializedFiles.ToList(), Configuration.RabbitMQConfirmationServer, Configuration.RabbitMQUserNamePublisher, Configuration.RabbitMQUserPasswordPublisher, Configuration.RabbitMQVHostConfirmation, Configuration.RabbitMQExchangeHourlyUpdates);
+                                }
 
                                 File.Delete(filePath);
 
@@ -471,7 +476,6 @@ namespace KeithLink.Svc.Windows.OrderService
                                 _log.WriteInformationLog(logMessage);
                             } // end if CanOpenFile
                         });
-
 
                         _orderScope.Dispose();
                     }
