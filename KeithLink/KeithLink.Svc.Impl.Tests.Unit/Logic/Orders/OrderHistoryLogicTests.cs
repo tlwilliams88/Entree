@@ -40,7 +40,7 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic.Orders
         public class ParseMainframeFile
         {
             [Fact]
-            public void OrderHistory_HasValidHeadersAndOrderDate()
+            public void WhenMainframeFileContainsOrderHistory_HasValidHeadersAndOrderDate()
             {
                 // arrange
                 MockDependents mockDependents = new MockDependents();
@@ -54,6 +54,22 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic.Orders
                 // assert
                 orderHistoryFiles.Files.Count.Should().Be(40);
                 orderHistoryFiles.Files.ForEach(file => CheckFile(file));
+            }
+
+            [Fact]
+            public void WhenMainframeFileDoesNotContainOrderHistory_HasValidHeadersAndOrderDate()
+            {
+                // arrange
+                MockDependents mockDependents = new MockDependents();
+                IOrderHistoryLogic testunit = MakeUnitToBeTested(true, mockDependents);
+
+                // act
+                var mockDataReader = new StringReader(string.Empty);
+                OrderHistoryFileReturn orderHistoryFiles = testunit.ParseMainframeFile(mockDataReader);
+                mockDataReader.Close();
+
+                // assert
+                orderHistoryFiles.Files.Count.Should().Be(0);
             }
 
         }
