@@ -14,21 +14,27 @@ angular.module('bekApp')
     var Service = {
 
         identify: function(emailAddress){
-            if(meetsRequirements()){
+            if(emailAddress != null && meetsRequirements()){
                 __insp.push(['identify', emailAddress ]);
             }
         },
         
         tagEmail: function(emailAddress){
-            if(meetsRequirements()){
+            if(emailAddress != null && meetsRequirements()){
                 __insp.push(['tagSession', {email: emailAddress }]);
                 __insp.push(['tagSession', 'user=' + emailAddress ]);
             }
         },
         
         tagCustomer: function(customernumber){
-            if(meetsRequirements()){
+            if(customernumber != null && meetsRequirements()){
                 __insp.push(['tagSession', 'customer=' + customernumber ]);
+            }
+        },
+        
+        tagBranch: function(branchId){
+            if(branchId != null && meetsRequirements()){
+                __insp.push(['tagSession', 'branch=' + branchId ]);
             }
         },
         
@@ -39,14 +45,14 @@ angular.module('bekApp')
         },
         
         tagOrder: function(orderNumber){
-            if(meetsRequirements()){
+            if(orderNumber != null && meetsRequirements()){
                 __insp.push(['tagSession', 'order' ]);
                 __insp.push(['tagSession', 'order=' + orderNumber ]);
             }
         },
         
         tagChangeOrder: function(orderNumber){
-            if(meetsRequirements()){
+            if(orderNumber != null && meetsRequirements()){
                 __insp.push(['tagSession', 'changeorder' ]);
                 __insp.push(['tagSession', 'order=' + orderNumber ]);
                 __insp.push(['tagSession', 'changeorder=' + orderNumber ]);
@@ -54,20 +60,20 @@ angular.module('bekApp')
         },
         
         tagCampaignView: function(campaignName){
-            if(meetsRequirements()){
+            if(campaignName != null && meetsRequirements()){
                 __insp.push(['tagSession', 'campaign' ]);
                 __insp.push(['tagSession', 'campaign=' + campaignName ]);
             }
         },
         
-        tagSearch: function(campaignName){
-            if(meetsRequirements()){
-                __insp.push(['tagSession', 'search=' + campaignName ]);
+        tagSearch: function(searchName){
+            if(searchName != null && meetsRequirements()){
+                __insp.push(['tagSession', 'search=' + searchName ]);
             }
         },
         
         tagAddRecommendedItem: function(item){
-            if(meetsRequirements()){
+            if(item != null && meetsRequirements()){
                 __insp.push(['tagSession', 'addRecommendedItem']);
                 __insp.push(['tagSession', 'addRecommendedItem=' + item ]);
             }
@@ -77,8 +83,7 @@ angular.module('bekApp')
     function meetsRequirements() {
         var isMobileApp = ENV.mobileApp;
 
-//        return ((ENV.name == 'test' || ENV.name == 'prod') && isMobileApp == false);
-        return (isMobileApp == false);
+        return (__insp != null && (ENV.name == 'test' || ENV.name == 'prod') && isMobileApp == false);
       }
       return Service;
 

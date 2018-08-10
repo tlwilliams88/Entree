@@ -24,9 +24,11 @@ angular.module('bekApp')
         guiders.hideAll();
     });
 
-      SessionRecordingService.identify(SessionService.userProfile.emailaddress);
-      SessionRecordingService.tagEmail(SessionService.userProfile.emailaddress);
-      SessionRecordingService.tagEnvironment();
+    SessionRecordingService.identify(SessionService.userProfile.emailaddress);
+    SessionRecordingService.tagEmail(SessionService.userProfile.emailaddress);
+    SessionRecordingService.tagEnvironment();
+    SessionRecordingService.tagCustomer(LocalStorage.getCustomerNumber());
+    SessionRecordingService.tagBranch(LocalStorage.getBranchId());
 
     CartService.getCartHeaders().then(function(carts){
         $scope.cartHeaders = carts;
