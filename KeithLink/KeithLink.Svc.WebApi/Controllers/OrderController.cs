@@ -420,7 +420,7 @@ namespace KeithLink.Svc.WebApi.Controllers
             try
             {
 
-                ApprovedCartModel cartApproved = _shoppingCartService.ValidateCartAmount(this.AuthenticatedUser, this.SelectedUserContext, cartId, null);
+                ApprovedCartModel cartApproved = _shoppingCartService.ValidateCart(this.AuthenticatedUser, this.SelectedUserContext, cartId, null);
 
                 if(cartApproved.Approved == true)
                 {
@@ -452,7 +452,7 @@ namespace KeithLink.Svc.WebApi.Controllers
             Models.OperationReturnModel<NewOrderReturn> retVal = new Models.OperationReturnModel<NewOrderReturn>();
             try
             {
-                ApprovedCartModel orderApproved = _shoppingCartService.ValidateCartAmount(this.AuthenticatedUser, this.SelectedUserContext, Guid.Empty, orderNumber);
+                ApprovedCartModel orderApproved = _shoppingCartService.ValidateCart(this.AuthenticatedUser, this.SelectedUserContext, Guid.Empty, orderNumber);
 
                 if (orderApproved.Approved == true)
                 {
@@ -510,7 +510,7 @@ namespace KeithLink.Svc.WebApi.Controllers
             Models.OperationReturnModel<Order> retVal = new Models.OperationReturnModel<Order>();
             try
             {
-                ApprovedCartModel orderApproved = _shoppingCartService.ValidateCartAmount(this.AuthenticatedUser, this.SelectedUserContext, Guid.Empty, order.OrderNumber);
+                ApprovedCartModel orderApproved = _shoppingCartService.ValidateCart(this.AuthenticatedUser, this.SelectedUserContext, Guid.Empty, order.OrderNumber);
 
                 retVal.SuccessResponse.Approval = orderApproved;
                 retVal.SuccessResponse = _orderLogic.UpdateOrder(this.SelectedUserContext, this.AuthenticatedUser, order, deleteOmitted);

@@ -4,6 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
+using KeithLink.Svc.Core.Models.Orders;
+using KeithLink.Svc.Core.Models.ShoppingCart;
+
 namespace KeithLink.Svc.Core.Helpers {
     public static class PricingHelper {
         /// <summary>
@@ -77,6 +80,28 @@ namespace KeithLink.Svc.Core.Helpers {
 
         public static double GetCatchweightPriceForPackage(int qty, int pack, double weight, double price) {
             return ((weight / pack) * qty) * price;
+        }
+
+        public static int DeterminePackAndSize(string itemPack)
+        {
+            int pack;
+
+            if (!int.TryParse(itemPack, out pack)) { pack = 1; }
+
+            return pack;
+        }
+        public static double CalculateCartSubtotal(List<ShoppingCartItem> items)
+        {
+            double calcSubtotal = 0;
+
+            foreach (var item in items)
+            {
+                int pack = DeterminePackAndSize(item.Pack);
+
+                calcSubtotal += GetPrice((int)item.Quantity, item.CasePriceNumeric, item.PackagePriceNumeric, item.Each, item.CatchWeight, item.AverageWeight, pack);
+            }
+
+            return calcSubtotal;
         }
     }
 }

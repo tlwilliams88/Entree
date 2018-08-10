@@ -92,7 +92,7 @@ namespace KeithLink.Svc.Impl.Service.ShoppingCart
             return _shoppingCartLogic.CreateCart(user, context, newCart);
         }
 
-        public ApprovedCartModel ValidateCartAmount(UserProfile user, UserSelectedContext catalogInfo, Guid cartId, string orderNumber)
+        public ApprovedCartModel ValidateCart(UserProfile user, UserSelectedContext catalogInfo, Guid cartId, string orderNumber)
         {
 
             ApprovedCartModel ret = new ApprovedCartModel();
@@ -109,50 +109,29 @@ namespace KeithLink.Svc.Impl.Service.ShoppingCart
 
             try
             {
-                List<MinimumOrderAmountModel> minimumOrderAmount = _minimumAmountRepo.GetMinimumOrderAmount(catalogInfo.CustomerId, catalogInfo.BranchId);
+                MinimumOrderAmountModel minimumOrderAmount = _minimumAmountRepo.GetMinimumOrderAmount(catalogInfo.CustomerId, catalogInfo.BranchId);
 
-                decimal calcSubtotal = 0;
+                decimal subtotal = 0;
 
-                ret.ApprovedAmount = minimumOrderAmount[0].ApprovedAmount;
+                ret.ApprovedAmount = minimumOrderAmount.ApprovedAmount;
 
                 if (isCart == true)
                 {
                     currentCart = _shoppingCartLogic.ReadCart(user, catalogInfo, cartId);
 
-                    foreach (var item in currentCart.Items)
-                    {
-                        int qty = (int)item.Quantity;
-                        int pack;
-                        if (!int.TryParse(item.Pack, out pack)) { pack = 1; }
-                        if (item.PackSize != null && item.PackSize.IndexOf("/") > -1)
-                        { // added to aid exporting separate pack and size on cart export
-                            item.Size = item.PackSize.Substring(item.PackSize.IndexOf("/") + 1);
-                        }
+                    subtotal = (decimal)PricingHelper.CalculateCartSubtotal(currentCart.Items);
 
-                        calcSubtotal += (decimal)PricingHelper.GetPrice(qty, item.CasePriceNumeric, item.PackagePriceNumeric, item.Each, item.CatchWeight, item.AverageWeight, pack);
-                    }
                 }
                 else
                 {
                     existingOrder = _orderLogic.ReadOrder(user, catalogInfo, orderNumber, false);
 
-                    foreach (var item in existingOrder.Items)
-                    {
-                        int qty = (int)item.Quantity;
-                        int pack;
-                        if (!int.TryParse(item.Pack, out pack)) { pack = 1; }
-                        if (item.PackSize != null && item.PackSize.IndexOf("/") > -1)
-                        { // added to aid exporting separate pack and size on cart export
-                            item.Size = item.PackSize.Substring(item.PackSize.IndexOf("/") + 1);
-                        }
-
-                        calcSubtotal += (decimal)PricingHelper.GetPrice(qty, item.CasePriceNumeric, item.PackagePriceNumeric, item.Each, item.CatchWeight, item.AverageWeight, pack);
-                    }
+                    subtotal = (decimal)existingOrder.OrderTotal;
                 }
 
-                ret.Approved = ret.ApprovedAmount <= calcSubtotal;
+                ret.Approved = ret.ApprovedAmount <= subtotal;
 
-                ret.RemainingAmount = ret.ApprovedAmount - calcSubtotal;
+                ret.RemainingAmount = ret.ApprovedAmount - subtotal;
 
                 if(ret.Approved == false)
                 {
