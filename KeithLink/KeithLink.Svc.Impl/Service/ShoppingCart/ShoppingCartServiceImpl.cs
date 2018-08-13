@@ -100,11 +100,11 @@ namespace KeithLink.Svc.Impl.Service.ShoppingCart
             bool isCart = cartId != null ? true : false;
             if(isCart == true)
             {
-                Core.Models.Orders.Order existingOrder = new Core.Models.Orders.Order();
+                Core.Models.ShoppingCart.ShoppingCart currentCart = new Core.Models.ShoppingCart.ShoppingCart();
             }
             else
             {
-                Core.Models.ShoppingCart.ShoppingCart currentCart = new Core.Models.ShoppingCart.ShoppingCart();
+                Core.Models.Orders.Order existingOrder = new Core.Models.Orders.Order();
             }
 
             try
@@ -131,7 +131,7 @@ namespace KeithLink.Svc.Impl.Service.ShoppingCart
 
                 ret.Approved = ret.ApprovedAmount <= subtotal;
 
-                ret.RemainingAmount = ret.ApprovedAmount - subtotal;
+                ret.RemainingAmount = ret.ApprovedAmount - subtotal > 0 ? ret.ApprovedAmount - subtotal : 0;
 
                 if(ret.Approved == false)
                 {
