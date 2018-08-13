@@ -512,8 +512,8 @@ namespace KeithLink.Svc.WebApi.Controllers
             {
                 ApprovedCartModel orderApproved = _shoppingCartService.ValidateCart(this.AuthenticatedUser, this.SelectedUserContext, Guid.Empty, order.OrderNumber);
 
-                retVal.SuccessResponse.Approval = orderApproved;
                 retVal.SuccessResponse = _orderLogic.UpdateOrder(this.SelectedUserContext, this.AuthenticatedUser, order, deleteOmitted);
+                retVal.SuccessResponse.Approval = orderApproved;
                 retVal.IsSuccess = true;
             }
             catch (Exception ex)
