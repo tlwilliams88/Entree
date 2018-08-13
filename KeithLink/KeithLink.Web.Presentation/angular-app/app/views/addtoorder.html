@@ -21,7 +21,7 @@
 </div>
 
 <div class="pull-right padding-right-15">
-  <p class="text-red" ng-if="cartSubmissionApproved == false">{{selectedCart.approval.message}}</p>
+  <p class="text-red" ng-if="cartSubmissionApproved == false && selectedCart.approval.approvedamount">{{selectedCart.approval.message}}</p>
   <p class="text-red text-dark" ng-if="selectedCart.approval.remainingamount > 0">{{selectedCart.approval.remainingamount | currency}} Remaining</p>
 </div>
 

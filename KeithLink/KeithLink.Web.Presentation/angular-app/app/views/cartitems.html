@@ -281,7 +281,7 @@
           </div>
 
           <div class="row" style="padding-left: 25px; margin: 0 auto; padding-right: 28px;">
-            <p class="text-red" ng-if="cartSubmissionApproved == false" style="font-size: 1.15em;">{{currentCart.approval.message}}</p>
+            <p class="text-red" ng-if="cartSubmissionApproved == false && currentCart.approval.approvedamount" style="font-size: 1.15em;">{{currentCart.approval.message}}</p>
             <p class="text-red" ng-if="currentCart.approval.remainingamount > 0" style="font-size: 1.15em;">{{currentCart.approval.remainingamount | currency}} Remaining</p>
           </div>
         </div>
@@ -660,7 +660,7 @@
         </div>
 
         <div class="row" style="margin: 0 auto; padding-left: 25px; padding-right: 28px;">
-          <p class="text-red" ng-if="cartSubmissionApproved == false" style="font-size: 1.15em;">{{currentCart.approval.message}}</p>
+          <p class="text-red" ng-if="cartSubmissionApproved == false && currentCart.approval.approvedamount" style="font-size: 1.15em;">{{currentCart.approval.message}}</p>
           <p class="text-red" ng-if="currentCart.approval.remainingamount > 0" style="font-size: 1.15em;">{{currentCart.approval.remainingamount | currency}} Remaining</p>
         </div>
       </div>
