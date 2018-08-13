@@ -138,6 +138,10 @@ namespace KeithLink.Svc.WebApi.Controllers
             {
                 retVal.SuccessResponse = _shoppingCartLogic.ReadCart(this.AuthenticatedUser, this.SelectedUserContext, cartId);
                 retVal.IsSuccess = true;
+
+                ApprovedCartModel cartApproved = _shoppingCartService.ValidateCart(this.AuthenticatedUser, this.SelectedUserContext, cartId, null);
+
+                retVal.SuccessResponse.Approval = cartApproved;
             }
             catch (Exception ex)
             {
@@ -387,16 +391,13 @@ namespace KeithLink.Svc.WebApi.Controllers
             Models.OperationReturnModel<ShoppingCart> retVal = new Models.OperationReturnModel<ShoppingCart>();
             try
             {
-                ApprovedCartModel cartApproved = _shoppingCartService.ValidateCartAmount(this.SelectedUserContext, updatedCart.SubTotal);
+                ApprovedCartModel cartApproved = _shoppingCartService.ValidateCart(this.AuthenticatedUser, this.SelectedUserContext, updatedCart.CartId, null);
 
-                if(cartApproved.ApprovedOrDenied == true)
-                {
-                    _shoppingCartLogic.UpdateCart(this.SelectedUserContext, this.AuthenticatedUser, updatedCart, deleteomitted);
-                    updatedCart.Approval = cartApproved;
-                    retVal.SuccessResponse = updatedCart;
-                    retVal.IsSuccess = true;
-                }
+                _shoppingCartLogic.UpdateCart(this.SelectedUserContext, this.AuthenticatedUser, updatedCart, deleteomitted);
 
+                updatedCart.Approval = cartApproved;
+                retVal.SuccessResponse = updatedCart;
+                retVal.IsSuccess = true;
             }
             catch (Exception ex)
             {

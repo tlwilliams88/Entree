@@ -45,13 +45,17 @@ angular.module('bekApp')
       }
 
       $scope.currentCart.subtotal = PricingService.getSubtotalForItemsWithPrice($scope.currentCart.items);
+
+      validateCart();
     }
+
     function addItemWatches(startingIndex) {
       for (var i = startingIndex; i < $scope.currentCart.items.length; i++) {
         watches.push($scope.$watch('currentCart.items[' + i + '].quantity', onQuantityChange));
         watches.push($scope.$watch('currentCart.items[' + i + '].each', onQuantityChange));
       }
     }
+
     function clearItemWatches() {
       watches.forEach(function(watch) {
         watch();
@@ -59,6 +63,7 @@ angular.module('bekApp')
       watches = [];
     }
 
+    $scope.cartSubmissionApproved = false;
     $scope.sortBy = 'createddate'; // sort items in the order they were added to the cart
     $scope.sortOrder = false;
     CartService.updateNetworkStatus();
@@ -298,7 +303,11 @@ angular.module('bekApp')
           });
           $scope.currentCart.items = updatedCart.items;
           $scope.currentCart.items = $filter('filter')($scope.currentCart.items, {status: '!Deleted'});
+          if(CartService.cartHeaders.length == 0) {
+            CartService.getCartHeaders();
+          }
           var currentCartHeaders = $filter('filter')(CartService.cartHeaders, {id: updatedCart.id});
+
           currentCartHeaders[0].items.forEach(function(cartItem) {
             updatedCart.items.forEach(function(item) {
               if(item.itemnumber == cartItem.itemnumber && item.each == cartItem.each) {
@@ -340,48 +349,54 @@ angular.module('bekApp')
         }
 
          CartService.isSubmitted(cart.id).then(function(hasBeenSubmitted){
-          if(!hasBeenSubmitted){
+          if(!hasBeenSubmitted && (cart.approval.approved == true || $scope.cartSubmissionApproved == true)){
+            processingSaveCart = false;
             $scope.saveCart(cart)
             .then(CartService.submitOrder)
             .then(function(data) {
               $scope.setRecentlyOrderedUNFIItems(cart);
               var orderNumber = -1;
               var index;
-              for (index in data.ordersReturned) {
-                if (data.ordersReturned[index].catalogType === Constants.catalogType.BEK)
-                {
-                  orderNumber = data.ordersReturned[index].ordernumber;
+              if(data && data.ordersReturned) {
+                for (index in data.ordersReturned) {
+                  if (data.ordersReturned[index].catalogType === Constants.catalogType.BEK)
+                  {
+                    orderNumber = data.ordersReturned[index].ordernumber;
+                  }
                 }
               }
 
               var status = '';
               var message  = '';
 
-              if(orderNumber === -1 ) {
-                //no BEK items bought
-                if (data.ordersReturned && data.ordersReturned.length && data.ordersReturned.length !== data.numberOfOrders) {
-                  status = 'error';
-                  message = 'One or more catalog orders failed. Please contact your DSR representative for assistance';
+              if(data && data.ordersReturned){
+                if(orderNumber === -1) {
+                  //no BEK items bought
+                  if (data.ordersReturned && data.ordersReturned.length && data.ordersReturned.length !== data.numberOfOrders) {
+                    status = 'error';
+                    message = 'One or more catalog orders failed. Please contact your DSR representative for assistance';
+                  } else {
+                    status = 'success';
+                    message  = 'Successfully submitted order.';
+                  }
+  
+                  if (data.ordersReturned && data.ordersReturned[0] !== null) {
+                    orderNumber = data.ordersReturned[0].ordernumber;
+                  } else {
+                    orderNumber = null;
+                  }
                 } else {
-                  status = 'success';
-                  message  = 'Successfully submitted order.';
-                }
-
-                if (data.ordersReturned && data.ordersReturned[0] !== null) {
-                  orderNumber = data.ordersReturned[0].ordernumber;
-                } else {
-                  orderNumber = null;
-                }
-              } else {
-                //BEK oderNumber exists
-                if (data.ordersReturned.length !== data.numberOfOrders) {
-                  status = 'error';
-                  message = 'We are unable to fulfill your special order items. Please contact your DSR representative for assistance';
-                } else {
-                  status = 'success';
-                  message  = 'Successfully submitted order.';
+                  //BEK oderNumber exists
+                  if (data.ordersReturned.length !== data.numberOfOrders) {
+                    status = 'error';
+                    message = 'We are unable to fulfill your special order items. Please contact your DSR representative for assistance';
+                  } else {
+                    status = 'success';
+                    message  = 'Successfully submitted order.';
+                  }
                 }
               }
+
             
             var customerName = $scope.selectedUserContext.customer.customerName;
 
@@ -676,6 +691,15 @@ angular.module('bekApp')
             $scope.piecesCount = $scope.piecesCount + parseInt(item.quantity);
           }
         });
+    }
+
+    function validateCart() {
+      $scope.cartSubmissionApproved = $scope.currentCart.subtotal > 0 ? $scope.currentCart.approval.approvedamount <= $scope.currentCart.subtotal : false;
+      $scope.currentCart.approval.remainingamount = $scope.currentCart.approval.approvedamount - $scope.currentCart.subtotal;
+
+      if($scope.cartSubmissionApproved == false && $scope.currentCart.approval.message == null) {
+        $scope.currentCart.approval.message = "The cart total does not meet or exceed the minimum approved amount.  Please contact your DSR for more information.";
+      }
     }
 
     $scope.openErrorMessageModal = function(message) {

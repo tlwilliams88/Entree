@@ -20,6 +20,11 @@
   </div>
 </div>
 
+<div class="pull-right padding-right-15">
+  <p class="text-red" ng-if="cartSubmissionApproved == false">{{selectedCart.approval.message}}</p>
+  <p class="text-red text-dark" ng-if="selectedCart.approval.remainingamount > 0">{{selectedCart.approval.remainingamount | currency}} Remaining</p>
+</div>
+
 <div loading-spinner="invalidParams"></div>
 
 <div ng-hide="invalidParams">
@@ -310,6 +315,7 @@
                       focus-me="$first"
                       ng-if="useParlevel && item.canOrder"
                       ng-blur="confirmQuantity('quantity', item, item.quantity);"
+                      ng-change="validateCart();"
                       class="input-number text-right mousetrap"
                       ng-class="{ tabstop: !useParlevel }"
                       integer
@@ -669,6 +675,7 @@
                       ng-change="updateCartWithRecommendedItems(item); confirmQuantity('quantity', item, item.quantity);"
                       class="input-number text-right mousetrap"
                       ng-class="{ tabstop: !useParlevel }"
+                      ng-change="validateCart();"
                       integer
                       ng-model="item.quantity"
                       row-highlight

@@ -24,11 +24,15 @@ namespace KeithLink.Svc.Impl.Repository.Customers
         {
             MinimumOrderAmountModel results = connection.Query<MinimumOrderAmountModel>(@"
                 SELECT
-                    MinimumOrderAmount
-                FROM Customers.MinimumOrderAmount
+                    Value AS ApprovedAmount
+                FROM Customers.CustomerOptions
                 WHERE 
 	                CustomerNumber = @CustomerNumber
-                AND	BranchId = @BranchId").FirstOrDefault();
+                AND	BranchId = @BranchId", new
+            {
+                CustomerNumber = customerNumber,
+                BranchId = branchId
+            }).FirstOrDefault();
 
             return results;
         }

@@ -488,16 +488,14 @@ namespace KeithLink.Svc.Impl.Logic
 
 		    decimal calcSubTotal = 0;
 
+            calcSubTotal = (decimal)PricingHelper.CalculateCartSubtotal(cart.Items);
+
             foreach (var item in cart.Items) {
                 int qty = (int)item.Quantity;
-                int pack;
-                if (!int.TryParse(item.Pack, out pack)) { pack = 1; }
                 if (item.PackSize != null && item.PackSize.IndexOf("/") > -1)
                 { // added to aid exporting separate pack and size on cart export
                     item.Size = item.PackSize.Substring(item.PackSize.IndexOf("/") + 1);
                 }
-
-                calcSubTotal += (decimal)PricingHelper.GetPrice(qty, item.CasePriceNumeric, item.PackagePriceNumeric, item.Each, item.CatchWeight, item.AverageWeight, pack);
 
                 var sourceList = _orderedItemsFromListRepository.Read(cart.CartId.ToString(), item.ItemNumber);
                 if (sourceList != null) {

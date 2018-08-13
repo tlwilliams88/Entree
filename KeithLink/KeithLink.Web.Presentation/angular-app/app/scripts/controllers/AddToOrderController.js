@@ -1114,7 +1114,18 @@ angular.module('bekApp')
     function refreshSubtotal(cartItems, listItems) {
       $scope.combinedItems = getCombinedCartAndListItems(cartItems, listItems);
       $scope.selectedCart.subtotal = PricingService.getSubtotalForItems($scope.combinedItems);
+      validateCart();
+
       return $scope.selectedCart.subtotal;
+    }
+
+    function validateCart() {
+      $scope.cartSubmissionApproved = $scope.selectedCart.subtotal > 0 ? $scope.selectedCart.approval.approvedamount <= $scope.selectedCart.subtotal : false;
+      $scope.selectedCart.approval.remainingamount = $scope.selectedCart.approval.approvedamount - $scope.selectedCart.subtotal;
+
+      if($scope.cartSubmissionApproved == false && $scope.selectedCart.approval.message == null) {
+        $scope.selectedCart.approval.message = "The cart total does not meet or exceed the minimum approved amount.  Please contact your DSR for more information.";
+      }
     }
 
     // update quantity from on hand amount and par level
