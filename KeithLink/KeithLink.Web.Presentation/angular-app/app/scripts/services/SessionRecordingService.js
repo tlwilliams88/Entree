@@ -83,7 +83,7 @@ angular.module('bekApp')
     function meetsRequirements() {
         var isMobileApp = ENV.mobileApp;
 
-        return (__insp != null && (ENV.name == 'test' || ENV.name == 'prod') && isMobileApp == false);
+        return ((ENV.name == 'test' || ENV.name == 'prod') && isMobileApp == false);
       }
       return Service;
 
