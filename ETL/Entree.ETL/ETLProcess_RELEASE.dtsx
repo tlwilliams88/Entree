@@ -8,12 +8,12 @@
   DTS:DTSID="{28E8C8EF-5E24-4123-B176-05774E5F5029}"
   DTS:EnableConfig="True"
   DTS:ExecutableType="Microsoft.Package"
-  DTS:LastModifiedProductVersion="14.0.3002.107"
+  DTS:LastModifiedProductVersion="14.0.3002.106"
   DTS:LocaleID="1033"
   DTS:ObjectName="ETLProcess_RELEASE"
   DTS:PackageType="5"
-  DTS:VersionBuild="19"
-  DTS:VersionGUID="{A65C15D8-9A8E-4585-A3D2-FAAFEBC95FAF}"
+  DTS:VersionBuild="20"
+  DTS:VersionGUID="{658808C4-EA7E-4DAA-A507-E7958A1B711D}"
   DTS:VersionMajor="2018"
   DTS:VersionMinor="4">
   <DTS:Property
@@ -33,7 +33,7 @@
           DTS:RowDelimiter=""
           DTS:TextQualifier="_x003C_none_x003E_"
           DTS:CodePage="1252"
-          DTS:ConnectionString="\\bekkecoct1\sys-scr-inetoe$\ftpdata\Test\Entree\bidContractDetail.SSIS">
+          DTS:ConnectionString="\\bekkecoct1\SYS-SCR-InetOE$\ftpdata\Test\Entree\bidContractDetail.SSIS">
           <DTS:FlatFileColumns>
             <DTS:FlatFileColumn
               DTS:ColumnDelimiter=""
@@ -141,7 +141,7 @@
           DTS:RowDelimiter=""
           DTS:TextQualifier="_x003C_none_x003E_"
           DTS:CodePage="1252"
-          DTS:ConnectionString="\\bekkecoct1\sys-scr-inetoe$\ftpdata\Test\Entree\bidContractHeader.SSIS">
+          DTS:ConnectionString="\\bekkecoct1\SYS-SCR-InetOE$\ftpdata\Test\Entree\bidContractHeader.SSIS">
           <DTS:FlatFileColumns>
             <DTS:FlatFileColumn
               DTS:ColumnDelimiter=""
@@ -217,7 +217,7 @@
           DTS:RowDelimiter=""
           DTS:TextQualifier="_x003C_none_x003E_"
           DTS:CodePage="1252"
-          DTS:ConnectionString="\\bekkecoct1\sys-scr-inetoe$\ftpdata\Test\Entree\customerFile.SSIS">
+          DTS:ConnectionString="\\bekkecoct1\SYS-SCR-InetOE$\ftpdata\Test\Entree\customerFile.SSIS">
           <DTS:FlatFileColumns>
             <DTS:FlatFileColumn
               DTS:ColumnDelimiter=""
@@ -750,7 +750,7 @@
           DTS:RowDelimiter=""
           DTS:TextQualifier="_x003C_none_x003E_"
           DTS:CodePage="1252"
-          DTS:ConnectionString="\\bekkecoct1\sys-scr-inetoe$\ftpdata\Test\Entree\customerBid.SSIS">
+          DTS:ConnectionString="\\bekkecoct1\SYS-SCR-InetOE$\ftpdata\Test\Entree\customerBid.SSIS">
           <DTS:FlatFileColumns>
             <DTS:FlatFileColumn
               DTS:ColumnDelimiter=""
@@ -834,7 +834,7 @@
           DTS:RowDelimiter=""
           DTS:TextQualifier="_x003C_none_x003E_"
           DTS:CodePage="1252"
-          DTS:ConnectionString="\\bekkecoct1\sys-scr-inetoe$\ftpdata\Test\Entree\customerWorksheet.SSIS">
+          DTS:ConnectionString="\\bekkecoct1\SYS-SCR-InetOE$\ftpdata\Test\Entree\customerWorksheet.SSIS">
           <DTS:FlatFileColumns>
             <DTS:FlatFileColumn
               DTS:ColumnDelimiter=""
@@ -1027,7 +1027,7 @@
           DTS:RowDelimiter=""
           DTS:TextQualifier="_x003C_none_x003E_"
           DTS:CodePage="1252"
-          DTS:ConnectionString="\\bekkecoct1\sys-scr-inetoe$\ftpdata\Test\Entree\keithNetInvoice.SSIS">
+          DTS:ConnectionString="\\bekkecoct1\SYS-SCR-InetOE$\ftpdata\Test\Entree\keithNetInvoice.SSIS">
           <DTS:FlatFileColumns>
             <DTS:FlatFileColumn
               DTS:ColumnDelimiter=""
@@ -1350,7 +1350,7 @@
           DTS:RowDelimiter=""
           DTS:TextQualifier="_x003C_none_x003E_"
           DTS:CodePage="1252"
-          DTS:ConnectionString="\\bekkecoct1\sys-scr-inetoe$\ftpdata\Test\Entree\nationalId.SSIS">
+          DTS:ConnectionString="\\bekkecoct1\SYS-SCR-InetOE$\ftpdata\Test\Entree\nationalId.SSIS">
           <DTS:FlatFileColumns>
             <DTS:FlatFileColumn
               DTS:ColumnDelimiter=""
@@ -1393,7 +1393,7 @@
           DTS:RowDelimiter=""
           DTS:TextQualifier="_x003C_none_x003E_"
           DTS:CodePage="1252"
-          DTS:ConnectionString="\\bekkecoct1\sys-scr-inetoe$\ftpdata\Test\Entree\nationalNumberAndSub.SSIS">
+          DTS:ConnectionString="\\bekkecoct1\SYS-SCR-InetOE$\ftpdata\Test\Entree\nationalNumberAndSub.SSIS">
           <DTS:FlatFileColumns>
             <DTS:FlatFileColumn
               DTS:ColumnDelimiter=""
@@ -1445,7 +1445,7 @@
           DTS:RowDelimiter=""
           DTS:TextQualifier="_x003C_none_x003E_"
           DTS:CodePage="1252"
-          DTS:ConnectionString="\\bekkecoct1\sys-scr-inetoe$\ftpdata\Test\Entree\openDetailAR.SSIS">
+          DTS:ConnectionString="\\bekkecoct1\SYS-SCR-InetOE$\ftpdata\Test\Entree\openDetailAR.SSIS">
           <DTS:FlatFileColumns>
             <DTS:FlatFileColumn
               DTS:ColumnDelimiter=""
@@ -1593,7 +1593,7 @@
           DTS:RowDelimiter=""
           DTS:TextQualifier="_x003C_none_x003E_"
           DTS:CodePage="1252"
-          DTS:ConnectionString="\\bekkecoct1\sys-scr-inetoe$\ftpdata\Test\Entree\paidDetailFile.SSIS">
+          DTS:ConnectionString="\\bekkecoct1\SYS-SCR-InetOE$\ftpdata\Test\Entree\paidDetailFile.SSIS">
           <DTS:FlatFileColumns>
             <DTS:FlatFileColumn
               DTS:ColumnDelimiter=""
@@ -1740,7 +1740,7 @@
           DTS:RowDelimiter=""
           DTS:TextQualifier="_x003C_none_x003E_"
           DTS:CodePage="1252"
-          DTS:ConnectionString="\\bekkecoct1\sys-scr-inetoe$\ftpdata\Test\Entree\propCustomer.SSIS">
+          DTS:ConnectionString="\\bekkecoct1\SYS-SCR-InetOE$\ftpdata\Test\Entree\propCustomer.SSIS">
           <DTS:FlatFileColumns>
             <DTS:FlatFileColumn
               DTS:ColumnDelimiter=""
@@ -1815,7 +1815,7 @@
           DTS:RowDelimiter=""
           DTS:TextQualifier="_x003C_none_x003E_"
           DTS:CodePage="1252"
-          DTS:ConnectionString="\\bekkecoct1\sys-scr-inetoe$\ftpdata\Test\Entree\propItem.SSIS">
+          DTS:ConnectionString="\\bekkecoct1\SYS-SCR-InetOE$\ftpdata\Test\Entree\propItem.SSIS">
           <DTS:FlatFileColumns>
             <DTS:FlatFileColumn
               DTS:ColumnDelimiter=""
@@ -1890,7 +1890,7 @@
           DTS:RowDelimiter=""
           DTS:TextQualifier="_x003C_none_x003E_"
           DTS:CodePage="1252"
-          DTS:ConnectionString="\\bekkecoct1\sys-scr-inetoe$\ftpdata\Test\Entree\regionalId.SSIS">
+          DTS:ConnectionString="\\bekkecoct1\SYS-SCR-InetOE$\ftpdata\Test\Entree\regionalId.SSIS">
           <DTS:FlatFileColumns>
             <DTS:FlatFileColumn
               DTS:ColumnDelimiter=""
@@ -1933,7 +1933,7 @@
           DTS:RowDelimiter=""
           DTS:TextQualifier="_x003C_none_x003E_"
           DTS:CodePage="1252"
-          DTS:ConnectionString="\\bekkecoct1\sys-scr-inetoe$\ftpdata\Test\Entree\regionalNumber.SSIS">
+          DTS:ConnectionString="\\bekkecoct1\SYS-SCR-InetOE$\ftpdata\Test\Entree\regionalNumber.SSIS">
           <DTS:FlatFileColumns>
             <DTS:FlatFileColumn
               DTS:ColumnDelimiter=""
@@ -2020,7 +2020,7 @@
           DTS:RowDelimiter=""
           DTS:TextQualifier="_x003C_none_x003E_"
           DTS:CodePage="1252"
-          DTS:ConnectionString="\\bekkecoct1\sys-scr-inetoe$\ftpdata\Test\Entree\customerTerms.SSIS">
+          DTS:ConnectionString="\\bekkecoct1\SYS-SCR-InetOE$\ftpdata\Test\Entree\customerTerms.SSIS">
           <DTS:FlatFileColumns>
             <DTS:FlatFileColumn
               DTS:ColumnDelimiter=""
@@ -2112,17 +2112,17 @@
       DTS:ObjectName="HTTP_ETLWebService">
       <DTS:ObjectData>
         <DTS:ConnectionManager
-          DTS:ConnectionString="http://localhost:1317/ETlService.svc?wsdl">
+          DTS:ConnectionString="http://corpkecqas1:9876/ETLService.svc?wsdl">
           <DTS:HttpConnection
-            DTS:ServerURL="http://localhost:1317/ETlService.svc?wsdl">
+            DTS:ServerURL="http://corpkecqas1:9876/ETLService.svc?wsdl">
             <DTS:Property
               DTS:Name="ServerPassword"
               Sensitive="1"
-              Encrypted="1">AQAAANCMnd8BFdERjHoAwE/Cl+sBAAAAv92cC9cojEutC1JRWo5+3gAAAAAIAAAARABUAFMAAAADZgAAwAAAABAAAAAMbX/pAPhFNylSb4j7cJ+wAAAAAASAAACgAAAAEAAAAKy5jIFF5ROlPcEyEcQzl4YIAAAAum3dAsB/8+0UAAAA1Af7or0GDDDgYWuy7ngoFtibWFE</DTS:Property>
+              Encrypted="1">AQAAANCMnd8BFdERjHoAwE/Cl+sBAAAAtSMaPZbp40aFuX64NuHxxQAAAAAIAAAARABUAFMAAAADZgAAwAAAABAAAAAPjrldby+tyfjMfhpnctnOAAAAAASAAACgAAAAEAAAAPpzjQ2LcoebWAKpMX0XUfMIAAAA8/W2NFaxB+8UAAAAfKudB0UJw6N0jHWWchXTSWJhOjI</DTS:Property>
             <DTS:Property
               DTS:Name="ProxyPassword"
               Sensitive="1"
-              Encrypted="1">AQAAANCMnd8BFdERjHoAwE/Cl+sBAAAAv92cC9cojEutC1JRWo5+3gAAAAAIAAAARABUAFMAAAADZgAAwAAAABAAAABokZRzDR/N9KRFG6ruHSeoAAAAAASAAACgAAAAEAAAAAIxB80VB8qR5Ydr+4GwkQoIAAAAK5SDhCjG+mMUAAAAMktqZR4blRwSviy5QGeWhBfzQeE</DTS:Property>
+              Encrypted="1">AQAAANCMnd8BFdERjHoAwE/Cl+sBAAAAtSMaPZbp40aFuX64NuHxxQAAAAAIAAAARABUAFMAAAADZgAAwAAAABAAAAD196LB2OIGzsXu7xRxkSdCAAAAAASAAACgAAAAEAAAAHAYnHt2hlBNBi9cHtbySSQIAAAA4FaBxLWbGw0UAAAA3G31yctbx+c1Q3dh3WT3LVnLTWA</DTS:Property>
           </DTS:HttpConnection>
         </DTS:ConnectionManager>
       </DTS:ObjectData>
@@ -2134,7 +2134,12 @@
       DTS:ObjectName="OLE_BEK_Commerce_AppData">
       <DTS:ObjectData>
         <DTS:ConnectionManager
-          DTS:ConnectionString="Data Source=localhost;Initial Catalog=BEK_Commerce_AppData;Provider=SQLNCLI11.1;Integrated Security=SSPI;" />
+          DTS:ConnectionString="Data Source=corpkecqdb1;User Id=ecom;Initial Catalog=BEK_Commerce_AppData;Provider=SQLNCLI11.1;">
+          <DTS:Password
+            DTS:Name="Password"
+            Sensitive="1"
+            Encrypted="1">AQAAANCMnd8BFdERjHoAwE/Cl+sBAAAAtSMaPZbp40aFuX64NuHxxQAAAAAIAAAARABUAFMAAAADZgAAwAAAABAAAADvYtTI4fZZ3zPqu+RodkayAAAAAASAAACgAAAAEAAAAPbUdA4boPYAKAoD4hGOjm4YAAAA+dZ+ZIFPECzmj3KdH9jbStbywOT5wBSZFAAAAHE7jrP9EJAzpxt2RRg63MTn+KpB</DTS:Password>
+        </DTS:ConnectionManager>
       </DTS:ObjectData>
     </DTS:ConnectionManager>
     <DTS:ConnectionManager
@@ -2144,7 +2149,12 @@
       DTS:ObjectName="OLE_Bek_Commerce_Transactions">
       <DTS:ObjectData>
         <DTS:ConnectionManager
-          DTS:ConnectionString="Data Source=localhost;Initial Catalog=Bek_Commerce_Transactions;Provider=SQLNCLI11.1;Integrated Security=SSPI;" />
+          DTS:ConnectionString="Data Source=corpkecqdb1;User Id=ecom;Initial Catalog=Bek_Commerce_Transactions;Provider=SQLNCLI11.1;">
+          <DTS:Password
+            DTS:Name="Password"
+            Sensitive="1"
+            Encrypted="1">AQAAANCMnd8BFdERjHoAwE/Cl+sBAAAAtSMaPZbp40aFuX64NuHxxQAAAAAIAAAARABUAFMAAAADZgAAwAAAABAAAAAsVQD4ZmwzSaIfGU6ayMPsAAAAAASAAACgAAAAEAAAAJ89Ompm8ooYbVUoWzu1W1MYAAAAsAOFznk3iaUSGBehJ1jl3h1I7dOzKcAeFAAAAMxyJq/fpqdVrUoRdrollpcCXHMO</DTS:Password>
+        </DTS:ConnectionManager>
       </DTS:ObjectData>
     </DTS:ConnectionManager>
     <DTS:ConnectionManager
@@ -2164,7 +2174,12 @@
       DTS:ObjectName="OLE_FSE">
       <DTS:ObjectData>
         <DTS:ConnectionManager
-          DTS:ConnectionString="Data Source=corpsqltst12;Initial Catalog=FSE;Provider=SQLNCLI11.1;Integrated Security=SSPI;" />
+          DTS:ConnectionString="Data Source=corpsqltst12;User Id=ecom;Initial Catalog=FSE;Provider=SQLNCLI11.1;">
+          <DTS:Password
+            DTS:Name="Password"
+            Sensitive="1"
+            Encrypted="1">AQAAANCMnd8BFdERjHoAwE/Cl+sBAAAAtSMaPZbp40aFuX64NuHxxQAAAAAIAAAARABUAFMAAAADZgAAwAAAABAAAAAFkZFQEQ2mms8VB/jP2+7CAAAAAASAAACgAAAAEAAAAD4n9fNfHF77OC+jGcd0FBcQAAAAUA6A+WHOVuUY1VcLeqFMnRQAAAB1jrlCMAZ7vQJ+TvGGjwUYOMzKQA</DTS:Password>
+        </DTS:ConnectionManager>
       </DTS:ObjectData>
     </DTS:ConnectionManager>
     <DTS:ConnectionManager
@@ -2246,7 +2261,7 @@
       DTS:Namespace="User"
       DTS:ObjectName="ETLProcess_KeithComDir">
       <DTS:VariableValue
-        DTS:DataType="8">\\bekkecoct1\sys-scr-inetoe$\ftpdata\Test\Entree\</DTS:VariableValue>
+        DTS:DataType="8">\\bekkecoct1\SYS-SCR-InetOE$\ftpdata\Test\Entree\</DTS:VariableValue>
     </DTS:Variable>
     <DTS:Variable
       DTS:CreationName=""
@@ -2442,7 +2457,7 @@
           DTS:LocaleID="-1"
           DTS:ObjectName="Process Catalog Data"
           DTS:TaskContact="Web Service Task; Microsoft Corporation; SQL Server 2012; © 2007 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
-          DTS:ThreadHint="2">
+          DTS:ThreadHint="1">
           <DTS:Variables />
           <DTS:LoggingOptions
             DTS:FilterKind="0" />
@@ -2485,7 +2500,7 @@
           DTS:LocaleID="-1"
           DTS:ObjectName="Process Contract And Worksheet Data"
           DTS:TaskContact="Web Service Task; Microsoft Corporation; SQL Server 2012; © 2007 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
-          DTS:ThreadHint="3">
+          DTS:ThreadHint="4">
           <DTS:Variables />
           <DTS:LoggingOptions
             DTS:FilterKind="0" />
@@ -2528,7 +2543,7 @@
           DTS:LocaleID="-1"
           DTS:ObjectName="Process Customer Data"
           DTS:TaskContact="Web Service Task; Microsoft Corporation; SQL Server 2012; © 2007 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
-          DTS:ThreadHint="4">
+          DTS:ThreadHint="3">
           <DTS:Variables />
           <DTS:LoggingOptions
             DTS:FilterKind="0" />
@@ -3321,7 +3336,7 @@ FROM ETL.Staging_Customer</property>
           DTS:LocaleID="-1"
           DTS:ObjectName="Process Elastic Search Data"
           DTS:TaskContact="Web Service Task; Microsoft Corporation; SQL Server 2012; © 2007 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
-          DTS:ThreadHint="1">
+          DTS:ThreadHint="2">
           <DTS:Variables />
           <DTS:LoggingOptions
             DTS:FilterKind="0" />
@@ -5480,14 +5495,14 @@ FROM ETL.Staging_Customer</property>
                                 </outputColumn>
                                 <outputColumn
                                   refId="Package\Process Data\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Customers\FF_Customer.Outputs[Flat File Source Output].Columns[MinimumOrderAmount]"
-                                  codePage="1252"
-                                  dataType="str"
+                                  dataType="numeric"
                                   errorOrTruncationOperation="Conversion"
                                   errorRowDisposition="FailComponent"
                                   externalMetadataColumnId="Package\Process Data\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Customers\FF_Customer.Outputs[Flat File Source Output].ExternalColumns[MinimumOrderAmount]"
-                                  length="50"
                                   lineageId="Package\Process Data\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Customers\FF_Customer.Outputs[Flat File Source Output].Columns[MinimumOrderAmount]"
                                   name="MinimumOrderAmount"
+                                  precision="10"
+                                  scale="2"
                                   truncationRowDisposition="FailComponent">
                                   <properties>
                                     <property
@@ -5899,10 +5914,10 @@ FROM ETL.Staging_Customer</property>
                                   name="SIC" />
                                 <externalMetadataColumn
                                   refId="Package\Process Data\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Customers\FF_Customer.Outputs[Flat File Source Output].ExternalColumns[MinimumOrderAmount]"
-                                  codePage="1252"
-                                  dataType="str"
-                                  length="10"
-                                  name="MinimumOrderAmount" />
+                                  dataType="numeric"
+                                  name="MinimumOrderAmount"
+                                  precision="10"
+                                  scale="2" />
                                 <externalMetadataColumn
                                   refId="Package\Process Data\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Customers\FF_Customer.Outputs[Flat File Source Output].ExternalColumns[Placeholder]"
                                   codePage="1252"
@@ -6479,10 +6494,10 @@ FROM ETL.Staging_Customer</property>
                                   lineageId="Package\Process Data\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Customers\Sort by Division ASC.Outputs[Sort Output].Columns[SIC]" />
                                 <inputColumn
                                   refId="Package\Process Data\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Customers\KeithlinkAppData.Inputs[OLE DB Destination Input].Columns[MinimumOrderAmount]"
-                                  cachedCodepage="1252"
-                                  cachedDataType="str"
-                                  cachedLength="50"
+                                  cachedDataType="numeric"
                                   cachedName="MinimumOrderAmount"
+                                  cachedPrecision="10"
+                                  cachedScale="2"
                                   externalMetadataColumnId="Package\Process Data\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Customers\KeithlinkAppData.Inputs[OLE DB Destination Input].ExternalColumns[MinimumOrderAmount]"
                                   lineageId="Package\Process Data\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Customers\Sort by Division ASC.Outputs[Sort Output].Columns[MinimumOrderAmount]" />
                               </inputColumns>
@@ -6838,10 +6853,10 @@ FROM ETL.Staging_Customer</property>
                                   name="SIC_Code" />
                                 <externalMetadataColumn
                                   refId="Package\Process Data\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Customers\KeithlinkAppData.Inputs[OLE DB Destination Input].ExternalColumns[MinimumOrderAmount]"
-                                  codePage="1252"
-                                  dataType="str"
-                                  length="7"
-                                  name="MinimumOrderAmount" />
+                                  dataType="numeric"
+                                  name="MinimumOrderAmount"
+                                  precision="10"
+                                  scale="2" />
                               </externalMetadataColumns>
                             </input>
                           </inputs>
@@ -7993,10 +8008,10 @@ FROM ETL.Staging_Customer</property>
                                 </inputColumn>
                                 <inputColumn
                                   refId="Package\Process Data\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Customers\Sort by Division ASC.Inputs[Sort Input].Columns[MinimumOrderAmount]"
-                                  cachedCodepage="1252"
-                                  cachedDataType="str"
-                                  cachedLength="50"
+                                  cachedDataType="numeric"
                                   cachedName="MinimumOrderAmount"
+                                  cachedPrecision="10"
+                                  cachedScale="2"
                                   lineageId="Package\Process Data\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Customers\FF_Customer.Outputs[Flat File Source Output].Columns[MinimumOrderAmount]">
                                   <properties>
                                     <property
@@ -8937,11 +8952,11 @@ FROM ETL.Staging_Customer</property>
                                 </outputColumn>
                                 <outputColumn
                                   refId="Package\Process Data\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Customers\Sort by Division ASC.Outputs[Sort Output].Columns[MinimumOrderAmount]"
-                                  codePage="1252"
-                                  dataType="str"
-                                  length="50"
+                                  dataType="numeric"
                                   lineageId="Package\Process Data\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Customers\Sort by Division ASC.Outputs[Sort Output].Columns[MinimumOrderAmount]"
-                                  name="MinimumOrderAmount">
+                                  name="MinimumOrderAmount"
+                                  precision="10"
+                                  scale="2">
                                   <properties>
                                     <property
                                       containsID="true"
@@ -17093,7 +17108,7 @@ WHERE ControlLabel != ''</property>
                   DTS:LocaleID="-1"
                   DTS:ObjectName="Truncate Brand Tables"
                   DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2012; © 2007 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
-                  DTS:ThreadHint="0">
+                  DTS:ThreadHint="5">
                   <DTS:Variables />
                   <DTS:LoggingOptions
                     DTS:FilterKind="0" />
@@ -17112,7 +17127,7 @@ WHERE ControlLabel != ''</property>
                   DTS:LocaleID="-1"
                   DTS:ObjectName="Truncate Catalog Stage Tables"
                   DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2012; © 2007 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
-                  DTS:ThreadHint="1">
+                  DTS:ThreadHint="6">
                   <DTS:Variables />
                   <DTS:LoggingOptions
                     DTS:FilterKind="0" />
@@ -17130,7 +17145,7 @@ WHERE ControlLabel != ''</property>
                   DTS:ExecutableType="Microsoft.ExecuteSQLTask"
                   DTS:LocaleID="-1"
                   DTS:ObjectName="Truncate Customer Options"
-                  DTS:ThreadHint="6">
+                  DTS:ThreadHint="7">
                   <DTS:Variables />
                   <DTS:ObjectData>
                     <SQLTask:SqlTaskData
@@ -17146,7 +17161,7 @@ WHERE ControlLabel != ''</property>
                   DTS:ExecutableType="Microsoft.ExecuteSQLTask"
                   DTS:LocaleID="-1"
                   DTS:ObjectName="Truncate Departments"
-                  DTS:ThreadHint="2">
+                  DTS:ThreadHint="8">
                   <DTS:Variables />
                   <DTS:ObjectData>
                     <SQLTask:SqlTaskData
@@ -17164,7 +17179,7 @@ WHERE ControlLabel != ''</property>
                   DTS:LocaleID="-1"
                   DTS:ObjectName="Truncate GS1 Stage Tables"
                   DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2012; © 2007 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
-                  DTS:ThreadHint="4">
+                  DTS:ThreadHint="9">
                   <DTS:Variables />
                   <DTS:LoggingOptions
                     DTS:FilterKind="0" />
@@ -17182,7 +17197,7 @@ WHERE ControlLabel != ''</property>
                   DTS:ExecutableType="Microsoft.ExecuteSQLTask"
                   DTS:LocaleID="-1"
                   DTS:ObjectName="Truncate PDM data"
-                  DTS:ThreadHint="5">
+                  DTS:ThreadHint="10">
                   <DTS:Variables />
                   <DTS:ObjectData>
                     <SQLTask:SqlTaskData
@@ -17199,7 +17214,7 @@ WHERE ControlLabel != ''</property>
                   DTS:ExecutableType="Microsoft.ExecuteSQLTask"
                   DTS:LocaleID="-1"
                   DTS:ObjectName="Truncate SIC Map"
-                  DTS:ThreadHint="3">
+                  DTS:ThreadHint="11">
                   <DTS:Variables />
                   <DTS:ObjectData>
                     <SQLTask:SqlTaskData
@@ -21879,7 +21894,7 @@ WHERE ControlLabel != ''</property>
                   DTS:LocaleID="-1"
                   DTS:ObjectName="Truncate Contract Tables"
                   DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2012; © 2007 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
-                  DTS:ThreadHint="7">
+                  DTS:ThreadHint="2">
                   <DTS:Variables />
                   <DTS:ObjectData>
                     <SQLTask:SqlTaskData
@@ -21896,7 +21911,7 @@ WHERE ControlLabel != ''</property>
                   DTS:LocaleID="-1"
                   DTS:ObjectName="Truncate Worksheet Tables"
                   DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2012; © 2007 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
-                  DTS:ThreadHint="8">
+                  DTS:ThreadHint="3">
                   <DTS:Variables />
                   <DTS:ObjectData>
                     <SQLTask:SqlTaskData
@@ -22733,7 +22748,7 @@ WHERE ControlLabel != ''</property>
                   DTS:LocaleID="-1"
                   DTS:ObjectName="Truncate DSR Tables"
                   DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2012; © 2007 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
-                  DTS:ThreadHint="9">
+                  DTS:ThreadHint="4">
                   <DTS:Variables />
                   <DTS:ObjectData>
                     <SQLTask:SqlTaskData
@@ -23395,7 +23410,7 @@ WHERE ControlLabel != ''</property>
                   DTS:LocaleID="-1"
                   DTS:ObjectName="Truncate Invoice Tables"
                   DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2012; © 2007 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
-                  DTS:ThreadHint="10">
+                  DTS:ThreadHint="0">
                   <DTS:Variables />
                   <DTS:LoggingOptions
                     DTS:FilterKind="0" />
@@ -23742,7 +23757,7 @@ WHERE ControlLabel != ''</property>
               DTS:ExecutableType="Microsoft.ExecuteSQLTask"
               DTS:LocaleID="-1"
               DTS:ObjectName="TRUNCATE SIC Reference"
-              DTS:ThreadHint="11">
+              DTS:ThreadHint="1">
               <DTS:Variables />
               <DTS:ObjectData>
                 <SQLTask:SqlTaskData
@@ -23828,14 +23843,35 @@ WHERE ControlLabel != ''</property>
           Language="CSharp"
           ReadOnlyVariables="User::ETLProcess_KeithComDir">
           <ProjectItem
-            Name="Properties\Settings.settings"
-            Encoding="UTF8"><![CDATA[<?xml version='1.0' encoding='iso-8859-1'?>
-<SettingsFile xmlns="uri:settings" CurrentProfile="(Default)">
-  <Profiles>
-    <Profile Name="(Default)" />
-  </Profiles>
-  <Settings />
-</SettingsFile>]]></ProjectItem>
+            Name="Properties\AssemblyInfo.cs"
+            Encoding="UTF8"><![CDATA[using System.Reflection;
+using System.Runtime.CompilerServices;
+
+//
+// General Information about an assembly is controlled through the following 
+// set of attributes. Change these attribute values to modify the information
+// associated with an assembly.
+//
+[assembly: AssemblyTitle("ST_8b38e1c04cd142498eb6973136894e60")]
+[assembly: AssemblyDescription("")]
+[assembly: AssemblyConfiguration("")]
+[assembly: AssemblyCompany("")]
+[assembly: AssemblyProduct("ST_8b38e1c04cd142498eb6973136894e60")]
+[assembly: AssemblyCopyright("Copyright @  2014")]
+[assembly: AssemblyTrademark("")]
+[assembly: AssemblyCulture("")]
+//
+// Version information for an assembly consists of the following four values:
+//
+//      Major Version
+//      Minor Version 
+//      Build Number
+//      Revision
+//
+// You can specify all the values or you can default the Revision and Build Numbers 
+// by using the '*' as shown below:
+
+[assembly: AssemblyVersion("1.0.*")]]]></ProjectItem>
           <ProjectItem
             Name="Properties\Resources.resx"
             Encoding="UTF8"><![CDATA[<?xml version="1.0" encoding="utf-8"?>
@@ -24323,35 +24359,14 @@ namespace ST_8b38e1c04cd142498eb6973136894e60.Properties {
     }
 }]]></ProjectItem>
           <ProjectItem
-            Name="Properties\AssemblyInfo.cs"
-            Encoding="UTF8"><![CDATA[using System.Reflection;
-using System.Runtime.CompilerServices;
-
-//
-// General Information about an assembly is controlled through the following 
-// set of attributes. Change these attribute values to modify the information
-// associated with an assembly.
-//
-[assembly: AssemblyTitle("ST_8b38e1c04cd142498eb6973136894e60")]
-[assembly: AssemblyDescription("")]
-[assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("ST_8b38e1c04cd142498eb6973136894e60")]
-[assembly: AssemblyCopyright("Copyright @  2014")]
-[assembly: AssemblyTrademark("")]
-[assembly: AssemblyCulture("")]
-//
-// Version information for an assembly consists of the following four values:
-//
-//      Major Version
-//      Minor Version 
-//      Build Number
-//      Revision
-//
-// You can specify all the values or you can default the Revision and Build Numbers 
-// by using the '*' as shown below:
-
-[assembly: AssemblyVersion("1.0.*")]]]></ProjectItem>
+            Name="Properties\Settings.settings"
+            Encoding="UTF8"><![CDATA[<?xml version='1.0' encoding='iso-8859-1'?>
+<SettingsFile xmlns="uri:settings" CurrentProfile="(Default)">
+  <Profiles>
+    <Profile Name="(Default)" />
+  </Profiles>
+  <Settings />
+</SettingsFile>]]></ProjectItem>
           <ProjectItem
             Name="Properties\Resources.Designer.cs"
             Encoding="UTF8"><![CDATA[//------------------------------------------------------------------------------
@@ -24597,10 +24612,10 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==</BinaryItem>
       <DTS:ObjectData>
         <SendMailTask:SendMailTaskData
           SendMailTask:SMTPServer="{27E35359-C6DF-4504-B136-640306980715}"
-          SendMailTask:From="CORPMISDEV4E@noreply.com"
+          SendMailTask:From="CORPMISDEV4A@noreply.com"
           SendMailTask:To="CORP-DIS-eCommDev@benekeith.com"
-          SendMailTask:Subject="SSIS Package ETLProcess_RELEASE has failed on CORPMISDEV4E"
-          SendMailTask:MessageSource="SSIS Package ETLProcess_RELEASE has failed on CORPMISDEV4E.  Check the SQL logs for more detail." xmlns:SendMailTask="www.microsoft.com/sqlserver/dts/tasks/sendmailtask" />
+          SendMailTask:Subject="SSIS Package ETLProcess_RELEASE has failed on CORPMISDEV4A"
+          SendMailTask:MessageSource="SSIS Package ETLProcess_RELEASE has failed on CORPMISDEV4A.  Check the SQL logs for more detail." xmlns:SendMailTask="www.microsoft.com/sqlserver/dts/tasks/sendmailtask" />
       </DTS:ObjectData>
     </DTS:Executable>
   </DTS:Executables>
@@ -24679,90 +24694,90 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==</BinaryItem>
       <GraphLayout
         Capacity="128" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:assembly="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:mssgm="clr-namespace:Microsoft.SqlServer.Graph.Model;assembly=Microsoft.SqlServer.Graph">
         <NodeLayout
-          Size="179,42"
+          Size="179.2,41.6"
           Id="Package\Application Data Processing\Process Catalog Data"
           TopLeft="5.5,5.5" />
         <NodeLayout
-          Size="258,42"
+          Size="257.6,41.6"
           Id="Package\Application Data Processing\Process Contract And Worksheet Data"
           TopLeft="7.5,68" />
         <NodeLayout
-          Size="188,42"
+          Size="188,41.6"
           Id="Package\Application Data Processing\Process Customer Data"
           TopLeft="11.5,125.5" />
         <NodeLayout
-          Size="225,42"
+          Size="224.8,41.6"
           Id="Package\Application Data Processing\Process Customer Item History"
           TopLeft="15,188" />
         <NodeLayout
-          Size="279,42"
+          Size="279.2,41.6"
           Id="Package\Application Data Processing\Process Customer Minimum Order Amount"
           TopLeft="2.5,380" />
         <NodeLayout
-          Size="216,42"
+          Size="216,41.6"
           Id="Package\Application Data Processing\Process Customer SIC Codes"
           TopLeft="20,315" />
         <NodeLayout
-          Size="208,42"
+          Size="208,41.6"
           Id="Package\Application Data Processing\Process Elastic Search Data"
           TopLeft="15.5,253" />
         <ContainerLayout
           HeaderHeight="43"
           IsExpanded="True"
-          PanelSize="287,514"
-          Size="287,557"
+          PanelSize="287.2,513.6"
+          Size="287.2,556.8"
           Id="Package\Application Data Processing"
           TopLeft="1943,1174" />
         <NodeLayout
-          Size="152,42"
+          Size="152,41.6"
           Id="Package\Process Data\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Branches"
           TopLeft="22.5,16" />
         <NodeLayout
-          Size="158,42"
+          Size="158.4,41.6"
           Id="Package\Process Data\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Categories"
           TopLeft="25.5,197" />
         <NodeLayout
-          Size="159,42"
+          Size="159.2,41.6"
           Id="Package\Process Data\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Customers"
           TopLeft="23.5,253.5" />
         <NodeLayout
-          Size="172,42"
+          Size="172,41.6"
           Id="Package\Process Data\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Departments"
           TopLeft="23,680.5" />
         <NodeLayout
-          Size="136,42"
+          Size="136,41.6"
           Id="Package\Process Data\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Items"
           TopLeft="21.5,308.5" />
         <NodeLayout
-          Size="187,42"
+          Size="187.2,41.6"
           Id="Package\Process Data\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage National Id Desc"
           TopLeft="26,370" />
         <NodeLayout
-          Size="235,42"
+          Size="235.2,41.6"
           Id="Package\Process Data\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage National Number Sub Desc"
           TopLeft="29,441" />
         <NodeLayout
-          Size="158,42"
+          Size="158.4,41.6"
           Id="Package\Process Data\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage PDM Data"
           TopLeft="24,497" />
         <NodeLayout
-          Size="188,42"
+          Size="188,41.6"
           Id="Package\Process Data\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Regional Id Desc"
           TopLeft="21,555" />
         <NodeLayout
-          Size="216,42"
+          Size="216,41.6"
           Id="Package\Process Data\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Regional Number Desc"
           TopLeft="24,621.5" />
         <NodeLayout
-          Size="193,42"
+          Size="192.8,41.6"
           Id="Package\Process Data\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Sub-Departments"
           TopLeft="22,759.5" />
         <NodeLayout
-          Size="217,42"
+          Size="216.8,41.6"
           Id="Package\Process Data\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Staging Brand Control Labels"
           TopLeft="28.5,135.5" />
         <NodeLayout
-          Size="150,42"
+          Size="150.4,41.6"
           Id="Package\Process Data\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Staging Brands"
           TopLeft="20.5,67.5" />
         <EdgeLayout
@@ -24836,66 +24851,66 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==</BinaryItem>
         <ContainerLayout
           HeaderHeight="43"
           IsExpanded="True"
-          PanelSize="284,959"
-          Size="284,1002"
+          PanelSize="284,959.2"
+          Size="284,1001.6"
           Id="Package\Process Data\Process_CatalogAndCustomer\Catalog And Customer Import Tasks"
           TopLeft="22.4444444444445,433.944444444445" />
         <NodeLayout
-          Size="156,42"
+          Size="156,41.6"
           Id="Package\Process Data\Process_CatalogAndCustomer\GS1 Import Tasks\Product Allergen"
           TopLeft="5.5,5.5" />
         <NodeLayout
-          Size="137,42"
+          Size="136.8,41.6"
           Id="Package\Process Data\Process_CatalogAndCustomer\GS1 Import Tasks\Product Diet"
           TopLeft="12,67.9999999999999" />
         <NodeLayout
-          Size="159,42"
+          Size="159.2,41.6"
           Id="Package\Process Data\Process_CatalogAndCustomer\GS1 Import Tasks\Product Nutrition"
           TopLeft="11,126.5" />
         <NodeLayout
-          Size="141,42"
+          Size="140.8,41.6"
           Id="Package\Process Data\Process_CatalogAndCustomer\GS1 Import Tasks\Product Spec"
           TopLeft="13,191" />
         <ContainerLayout
           HeaderHeight="43"
           IsExpanded="True"
-          PanelSize="278,288"
-          Size="278,331"
+          PanelSize="278.4,288"
+          Size="278.4,331.2"
           Id="Package\Process Data\Process_CatalogAndCustomer\GS1 Import Tasks"
           TopLeft="31.0000000000001,1501.5" />
         <NodeLayout
-          Size="237,42"
+          Size="236.8,41.6"
           Id="Package\Process Data\Process_CatalogAndCustomer\Truncate_Catalog_Tables\Truncate Brand Tables"
           TopLeft="19.8636363636364,17.3181818181818" />
         <NodeLayout
-          Size="236,42"
+          Size="236,41.6"
           Id="Package\Process Data\Process_CatalogAndCustomer\Truncate_Catalog_Tables\Truncate Catalog Stage Tables"
           TopLeft="19.0000000000001,75.4999999999999" />
         <NodeLayout
-          Size="234,42"
+          Size="208,41.6"
+          Id="Package\Process Data\Process_CatalogAndCustomer\Truncate_Catalog_Tables\Truncate Customer Options"
+          TopLeft="17.5,389" />
+        <NodeLayout
+          Size="233.6,41.6"
           Id="Package\Process Data\Process_CatalogAndCustomer\Truncate_Catalog_Tables\Truncate Departments"
           TopLeft="20.0454545454545,232.590909090909" />
         <NodeLayout
-          Size="238,42"
+          Size="238.4,41.6"
           Id="Package\Process Data\Process_CatalogAndCustomer\Truncate_Catalog_Tables\Truncate GS1 Stage Tables"
           TopLeft="17.5,128.5" />
         <NodeLayout
-          Size="237,42"
+          Size="236.8,41.6"
           Id="Package\Process Data\Process_CatalogAndCustomer\Truncate_Catalog_Tables\Truncate PDM data"
           TopLeft="18,182.5" />
         <NodeLayout
-          Size="228,42"
+          Size="228,41.6"
           Id="Package\Process Data\Process_CatalogAndCustomer\Truncate_Catalog_Tables\Truncate SIC Map"
           TopLeft="21.6666666666667,287" />
-        <NodeLayout
-          Size="208,42"
-          Id="Package\Process Data\Process_CatalogAndCustomer\Truncate_Catalog_Tables\Truncate Customer Options"
-          TopLeft="17.5,389" />
         <ContainerLayout
           HeaderHeight="43"
           IsExpanded="True"
-          PanelSize="280,486"
-          Size="280,529"
+          PanelSize="280,486.4"
+          Size="280,528.8"
           Id="Package\Process Data\Process_CatalogAndCustomer\Truncate_Catalog_Tables"
           TopLeft="29.9999999999999,5.5" />
         <EdgeLayout
@@ -24957,58 +24972,58 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==</BinaryItem>
         <ContainerLayout
           HeaderHeight="43"
           IsExpanded="True"
-          PanelSize="337,1887"
-          Size="337,1930"
+          PanelSize="336.8,1887.2"
+          Size="336.8,1929.6"
           Id="Package\Process Data\Process_CatalogAndCustomer"
           TopLeft="37.3888888888888,19.9444444444445" />
         <NodeLayout
-          Size="124,42"
+          Size="124,41.6"
           Id="Package\Process Data\Process_ContractAndWorksheet\Import Contract Data\Bid Detail"
           TopLeft="20.5,18" />
         <NodeLayout
-          Size="131,42"
+          Size="131.2,41.6"
           Id="Package\Process Data\Process_ContractAndWorksheet\Import Contract Data\Bid Header"
           TopLeft="22.5,90.5" />
         <NodeLayout
-          Size="142,42"
+          Size="142.4,41.6"
           Id="Package\Process Data\Process_ContractAndWorksheet\Import Contract Data\Customer Bid"
           TopLeft="19,153" />
         <NodeLayout
-          Size="141,42"
+          Size="140.8,41.6"
           Id="Package\Process Data\Process_ContractAndWorksheet\Import Contract Data\Product Spec"
           TopLeft="24,215.5" />
         <NodeLayout
-          Size="156,42"
+          Size="156,41.6"
           Id="Package\Process Data\Process_ContractAndWorksheet\Import Contract Data\Proprietary Item"
           TopLeft="15.5,278" />
         <NodeLayout
-          Size="176,42"
+          Size="176,41.6"
           Id="Package\Process Data\Process_ContractAndWorksheet\Import Contract Data\ProprietaryCustomer"
           TopLeft="12.5,338" />
         <NodeLayout
-          Size="160,42"
+          Size="160,41.6"
           Id="Package\Process Data\Process_ContractAndWorksheet\Import Contract Data\WorkSheet Items"
           TopLeft="24.5,408" />
         <ContainerLayout
           HeaderHeight="43"
           IsExpanded="True"
-          PanelSize="214,505"
-          Size="214,548"
+          PanelSize="214.4,504.8"
+          Size="214.4,548"
           Id="Package\Process Data\Process_ContractAndWorksheet\Import Contract Data"
           TopLeft="20.0000000000001,285.5" />
         <NodeLayout
-          Size="198,42"
+          Size="198.4,41.6"
           Id="Package\Process Data\Process_ContractAndWorksheet\Truncate Contract and WorkSheet Tables\Truncate Contract Tables"
           TopLeft="5.5,8" />
         <NodeLayout
-          Size="208,42"
+          Size="208,41.6"
           Id="Package\Process Data\Process_ContractAndWorksheet\Truncate Contract and WorkSheet Tables\Truncate Worksheet Tables"
           TopLeft="12,85.5" />
         <ContainerLayout
           HeaderHeight="43"
           IsExpanded="True"
-          PanelSize="243,177"
-          Size="243,220"
+          PanelSize="243.2,176.8"
+          Size="243.2,220"
           Id="Package\Process Data\Process_ContractAndWorksheet\Truncate Contract and WorkSheet Tables"
           TopLeft="5.50000000000003,5.5" />
         <EdgeLayout
@@ -25036,16 +25051,16 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==</BinaryItem>
         <ContainerLayout
           HeaderHeight="43"
           IsExpanded="True"
-          PanelSize="254,889"
-          Size="254,932"
+          PanelSize="254.4,888.8"
+          Size="254.4,932"
           Id="Package\Process Data\Process_ContractAndWorksheet"
           TopLeft="393.611111111111,19.3015873015871" />
         <NodeLayout
-          Size="167,42"
+          Size="167.2,41.6"
           Id="Package\Process Data\Process_EmployeeData\Import DSR Info\Get Raw DSR Data"
           TopLeft="17,5.5" />
         <NodeLayout
-          Size="190,42"
+          Size="190.4,41.6"
           Id="Package\Process Data\Process_EmployeeData\Import DSR Info\Get Raw EmployeeData"
           TopLeft="5.50000000000001,107.5" />
         <EdgeLayout
@@ -25073,19 +25088,19 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==</BinaryItem>
         <ContainerLayout
           HeaderHeight="43"
           IsExpanded="True"
-          PanelSize="201,205"
-          Size="201,248"
+          PanelSize="200.8,204.8"
+          Size="200.8,248"
           Id="Package\Process Data\Process_EmployeeData\Import DSR Info"
           TopLeft="5.50000000000006,211.5" />
         <NodeLayout
-          Size="178,42"
+          Size="177.6,41.6"
           Id="Package\Process Data\Process_EmployeeData\Truncate Dsr Tables\Truncate DSR Tables"
           TopLeft="5.5,5.5" />
         <ContainerLayout
           HeaderHeight="43"
           IsExpanded="True"
-          PanelSize="189,103"
-          Size="189,146"
+          PanelSize="188.8,103.2"
+          Size="188.8,145.6"
           Id="Package\Process Data\Process_EmployeeData\Truncate Dsr Tables"
           TopLeft="11.5,5.5" />
         <EdgeLayout
@@ -25113,30 +25128,30 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==</BinaryItem>
         <ContainerLayout
           HeaderHeight="43"
           IsExpanded="True"
-          PanelSize="212,515"
-          Size="212,558"
+          PanelSize="212,515.2"
+          Size="212,558.4"
           Id="Package\Process Data\Process_EmployeeData"
           TopLeft="980.277777777778,23.7222222222222" />
         <NodeLayout
-          Size="157,42"
+          Size="156.8,41.6"
           Id="Package\Process Data\Process_Invoices\Customer Invoice Import Tasks\Customer Terms"
           TopLeft="5.5,5.5" />
         <ContainerLayout
           HeaderHeight="43"
           IsExpanded="True"
-          PanelSize="168,103"
-          Size="168,146"
+          PanelSize="168,103.2"
+          Size="168,145.6"
           Id="Package\Process Data\Process_Invoices\Customer Invoice Import Tasks"
           TopLeft="23,211.5" />
         <NodeLayout
-          Size="192,42"
+          Size="192,41.6"
           Id="Package\Process Data\Process_Invoices\Truncate Invoice Tables\Truncate Invoice Tables"
           TopLeft="5.5,5.5" />
         <ContainerLayout
           HeaderHeight="43"
           IsExpanded="True"
-          PanelSize="203,103"
-          Size="203,146"
+          PanelSize="203.2,103.2"
+          Size="203.2,145.6"
           Id="Package\Process Data\Process_Invoices\Truncate Invoice Tables"
           TopLeft="5.50000000000001,5.5" />
         <EdgeLayout
@@ -25164,16 +25179,16 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==</BinaryItem>
         <ContainerLayout
           HeaderHeight="43"
           IsExpanded="True"
-          PanelSize="214,413"
-          Size="214,456"
+          PanelSize="214.4,412.8"
+          Size="214.4,456"
           Id="Package\Process Data\Process_Invoices"
           TopLeft="706.896825396826,20.5952380952381" />
         <NodeLayout
-          Size="177,42"
+          Size="176.8,41.6"
           Id="Package\Process Data\Reference Tables\SIC Reference Table"
           TopLeft="25.7333333333333,84.2000000000002" />
         <NodeLayout
-          Size="203,42"
+          Size="203.2,41.6"
           Id="Package\Process Data\Reference Tables\TRUNCATE SIC Reference"
           TopLeft="21.333333333333,21" />
         <EdgeLayout
@@ -25213,38 +25228,38 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==</BinaryItem>
         <ContainerLayout
           HeaderHeight="43"
           IsExpanded="True"
-          PanelSize="275,205"
-          Size="275,248"
+          PanelSize="275.2,204.8"
+          Size="275.2,248"
           Id="Package\Process Data\Reference Tables"
           TopLeft="684,503" />
         <ContainerLayout
           HeaderHeight="43"
           IsExpanded="True"
-          PanelSize="1245,2019"
-          Size="1245,2062"
+          PanelSize="1244.8,2019.2"
+          Size="1244.8,2062.4"
           Id="Package\Process Data"
           TopLeft="107.5,327.5" />
         <NodeLayout
-          Size="150,42"
+          Size="150.4,41.6"
           Id="Package\Purge Order History Older Than 6 Months\Purge AppData"
           TopLeft="5.5,5.5" />
         <NodeLayout
-          Size="185,42"
+          Size="184.8,41.6"
           Id="Package\Purge Order History Older Than 6 Months\Purge CS Transactions"
           TopLeft="8.5,65.5" />
         <ContainerLayout
           HeaderHeight="43"
           IsExpanded="True"
           PanelSize="216,128"
-          Size="216,171"
+          Size="216,171.2"
           Id="Package\Purge Order History Older Than 6 Months"
           TopLeft="1589.5,1268.16666666667" />
         <NodeLayout
-          Size="196,42"
+          Size="196,41.6"
           Id="Package\Rename Mainframe Files"
           TopLeft="432,130.5" />
         <NodeLayout
-          Size="168,42"
+          Size="168,41.6"
           Id="Package\Send Fail Message"
           TopLeft="1643.5,133.5" />
         <EdgeLayout
@@ -25685,17 +25700,17 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==</BinaryItem>
     design-time-name="Package\Process Data\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Customers">
     <LayoutInfo>
       <GraphLayout
-        Capacity="8" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:assembly="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:mssgm="clr-namespace:Microsoft.SqlServer.Graph.Model;assembly=Microsoft.SqlServer.Graph">
+        Capacity="8" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:assembly="http://schemas.microsoft.com/winfx/2006/xaml">
         <NodeLayout
-          Size="176,42"
+          Size="176,41.6"
           Id="Package\Process Data\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Customers\Sort by Division ASC"
           TopLeft="280,194" />
         <NodeLayout
-          Size="143,42"
+          Size="143.2,41.6"
           Id="Package\Process Data\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Customers\FF_Customer"
           TopLeft="298,51" />
         <NodeLayout
-          Size="161,42"
+          Size="160.8,41.6"
           Id="Package\Process Data\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Customers\KeithlinkAppData"
           TopLeft="292,314" />
         <EdgeLayout
@@ -25717,9 +25732,7 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==</BinaryItem>
             </mssgle:Curve>
           </EdgeLayout.Curve>
           <EdgeLayout.Labels>
-            <mssgm:EdgeLabel
-              BoundingBox="0,0,0,0"
-              RelativePosition="Any" />
+            <EdgeLabelCollection />
           </EdgeLayout.Labels>
         </EdgeLayout>
         <EdgeLayout
@@ -25741,9 +25754,7 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==</BinaryItem>
             </mssgle:Curve>
           </EdgeLayout.Curve>
           <EdgeLayout.Labels>
-            <mssgm:EdgeLabel
-              BoundingBox="0,0,0,0"
-              RelativePosition="Any" />
+            <EdgeLabelCollection />
           </EdgeLayout.Labels>
         </EdgeLayout>
       </GraphLayout>

@@ -1,9 +1,0 @@
-﻿CREATE SCHEMA [ETL]
-    AUTHORIZATION [ecom];
-
-
-
-
-
-
-
