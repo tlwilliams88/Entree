@@ -892,7 +892,7 @@ namespace KeithLink.Svc.Impl.Service.List
                 }
                 else
                 {
-                    Product prod = productHash.ContainsKey(listItem.ItemNumber) ? productHash[listItem.ItemNumber.Trim()] : null;
+                    Product prod = productHash.ContainsKey(listItem.ItemNumber.Trim()) ? productHash[listItem.ItemNumber.Trim()] : null;
 
                     if (prod != null)
                     {
