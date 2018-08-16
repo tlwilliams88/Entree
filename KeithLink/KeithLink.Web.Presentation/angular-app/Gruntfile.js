@@ -335,7 +335,7 @@ module.exports = function (grunt) {
           inspectletDebug: {
               files: [{
                 expand: true,
-                cwd: '<%= yeoman.app %>/inspectlet/inspectlet',
+                cwd: '<%= yeoman.app %>/inspectlet/inspectlet-dev',
                 dest: '<%= yeoman.dev %>/inspectlet',
                 src: '**/inspectlet.js'
               }]
@@ -343,7 +343,7 @@ module.exports = function (grunt) {
           inspectletTest: {
               files: [{
                 expand: true,
-                cwd: '<%= yeoman.app %>/inspectlet/inspectlet',
+                cwd: '<%= yeoman.app %>/inspectlet/inspectlet-test',
                 dest: '<%= yeoman.dist %>/inspectlet',
                 src: '**/inspectlet.js'
               }]
