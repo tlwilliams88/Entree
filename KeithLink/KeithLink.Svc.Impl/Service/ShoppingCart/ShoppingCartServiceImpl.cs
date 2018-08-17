@@ -97,7 +97,7 @@ namespace KeithLink.Svc.Impl.Service.ShoppingCart
 
             ApprovedCartModel ret = new ApprovedCartModel();
 
-            bool isCart = cartId != null ? true : false;
+            bool isCart = cartId != null && cartId != Guid.Empty ? true : false;
             if(isCart == true)
             {
                 Core.Models.ShoppingCart.ShoppingCart currentCart = new Core.Models.ShoppingCart.ShoppingCart();
