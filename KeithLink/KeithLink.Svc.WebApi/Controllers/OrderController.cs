@@ -291,9 +291,14 @@ namespace KeithLink.Svc.WebApi.Controllers
             Models.OperationReturnModel<Order> retVal = new Models.OperationReturnModel<Order>();
             try
             {
+                
                 Order order = _orderLogic.UpdateOrderForEta(AuthenticatedUser, _orderLogic.GetOrder(SelectedUserContext.BranchId, orderNumber.Trim()));
+
+                ApprovedCartModel orderApproved = _shoppingCartService.ValidateCart(this.AuthenticatedUser, this.SelectedUserContext, Guid.Empty, order.OrderNumber);
+
                 FavoritesAndNotesHelper.GetFavoritesAndNotesFromLists(AuthenticatedUser, SelectedUserContext, order.Items, _listService);
                 retVal.SuccessResponse = order;
+                retVal.SuccessResponse.Approval = orderApproved;
                 retVal.IsSuccess = true;
             }
             catch (Exception ex)
