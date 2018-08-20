@@ -285,7 +285,7 @@ angular.module('bekApp')
 
     updateRecommendedItems();
 
-    if($scope.currentCart.invoicenumber != undefined && $scope.currentCart.ordernumber != undefined) {
+    if($scope.isChangeOrder == true) {
       $scope.saveChangeOrder($scope.currentCart)
     } else {
       $scope.saveCart($scope.currentCart);
