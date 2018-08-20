@@ -48,7 +48,10 @@ angular.module('bekApp')
           $scope.userBar = {};
           $scope.userBar.universalSearchTerm = '';
           $scope.userBar.userNotificationsCount = NotificationService.userNotificationsCount;
-
+          
+          //Used for Kbit access
+          var usernameToken = $scope.userProfile.usernametoken;
+          $scope.cognosUrl = ENV.cognosUrl + '?username=' + usernameToken;
 
           $scope.toggleSidebarMenu = function () {
             $scope.isSidebarOpen = !$scope.isSidebarOpen;
