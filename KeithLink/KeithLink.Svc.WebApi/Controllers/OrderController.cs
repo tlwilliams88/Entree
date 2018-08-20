@@ -9,6 +9,7 @@ using KeithLink.Svc.Core.Interface.Profile;
 using KeithLink.Svc.Core.Models.ModelExport;
 using KeithLink.Svc.Core.Models.Orders;
 using KeithLink.Svc.Core.Models.Paging;
+using KeithLink.Svc.Core.Models.ShoppingCart;
 
 using KeithLink.Svc.Impl.Helpers;
 using KeithLink.Svc.Impl.Logic;
@@ -43,6 +44,7 @@ namespace KeithLink.Svc.WebApi.Controllers
         private readonly IEventLogRepository _log;
         private readonly IOrderHistoryLogic _historyLogic;
         private readonly IListService _listService;
+        private readonly IShoppingCartService _shoppingCartService;
         #endregion
 
         #region ctor
@@ -58,9 +60,11 @@ namespace KeithLink.Svc.WebApi.Controllers
         /// <param name="logRepo"></param>
         /// <param name="historyHeaderRepository"></param>
         /// <param name="orderHistoryLogic"></param>
+        /// <param name="cartService"></param>
         public OrderController(IShoppingCartLogic shoppingCartLogic, IOrderLogic orderLogic, IShipDateRepository shipDayRepo, IListService listService, ICatalogLogic catalogLogic,
                                IOrderHistoryRequestLogic historyRequestLogic, IUserProfileLogic profileLogic, IExportSettingLogic exportSettingsLogic, 
-                               IEventLogRepository logRepo, IOrderHistoryHeaderRepsitory historyHeaderRepository, IOrderHistoryLogic orderHistoryLogic) : base(profileLogic) {
+                               IEventLogRepository logRepo, IOrderHistoryHeaderRepsitory historyHeaderRepository, IOrderHistoryLogic orderHistoryLogic, 
+                               IShoppingCartService cartService) : base(profileLogic) {
             _historyRequestLogic = historyRequestLogic;
 			_orderLogic = orderLogic;
             _shipDayService = shipDayRepo;
@@ -71,6 +75,7 @@ namespace KeithLink.Svc.WebApi.Controllers
             _historyLogic = orderHistoryLogic;
             _listService = listService;
             _catalogLogic = catalogLogic;
+            _shoppingCartService = cartService;
         }
         #endregion
 
@@ -286,9 +291,14 @@ namespace KeithLink.Svc.WebApi.Controllers
             Models.OperationReturnModel<Order> retVal = new Models.OperationReturnModel<Order>();
             try
             {
+                
                 Order order = _orderLogic.UpdateOrderForEta(AuthenticatedUser, _orderLogic.GetOrder(SelectedUserContext.BranchId, orderNumber.Trim()));
+
+                ApprovedCartModel orderApproved = _shoppingCartService.ValidateCart(this.AuthenticatedUser, this.SelectedUserContext, Guid.Empty, order.OrderNumber);
+
                 FavoritesAndNotesHelper.GetFavoritesAndNotesFromLists(AuthenticatedUser, SelectedUserContext, order.Items, _listService);
                 retVal.SuccessResponse = order;
+                retVal.SuccessResponse.Approval = orderApproved;
                 retVal.IsSuccess = true;
             }
             catch (Exception ex)
@@ -414,8 +424,16 @@ namespace KeithLink.Svc.WebApi.Controllers
             Models.OperationReturnModel<SaveOrderReturn> retVal = new Models.OperationReturnModel<SaveOrderReturn>();
             try
             {
-                retVal.SuccessResponse = _shoppingCartLogic.SaveAsOrder(this.AuthenticatedUser, this.SelectedUserContext, cartId);
-                retVal.IsSuccess = true;
+
+                ApprovedCartModel cartApproved = _shoppingCartService.ValidateCart(this.AuthenticatedUser, this.SelectedUserContext, cartId, null);
+
+                if(cartApproved.Approved == true)
+                {
+
+                    retVal.SuccessResponse = _shoppingCartLogic.SaveAsOrder(this.AuthenticatedUser, this.SelectedUserContext, cartId);
+                    retVal.IsSuccess = true;
+                }
+
             }
             catch (Exception ex)
             {
@@ -439,8 +457,14 @@ namespace KeithLink.Svc.WebApi.Controllers
             Models.OperationReturnModel<NewOrderReturn> retVal = new Models.OperationReturnModel<NewOrderReturn>();
             try
             {
-                retVal.SuccessResponse = _orderLogic.SubmitChangeOrder(this.AuthenticatedUser, this.SelectedUserContext, orderNumber);
-                retVal.IsSuccess = true;
+                ApprovedCartModel orderApproved = _shoppingCartService.ValidateCart(this.AuthenticatedUser, this.SelectedUserContext, Guid.Empty, orderNumber);
+
+                if (orderApproved.Approved == true)
+                {
+                    retVal.SuccessResponse = _orderLogic.SubmitChangeOrder(this.AuthenticatedUser, this.SelectedUserContext, orderNumber);
+                    retVal.IsSuccess = true;
+                }
+
             }
             catch (Exception ex)
             {
@@ -491,7 +515,10 @@ namespace KeithLink.Svc.WebApi.Controllers
             Models.OperationReturnModel<Order> retVal = new Models.OperationReturnModel<Order>();
             try
             {
+                ApprovedCartModel orderApproved = _shoppingCartService.ValidateCart(this.AuthenticatedUser, this.SelectedUserContext, Guid.Empty, order.OrderNumber);
+
                 retVal.SuccessResponse = _orderLogic.UpdateOrder(this.SelectedUserContext, this.AuthenticatedUser, order, deleteOmitted);
+                retVal.SuccessResponse.Approval = orderApproved;
                 retVal.IsSuccess = true;
             }
             catch (Exception ex)

@@ -15,5 +15,8 @@ namespace KeithLink.Svc.Core.Models.Orders
 
 		[DataMember(Name = "ordersReturned")]
 		public List<NewOrderReturn> OrdersReturned { get; set; }
-	}
+
+        [DataMember(Name = "approval")]
+        public ShoppingCart.ApprovedCartModel Approval { get; set; }
+    }
 }

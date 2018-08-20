@@ -8,12 +8,12 @@
   DTS:DTSID="{28E8C8EF-5E24-4123-B176-05774E5F5029}"
   DTS:EnableConfig="True"
   DTS:ExecutableType="Microsoft.Package"
-  DTS:LastModifiedProductVersion="13.0.2165.0"
+  DTS:LastModifiedProductVersion="14.0.3002.106"
   DTS:LocaleID="1033"
   DTS:ObjectName="ETLProcess_RELEASE"
   DTS:PackageType="5"
-  DTS:VersionBuild="2"
-  DTS:VersionGUID="{DB963884-2646-4440-A6C6-9DC74B63AA41}"
+  DTS:VersionBuild="20"
+  DTS:VersionGUID="{252EE9CA-096F-4FAD-B5C1-C5D8775EF808}"
   DTS:VersionMajor="2018"
   DTS:VersionMinor="4">
   <DTS:Property
@@ -225,7 +225,7 @@
               DTS:MaximumWidth="1"
               DTS:DataType="129"
               DTS:ObjectName="Action"
-              DTS:DTSID="{555E45FD-DE33-4020-99F4-3FC3C0182957}"
+              DTS:DTSID="{BE90D7A5-5141-45B0-9221-3D0BFD257132}"
               DTS:CreationName="" />
             <DTS:FlatFileColumn
               DTS:ColumnDelimiter=""
@@ -233,7 +233,7 @@
               DTS:MaximumWidth="3"
               DTS:DataType="129"
               DTS:ObjectName="CO"
-              DTS:DTSID="{3CD77C5F-945C-4C7A-B3F6-149042476217}"
+              DTS:DTSID="{B318B367-4F64-4D15-B8FC-43A3B948D6A0}"
               DTS:CreationName="" />
             <DTS:FlatFileColumn
               DTS:ColumnDelimiter=""
@@ -241,7 +241,7 @@
               DTS:MaximumWidth="3"
               DTS:DataType="129"
               DTS:ObjectName="DIV"
-              DTS:DTSID="{9FA440E8-F38E-4881-A892-6B8BCAEC6BAC}"
+              DTS:DTSID="{049478EA-6E75-40D2-896E-720CD69CF397}"
               DTS:CreationName="" />
             <DTS:FlatFileColumn
               DTS:ColumnDelimiter=""
@@ -249,7 +249,7 @@
               DTS:MaximumWidth="3"
               DTS:DataType="129"
               DTS:ObjectName="DEPT"
-              DTS:DTSID="{0B8B7736-4A35-4DC1-9211-1838746A9F5B}"
+              DTS:DTSID="{6D35B9B0-3040-4852-A547-CC84E1132232}"
               DTS:CreationName="" />
             <DTS:FlatFileColumn
               DTS:ColumnDelimiter=""
@@ -257,7 +257,7 @@
               DTS:MaximumWidth="10"
               DTS:DataType="129"
               DTS:ObjectName="CustomerNumber"
-              DTS:DTSID="{DF213D63-E357-445B-94AC-31EE1CBE517D}"
+              DTS:DTSID="{DDF70B71-046F-49E8-9C93-C047A046FBE0}"
               DTS:CreationName="" />
             <DTS:FlatFileColumn
               DTS:ColumnDelimiter=""
@@ -265,7 +265,7 @@
               DTS:MaximumWidth="40"
               DTS:DataType="129"
               DTS:ObjectName="CustomerName"
-              DTS:DTSID="{9130705B-8D71-4778-B515-AA62B48A147F}"
+              DTS:DTSID="{41A693CB-241E-4FC1-901A-09ADAA545E8A}"
               DTS:CreationName="" />
             <DTS:FlatFileColumn
               DTS:ColumnDelimiter=""
@@ -273,7 +273,7 @@
               DTS:MaximumWidth="25"
               DTS:DataType="129"
               DTS:ObjectName="Address1"
-              DTS:DTSID="{3031188B-8BB8-4E99-83F8-F6D677EBC976}"
+              DTS:DTSID="{24DFFB8D-6BBD-4DFA-8900-F589549EE175}"
               DTS:CreationName="" />
             <DTS:FlatFileColumn
               DTS:ColumnDelimiter=""
@@ -281,7 +281,7 @@
               DTS:MaximumWidth="25"
               DTS:DataType="129"
               DTS:ObjectName="Address2"
-              DTS:DTSID="{7953654A-E5F6-4BED-A22D-FC88EC39B067}"
+              DTS:DTSID="{5FDC3F2E-42BC-4163-AB32-B7EEE7E1D1BC}"
               DTS:CreationName="" />
             <DTS:FlatFileColumn
               DTS:ColumnDelimiter=""
@@ -289,7 +289,7 @@
               DTS:MaximumWidth="30"
               DTS:DataType="129"
               DTS:ObjectName="City"
-              DTS:DTSID="{1DFAD9FF-7A3D-4207-ABB3-A5D51DC44F0E}"
+              DTS:DTSID="{DE9DED4D-7DF4-400A-AB72-2202AF41C617}"
               DTS:CreationName="" />
             <DTS:FlatFileColumn
               DTS:ColumnDelimiter=""
@@ -297,7 +297,7 @@
               DTS:MaximumWidth="3"
               DTS:DataType="129"
               DTS:ObjectName="State"
-              DTS:DTSID="{9128991A-BCB1-45BE-8EE4-C7705D6BB7D2}"
+              DTS:DTSID="{5FAE79C8-A747-421E-A4B4-FA49630F87AD}"
               DTS:CreationName="" />
             <DTS:FlatFileColumn
               DTS:ColumnDelimiter=""
@@ -305,7 +305,7 @@
               DTS:MaximumWidth="10"
               DTS:DataType="129"
               DTS:ObjectName="ZipCode"
-              DTS:DTSID="{FAF40FC0-1022-4FAB-961A-E96AF308004F}"
+              DTS:DTSID="{338A700F-9FFB-467C-A489-E17488CCB564}"
               DTS:CreationName="" />
             <DTS:FlatFileColumn
               DTS:ColumnDelimiter=""
@@ -313,7 +313,7 @@
               DTS:MaximumWidth="3"
               DTS:DataType="129"
               DTS:ObjectName="WhsnNumber"
-              DTS:DTSID="{A26209A4-3FBB-4B8E-A2B4-E56934F3A9C9}"
+              DTS:DTSID="{C20E9C7E-BA65-4C26-86DE-1BE9DD277562}"
               DTS:CreationName="" />
             <DTS:FlatFileColumn
               DTS:ColumnDelimiter=""
@@ -321,7 +321,7 @@
               DTS:MaximumWidth="10"
               DTS:DataType="129"
               DTS:ObjectName="Telephone"
-              DTS:DTSID="{6307A18E-1190-48B3-8DD9-3121D9495FF0}"
+              DTS:DTSID="{31B22FE3-3C0E-4DC1-BAED-388E28AE8FE1}"
               DTS:CreationName="" />
             <DTS:FlatFileColumn
               DTS:ColumnDelimiter=""
@@ -329,7 +329,7 @@
               DTS:MaximumWidth="3"
               DTS:DataType="129"
               DTS:ObjectName="SalesRep"
-              DTS:DTSID="{28BEC45F-03B0-4BDB-9205-9B590D62429D}"
+              DTS:DTSID="{ECCA718A-46A8-4507-95E5-2D4A1F6B6493}"
               DTS:CreationName="" />
             <DTS:FlatFileColumn
               DTS:ColumnDelimiter=""
@@ -337,7 +337,7 @@
               DTS:MaximumWidth="10"
               DTS:DataType="129"
               DTS:ObjectName="ChainStoreCode"
-              DTS:DTSID="{7B32D7F4-DFF6-4F88-99CD-A369B81F39CB}"
+              DTS:DTSID="{A0F97758-6EEC-488D-A993-109734C8E085}"
               DTS:CreationName="" />
             <DTS:FlatFileColumn
               DTS:ColumnDelimiter=""
@@ -345,7 +345,7 @@
               DTS:MaximumWidth="3"
               DTS:DataType="129"
               DTS:ObjectName="TermCode"
-              DTS:DTSID="{7C983CCB-F48D-4FF6-BC82-F8FB052BE23C}"
+              DTS:DTSID="{AF50782A-A177-4C50-9FBF-0FD5F9A7EDAC}"
               DTS:CreationName="" />
             <DTS:FlatFileColumn
               DTS:ColumnDelimiter=""
@@ -353,7 +353,7 @@
               DTS:MaximumWidth="7"
               DTS:DataType="129"
               DTS:ObjectName="CreditLimit"
-              DTS:DTSID="{3EAFB37D-7DBD-46BD-8AC3-18D1B4FD3FF3}"
+              DTS:DTSID="{1AED61E2-956E-477B-9662-2E4B7D3D1A6B}"
               DTS:CreationName="" />
             <DTS:FlatFileColumn
               DTS:ColumnDelimiter=""
@@ -361,7 +361,7 @@
               DTS:MaximumWidth="1"
               DTS:DataType="129"
               DTS:ObjectName="CreditHoldFlag"
-              DTS:DTSID="{AE6BB811-28DC-4375-B854-C76B47010974}"
+              DTS:DTSID="{0DA693C9-6A63-4F76-992A-47B627B40063}"
               DTS:CreationName="" />
             <DTS:FlatFileColumn
               DTS:ColumnDelimiter=""
@@ -369,7 +369,7 @@
               DTS:MaximumWidth="10"
               DTS:DataType="129"
               DTS:ObjectName="Nothing_DONOTUSE"
-              DTS:DTSID="{01380919-E742-45F2-ACB0-71555FE9B505}"
+              DTS:DTSID="{020A3750-2C45-46AF-95FE-9CB7CB49B8BA}"
               DTS:CreationName="" />
             <DTS:FlatFileColumn
               DTS:ColumnDelimiter=""
@@ -377,7 +377,7 @@
               DTS:MaximumWidth="10"
               DTS:DataType="129"
               DTS:ObjectName="StoreNumber"
-              DTS:DTSID="{C7461902-CD3D-417B-ADCD-7637E8926365}"
+              DTS:DTSID="{BFC02D19-49B7-4E62-B97F-291195960370}"
               DTS:CreationName="" />
             <DTS:FlatFileColumn
               DTS:ColumnDelimiter=""
@@ -385,7 +385,7 @@
               DTS:MaximumWidth="1"
               DTS:DataType="129"
               DTS:ObjectName="ContractOnly"
-              DTS:DTSID="{716DE01D-3E22-4158-A3BB-EE8C5F33DFE3}"
+              DTS:DTSID="{AABB3139-6C32-415F-9C5D-DA793A7353A3}"
               DTS:CreationName="" />
             <DTS:FlatFileColumn
               DTS:ColumnDelimiter=""
@@ -393,7 +393,7 @@
               DTS:MaximumWidth="1"
               DTS:DataType="129"
               DTS:ObjectName="LocationAuth"
-              DTS:DTSID="{20F84BFE-818E-435E-9891-1E65F5FD849C}"
+              DTS:DTSID="{B796DA0F-C3CD-4DD6-99EC-7675722DBFF6}"
               DTS:CreationName="" />
             <DTS:FlatFileColumn
               DTS:ColumnDelimiter=""
@@ -401,7 +401,7 @@
               DTS:MaximumWidth="8"
               DTS:DataType="129"
               DTS:ObjectName="DateLastPay"
-              DTS:DTSID="{295C0A4D-AFC0-42F0-A05B-2C4B691FB582}"
+              DTS:DTSID="{278B8037-0029-48BF-B3D3-958F9750CEA2}"
               DTS:CreationName="" />
             <DTS:FlatFileColumn
               DTS:ColumnDelimiter=""
@@ -409,7 +409,7 @@
               DTS:MaximumWidth="16"
               DTS:DataType="129"
               DTS:ObjectName="CustAmountDue"
-              DTS:DTSID="{58EDCF43-483B-48DC-B5C9-5ECFCA066774}"
+              DTS:DTSID="{54E6C0C5-95C1-4CB5-848D-D696799E967C}"
               DTS:CreationName="" />
             <DTS:FlatFileColumn
               DTS:ColumnDelimiter=""
@@ -417,7 +417,7 @@
               DTS:MaximumWidth="16"
               DTS:DataType="129"
               DTS:ObjectName="CurrentBalance"
-              DTS:DTSID="{915F9BB3-EED3-4BDC-870C-066D9CB5CF5D}"
+              DTS:DTSID="{DAD70413-10C3-42F5-9EA3-A319FABAB4F5}"
               DTS:CreationName="" />
             <DTS:FlatFileColumn
               DTS:ColumnDelimiter=""
@@ -425,7 +425,7 @@
               DTS:MaximumWidth="16"
               DTS:DataType="129"
               DTS:ObjectName="PDACXAge1"
-              DTS:DTSID="{1EC0D1E0-4842-410D-B071-392476A395D8}"
+              DTS:DTSID="{26A8DA9A-1A4C-45F6-BFE8-449D80A1326D}"
               DTS:CreationName="" />
             <DTS:FlatFileColumn
               DTS:ColumnDelimiter=""
@@ -433,7 +433,7 @@
               DTS:MaximumWidth="16"
               DTS:DataType="129"
               DTS:ObjectName="PDACXAge2"
-              DTS:DTSID="{BC5BF080-B0C7-4B15-AF59-029C22462151}"
+              DTS:DTSID="{8658219F-6B46-410A-A973-AADFE387203E}"
               DTS:CreationName="" />
             <DTS:FlatFileColumn
               DTS:ColumnDelimiter=""
@@ -441,7 +441,7 @@
               DTS:MaximumWidth="16"
               DTS:DataType="129"
               DTS:ObjectName="PDACXAge3"
-              DTS:DTSID="{86195E6F-5193-43A3-B779-F288814E25D1}"
+              DTS:DTSID="{5E60BC34-1270-4010-AC97-66DEE61BE835}"
               DTS:CreationName="" />
             <DTS:FlatFileColumn
               DTS:ColumnDelimiter=""
@@ -449,7 +449,7 @@
               DTS:MaximumWidth="16"
               DTS:DataType="129"
               DTS:ObjectName="PDACXAge4"
-              DTS:DTSID="{567C63D1-943B-4B94-BFA5-BBB31BFA2632}"
+              DTS:DTSID="{43F47151-8266-4761-84EE-4DEBD4E0A127}"
               DTS:CreationName="" />
             <DTS:FlatFileColumn
               DTS:ColumnDelimiter=""
@@ -457,7 +457,7 @@
               DTS:MaximumWidth="1"
               DTS:DataType="129"
               DTS:ObjectName="ActiveFlag"
-              DTS:DTSID="{29FC6CFF-E689-47F6-9520-2451541E04CC}"
+              DTS:DTSID="{2F636883-37A2-42B6-A2EA-41CE35CAA679}"
               DTS:CreationName="" />
             <DTS:FlatFileColumn
               DTS:ColumnDelimiter=""
@@ -465,7 +465,7 @@
               DTS:MaximumWidth="5"
               DTS:DataType="129"
               DTS:ObjectName="MondayRoutNum"
-              DTS:DTSID="{E84AC6E7-79F4-4734-9EE2-488933E6FC2E}"
+              DTS:DTSID="{A4185E74-2037-4D6F-B658-25C4B3857CF6}"
               DTS:CreationName="" />
             <DTS:FlatFileColumn
               DTS:ColumnDelimiter=""
@@ -473,7 +473,7 @@
               DTS:MaximumWidth="3"
               DTS:DataType="129"
               DTS:ObjectName="MondayStopNum"
-              DTS:DTSID="{1F5F7EFD-4E57-4C7F-80BC-128FDAA5CE79}"
+              DTS:DTSID="{B0EEC60E-1270-41C0-91E8-9FDB305F156B}"
               DTS:CreationName="" />
             <DTS:FlatFileColumn
               DTS:ColumnDelimiter=""
@@ -481,7 +481,7 @@
               DTS:MaximumWidth="5"
               DTS:DataType="129"
               DTS:ObjectName="TuesdayRoutNum"
-              DTS:DTSID="{B4CC7629-2E58-4CF2-8E9A-28A60F8017B7}"
+              DTS:DTSID="{7F627A59-F385-4D73-A6EC-F0FB7E53FA98}"
               DTS:CreationName="" />
             <DTS:FlatFileColumn
               DTS:ColumnDelimiter=""
@@ -489,7 +489,7 @@
               DTS:MaximumWidth="3"
               DTS:DataType="129"
               DTS:ObjectName="TuesdayStopNum"
-              DTS:DTSID="{3EBEBC0F-8C6A-49A4-B47A-88591823016A}"
+              DTS:DTSID="{82F7775F-72A9-4E3A-A796-94DCD9A354B7}"
               DTS:CreationName="" />
             <DTS:FlatFileColumn
               DTS:ColumnDelimiter=""
@@ -497,7 +497,7 @@
               DTS:MaximumWidth="5"
               DTS:DataType="129"
               DTS:ObjectName="WedRoutNum"
-              DTS:DTSID="{165E6454-1A96-4671-8988-FE11475D859F}"
+              DTS:DTSID="{E342212B-7312-48E8-8051-2432611A38A5}"
               DTS:CreationName="" />
             <DTS:FlatFileColumn
               DTS:ColumnDelimiter=""
@@ -505,7 +505,7 @@
               DTS:MaximumWidth="3"
               DTS:DataType="129"
               DTS:ObjectName="WedStopNum"
-              DTS:DTSID="{25392A22-F35A-40A4-9E8A-D07A963080E8}"
+              DTS:DTSID="{08459F90-BE61-4D36-A3E9-D539FD857568}"
               DTS:CreationName="" />
             <DTS:FlatFileColumn
               DTS:ColumnDelimiter=""
@@ -513,7 +513,7 @@
               DTS:MaximumWidth="5"
               DTS:DataType="129"
               DTS:ObjectName="ThursdayRoutNum"
-              DTS:DTSID="{1517F45A-2B18-41CB-AF46-7464F9895CD7}"
+              DTS:DTSID="{DE8C431D-6297-4ADA-A564-09BAE60EACAD}"
               DTS:CreationName="" />
             <DTS:FlatFileColumn
               DTS:ColumnDelimiter=""
@@ -521,7 +521,7 @@
               DTS:MaximumWidth="3"
               DTS:DataType="129"
               DTS:ObjectName="ThursdayStopNum"
-              DTS:DTSID="{2D0EAB66-2924-4E21-B847-A16D13D65549}"
+              DTS:DTSID="{C601A611-2AB6-4285-A7BD-92DD03267126}"
               DTS:CreationName="" />
             <DTS:FlatFileColumn
               DTS:ColumnDelimiter=""
@@ -529,7 +529,7 @@
               DTS:MaximumWidth="5"
               DTS:DataType="129"
               DTS:ObjectName="FridayRoutNum"
-              DTS:DTSID="{B2AD2AD9-5066-4ABF-A0DF-95A706FF56F6}"
+              DTS:DTSID="{3BB0EDD2-657B-4026-BC8D-BA914EAC64FF}"
               DTS:CreationName="" />
             <DTS:FlatFileColumn
               DTS:ColumnDelimiter=""
@@ -537,7 +537,7 @@
               DTS:MaximumWidth="3"
               DTS:DataType="129"
               DTS:ObjectName="FridayStopNum"
-              DTS:DTSID="{89E1A82D-2852-47E2-B332-5A17D1A23448}"
+              DTS:DTSID="{5AB4034E-82CE-422A-AABB-0C3B6B89D19C}"
               DTS:CreationName="" />
             <DTS:FlatFileColumn
               DTS:ColumnDelimiter=""
@@ -545,7 +545,7 @@
               DTS:MaximumWidth="5"
               DTS:DataType="129"
               DTS:ObjectName="SaturdayRoutNum"
-              DTS:DTSID="{E64414C8-5CB8-4AAF-B1EF-FFF0B7CBB756}"
+              DTS:DTSID="{2DB1C39C-CEA3-46A1-A918-8E8D9C6F4C4D}"
               DTS:CreationName="" />
             <DTS:FlatFileColumn
               DTS:ColumnDelimiter=""
@@ -553,7 +553,7 @@
               DTS:MaximumWidth="3"
               DTS:DataType="129"
               DTS:ObjectName="SaturdayStopNum"
-              DTS:DTSID="{E7459612-9B10-464A-A528-B8EF1E803FAD}"
+              DTS:DTSID="{C346CC2E-322F-4FFC-87DC-8D0D06F8CF03}"
               DTS:CreationName="" />
             <DTS:FlatFileColumn
               DTS:ColumnDelimiter=""
@@ -561,7 +561,7 @@
               DTS:MaximumWidth="5"
               DTS:DataType="129"
               DTS:ObjectName="SundayRoutNum"
-              DTS:DTSID="{ABBC91A0-5BC6-4D53-BC50-B33F0A79337A}"
+              DTS:DTSID="{98AD5A67-3C7C-40B0-9065-ED3BB7A3D1B7}"
               DTS:CreationName="" />
             <DTS:FlatFileColumn
               DTS:ColumnDelimiter=""
@@ -569,7 +569,7 @@
               DTS:MaximumWidth="3"
               DTS:DataType="129"
               DTS:ObjectName="SundayStopNum"
-              DTS:DTSID="{B1ABC972-A8C0-447B-90DB-10B8ADE8AE4F}"
+              DTS:DTSID="{D3320CC9-D08C-4E4E-8465-957513460564}"
               DTS:CreationName="" />
             <DTS:FlatFileColumn
               DTS:ColumnDelimiter=""
@@ -577,7 +577,7 @@
               DTS:MaximumWidth="3"
               DTS:DataType="129"
               DTS:ObjectName="CSR"
-              DTS:DTSID="{074C432E-8EC3-434C-938E-4BD72A4C3326}"
+              DTS:DTSID="{CF217723-2155-4384-B1D0-B9D334CB1DC2}"
               DTS:CreationName="" />
             <DTS:FlatFileColumn
               DTS:ColumnDelimiter=""
@@ -585,7 +585,7 @@
               DTS:MaximumWidth="10"
               DTS:DataType="129"
               DTS:ObjectName="Contract"
-              DTS:DTSID="{F91B44D4-0116-4437-8F04-DDB288247CF8}"
+              DTS:DTSID="{F4D387A3-E499-4F2E-BDCE-162B38C0174E}"
               DTS:CreationName="" />
             <DTS:FlatFileColumn
               DTS:ColumnDelimiter=""
@@ -593,7 +593,7 @@
               DTS:MaximumWidth="1"
               DTS:DataType="129"
               DTS:ObjectName="PORequiredFlag"
-              DTS:DTSID="{DB16C87E-4922-4665-B290-034E6C5C2CA5}"
+              DTS:DTSID="{E4587A09-5A87-4E28-8517-61FFC9DDC40B}"
               DTS:CreationName="" />
             <DTS:FlatFileColumn
               DTS:ColumnDelimiter=""
@@ -601,7 +601,7 @@
               DTS:MaximumWidth="25"
               DTS:DataType="129"
               DTS:ObjectName="Nothing_DNU"
-              DTS:DTSID="{650A296D-14B1-487A-977E-33907E002D3F}"
+              DTS:DTSID="{F74D4740-D05D-4642-8454-0F36C410A7A4}"
               DTS:CreationName="" />
             <DTS:FlatFileColumn
               DTS:ColumnDelimiter=""
@@ -609,7 +609,7 @@
               DTS:MaximumWidth="50"
               DTS:DataType="129"
               DTS:ObjectName="Nothing_DNUB"
-              DTS:DTSID="{3B284F1C-263C-4D33-AC87-D3F5C6DE353E}"
+              DTS:DTSID="{07DAED67-C2E6-4FE7-A442-96EF158282A3}"
               DTS:CreationName="" />
             <DTS:FlatFileColumn
               DTS:ColumnDelimiter=""
@@ -617,7 +617,7 @@
               DTS:MaximumWidth="3"
               DTS:DataType="129"
               DTS:ObjectName="JDCNty1"
-              DTS:DTSID="{4994B44D-8288-4A75-99D2-015802234C38}"
+              DTS:DTSID="{C11F8531-369C-4704-BC5F-BFBF09F983F5}"
               DTS:CreationName="" />
             <DTS:FlatFileColumn
               DTS:ColumnDelimiter=""
@@ -625,7 +625,7 @@
               DTS:MaximumWidth="3"
               DTS:DataType="129"
               DTS:ObjectName="JDCNty2"
-              DTS:DTSID="{D37009CD-3FD8-40F2-8E79-D00DE5093E56}"
+              DTS:DTSID="{EAE7E531-5E8B-4E90-86BC-6130AE78FB7F}"
               DTS:CreationName="" />
             <DTS:FlatFileColumn
               DTS:ColumnDelimiter=""
@@ -633,7 +633,7 @@
               DTS:MaximumWidth="1"
               DTS:DataType="129"
               DTS:ObjectName="PowerMenu"
-              DTS:DTSID="{BFCCD79E-0773-41CB-B233-D5EF525E7A41}"
+              DTS:DTSID="{EBC24A89-6E9C-4EBA-BBFA-2D336C89FE2E}"
               DTS:CreationName="" />
             <DTS:FlatFileColumn
               DTS:ColumnDelimiter=""
@@ -641,7 +641,7 @@
               DTS:MaximumWidth="1"
               DTS:DataType="129"
               DTS:ObjectName="AchType"
-              DTS:DTSID="{65489424-21ED-46E1-8CE5-F70FFE35A606}"
+              DTS:DTSID="{121B24C8-F729-4F71-A020-95EBA657912E}"
               DTS:CreationName="" />
             <DTS:FlatFileColumn
               DTS:ColumnDelimiter=""
@@ -649,7 +649,7 @@
               DTS:MaximumWidth="2"
               DTS:DataType="129"
               DTS:ObjectName="DsmNumber"
-              DTS:DTSID="{9E68A6B0-7049-4D78-87BC-375C87F8BA58}"
+              DTS:DTSID="{11425C2F-4951-4E1C-AA54-987EA261B9F8}"
               DTS:CreationName="" />
             <DTS:FlatFileColumn
               DTS:ColumnDelimiter=""
@@ -657,7 +657,7 @@
               DTS:MaximumWidth="5"
               DTS:DataType="129"
               DTS:ObjectName="NaIndicator"
-              DTS:DTSID="{A07E16C6-916B-4577-954C-28BD8E36FAD6}"
+              DTS:DTSID="{67892301-ED21-4C6A-9B7B-19CDEE704355}"
               DTS:CreationName="" />
             <DTS:FlatFileColumn
               DTS:ColumnDelimiter=""
@@ -665,7 +665,7 @@
               DTS:MaximumWidth="2"
               DTS:DataType="129"
               DTS:ObjectName="NaNumber"
-              DTS:DTSID="{0BA7D0A8-A21A-4A59-BDA7-F039E39E1300}"
+              DTS:DTSID="{BB99A0B7-9D1E-4365-AAD3-3145384954A0}"
               DTS:CreationName="" />
             <DTS:FlatFileColumn
               DTS:ColumnDelimiter=""
@@ -673,7 +673,7 @@
               DTS:MaximumWidth="2"
               DTS:DataType="129"
               DTS:ObjectName="NaSub"
-              DTS:DTSID="{CD61C52D-A39C-4CA5-AB79-CCA02D31910A}"
+              DTS:DTSID="{82AD3E70-4226-463A-BDBC-FE4A500D7387}"
               DTS:CreationName="" />
             <DTS:FlatFileColumn
               DTS:ColumnDelimiter=""
@@ -681,7 +681,7 @@
               DTS:MaximumWidth="5"
               DTS:DataType="129"
               DTS:ObjectName="RaId"
-              DTS:DTSID="{DC096443-33E7-41E9-B6B4-7D9FE7E4B516}"
+              DTS:DTSID="{501DBB93-9942-4DE4-8DED-BA7DA0EE0AF8}"
               DTS:CreationName="" />
             <DTS:FlatFileColumn
               DTS:ColumnDelimiter=""
@@ -689,7 +689,7 @@
               DTS:MaximumWidth="4"
               DTS:DataType="129"
               DTS:ObjectName="RaNumber"
-              DTS:DTSID="{70D76949-F537-48B0-B206-E2BCC574DEFF}"
+              DTS:DTSID="{219F1160-30E2-47E0-84FF-001E3591369B}"
               DTS:CreationName="" />
             <DTS:FlatFileColumn
               DTS:ColumnDelimiter=""
@@ -697,7 +697,7 @@
               DTS:MaximumWidth="1"
               DTS:DataType="129"
               DTS:ObjectName="KeithnetIndicator"
-              DTS:DTSID="{F8DAC5BF-72FF-47A7-8C53-CC39F16958AC}"
+              DTS:DTSID="{355FFB37-47B2-4EC8-A0DF-62C00133A27C}"
               DTS:CreationName="" />
             <DTS:FlatFileColumn
               DTS:ColumnDelimiter=""
@@ -705,15 +705,24 @@
               DTS:MaximumWidth="4"
               DTS:DataType="129"
               DTS:ObjectName="SIC"
-              DTS:DTSID="{82541107-EF37-4549-A468-E851E6937FB5}"
+              DTS:DTSID="{BE385BD0-3A8F-4A3C-9F22-15CF4AA314A4}"
               DTS:CreationName="" />
             <DTS:FlatFileColumn
               DTS:ColumnDelimiter=""
-              DTS:ColumnWidth="5"
-              DTS:MaximumWidth="5"
+              DTS:ColumnWidth="10"
+              DTS:DataType="131"
+              DTS:DataPrecision="10"
+              DTS:DataScale="2"
+              DTS:ObjectName="MinimumOrderAmount"
+              DTS:DTSID="{F4AA15E1-C196-4CB0-B8D1-EA7598139C46}"
+              DTS:CreationName="" />
+            <DTS:FlatFileColumn
+              DTS:ColumnDelimiter=""
+              DTS:ColumnWidth="45"
+              DTS:MaximumWidth="45"
               DTS:DataType="129"
-              DTS:ObjectName="PlaceholderSpace"
-              DTS:DTSID="{7D3D7546-28E6-4936-9652-8F199718C294}"
+              DTS:ObjectName="Placeholder"
+              DTS:DTSID="{AFF12468-5E52-4C4A-AB19-B5E5AE9E7D64}"
               DTS:CreationName="" />
             <DTS:FlatFileColumn
               DTS:ColumnDelimiter=""
@@ -721,7 +730,7 @@
               DTS:MaximumWidth="2"
               DTS:DataType="129"
               DTS:ObjectName="CRLF"
-              DTS:DTSID="{F9B68D36-4764-4A1D-B4E9-6B604CDF4824}"
+              DTS:DTSID="{01BF7084-2046-48E2-A857-04D99DD66C3B}"
               DTS:CreationName="" />
           </DTS:FlatFileColumns>
         </DTS:ConnectionManager>
@@ -2109,11 +2118,11 @@
             <DTS:Property
               DTS:Name="ServerPassword"
               Sensitive="1"
-              Encrypted="1">AQAAANCMnd8BFdERjHoAwE/Cl+sBAAAAdq0bywyxk0SYGUE7Fv2fUwAAAAAIAAAARABUAFMAAAADZgAAwAAAABAAAAAGpV2GpcpcAO5Y0/sP0wCiAAAAAASAAACgAAAAEAAAACMCVIhGjrwz0GHnSYalIQ0IAAAAy2btv87IHBkUAAAAXL9Zk7EHxBmb9DSccyYhJf2HcDQ</DTS:Property>
+              Encrypted="1">AQAAANCMnd8BFdERjHoAwE/Cl+sBAAAAtSMaPZbp40aFuX64NuHxxQAAAAAIAAAARABUAFMAAAADZgAAwAAAABAAAABNG6ifC1chMbbpmYeD0/hmAAAAAASAAACgAAAAEAAAAIFbRGuJ11Z5m8RXJs5DbQ0IAAAAAO5724F+KD4UAAAAxzQXLfUM63jhzv06HwOXv12mHGw</DTS:Property>
             <DTS:Property
               DTS:Name="ProxyPassword"
               Sensitive="1"
-              Encrypted="1">AQAAANCMnd8BFdERjHoAwE/Cl+sBAAAAdq0bywyxk0SYGUE7Fv2fUwAAAAAIAAAARABUAFMAAAADZgAAwAAAABAAAABAY5H6n86N1b15CAjNU1E/AAAAAASAAACgAAAAEAAAABQwEHdHzbjPYe7wB8LMXxkIAAAASG6kMaIRSOkUAAAARYI3zdM2ep2BJf+tC+qoluv00sk</DTS:Property>
+              Encrypted="1">AQAAANCMnd8BFdERjHoAwE/Cl+sBAAAAtSMaPZbp40aFuX64NuHxxQAAAAAIAAAARABUAFMAAAADZgAAwAAAABAAAADjGj6gjksA2aJsxVn6V1tJAAAAAASAAACgAAAAEAAAANjU5Zr31ktdpJOUTQc1sN8IAAAANovZQXLnHboUAAAAA7WQETAEy+PCCk0BdfhqGswwbZ0</DTS:Property>
           </DTS:HttpConnection>
         </DTS:ConnectionManager>
       </DTS:ObjectData>
@@ -2597,6 +2606,379 @@
           </DTS:ObjectData>
         </DTS:Executable>
         <DTS:Executable
+          DTS:refId="Package\Application Data Processing\Process Customer Minimum Order Amount"
+          DTS:CreationName="Microsoft.Pipeline"
+          DTS:Description="Data Flow Task"
+          DTS:DTSID="{46664818-6f3f-4369-9a6f-6c222bbddbb5}"
+          DTS:ExecutableType="Microsoft.Pipeline"
+          DTS:LocaleID="-1"
+          DTS:ObjectName="Process Customer Minimum Order Amount"
+          DTS:TaskContact="Performs high-performance data extraction, transformation and loading;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1">
+          <DTS:Variables />
+          <DTS:ObjectData>
+            <pipeline
+              version="1">
+              <components>
+                <component
+                  refId="Package\Application Data Processing\Process Customer Minimum Order Amount\Customers Staging"
+                  componentClassID="Microsoft.OLEDBSource"
+                  contactInfo="OLE DB Source;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;7"
+                  description="OLE DB Source"
+                  name="Customers Staging"
+                  usesDispositions="true"
+                  version="7">
+                  <properties>
+                    <property
+                      dataType="System.Int32"
+                      description="The number of seconds before a command times out.  A value of 0 indicates an infinite time-out."
+                      name="CommandTimeout">0</property>
+                    <property
+                      dataType="System.String"
+                      description="Specifies the name of the database object used to open a rowset."
+                      name="OpenRowset">[ETL].[Staging_Customer]</property>
+                    <property
+                      dataType="System.String"
+                      description="Specifies the variable that contains the name of the database object used to open a rowset."
+                      name="OpenRowsetVariable"></property>
+                    <property
+                      dataType="System.String"
+                      description="The SQL command to be executed."
+                      name="SqlCommand"
+                      UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor, Microsoft.DataTransformationServices.Controls, Version=14.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91">SELECT
+  DIV AS BranchId,
+  CONVERT(VARCHAR(6), LTRIM(CustomerNumber)) AS CustomerNumber,
+  MinimumOrderAmount,
+  'MinimumOrderAmount' AS [Option]
+FROM ETL.Staging_Customer</property>
+                    <property
+                      dataType="System.String"
+                      description="The variable that contains the SQL command to be executed."
+                      name="SqlCommandVariable"></property>
+                    <property
+                      dataType="System.Int32"
+                      description="Specifies the column code page to use when code page information is unavailable from the data source."
+                      name="DefaultCodePage">1252</property>
+                    <property
+                      dataType="System.Boolean"
+                      description="Forces the use of the DefaultCodePage property value when describing character data."
+                      name="AlwaysUseDefaultCodePage">false</property>
+                    <property
+                      dataType="System.Int32"
+                      description="Specifies the mode used to access the database."
+                      name="AccessMode"
+                      typeConverter="AccessMode">2</property>
+                    <property
+                      dataType="System.String"
+                      description="The mappings between the parameters in the SQL command and variables."
+                      name="ParameterMapping"></property>
+                  </properties>
+                  <connections>
+                    <connection
+                      refId="Package\Application Data Processing\Process Customer Minimum Order Amount\Customers Staging.Connections[OleDbConnection]"
+                      connectionManagerID="Package.ConnectionManagers[OLE_BEK_Commerce_AppData]"
+                      connectionManagerRefId="Package.ConnectionManagers[OLE_BEK_Commerce_AppData]"
+                      description="The OLE DB runtime connection used to access the database."
+                      name="OleDbConnection" />
+                  </connections>
+                  <outputs>
+                    <output
+                      refId="Package\Application Data Processing\Process Customer Minimum Order Amount\Customers Staging.Outputs[OLE DB Source Output]"
+                      name="OLE DB Source Output">
+                      <outputColumns>
+                        <outputColumn
+                          refId="Package\Application Data Processing\Process Customer Minimum Order Amount\Customers Staging.Outputs[OLE DB Source Output].Columns[CustomerNumber]"
+                          codePage="1252"
+                          dataType="str"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\Application Data Processing\Process Customer Minimum Order Amount\Customers Staging.Outputs[OLE DB Source Output].ExternalColumns[CustomerNumber]"
+                          length="6"
+                          lineageId="Package\Application Data Processing\Process Customer Minimum Order Amount\Customers Staging.Outputs[OLE DB Source Output].Columns[CustomerNumber]"
+                          name="CustomerNumber"
+                          truncationRowDisposition="FailComponent" />
+                        <outputColumn
+                          refId="Package\Application Data Processing\Process Customer Minimum Order Amount\Customers Staging.Outputs[OLE DB Source Output].Columns[BranchId]"
+                          codePage="1252"
+                          dataType="str"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\Application Data Processing\Process Customer Minimum Order Amount\Customers Staging.Outputs[OLE DB Source Output].ExternalColumns[BranchId]"
+                          length="3"
+                          lineageId="Package\Application Data Processing\Process Customer Minimum Order Amount\Customers Staging.Outputs[OLE DB Source Output].Columns[BranchId]"
+                          name="BranchId"
+                          truncationRowDisposition="FailComponent" />
+                        <outputColumn
+                          refId="Package\Application Data Processing\Process Customer Minimum Order Amount\Customers Staging.Outputs[OLE DB Source Output].Columns[MinimumOrderAmount]"
+                          codePage="1252"
+                          dataType="str"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\Application Data Processing\Process Customer Minimum Order Amount\Customers Staging.Outputs[OLE DB Source Output].ExternalColumns[MinimumOrderAmount]"
+                          length="10"
+                          lineageId="Package\Application Data Processing\Process Customer Minimum Order Amount\Customers Staging.Outputs[OLE DB Source Output].Columns[MinimumOrderAmount]"
+                          name="MinimumOrderAmount"
+                          truncationRowDisposition="FailComponent" />
+                        <outputColumn
+                          refId="Package\Application Data Processing\Process Customer Minimum Order Amount\Customers Staging.Outputs[OLE DB Source Output].Columns[Option]"
+                          codePage="1252"
+                          dataType="str"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\Application Data Processing\Process Customer Minimum Order Amount\Customers Staging.Outputs[OLE DB Source Output].ExternalColumns[Option]"
+                          length="20"
+                          lineageId="Package\Application Data Processing\Process Customer Minimum Order Amount\Customers Staging.Outputs[OLE DB Source Output].Columns[Option]"
+                          name="Option"
+                          truncationRowDisposition="FailComponent" />
+                      </outputColumns>
+                      <externalMetadataColumns
+                        isUsed="True">
+                        <externalMetadataColumn
+                          refId="Package\Application Data Processing\Process Customer Minimum Order Amount\Customers Staging.Outputs[OLE DB Source Output].ExternalColumns[CustomerNumber]"
+                          codePage="1252"
+                          dataType="str"
+                          length="6"
+                          name="CustomerNumber" />
+                        <externalMetadataColumn
+                          refId="Package\Application Data Processing\Process Customer Minimum Order Amount\Customers Staging.Outputs[OLE DB Source Output].ExternalColumns[BranchId]"
+                          codePage="1252"
+                          dataType="str"
+                          length="3"
+                          name="BranchId" />
+                        <externalMetadataColumn
+                          refId="Package\Application Data Processing\Process Customer Minimum Order Amount\Customers Staging.Outputs[OLE DB Source Output].ExternalColumns[MinimumOrderAmount]"
+                          dataType="numeric"
+                          name="MinimumOrderAmount"
+                          precision="10"
+                          scale="2" />
+                        <externalMetadataColumn
+                          refId="Package\Application Data Processing\Process Customer Minimum Order Amount\Customers Staging.Outputs[OLE DB Source Output].ExternalColumns[Option]"
+                          codePage="1252"
+                          dataType="str"
+                          length="18"
+                          name="Option" />
+                      </externalMetadataColumns>
+                    </output>
+                    <output
+                      refId="Package\Application Data Processing\Process Customer Minimum Order Amount\Customers Staging.Outputs[OLE DB Source Error Output]"
+                      isErrorOut="true"
+                      name="OLE DB Source Error Output">
+                      <outputColumns>
+                        <outputColumn
+                          refId="Package\Application Data Processing\Process Customer Minimum Order Amount\Customers Staging.Outputs[OLE DB Source Error Output].Columns[BranchId]"
+                          codePage="1252"
+                          dataType="str"
+                          length="3"
+                          lineageId="Package\Application Data Processing\Process Customer Minimum Order Amount\Customers Staging.Outputs[OLE DB Source Error Output].Columns[BranchId]"
+                          name="BranchId" />
+                        <outputColumn
+                          refId="Package\Application Data Processing\Process Customer Minimum Order Amount\Customers Staging.Outputs[OLE DB Source Error Output].Columns[CustomerNumber]"
+                          codePage="1252"
+                          dataType="str"
+                          length="6"
+                          lineageId="Package\Application Data Processing\Process Customer Minimum Order Amount\Customers Staging.Outputs[OLE DB Source Error Output].Columns[CustomerNumber]"
+                          name="CustomerNumber" />
+                        <outputColumn
+                          refId="Package\Application Data Processing\Process Customer Minimum Order Amount\Customers Staging.Outputs[OLE DB Source Error Output].Columns[MinimumOrderAmount]"
+                          dataType="numeric"
+                          lineageId="Package\Application Data Processing\Process Customer Minimum Order Amount\Customers Staging.Outputs[OLE DB Source Error Output].Columns[MinimumOrderAmount]"
+                          name="MinimumOrderAmount"
+                          precision="10"
+                          scale="2" />
+                        <outputColumn
+                          refId="Package\Application Data Processing\Process Customer Minimum Order Amount\Customers Staging.Outputs[OLE DB Source Error Output].Columns[Option]"
+                          codePage="1252"
+                          dataType="str"
+                          length="18"
+                          lineageId="Package\Application Data Processing\Process Customer Minimum Order Amount\Customers Staging.Outputs[OLE DB Source Error Output].Columns[Option]"
+                          name="Option" />
+                        <outputColumn
+                          refId="Package\Application Data Processing\Process Customer Minimum Order Amount\Customers Staging.Outputs[OLE DB Source Error Output].Columns[ErrorCode]"
+                          dataType="i4"
+                          lineageId="Package\Application Data Processing\Process Customer Minimum Order Amount\Customers Staging.Outputs[OLE DB Source Error Output].Columns[ErrorCode]"
+                          name="ErrorCode"
+                          specialFlags="1" />
+                        <outputColumn
+                          refId="Package\Application Data Processing\Process Customer Minimum Order Amount\Customers Staging.Outputs[OLE DB Source Error Output].Columns[ErrorColumn]"
+                          dataType="i4"
+                          lineageId="Package\Application Data Processing\Process Customer Minimum Order Amount\Customers Staging.Outputs[OLE DB Source Error Output].Columns[ErrorColumn]"
+                          name="ErrorColumn"
+                          specialFlags="2" />
+                      </outputColumns>
+                      <externalMetadataColumns />
+                    </output>
+                  </outputs>
+                </component>
+                <component
+                  refId="Package\Application Data Processing\Process Customer Minimum Order Amount\Minimum Order Amount"
+                  componentClassID="Microsoft.OLEDBDestination"
+                  contactInfo="OLE DB Destination;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;4"
+                  description="OLE DB Destination"
+                  name="Minimum Order Amount"
+                  usesDispositions="true"
+                  version="4">
+                  <properties>
+                    <property
+                      dataType="System.Int32"
+                      description="The number of seconds before a command times out.  A value of 0 indicates an infinite time-out."
+                      name="CommandTimeout">0</property>
+                    <property
+                      dataType="System.String"
+                      description="Specifies the name of the database object used to open a rowset."
+                      name="OpenRowset">[Customers].[CustomerOptions]</property>
+                    <property
+                      dataType="System.String"
+                      description="Specifies the variable that contains the name of the database object used to open a rowset."
+                      name="OpenRowsetVariable"></property>
+                    <property
+                      dataType="System.String"
+                      description="The SQL command to be executed."
+                      name="SqlCommand"
+                      UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor, Microsoft.DataTransformationServices.Controls, Version=14.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91"></property>
+                    <property
+                      dataType="System.Int32"
+                      description="Specifies the column code page to use when code page information is unavailable from the data source."
+                      name="DefaultCodePage">1252</property>
+                    <property
+                      dataType="System.Boolean"
+                      description="Forces the use of the DefaultCodePage property value when describing character data."
+                      name="AlwaysUseDefaultCodePage">false</property>
+                    <property
+                      dataType="System.Int32"
+                      description="Specifies the mode used to access the database."
+                      name="AccessMode"
+                      typeConverter="AccessMode">3</property>
+                    <property
+                      dataType="System.Boolean"
+                      description="Indicates whether the values supplied for identity columns will be copied to the destination. If false, values for identity columns will be auto-generated at the destination. Applies only if fast load is turned on."
+                      name="FastLoadKeepIdentity">false</property>
+                    <property
+                      dataType="System.Boolean"
+                      description="Indicates whether the columns containing null will have null inserted in the destination. If false, columns containing null will have their default values inserted at the destination. Applies only if fast load is turned on."
+                      name="FastLoadKeepNulls">false</property>
+                    <property
+                      dataType="System.String"
+                      description="Specifies options to be used with fast load.  Applies only if fast load is turned on."
+                      name="FastLoadOptions">TABLOCK,CHECK_CONSTRAINTS</property>
+                    <property
+                      dataType="System.Int32"
+                      description="Specifies when commits are issued during data insertion.  A value of 0 specifies that one commit will be issued at the end of data insertion.  Applies only if fast load is turned on."
+                      name="FastLoadMaxInsertCommitSize">2147483647</property>
+                  </properties>
+                  <connections>
+                    <connection
+                      refId="Package\Application Data Processing\Process Customer Minimum Order Amount\Minimum Order Amount.Connections[OleDbConnection]"
+                      connectionManagerID="Package.ConnectionManagers[OLE_BEK_Commerce_AppData]"
+                      connectionManagerRefId="Package.ConnectionManagers[OLE_BEK_Commerce_AppData]"
+                      description="The OLE DB runtime connection used to access the database."
+                      name="OleDbConnection" />
+                  </connections>
+                  <inputs>
+                    <input
+                      refId="Package\Application Data Processing\Process Customer Minimum Order Amount\Minimum Order Amount.Inputs[OLE DB Destination Input]"
+                      errorOrTruncationOperation="Insert"
+                      errorRowDisposition="FailComponent"
+                      hasSideEffects="true"
+                      name="OLE DB Destination Input">
+                      <inputColumns>
+                        <inputColumn
+                          refId="Package\Application Data Processing\Process Customer Minimum Order Amount\Minimum Order Amount.Inputs[OLE DB Destination Input].Columns[CustomerNumber]"
+                          cachedCodepage="1252"
+                          cachedDataType="str"
+                          cachedLength="6"
+                          cachedName="CustomerNumber"
+                          externalMetadataColumnId="Package\Application Data Processing\Process Customer Minimum Order Amount\Minimum Order Amount.Inputs[OLE DB Destination Input].ExternalColumns[CustomerNumber]"
+                          lineageId="Package\Application Data Processing\Process Customer Minimum Order Amount\Customers Staging.Outputs[OLE DB Source Output].Columns[CustomerNumber]" />
+                        <inputColumn
+                          refId="Package\Application Data Processing\Process Customer Minimum Order Amount\Minimum Order Amount.Inputs[OLE DB Destination Input].Columns[BranchId]"
+                          cachedCodepage="1252"
+                          cachedDataType="str"
+                          cachedLength="3"
+                          cachedName="BranchId"
+                          externalMetadataColumnId="Package\Application Data Processing\Process Customer Minimum Order Amount\Minimum Order Amount.Inputs[OLE DB Destination Input].ExternalColumns[BranchId]"
+                          lineageId="Package\Application Data Processing\Process Customer Minimum Order Amount\Customers Staging.Outputs[OLE DB Source Output].Columns[BranchId]" />
+                        <inputColumn
+                          refId="Package\Application Data Processing\Process Customer Minimum Order Amount\Minimum Order Amount.Inputs[OLE DB Destination Input].Columns[MinimumOrderAmount]"
+                          cachedCodepage="1252"
+                          cachedDataType="str"
+                          cachedLength="10"
+                          cachedName="MinimumOrderAmount"
+                          externalMetadataColumnId="Package\Application Data Processing\Process Customer Minimum Order Amount\Minimum Order Amount.Inputs[OLE DB Destination Input].ExternalColumns[Value]"
+                          lineageId="Package\Application Data Processing\Process Customer Minimum Order Amount\Customers Staging.Outputs[OLE DB Source Output].Columns[MinimumOrderAmount]" />
+                        <inputColumn
+                          refId="Package\Application Data Processing\Process Customer Minimum Order Amount\Minimum Order Amount.Inputs[OLE DB Destination Input].Columns[Option]"
+                          cachedCodepage="1252"
+                          cachedDataType="str"
+                          cachedLength="20"
+                          cachedName="Option"
+                          externalMetadataColumnId="Package\Application Data Processing\Process Customer Minimum Order Amount\Minimum Order Amount.Inputs[OLE DB Destination Input].ExternalColumns[Option]"
+                          lineageId="Package\Application Data Processing\Process Customer Minimum Order Amount\Customers Staging.Outputs[OLE DB Source Output].Columns[Option]" />
+                      </inputColumns>
+                      <externalMetadataColumns
+                        isUsed="True">
+                        <externalMetadataColumn
+                          refId="Package\Application Data Processing\Process Customer Minimum Order Amount\Minimum Order Amount.Inputs[OLE DB Destination Input].ExternalColumns[CustomerNumber]"
+                          codePage="1252"
+                          dataType="str"
+                          length="6"
+                          name="CustomerNumber" />
+                        <externalMetadataColumn
+                          refId="Package\Application Data Processing\Process Customer Minimum Order Amount\Minimum Order Amount.Inputs[OLE DB Destination Input].ExternalColumns[BranchId]"
+                          codePage="1252"
+                          dataType="str"
+                          length="3"
+                          name="BranchId" />
+                        <externalMetadataColumn
+                          refId="Package\Application Data Processing\Process Customer Minimum Order Amount\Minimum Order Amount.Inputs[OLE DB Destination Input].ExternalColumns[Option]"
+                          codePage="1252"
+                          dataType="str"
+                          length="20"
+                          name="Option" />
+                        <externalMetadataColumn
+                          refId="Package\Application Data Processing\Process Customer Minimum Order Amount\Minimum Order Amount.Inputs[OLE DB Destination Input].ExternalColumns[Value]"
+                          dataType="numeric"
+                          name="Value"
+                          precision="10"
+                          scale="2" />
+                      </externalMetadataColumns>
+                    </input>
+                  </inputs>
+                  <outputs>
+                    <output
+                      refId="Package\Application Data Processing\Process Customer Minimum Order Amount\Minimum Order Amount.Outputs[OLE DB Destination Error Output]"
+                      exclusionGroup="1"
+                      isErrorOut="true"
+                      name="OLE DB Destination Error Output"
+                      synchronousInputId="Package\Application Data Processing\Process Customer Minimum Order Amount\Minimum Order Amount.Inputs[OLE DB Destination Input]">
+                      <outputColumns>
+                        <outputColumn
+                          refId="Package\Application Data Processing\Process Customer Minimum Order Amount\Minimum Order Amount.Outputs[OLE DB Destination Error Output].Columns[ErrorCode]"
+                          dataType="i4"
+                          lineageId="Package\Application Data Processing\Process Customer Minimum Order Amount\Minimum Order Amount.Outputs[OLE DB Destination Error Output].Columns[ErrorCode]"
+                          name="ErrorCode"
+                          specialFlags="1" />
+                        <outputColumn
+                          refId="Package\Application Data Processing\Process Customer Minimum Order Amount\Minimum Order Amount.Outputs[OLE DB Destination Error Output].Columns[ErrorColumn]"
+                          dataType="i4"
+                          lineageId="Package\Application Data Processing\Process Customer Minimum Order Amount\Minimum Order Amount.Outputs[OLE DB Destination Error Output].Columns[ErrorColumn]"
+                          name="ErrorColumn"
+                          specialFlags="2" />
+                      </outputColumns>
+                      <externalMetadataColumns />
+                    </output>
+                  </outputs>
+                </component>
+              </components>
+              <paths>
+                <path
+                  refId="Package\Application Data Processing\Process Customer Minimum Order Amount.Paths[OLE DB Source Output]"
+                  endId="Package\Application Data Processing\Process Customer Minimum Order Amount\Minimum Order Amount.Inputs[OLE DB Destination Input]"
+                  name="OLE DB Source Output"
+                  startId="Package\Application Data Processing\Process Customer Minimum Order Amount\Customers Staging.Outputs[OLE DB Source Output]" />
+              </paths>
+            </pipeline>
+          </DTS:ObjectData>
+        </DTS:Executable>
+        <DTS:Executable
           DTS:refId="Package\Application Data Processing\Process Customer SIC Codes"
           DTS:CreationName="Microsoft.Pipeline"
           DTS:Description="Data Flow Task"
@@ -2635,7 +3017,7 @@
                       dataType="System.String"
                       description="The SQL command to be executed."
                       name="SqlCommand"
-                      UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor, Microsoft.DataTransformationServices.Controls, Version=13.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91">SELECT
+                      UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor, Microsoft.DataTransformationServices.Controls, Version=14.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91">SELECT
   DIV AS BranchId,
   CONVERT(VARCHAR(6), LTRIM(CustomerNumber)) AS CustomerNumber,
   SIC_Code
@@ -2799,7 +3181,7 @@ FROM ETL.Staging_Customer</property>
                       dataType="System.String"
                       description="The SQL command to be executed."
                       name="SqlCommand"
-                      UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor, Microsoft.DataTransformationServices.Controls, Version=13.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91"></property>
+                      UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor, Microsoft.DataTransformationServices.Controls, Version=14.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91"></property>
                     <property
                       dataType="System.Int32"
                       description="Specifies the column code page to use when code page information is unavailable from the data source."
@@ -3048,7 +3430,7 @@ FROM ETL.Staging_Customer</property>
                               dataType="System.String"
                               description="The SQL command to be executed."
                               name="SqlCommand"
-                              UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor, Microsoft.DataTransformationServices.Controls, Version=13.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91"></property>
+                              UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor, Microsoft.DataTransformationServices.Controls, Version=14.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91"></property>
                             <property
                               dataType="System.Int32"
                               description="Specifies the column code page to use when code page information is unavailable from the data source."
@@ -3189,7 +3571,7 @@ FROM ETL.Staging_Customer</property>
                               dataType="System.String"
                               description="The SQL command to be executed."
                               name="SqlCommand"
-                              UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor, Microsoft.DataTransformationServices.Controls, Version=13.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91"></property>
+                              UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor, Microsoft.DataTransformationServices.Controls, Version=14.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91"></property>
                             <property
                               dataType="System.String"
                               description="The variable that contains the SQL command to be executed."
@@ -3370,7 +3752,7 @@ FROM ETL.Staging_Customer</property>
                               dataType="System.String"
                               description="The SQL command to be executed."
                               name="SqlCommand"
-                              UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor, Microsoft.DataTransformationServices.Controls, Version=13.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91"></property>
+                              UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor, Microsoft.DataTransformationServices.Controls, Version=14.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91"></property>
                             <property
                               dataType="System.Int32"
                               description="Specifies the column code page to use when code page information is unavailable from the data source."
@@ -3515,7 +3897,7 @@ FROM ETL.Staging_Customer</property>
                               dataType="System.String"
                               description="The SQL command to be executed."
                               name="SqlCommand"
-                              UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor, Microsoft.DataTransformationServices.Controls, Version=13.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91"></property>
+                              UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor, Microsoft.DataTransformationServices.Controls, Version=14.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91"></property>
                             <property
                               dataType="System.String"
                               description="The variable that contains the SQL command to be executed."
@@ -5075,15 +5457,15 @@ FROM ETL.Staging_Customer</property>
                                   </properties>
                                 </outputColumn>
                                 <outputColumn
-                                  refId="Package\Process Data\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Customers\FF_Customer.Outputs[Flat File Source Output].Columns[PlaceholderSpace]"
+                                  refId="Package\Process Data\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Customers\FF_Customer.Outputs[Flat File Source Output].Columns[SIC]"
                                   codePage="1252"
                                   dataType="str"
                                   errorOrTruncationOperation="Conversion"
                                   errorRowDisposition="FailComponent"
-                                  externalMetadataColumnId="Package\Process Data\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Customers\FF_Customer.Outputs[Flat File Source Output].ExternalColumns[PlaceholderSpace]"
-                                  length="5"
-                                  lineageId="Package\Process Data\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Customers\FF_Customer.Outputs[Flat File Source Output].Columns[PlaceholderSpace]"
-                                  name="PlaceholderSpace"
+                                  externalMetadataColumnId="Package\Process Data\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Customers\FF_Customer.Outputs[Flat File Source Output].ExternalColumns[SIC]"
+                                  length="4"
+                                  lineageId="Package\Process Data\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Customers\FF_Customer.Outputs[Flat File Source Output].Columns[SIC]"
+                                  name="SIC"
                                   truncationRowDisposition="FailComponent">
                                   <properties>
                                     <property
@@ -5097,15 +5479,37 @@ FROM ETL.Staging_Customer</property>
                                   </properties>
                                 </outputColumn>
                                 <outputColumn
-                                  refId="Package\Process Data\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Customers\FF_Customer.Outputs[Flat File Source Output].Columns[SIC]"
+                                  refId="Package\Process Data\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Customers\FF_Customer.Outputs[Flat File Source Output].Columns[MinimumOrderAmount]"
+                                  dataType="numeric"
+                                  errorOrTruncationOperation="Conversion"
+                                  errorRowDisposition="FailComponent"
+                                  externalMetadataColumnId="Package\Process Data\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Customers\FF_Customer.Outputs[Flat File Source Output].ExternalColumns[MinimumOrderAmount]"
+                                  lineageId="Package\Process Data\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Customers\FF_Customer.Outputs[Flat File Source Output].Columns[MinimumOrderAmount]"
+                                  name="MinimumOrderAmount"
+                                  precision="10"
+                                  scale="2"
+                                  truncationRowDisposition="FailComponent">
+                                  <properties>
+                                    <property
+                                      dataType="System.Boolean"
+                                      description="Indicates whether the column uses the faster, locale-neutral parsing routines."
+                                      name="FastParse">false</property>
+                                    <property
+                                      dataType="System.Boolean"
+                                      description="Indicates whether the data is in binary format."
+                                      name="UseBinaryFormat">false</property>
+                                  </properties>
+                                </outputColumn>
+                                <outputColumn
+                                  refId="Package\Process Data\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Customers\FF_Customer.Outputs[Flat File Source Output].Columns[Placeholder]"
                                   codePage="1252"
                                   dataType="str"
                                   errorOrTruncationOperation="Conversion"
                                   errorRowDisposition="FailComponent"
-                                  externalMetadataColumnId="Package\Process Data\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Customers\FF_Customer.Outputs[Flat File Source Output].ExternalColumns[SIC]"
-                                  length="4"
-                                  lineageId="Package\Process Data\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Customers\FF_Customer.Outputs[Flat File Source Output].Columns[SIC]"
-                                  name="SIC"
+                                  externalMetadataColumnId="Package\Process Data\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Customers\FF_Customer.Outputs[Flat File Source Output].ExternalColumns[Placeholder]"
+                                  length="45"
+                                  lineageId="Package\Process Data\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Customers\FF_Customer.Outputs[Flat File Source Output].Columns[Placeholder]"
+                                  name="Placeholder"
                                   truncationRowDisposition="FailComponent">
                                   <properties>
                                     <property
@@ -5488,17 +5892,23 @@ FROM ETL.Staging_Customer</property>
                                   length="1"
                                   name="KeithnetIndicator" />
                                 <externalMetadataColumn
-                                  refId="Package\Process Data\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Customers\FF_Customer.Outputs[Flat File Source Output].ExternalColumns[PlaceholderSpace]"
-                                  codePage="1252"
-                                  dataType="str"
-                                  length="5"
-                                  name="PlaceholderSpace" />
-                                <externalMetadataColumn
                                   refId="Package\Process Data\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Customers\FF_Customer.Outputs[Flat File Source Output].ExternalColumns[SIC]"
                                   codePage="1252"
                                   dataType="str"
                                   length="4"
                                   name="SIC" />
+                                <externalMetadataColumn
+                                  refId="Package\Process Data\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Customers\FF_Customer.Outputs[Flat File Source Output].ExternalColumns[MinimumOrderAmount]"
+                                  dataType="numeric"
+                                  name="MinimumOrderAmount"
+                                  precision="10"
+                                  scale="2" />
+                                <externalMetadataColumn
+                                  refId="Package\Process Data\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Customers\FF_Customer.Outputs[Flat File Source Output].ExternalColumns[Placeholder]"
+                                  codePage="1252"
+                                  dataType="str"
+                                  length="45"
+                                  name="Placeholder" />
                               </externalMetadataColumns>
                             </output>
                             <output
@@ -5555,7 +5965,7 @@ FROM ETL.Staging_Customer</property>
                               dataType="System.String"
                               description="The SQL command to be executed."
                               name="SqlCommand"
-                              UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor, Microsoft.DataTransformationServices.Controls, Version=13.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91"></property>
+                              UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor, Microsoft.DataTransformationServices.Controls, Version=14.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91"></property>
                             <property
                               dataType="System.Int32"
                               description="Specifies the column code page to use when code page information is unavailable from the data source."
@@ -6067,6 +6477,14 @@ FROM ETL.Staging_Customer</property>
                                   cachedName="SIC"
                                   externalMetadataColumnId="Package\Process Data\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Customers\KeithlinkAppData.Inputs[OLE DB Destination Input].ExternalColumns[SIC_Code]"
                                   lineageId="Package\Process Data\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Customers\Sort by Division ASC.Outputs[Sort Output].Columns[SIC]" />
+                                <inputColumn
+                                  refId="Package\Process Data\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Customers\KeithlinkAppData.Inputs[OLE DB Destination Input].Columns[MinimumOrderAmount]"
+                                  cachedDataType="numeric"
+                                  cachedName="MinimumOrderAmount"
+                                  cachedPrecision="10"
+                                  cachedScale="2"
+                                  externalMetadataColumnId="Package\Process Data\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Customers\KeithlinkAppData.Inputs[OLE DB Destination Input].ExternalColumns[MinimumOrderAmount]"
+                                  lineageId="Package\Process Data\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Customers\Sort by Division ASC.Outputs[Sort Output].Columns[MinimumOrderAmount]" />
                               </inputColumns>
                               <externalMetadataColumns
                                 isUsed="True">
@@ -6418,6 +6836,12 @@ FROM ETL.Staging_Customer</property>
                                   dataType="str"
                                   length="4"
                                   name="SIC_Code" />
+                                <externalMetadataColumn
+                                  refId="Package\Process Data\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Customers\KeithlinkAppData.Inputs[OLE DB Destination Input].ExternalColumns[MinimumOrderAmount]"
+                                  dataType="numeric"
+                                  name="MinimumOrderAmount"
+                                  precision="10"
+                                  scale="2" />
                               </externalMetadataColumns>
                             </input>
                           </inputs>
@@ -7567,6 +7991,24 @@ FROM ETL.Staging_Customer</property>
                                       name="NewSortKeyPosition">0</property>
                                   </properties>
                                 </inputColumn>
+                                <inputColumn
+                                  refId="Package\Process Data\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Customers\Sort by Division ASC.Inputs[Sort Input].Columns[MinimumOrderAmount]"
+                                  cachedDataType="numeric"
+                                  cachedName="MinimumOrderAmount"
+                                  cachedPrecision="10"
+                                  cachedScale="2"
+                                  lineageId="Package\Process Data\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Customers\FF_Customer.Outputs[Flat File Source Output].Columns[MinimumOrderAmount]">
+                                  <properties>
+                                    <property
+                                      dataType="System.Int32"
+                                      description="Specifies the comparison options for character data."
+                                      name="NewComparisonFlags">0</property>
+                                    <property
+                                      dataType="System.Int32"
+                                      description="Specifies the sort order of the column."
+                                      name="NewSortKeyPosition">0</property>
+                                  </properties>
+                                </inputColumn>
                               </inputColumns>
                               <externalMetadataColumns />
                             </input>
@@ -8493,6 +8935,21 @@ FROM ETL.Staging_Customer</property>
                                       name="SortColumnId">#{Package\Process Data\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Customers\FF_Customer.Outputs[Flat File Source Output].Columns[SIC]}</property>
                                   </properties>
                                 </outputColumn>
+                                <outputColumn
+                                  refId="Package\Process Data\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Customers\Sort by Division ASC.Outputs[Sort Output].Columns[MinimumOrderAmount]"
+                                  dataType="numeric"
+                                  lineageId="Package\Process Data\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Customers\Sort by Division ASC.Outputs[Sort Output].Columns[MinimumOrderAmount]"
+                                  name="MinimumOrderAmount"
+                                  precision="10"
+                                  scale="2">
+                                  <properties>
+                                    <property
+                                      containsID="true"
+                                      dataType="System.Int32"
+                                      description="Specifies the lineage identifier of the input column that is associated with this output column."
+                                      name="SortColumnId">#{Package\Process Data\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Customers\FF_Customer.Outputs[Flat File Source Output].Columns[MinimumOrderAmount]}</property>
+                                  </properties>
+                                </outputColumn>
                               </outputColumns>
                               <externalMetadataColumns />
                             </output>
@@ -8553,7 +9010,7 @@ FROM ETL.Staging_Customer</property>
                               dataType="System.String"
                               description="The SQL command to be executed."
                               name="SqlCommand"
-                              UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor, Microsoft.DataTransformationServices.Controls, Version=13.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91"></property>
+                              UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor, Microsoft.DataTransformationServices.Controls, Version=14.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91"></property>
                             <property
                               dataType="System.Int32"
                               description="Specifies the column code page to use when code page information is unavailable from the data source."
@@ -8862,7 +9319,7 @@ FROM ETL.Staging_Customer</property>
                               dataType="System.String"
                               description="The SQL command to be executed."
                               name="SqlCommand"
-                              UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor, Microsoft.DataTransformationServices.Controls, Version=13.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91"></property>
+                              UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor, Microsoft.DataTransformationServices.Controls, Version=14.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91"></property>
                             <property
                               dataType="System.Int32"
                               description="Specifies the column code page to use when code page information is unavailable from the data source."
@@ -9729,7 +10186,7 @@ FROM ETL.Staging_Customer</property>
                               dataType="System.String"
                               description="The SQL command to be executed."
                               name="SqlCommand"
-                              UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor, Microsoft.DataTransformationServices.Controls, Version=13.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91">EXECUTE dbo.usp_ECOM_SelectItem</property>
+                              UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor, Microsoft.DataTransformationServices.Controls, Version=14.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91">EXECUTE dbo.usp_ECOM_SelectItem</property>
                             <property
                               dataType="System.String"
                               description="The variable that contains the SQL command to be executed."
@@ -11210,7 +11667,7 @@ FROM ETL.Staging_Customer</property>
                               dataType="System.String"
                               description="The SQL command to be executed."
                               name="SqlCommand"
-                              UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor, Microsoft.DataTransformationServices.Controls, Version=13.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91"></property>
+                              UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor, Microsoft.DataTransformationServices.Controls, Version=14.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91"></property>
                             <property
                               dataType="System.Int32"
                               description="Specifies the column code page to use when code page information is unavailable from the data source."
@@ -11515,7 +11972,7 @@ FROM ETL.Staging_Customer</property>
                               dataType="System.String"
                               description="The SQL command to be executed."
                               name="SqlCommand"
-                              UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor, Microsoft.DataTransformationServices.Controls, Version=13.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91"></property>
+                              UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor, Microsoft.DataTransformationServices.Controls, Version=14.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91"></property>
                             <property
                               dataType="System.Int32"
                               description="Specifies the column code page to use when code page information is unavailable from the data source."
@@ -11862,7 +12319,7 @@ FROM ETL.Staging_Customer</property>
                               dataType="System.String"
                               description="The SQL command to be executed."
                               name="SqlCommand"
-                              UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor, Microsoft.DataTransformationServices.Controls, Version=13.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91"></property>
+                              UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor, Microsoft.DataTransformationServices.Controls, Version=14.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91"></property>
                             <property
                               dataType="System.Int32"
                               description="Specifies the column code page to use when code page information is unavailable from the data source."
@@ -12089,7 +12546,7 @@ FROM ETL.Staging_Customer</property>
                               dataType="System.String"
                               description="The SQL command to be executed."
                               name="SqlCommand"
-                              UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor, Microsoft.DataTransformationServices.Controls, Version=13.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91">with pub_cte(ItemNumber, Id) 
+                              UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor, Microsoft.DataTransformationServices.Controls, Version=14.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91">with pub_cte(ItemNumber, Id) 
 as (
 	select
 		ItemNumber,
@@ -12446,7 +12903,7 @@ on
                               dataType="System.String"
                               description="The SQL command to be executed."
                               name="SqlCommand"
-                              UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor, Microsoft.DataTransformationServices.Controls, Version=13.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91"></property>
+                              UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor, Microsoft.DataTransformationServices.Controls, Version=14.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91"></property>
                             <property
                               dataType="System.Int32"
                               description="Specifies the column code page to use when code page information is unavailable from the data source."
@@ -12751,7 +13208,7 @@ on
                               dataType="System.String"
                               description="The SQL command to be executed."
                               name="SqlCommand"
-                              UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor, Microsoft.DataTransformationServices.Controls, Version=13.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91"></property>
+                              UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor, Microsoft.DataTransformationServices.Controls, Version=14.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91"></property>
                             <property
                               dataType="System.Int32"
                               description="Specifies the column code page to use when code page information is unavailable from the data source."
@@ -13056,7 +13513,7 @@ on
                               dataType="System.String"
                               description="The SQL command to be executed."
                               name="SqlCommand"
-                              UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor, Microsoft.DataTransformationServices.Controls, Version=13.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91"></property>
+                              UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor, Microsoft.DataTransformationServices.Controls, Version=14.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91"></property>
                             <property
                               dataType="System.Int32"
                               description="Specifies the column code page to use when code page information is unavailable from the data source."
@@ -13458,7 +13915,7 @@ on
                               dataType="System.String"
                               description="The SQL command to be executed."
                               name="SqlCommand"
-                              UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor, Microsoft.DataTransformationServices.Controls, Version=13.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91"></property>
+                              UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor, Microsoft.DataTransformationServices.Controls, Version=14.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91"></property>
                             <property
                               dataType="System.Int32"
                               description="Specifies the column code page to use when code page information is unavailable from the data source."
@@ -13589,7 +14046,7 @@ on
                               dataType="System.String"
                               description="The SQL command to be executed."
                               name="SqlCommand"
-                              UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor, Microsoft.DataTransformationServices.Controls, Version=13.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91">SELECT ControlLabel, ExtendedDescription FROM brands
+                              UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor, Microsoft.DataTransformationServices.Controls, Version=14.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91">SELECT ControlLabel, ExtendedDescription FROM brands
 WHERE ControlLabel != ''</property>
                             <property
                               dataType="System.String"
@@ -13751,7 +14208,7 @@ WHERE ControlLabel != ''</property>
                               dataType="System.String"
                               description="The SQL command to be executed."
                               name="SqlCommand"
-                              UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor, Microsoft.DataTransformationServices.Controls, Version=13.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91"></property>
+                              UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor, Microsoft.DataTransformationServices.Controls, Version=14.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91"></property>
                             <property
                               dataType="System.Int32"
                               description="Specifies the column code page to use when code page information is unavailable from the data source."
@@ -13896,7 +14353,7 @@ WHERE ControlLabel != ''</property>
                               dataType="System.String"
                               description="The SQL command to be executed."
                               name="SqlCommand"
-                              UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor, Microsoft.DataTransformationServices.Controls, Version=13.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91"></property>
+                              UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor, Microsoft.DataTransformationServices.Controls, Version=14.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91"></property>
                             <property
                               dataType="System.String"
                               description="The variable that contains the SQL command to be executed."
@@ -14115,7 +14572,7 @@ WHERE ControlLabel != ''</property>
                               dataType="System.String"
                               description="The SQL command to be executed."
                               name="SqlCommand"
-                              UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor, Microsoft.DataTransformationServices.Controls, Version=13.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91">EXECUTE usp_ECOM_SelectProductAllergens</property>
+                              UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor, Microsoft.DataTransformationServices.Controls, Version=14.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91">EXECUTE usp_ECOM_SelectProductAllergens</property>
                             <property
                               dataType="System.String"
                               description="The variable that contains the SQL command to be executed."
@@ -14299,7 +14756,7 @@ WHERE ControlLabel != ''</property>
                               dataType="System.String"
                               description="The SQL command to be executed."
                               name="SqlCommand"
-                              UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor, Microsoft.DataTransformationServices.Controls, Version=13.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91"></property>
+                              UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor, Microsoft.DataTransformationServices.Controls, Version=14.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91"></property>
                             <property
                               dataType="System.Int32"
                               description="Specifies the column code page to use when code page information is unavailable from the data source."
@@ -14485,7 +14942,7 @@ WHERE ControlLabel != ''</property>
                               dataType="System.String"
                               description="The SQL command to be executed."
                               name="SqlCommand"
-                              UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor, Microsoft.DataTransformationServices.Controls, Version=13.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91">EXECUTE usp_ECOM_SelectProductDiet</property>
+                              UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor, Microsoft.DataTransformationServices.Controls, Version=14.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91">EXECUTE usp_ECOM_SelectProductDiet</property>
                             <property
                               dataType="System.String"
                               description="The variable that contains the SQL command to be executed."
@@ -14645,7 +15102,7 @@ WHERE ControlLabel != ''</property>
                               dataType="System.String"
                               description="The SQL command to be executed."
                               name="SqlCommand"
-                              UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor, Microsoft.DataTransformationServices.Controls, Version=13.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91"></property>
+                              UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor, Microsoft.DataTransformationServices.Controls, Version=14.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91"></property>
                             <property
                               dataType="System.Int32"
                               description="Specifies the column code page to use when code page information is unavailable from the data source."
@@ -14817,7 +15274,7 @@ WHERE ControlLabel != ''</property>
                               dataType="System.String"
                               description="The SQL command to be executed."
                               name="SqlCommand"
-                              UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor, Microsoft.DataTransformationServices.Controls, Version=13.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91">EXECUTE usp_ECOM_SelectProductNutrition</property>
+                              UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor, Microsoft.DataTransformationServices.Controls, Version=14.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91">EXECUTE usp_ECOM_SelectProductNutrition</property>
                             <property
                               dataType="System.String"
                               description="The variable that contains the SQL command to be executed."
@@ -15049,7 +15506,7 @@ WHERE ControlLabel != ''</property>
                               dataType="System.String"
                               description="The SQL command to be executed."
                               name="SqlCommand"
-                              UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor, Microsoft.DataTransformationServices.Controls, Version=13.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91"></property>
+                              UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor, Microsoft.DataTransformationServices.Controls, Version=14.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91"></property>
                             <property
                               dataType="System.Int32"
                               description="Specifies the column code page to use when code page information is unavailable from the data source."
@@ -15263,7 +15720,7 @@ WHERE ControlLabel != ''</property>
                               dataType="System.String"
                               description="The SQL command to be executed."
                               name="SqlCommand"
-                              UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor, Microsoft.DataTransformationServices.Controls, Version=13.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91">EXECUTE usp_ECOM_SelectProductSpec</property>
+                              UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor, Microsoft.DataTransformationServices.Controls, Version=14.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91">EXECUTE usp_ECOM_SelectProductSpec</property>
                             <property
                               dataType="System.String"
                               description="The variable that contains the SQL command to be executed."
@@ -16095,7 +16552,7 @@ WHERE ControlLabel != ''</property>
                               dataType="System.String"
                               description="The SQL command to be executed."
                               name="SqlCommand"
-                              UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor, Microsoft.DataTransformationServices.Controls, Version=13.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91"></property>
+                              UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor, Microsoft.DataTransformationServices.Controls, Version=14.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91"></property>
                             <property
                               dataType="System.Int32"
                               description="Specifies the column code page to use when code page information is unavailable from the data source."
@@ -16666,6 +17123,22 @@ WHERE ControlLabel != ''</property>
                   </DTS:ObjectData>
                 </DTS:Executable>
                 <DTS:Executable
+                  DTS:refId="Package\Process Data\Process_CatalogAndCustomer\Truncate_Catalog_Tables\Truncate Customer Options"
+                  DTS:CreationName="Microsoft.ExecuteSQLTask"
+                  DTS:Description="Execute SQL Task"
+                  DTS:DTSID="{091a08ee-8ed1-410e-9528-a5b446539360}"
+                  DTS:ExecutableType="Microsoft.ExecuteSQLTask"
+                  DTS:LocaleID="-1"
+                  DTS:ObjectName="Truncate Customer Options"
+                  DTS:ThreadHint="2">
+                  <DTS:Variables />
+                  <DTS:ObjectData>
+                    <SQLTask:SqlTaskData
+                      SQLTask:Connection="{18E0DEC5-849F-4295-99EC-064483FC95E0}"
+                      SQLTask:SqlStatementSource="TRUNCATE TABLE Customers.CustomerOptions" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
+                  </DTS:ObjectData>
+                </DTS:Executable>
+                <DTS:Executable
                   DTS:refId="Package\Process Data\Process_CatalogAndCustomer\Truncate_Catalog_Tables\Truncate Departments"
                   DTS:CreationName="Microsoft.ExecuteSQLTask"
                   DTS:Description="Truncate Department Data"
@@ -16673,7 +17146,7 @@ WHERE ControlLabel != ''</property>
                   DTS:ExecutableType="Microsoft.ExecuteSQLTask"
                   DTS:LocaleID="-1"
                   DTS:ObjectName="Truncate Departments"
-                  DTS:ThreadHint="2">
+                  DTS:ThreadHint="3">
                   <DTS:Variables />
                   <DTS:ObjectData>
                     <SQLTask:SqlTaskData
@@ -16691,7 +17164,7 @@ WHERE ControlLabel != ''</property>
                   DTS:LocaleID="-1"
                   DTS:ObjectName="Truncate GS1 Stage Tables"
                   DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2012; © 2007 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
-                  DTS:ThreadHint="3">
+                  DTS:ThreadHint="4">
                   <DTS:Variables />
                   <DTS:LoggingOptions
                     DTS:FilterKind="0" />
@@ -16709,7 +17182,7 @@ WHERE ControlLabel != ''</property>
                   DTS:ExecutableType="Microsoft.ExecuteSQLTask"
                   DTS:LocaleID="-1"
                   DTS:ObjectName="Truncate PDM data"
-                  DTS:ThreadHint="4">
+                  DTS:ThreadHint="5">
                   <DTS:Variables />
                   <DTS:ObjectData>
                     <SQLTask:SqlTaskData
@@ -16726,7 +17199,7 @@ WHERE ControlLabel != ''</property>
                   DTS:ExecutableType="Microsoft.ExecuteSQLTask"
                   DTS:LocaleID="-1"
                   DTS:ObjectName="Truncate SIC Map"
-                  DTS:ThreadHint="5">
+                  DTS:ThreadHint="6">
                   <DTS:Variables />
                   <DTS:ObjectData>
                     <SQLTask:SqlTaskData
@@ -16815,7 +17288,7 @@ WHERE ControlLabel != ''</property>
                               dataType="System.String"
                               description="The SQL command to be executed."
                               name="SqlCommand"
-                              UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor, Microsoft.DataTransformationServices.Controls, Version=13.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91"></property>
+                              UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor, Microsoft.DataTransformationServices.Controls, Version=14.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91"></property>
                             <property
                               dataType="System.Int32"
                               description="Specifies the column code page to use when code page information is unavailable from the data source."
@@ -17456,7 +17929,7 @@ WHERE ControlLabel != ''</property>
                               dataType="System.String"
                               description="The SQL command to be executed."
                               name="SqlCommand"
-                              UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor, Microsoft.DataTransformationServices.Controls, Version=13.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91"></property>
+                              UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor, Microsoft.DataTransformationServices.Controls, Version=14.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91"></property>
                             <property
                               dataType="System.Int32"
                               description="Specifies the column code page to use when code page information is unavailable from the data source."
@@ -17929,7 +18402,7 @@ WHERE ControlLabel != ''</property>
                               dataType="System.String"
                               description="The SQL command to be executed."
                               name="SqlCommand"
-                              UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor, Microsoft.DataTransformationServices.Controls, Version=13.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91"></property>
+                              UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor, Microsoft.DataTransformationServices.Controls, Version=14.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91"></property>
                             <property
                               dataType="System.Int32"
                               description="Specifies the column code page to use when code page information is unavailable from the data source."
@@ -18446,7 +18919,7 @@ WHERE ControlLabel != ''</property>
                               dataType="System.String"
                               description="The SQL command to be executed."
                               name="SqlCommand"
-                              UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor, Microsoft.DataTransformationServices.Controls, Version=13.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91">EXECUTE usp_ECOM_SelectProductSpec</property>
+                              UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor, Microsoft.DataTransformationServices.Controls, Version=14.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91">EXECUTE usp_ECOM_SelectProductSpec</property>
                             <property
                               dataType="System.String"
                               description="The variable that contains the SQL command to be executed."
@@ -19278,7 +19751,7 @@ WHERE ControlLabel != ''</property>
                               dataType="System.String"
                               description="The SQL command to be executed."
                               name="SqlCommand"
-                              UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor, Microsoft.DataTransformationServices.Controls, Version=13.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91"></property>
+                              UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor, Microsoft.DataTransformationServices.Controls, Version=14.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91"></property>
                             <property
                               dataType="System.Int32"
                               description="Specifies the column code page to use when code page information is unavailable from the data source."
@@ -19837,7 +20310,7 @@ WHERE ControlLabel != ''</property>
                               dataType="System.String"
                               description="The SQL command to be executed."
                               name="SqlCommand"
-                              UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor, Microsoft.DataTransformationServices.Controls, Version=13.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91"></property>
+                              UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor, Microsoft.DataTransformationServices.Controls, Version=14.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91"></property>
                             <property
                               dataType="System.Int32"
                               description="Specifies the column code page to use when code page information is unavailable from the data source."
@@ -20310,7 +20783,7 @@ WHERE ControlLabel != ''</property>
                               dataType="System.String"
                               description="The SQL command to be executed."
                               name="SqlCommand"
-                              UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor, Microsoft.DataTransformationServices.Controls, Version=13.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91"></property>
+                              UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor, Microsoft.DataTransformationServices.Controls, Version=14.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91"></property>
                             <property
                               dataType="System.Int32"
                               description="Specifies the column code page to use when code page information is unavailable from the data source."
@@ -20783,7 +21256,7 @@ WHERE ControlLabel != ''</property>
                               dataType="System.String"
                               description="The SQL command to be executed."
                               name="SqlCommand"
-                              UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor, Microsoft.DataTransformationServices.Controls, Version=13.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91"></property>
+                              UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor, Microsoft.DataTransformationServices.Controls, Version=14.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91"></property>
                             <property
                               dataType="System.Int32"
                               description="Specifies the column code page to use when code page information is unavailable from the data source."
@@ -21406,7 +21879,7 @@ WHERE ControlLabel != ''</property>
                   DTS:LocaleID="-1"
                   DTS:ObjectName="Truncate Contract Tables"
                   DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2012; © 2007 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
-                  DTS:ThreadHint="6">
+                  DTS:ThreadHint="10">
                   <DTS:Variables />
                   <DTS:ObjectData>
                     <SQLTask:SqlTaskData
@@ -21423,7 +21896,7 @@ WHERE ControlLabel != ''</property>
                   DTS:LocaleID="-1"
                   DTS:ObjectName="Truncate Worksheet Tables"
                   DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2012; © 2007 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
-                  DTS:ThreadHint="7">
+                  DTS:ThreadHint="11">
                   <DTS:Variables />
                   <DTS:ObjectData>
                     <SQLTask:SqlTaskData
@@ -21504,7 +21977,7 @@ WHERE ControlLabel != ''</property>
                               dataType="System.String"
                               description="The SQL command to be executed."
                               name="SqlCommand"
-                              UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor, Microsoft.DataTransformationServices.Controls, Version=13.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91"></property>
+                              UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor, Microsoft.DataTransformationServices.Controls, Version=14.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91"></property>
                             <property
                               dataType="System.Int32"
                               description="Specifies the column code page to use when code page information is unavailable from the data source."
@@ -21649,7 +22122,7 @@ WHERE ControlLabel != ''</property>
                               dataType="System.String"
                               description="The SQL command to be executed."
                               name="SqlCommand"
-                              UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor, Microsoft.DataTransformationServices.Controls, Version=13.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91"></property>
+                              UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor, Microsoft.DataTransformationServices.Controls, Version=14.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91"></property>
                             <property
                               dataType="System.String"
                               description="The variable that contains the SQL command to be executed."
@@ -21834,7 +22307,7 @@ WHERE ControlLabel != ''</property>
                               dataType="System.String"
                               description="The SQL command to be executed."
                               name="SqlCommand"
-                              UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor, Microsoft.DataTransformationServices.Controls, Version=13.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91"></property>
+                              UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor, Microsoft.DataTransformationServices.Controls, Version=14.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91"></property>
                             <property
                               dataType="System.Int32"
                               description="Specifies the column code page to use when code page information is unavailable from the data source."
@@ -22017,7 +22490,7 @@ WHERE ControlLabel != ''</property>
                               dataType="System.String"
                               description="The SQL command to be executed."
                               name="SqlCommand"
-                              UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor, Microsoft.DataTransformationServices.Controls, Version=13.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91"></property>
+                              UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor, Microsoft.DataTransformationServices.Controls, Version=14.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91"></property>
                             <property
                               dataType="System.String"
                               description="The variable that contains the SQL command to be executed."
@@ -22260,7 +22733,7 @@ WHERE ControlLabel != ''</property>
                   DTS:LocaleID="-1"
                   DTS:ObjectName="Truncate DSR Tables"
                   DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2012; © 2007 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
-                  DTS:ThreadHint="8">
+                  DTS:ThreadHint="7">
                   <DTS:Variables />
                   <DTS:ObjectData>
                     <SQLTask:SqlTaskData
@@ -22686,7 +23159,7 @@ WHERE ControlLabel != ''</property>
                               dataType="System.String"
                               description="The SQL command to be executed."
                               name="SqlCommand"
-                              UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor, Microsoft.DataTransformationServices.Controls, Version=13.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91"></property>
+                              UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor, Microsoft.DataTransformationServices.Controls, Version=14.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91"></property>
                             <property
                               dataType="System.Int32"
                               description="Specifies the column code page to use when code page information is unavailable from the data source."
@@ -22922,7 +23395,7 @@ WHERE ControlLabel != ''</property>
                   DTS:LocaleID="-1"
                   DTS:ObjectName="Truncate Invoice Tables"
                   DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2012; © 2007 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
-                  DTS:ThreadHint="9">
+                  DTS:ThreadHint="8">
                   <DTS:Variables />
                   <DTS:LoggingOptions
                     DTS:FilterKind="0" />
@@ -23144,7 +23617,7 @@ WHERE ControlLabel != ''</property>
                           dataType="System.String"
                           description="The SQL command to be executed."
                           name="SqlCommand"
-                          UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor, Microsoft.DataTransformationServices.Controls, Version=13.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91"></property>
+                          UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor, Microsoft.DataTransformationServices.Controls, Version=14.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91"></property>
                         <property
                           dataType="System.Int32"
                           description="Specifies the column code page to use when code page information is unavailable from the data source."
@@ -23269,7 +23742,7 @@ WHERE ControlLabel != ''</property>
               DTS:ExecutableType="Microsoft.ExecuteSQLTask"
               DTS:LocaleID="-1"
               DTS:ObjectName="TRUNCATE SIC Reference"
-              DTS:ThreadHint="10">
+              DTS:ThreadHint="9">
               <DTS:Variables />
               <DTS:ObjectData>
                 <SQLTask:SqlTaskData
@@ -23354,6 +23827,36 @@ WHERE ControlLabel != ''</property>
           VSTAMinorVersion="0"
           Language="CSharp"
           ReadOnlyVariables="User::ETLProcess_KeithComDir">
+          <ProjectItem
+            Name="Properties\AssemblyInfo.cs"
+            Encoding="UTF8"><![CDATA[using System.Reflection;
+using System.Runtime.CompilerServices;
+
+//
+// General Information about an assembly is controlled through the following 
+// set of attributes. Change these attribute values to modify the information
+// associated with an assembly.
+//
+[assembly: AssemblyTitle("ST_8b38e1c04cd142498eb6973136894e60")]
+[assembly: AssemblyDescription("")]
+[assembly: AssemblyConfiguration("")]
+[assembly: AssemblyCompany("")]
+[assembly: AssemblyProduct("ST_8b38e1c04cd142498eb6973136894e60")]
+[assembly: AssemblyCopyright("Copyright @  2014")]
+[assembly: AssemblyTrademark("")]
+[assembly: AssemblyCulture("")]
+//
+// Version information for an assembly consists of the following four values:
+//
+//      Major Version
+//      Minor Version 
+//      Build Number
+//      Revision
+//
+// You can specify all the values or you can default the Revision and Build Numbers 
+// by using the '*' as shown below:
+
+[assembly: AssemblyVersion("1.0.*")]]]></ProjectItem>
           <ProjectItem
             Name="Properties\Resources.resx"
             Encoding="UTF8"><![CDATA[<?xml version="1.0" encoding="utf-8"?>
@@ -23473,35 +23976,6 @@ WHERE ControlLabel != ''</property>
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
 </root>]]></ProjectItem>
-          <ProjectItem
-            Name="Properties\Settings.Designer.cs"
-            Encoding="UTF8"><![CDATA[//------------------------------------------------------------------------------
-// <auto-generated>
-//     This code was generated by a tool.
-//
-//     Changes to this file may cause incorrect behavior and will be lost if
-//     the code is regenerated.
-// </auto-generated>
-//------------------------------------------------------------------------------
-
-[assembly: global::System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode", Scope="member", Target="ST_8b38e1c04cd142498eb6973136894e60.Properties.Settings.get_Default():ST_8b38e1c04cd142498eb6973136894e60.Properties.Sett" +
-    "ings")]
-
-namespace ST_8b38e1c04cd142498eb6973136894e60.Properties {
-    
-    
-    internal sealed partial class Settings : global::System.Configuration.ApplicationSettingsBase {
-        
-        [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-        private static Settings defaultInstance = new Settings();
-        
-        public static Settings Default {
-            get {
-                return defaultInstance;
-            }
-        }
-    }
-}]]></ProjectItem>
           <ProjectItem
             Name="ST_8b38e1c04cd142498eb6973136894e60.csproj"
             Encoding="UTF8"><![CDATA[<?xml version="1.0" encoding="utf-8"?>
@@ -23841,35 +24315,34 @@ namespace ST_8b38e1c04cd142498eb6973136894e60
 	</msb:ItemGroup>
 </c:Project>]]></ProjectItem>
           <ProjectItem
-            Name="Properties\AssemblyInfo.cs"
-            Encoding="UTF8"><![CDATA[using System.Reflection;
-using System.Runtime.CompilerServices;
+            Name="Properties\Settings.Designer.cs"
+            Encoding="UTF8"><![CDATA[//------------------------------------------------------------------------------
+// <auto-generated>
+//     This code was generated by a tool.
+//
+//     Changes to this file may cause incorrect behavior and will be lost if
+//     the code is regenerated.
+// </auto-generated>
+//------------------------------------------------------------------------------
 
-//
-// General Information about an assembly is controlled through the following 
-// set of attributes. Change these attribute values to modify the information
-// associated with an assembly.
-//
-[assembly: AssemblyTitle("ST_8b38e1c04cd142498eb6973136894e60")]
-[assembly: AssemblyDescription("")]
-[assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("ST_8b38e1c04cd142498eb6973136894e60")]
-[assembly: AssemblyCopyright("Copyright @  2014")]
-[assembly: AssemblyTrademark("")]
-[assembly: AssemblyCulture("")]
-//
-// Version information for an assembly consists of the following four values:
-//
-//      Major Version
-//      Minor Version 
-//      Build Number
-//      Revision
-//
-// You can specify all the values or you can default the Revision and Build Numbers 
-// by using the '*' as shown below:
+[assembly: global::System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode", Scope="member", Target="ST_8b38e1c04cd142498eb6973136894e60.Properties.Settings.get_Default():ST_8b38e1c04cd142498eb6973136894e60.Properties.Sett" +
+    "ings")]
 
-[assembly: AssemblyVersion("1.0.*")]]]></ProjectItem>
+namespace ST_8b38e1c04cd142498eb6973136894e60.Properties {
+    
+    
+    internal sealed partial class Settings : global::System.Configuration.ApplicationSettingsBase {
+        
+        [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
+        private static Settings defaultInstance = new Settings();
+        
+        public static Settings Default {
+            get {
+                return defaultInstance;
+            }
+        }
+    }
+}]]></ProjectItem>
           <ProjectItem
             Name="Properties\Settings.settings"
             Encoding="UTF8"><![CDATA[<?xml version='1.0' encoding='iso-8859-1'?>
@@ -24113,7 +24586,7 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==</BinaryItem>
       DTS:LocaleID="-1"
       DTS:ObjectName="Send Fail Message"
       DTS:TaskContact="Send Mail Task; Microsoft Corporation; SQL Server 2012; © 2007 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
-      DTS:ThreadHint="11">
+      DTS:ThreadHint="12">
       <DTS:Variables />
       <DTS:PropertyExpression
         DTS:Name="FromLine">@[System::MachineName] + "@noreply.com"</DTS:PropertyExpression>
@@ -24124,10 +24597,10 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==</BinaryItem>
       <DTS:ObjectData>
         <SendMailTask:SendMailTaskData
           SendMailTask:SMTPServer="{27E35359-C6DF-4504-B136-640306980715}"
-          SendMailTask:From="CORPMISDEV2A@noreply.com"
+          SendMailTask:From="CORPMISDEV4A@noreply.com"
           SendMailTask:To="CORP-DIS-eCommDev@benekeith.com"
-          SendMailTask:Subject="SSIS Package ETLProcess_RELEASE has failed on CORPMISDEV2A"
-          SendMailTask:MessageSource="SSIS Package ETLProcess_RELEASE has failed on CORPMISDEV2A.  Check the SQL logs for more detail." xmlns:SendMailTask="www.microsoft.com/sqlserver/dts/tasks/sendmailtask" />
+          SendMailTask:Subject="SSIS Package ETLProcess_RELEASE has failed on CORPMISDEV4A"
+          SendMailTask:MessageSource="SSIS Package ETLProcess_RELEASE has failed on CORPMISDEV4A.  Check the SQL logs for more detail." xmlns:SendMailTask="www.microsoft.com/sqlserver/dts/tasks/sendmailtask" />
       </DTS:ObjectData>
     </DTS:Executable>
   </DTS:Executables>
@@ -24206,86 +24679,90 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==</BinaryItem>
       <GraphLayout
         Capacity="128" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:assembly="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:mssgm="clr-namespace:Microsoft.SqlServer.Graph.Model;assembly=Microsoft.SqlServer.Graph">
         <NodeLayout
-          Size="179,42"
+          Size="179.2,41.6"
           Id="Package\Application Data Processing\Process Catalog Data"
           TopLeft="5.5,5.5" />
         <NodeLayout
-          Size="258,42"
+          Size="257.6,41.6"
           Id="Package\Application Data Processing\Process Contract And Worksheet Data"
           TopLeft="7.5,68" />
         <NodeLayout
-          Size="188,42"
+          Size="188,41.6"
           Id="Package\Application Data Processing\Process Customer Data"
           TopLeft="11.5,125.5" />
         <NodeLayout
-          Size="225,42"
+          Size="224.8,41.6"
           Id="Package\Application Data Processing\Process Customer Item History"
           TopLeft="15,188" />
         <NodeLayout
-          Size="216,42"
+          Size="279.2,41.6"
+          Id="Package\Application Data Processing\Process Customer Minimum Order Amount"
+          TopLeft="2.5,380" />
+        <NodeLayout
+          Size="216,41.6"
           Id="Package\Application Data Processing\Process Customer SIC Codes"
           TopLeft="20,315" />
         <NodeLayout
-          Size="208,42"
+          Size="208,41.6"
           Id="Package\Application Data Processing\Process Elastic Search Data"
           TopLeft="15.5,253" />
         <ContainerLayout
           HeaderHeight="43"
           IsExpanded="True"
-          PanelSize="287,483"
-          Size="287,526"
+          PanelSize="287.2,513.6"
+          Size="287.2,556.8"
           Id="Package\Application Data Processing"
           TopLeft="1943,1174" />
         <NodeLayout
-          Size="152,42"
+          Size="152,41.6"
           Id="Package\Process Data\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Branches"
           TopLeft="22.5,16" />
         <NodeLayout
-          Size="158,42"
+          Size="158.4,41.6"
           Id="Package\Process Data\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Categories"
           TopLeft="25.5,197" />
         <NodeLayout
-          Size="159,42"
+          Size="159.2,41.6"
           Id="Package\Process Data\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Customers"
           TopLeft="23.5,253.5" />
         <NodeLayout
-          Size="172,42"
+          Size="172,41.6"
           Id="Package\Process Data\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Departments"
           TopLeft="23,680.5" />
         <NodeLayout
-          Size="136,42"
+          Size="136,41.6"
           Id="Package\Process Data\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Items"
           TopLeft="21.5,308.5" />
         <NodeLayout
-          Size="187,42"
+          Size="187.2,41.6"
           Id="Package\Process Data\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage National Id Desc"
           TopLeft="26,370" />
         <NodeLayout
-          Size="235,42"
+          Size="235.2,41.6"
           Id="Package\Process Data\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage National Number Sub Desc"
           TopLeft="29,441" />
         <NodeLayout
-          Size="158,42"
+          Size="158.4,41.6"
           Id="Package\Process Data\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage PDM Data"
           TopLeft="24,497" />
         <NodeLayout
-          Size="188,42"
+          Size="188,41.6"
           Id="Package\Process Data\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Regional Id Desc"
           TopLeft="21,555" />
         <NodeLayout
-          Size="216,42"
+          Size="216,41.6"
           Id="Package\Process Data\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Regional Number Desc"
           TopLeft="24,621.5" />
         <NodeLayout
-          Size="193,42"
+          Size="192.8,41.6"
           Id="Package\Process Data\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Sub-Departments"
           TopLeft="22,759.5" />
         <NodeLayout
-          Size="217,42"
+          Size="216.8,41.6"
           Id="Package\Process Data\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Staging Brand Control Labels"
           TopLeft="28.5,135.5" />
         <NodeLayout
-          Size="150,42"
+          Size="150.4,41.6"
           Id="Package\Process Data\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Staging Brands"
           TopLeft="20.5,67.5" />
         <EdgeLayout
@@ -24359,78 +24836,94 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==</BinaryItem>
         <ContainerLayout
           HeaderHeight="43"
           IsExpanded="True"
-          PanelSize="284,959"
-          Size="284,1002"
+          PanelSize="284,959.2"
+          Size="284,1001.6"
           Id="Package\Process Data\Process_CatalogAndCustomer\Catalog And Customer Import Tasks"
           TopLeft="22.4444444444445,433.944444444445" />
         <NodeLayout
-          Size="156,42"
+          Size="156,41.6"
           Id="Package\Process Data\Process_CatalogAndCustomer\GS1 Import Tasks\Product Allergen"
           TopLeft="5.5,5.5" />
         <NodeLayout
-          Size="137,42"
+          Size="136.8,41.6"
           Id="Package\Process Data\Process_CatalogAndCustomer\GS1 Import Tasks\Product Diet"
           TopLeft="12,67.9999999999999" />
         <NodeLayout
-          Size="159,42"
+          Size="159.2,41.6"
           Id="Package\Process Data\Process_CatalogAndCustomer\GS1 Import Tasks\Product Nutrition"
           TopLeft="11,126.5" />
         <NodeLayout
-          Size="141,42"
+          Size="140.8,41.6"
           Id="Package\Process Data\Process_CatalogAndCustomer\GS1 Import Tasks\Product Spec"
           TopLeft="13,191" />
         <ContainerLayout
           HeaderHeight="43"
           IsExpanded="True"
-          PanelSize="278,288"
-          Size="278,331"
+          PanelSize="278.4,288"
+          Size="278.4,331.2"
           Id="Package\Process Data\Process_CatalogAndCustomer\GS1 Import Tasks"
           TopLeft="31.0000000000001,1501.5" />
         <NodeLayout
-          Size="237,42"
+          Size="236.8,41.6"
           Id="Package\Process Data\Process_CatalogAndCustomer\Truncate_Catalog_Tables\Truncate Brand Tables"
           TopLeft="19.8636363636364,17.3181818181818" />
         <NodeLayout
-          Size="236,42"
+          Size="236,41.6"
           Id="Package\Process Data\Process_CatalogAndCustomer\Truncate_Catalog_Tables\Truncate Catalog Stage Tables"
           TopLeft="19.0000000000001,75.4999999999999" />
         <NodeLayout
-          Size="234,42"
+          Size="208,41.6"
+          Id="Package\Process Data\Process_CatalogAndCustomer\Truncate_Catalog_Tables\Truncate Customer Options"
+          TopLeft="17.5,389" />
+        <NodeLayout
+          Size="233.6,41.6"
           Id="Package\Process Data\Process_CatalogAndCustomer\Truncate_Catalog_Tables\Truncate Departments"
           TopLeft="20.0454545454545,232.590909090909" />
         <NodeLayout
-          Size="238,42"
+          Size="238.4,41.6"
           Id="Package\Process Data\Process_CatalogAndCustomer\Truncate_Catalog_Tables\Truncate GS1 Stage Tables"
           TopLeft="17.5,128.5" />
         <NodeLayout
-          Size="237,42"
+          Size="236.8,41.6"
           Id="Package\Process Data\Process_CatalogAndCustomer\Truncate_Catalog_Tables\Truncate PDM data"
           TopLeft="18,182.5" />
         <NodeLayout
-          Size="228,42"
+          Size="228,41.6"
           Id="Package\Process Data\Process_CatalogAndCustomer\Truncate_Catalog_Tables\Truncate SIC Map"
           TopLeft="21.6666666666667,287" />
         <ContainerLayout
           HeaderHeight="43"
           IsExpanded="True"
-          PanelSize="280,355"
-          Size="280,398"
+          PanelSize="280,486.4"
+          Size="280,528.8"
           Id="Package\Process Data\Process_CatalogAndCustomer\Truncate_Catalog_Tables"
           TopLeft="29.9999999999999,5.5" />
         <EdgeLayout
           Id="Package\Process Data\Process_CatalogAndCustomer.PrecedenceConstraints[Constraint]"
-          TopLeft="167.222222222222,403.5">
+          TopLeft="310,270">
           <EdgeLayout.Curve>
             <mssgle:Curve
               StartConnector="{assembly:Null}"
-              EndConnector="0,30.4444444444446"
+              EndConnector="-3.55555555555537,664.944444444445"
               Start="0,0"
-              End="0,22.9444444444446">
+              End="3.94444444444463,664.944444444445">
               <mssgle:Curve.Segments>
                 <mssgle:SegmentCollection
                   Capacity="5">
                   <mssgle:LineSegment
-                    End="0,22.9444444444446" />
+                    End="18.5,0" />
+                  <mssgle:CubicBezierSegment
+                    Point1="18.5,0"
+                    Point2="22.5,0"
+                    Point3="22.5,4" />
+                  <mssgle:LineSegment
+                    End="22.5,660.944444444445" />
+                  <mssgle:CubicBezierSegment
+                    Point1="22.5,660.944444444445"
+                    Point2="22.5,664.944444444445"
+                    Point3="18.5,664.944444444445" />
+                  <mssgle:LineSegment
+                    End="3.94444444444463,664.944444444445" />
                 </mssgle:SegmentCollection>
               </mssgle:Curve.Segments>
             </mssgle:Curve>
@@ -24464,58 +24957,58 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==</BinaryItem>
         <ContainerLayout
           HeaderHeight="43"
           IsExpanded="True"
-          PanelSize="317,1887"
-          Size="317,1930"
+          PanelSize="336.8,1887.2"
+          Size="336.8,1929.6"
           Id="Package\Process Data\Process_CatalogAndCustomer"
           TopLeft="37.3888888888888,19.9444444444445" />
         <NodeLayout
-          Size="124,42"
+          Size="124,41.6"
           Id="Package\Process Data\Process_ContractAndWorksheet\Import Contract Data\Bid Detail"
           TopLeft="20.5,18" />
         <NodeLayout
-          Size="131,42"
+          Size="131.2,41.6"
           Id="Package\Process Data\Process_ContractAndWorksheet\Import Contract Data\Bid Header"
           TopLeft="22.5,90.5" />
         <NodeLayout
-          Size="142,42"
+          Size="142.4,41.6"
           Id="Package\Process Data\Process_ContractAndWorksheet\Import Contract Data\Customer Bid"
           TopLeft="19,153" />
         <NodeLayout
-          Size="141,42"
+          Size="140.8,41.6"
           Id="Package\Process Data\Process_ContractAndWorksheet\Import Contract Data\Product Spec"
           TopLeft="24,215.5" />
         <NodeLayout
-          Size="156,42"
+          Size="156,41.6"
           Id="Package\Process Data\Process_ContractAndWorksheet\Import Contract Data\Proprietary Item"
           TopLeft="15.5,278" />
         <NodeLayout
-          Size="176,42"
+          Size="176,41.6"
           Id="Package\Process Data\Process_ContractAndWorksheet\Import Contract Data\ProprietaryCustomer"
           TopLeft="12.5,338" />
         <NodeLayout
-          Size="160,42"
+          Size="160,41.6"
           Id="Package\Process Data\Process_ContractAndWorksheet\Import Contract Data\WorkSheet Items"
           TopLeft="24.5,408" />
         <ContainerLayout
           HeaderHeight="43"
           IsExpanded="True"
-          PanelSize="214,505"
-          Size="214,548"
+          PanelSize="214.4,504.8"
+          Size="214.4,548"
           Id="Package\Process Data\Process_ContractAndWorksheet\Import Contract Data"
           TopLeft="20.0000000000001,285.5" />
         <NodeLayout
-          Size="198,42"
+          Size="198.4,41.6"
           Id="Package\Process Data\Process_ContractAndWorksheet\Truncate Contract and WorkSheet Tables\Truncate Contract Tables"
           TopLeft="5.5,8" />
         <NodeLayout
-          Size="208,42"
+          Size="208,41.6"
           Id="Package\Process Data\Process_ContractAndWorksheet\Truncate Contract and WorkSheet Tables\Truncate Worksheet Tables"
           TopLeft="12,85.5" />
         <ContainerLayout
           HeaderHeight="43"
           IsExpanded="True"
-          PanelSize="243,177"
-          Size="243,220"
+          PanelSize="243.2,176.8"
+          Size="243.2,220"
           Id="Package\Process Data\Process_ContractAndWorksheet\Truncate Contract and WorkSheet Tables"
           TopLeft="5.50000000000003,5.5" />
         <EdgeLayout
@@ -24543,16 +25036,16 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==</BinaryItem>
         <ContainerLayout
           HeaderHeight="43"
           IsExpanded="True"
-          PanelSize="254,889"
-          Size="254,932"
+          PanelSize="254.4,888.8"
+          Size="254.4,932"
           Id="Package\Process Data\Process_ContractAndWorksheet"
           TopLeft="393.611111111111,19.3015873015871" />
         <NodeLayout
-          Size="167,42"
+          Size="167.2,41.6"
           Id="Package\Process Data\Process_EmployeeData\Import DSR Info\Get Raw DSR Data"
           TopLeft="17,5.5" />
         <NodeLayout
-          Size="190,42"
+          Size="190.4,41.6"
           Id="Package\Process Data\Process_EmployeeData\Import DSR Info\Get Raw EmployeeData"
           TopLeft="5.50000000000001,107.5" />
         <EdgeLayout
@@ -24580,19 +25073,19 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==</BinaryItem>
         <ContainerLayout
           HeaderHeight="43"
           IsExpanded="True"
-          PanelSize="201,205"
-          Size="201,248"
+          PanelSize="200.8,204.8"
+          Size="200.8,248"
           Id="Package\Process Data\Process_EmployeeData\Import DSR Info"
           TopLeft="5.50000000000006,211.5" />
         <NodeLayout
-          Size="178,42"
+          Size="177.6,41.6"
           Id="Package\Process Data\Process_EmployeeData\Truncate Dsr Tables\Truncate DSR Tables"
           TopLeft="5.5,5.5" />
         <ContainerLayout
           HeaderHeight="43"
           IsExpanded="True"
-          PanelSize="189,103"
-          Size="189,146"
+          PanelSize="188.8,103.2"
+          Size="188.8,145.6"
           Id="Package\Process Data\Process_EmployeeData\Truncate Dsr Tables"
           TopLeft="11.5,5.5" />
         <EdgeLayout
@@ -24620,30 +25113,30 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==</BinaryItem>
         <ContainerLayout
           HeaderHeight="43"
           IsExpanded="True"
-          PanelSize="212,515"
-          Size="212,558"
+          PanelSize="212,515.2"
+          Size="212,558.4"
           Id="Package\Process Data\Process_EmployeeData"
           TopLeft="980.277777777778,23.7222222222222" />
         <NodeLayout
-          Size="157,42"
+          Size="156.8,41.6"
           Id="Package\Process Data\Process_Invoices\Customer Invoice Import Tasks\Customer Terms"
           TopLeft="5.5,5.5" />
         <ContainerLayout
           HeaderHeight="43"
           IsExpanded="True"
-          PanelSize="168,103"
-          Size="168,146"
+          PanelSize="168,103.2"
+          Size="168,145.6"
           Id="Package\Process Data\Process_Invoices\Customer Invoice Import Tasks"
           TopLeft="23,211.5" />
         <NodeLayout
-          Size="192,42"
+          Size="192,41.6"
           Id="Package\Process Data\Process_Invoices\Truncate Invoice Tables\Truncate Invoice Tables"
           TopLeft="5.5,5.5" />
         <ContainerLayout
           HeaderHeight="43"
           IsExpanded="True"
-          PanelSize="203,103"
-          Size="203,146"
+          PanelSize="203.2,103.2"
+          Size="203.2,145.6"
           Id="Package\Process Data\Process_Invoices\Truncate Invoice Tables"
           TopLeft="5.50000000000001,5.5" />
         <EdgeLayout
@@ -24671,16 +25164,16 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==</BinaryItem>
         <ContainerLayout
           HeaderHeight="43"
           IsExpanded="True"
-          PanelSize="214,413"
-          Size="214,456"
+          PanelSize="214.4,412.8"
+          Size="214.4,456"
           Id="Package\Process Data\Process_Invoices"
           TopLeft="706.896825396826,20.5952380952381" />
         <NodeLayout
-          Size="177,42"
+          Size="176.8,41.6"
           Id="Package\Process Data\Reference Tables\SIC Reference Table"
           TopLeft="25.7333333333333,84.2000000000002" />
         <NodeLayout
-          Size="203,42"
+          Size="203.2,41.6"
           Id="Package\Process Data\Reference Tables\TRUNCATE SIC Reference"
           TopLeft="21.333333333333,21" />
         <EdgeLayout
@@ -24720,38 +25213,38 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==</BinaryItem>
         <ContainerLayout
           HeaderHeight="43"
           IsExpanded="True"
-          PanelSize="275,205"
-          Size="275,248"
+          PanelSize="275.2,204.8"
+          Size="275.2,248"
           Id="Package\Process Data\Reference Tables"
           TopLeft="684,503" />
         <ContainerLayout
           HeaderHeight="43"
           IsExpanded="True"
-          PanelSize="1245,2019"
-          Size="1245,2062"
+          PanelSize="1244.8,2019.2"
+          Size="1244.8,2062.4"
           Id="Package\Process Data"
           TopLeft="107.5,327.5" />
         <NodeLayout
-          Size="150,42"
+          Size="150.4,41.6"
           Id="Package\Purge Order History Older Than 6 Months\Purge AppData"
           TopLeft="5.5,5.5" />
         <NodeLayout
-          Size="185,42"
+          Size="184.8,41.6"
           Id="Package\Purge Order History Older Than 6 Months\Purge CS Transactions"
           TopLeft="8.5,65.5" />
         <ContainerLayout
           HeaderHeight="43"
           IsExpanded="True"
           PanelSize="216,128"
-          Size="216,171"
+          Size="216,171.2"
           Id="Package\Purge Order History Older Than 6 Months"
           TopLeft="1589.5,1268.16666666667" />
         <NodeLayout
-          Size="196,42"
+          Size="196,41.6"
           Id="Package\Rename Mainframe Files"
           TopLeft="432,130.5" />
         <NodeLayout
-          Size="168,42"
+          Size="168,41.6"
           Id="Package\Send Fail Message"
           TopLeft="1643.5,133.5" />
         <EdgeLayout
@@ -24914,9 +25407,9 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==</BinaryItem>
           <EdgeLayout.Curve>
             <mssgle:Curve
               StartConnector="{assembly:Null}"
-              EndConnector="137.5,83.3333333333301"
+              EndConnector="137.5,98.8333333333301"
               Start="0,0"
-              End="130,83.3333333333301">
+              End="130,98.8333333333301">
               <mssgle:Curve.Segments>
                 <mssgle:SegmentCollection
                   Capacity="5">
@@ -24927,13 +25420,13 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==</BinaryItem>
                     Point2="68.75,0"
                     Point3="68.75,4" />
                   <mssgle:LineSegment
-                    End="68.75,79.3333333333301" />
+                    End="68.75,94.8333333333301" />
                   <mssgle:CubicBezierSegment
-                    Point1="68.75,79.3333333333301"
-                    Point2="68.75,83.3333333333301"
-                    Point3="72.75,83.3333333333301" />
+                    Point1="68.75,94.8333333333301"
+                    Point2="68.75,98.8333333333301"
+                    Point3="72.75,98.8333333333301" />
                   <mssgle:LineSegment
-                    End="130,83.3333333333301" />
+                    End="130,98.8333333333301" />
                 </mssgle:SegmentCollection>
               </mssgle:Curve.Segments>
             </mssgle:Curve>
@@ -24968,10 +25461,81 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==</BinaryItem>
     </LayoutInfo>
   </Package>
   <TaskHost
-    design-time-name="Package\Application Data Processing\Process Customer SIC Codes">
+    design-time-name="Package\Application Data Processing\Process Customer Minimum Order Amount">
     <LayoutInfo>
       <GraphLayout
         Capacity="4" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:assembly="http://schemas.microsoft.com/winfx/2006/xaml">
+        <NodeLayout
+          Size="169,42"
+          Id="Package\Application Data Processing\Process Customer Minimum Order Amount\Customers Staging"
+          TopLeft="430,141" />
+        <NodeLayout
+          Size="192,42"
+          Id="Package\Application Data Processing\Process Customer Minimum Order Amount\Minimum Order Amount"
+          TopLeft="443,305" />
+        <EdgeLayout
+          Id="Package\Application Data Processing\Process Customer Minimum Order Amount.Paths[OLE DB Source Output]"
+          TopLeft="514.5,183">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="24.5,122"
+              Start="0,0"
+              End="24.5,114.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,57" />
+                  <mssgle:CubicBezierSegment
+                    Point1="0,57"
+                    Point2="0,61"
+                    Point3="4,61" />
+                  <mssgle:LineSegment
+                    End="20.5,61" />
+                  <mssgle:CubicBezierSegment
+                    Point1="20.5,61"
+                    Point2="24.5,61"
+                    Point3="24.5,65" />
+                  <mssgle:LineSegment
+                    End="24.5,114.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+      </GraphLayout>
+    </LayoutInfo>
+  </TaskHost>
+  <PipelineComponentMetadata
+    design-time-name="Package\Application Data Processing\Process Customer Minimum Order Amount\Customers Staging">
+    <Properties>
+      <Property>
+        <Name>DataSourceViewID</Name>
+      </Property>
+    </Properties>
+  </PipelineComponentMetadata>
+  <PipelineComponentMetadata
+    design-time-name="Package\Application Data Processing\Process Customer Minimum Order Amount\Minimum Order Amount">
+    <Properties>
+      <Property>
+        <Name>DataSourceViewID</Name>
+      </Property>
+      <Property>
+        <Name>TableInfoObjectType</Name>
+        <Value
+          type="q2:string">Table</Value>
+      </Property>
+    </Properties>
+  </PipelineComponentMetadata>
+  <TaskHost
+    design-time-name="Package\Application Data Processing\Process Customer SIC Codes">
+    <LayoutInfo>
+      <GraphLayout
+        Capacity="4" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:assembly="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:mssgm="clr-namespace:Microsoft.SqlServer.Graph.Model;assembly=Microsoft.SqlServer.Graph">
         <NodeLayout
           Size="123,42"
           Id="Package\Application Data Processing\Process Customer SIC Codes\SIC_Map"
@@ -25011,7 +25575,9 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==</BinaryItem>
             </mssgle:Curve>
           </EdgeLayout.Curve>
           <EdgeLayout.Labels>
-            <EdgeLabelCollection />
+            <mssgm:EdgeLabel
+              BoundingBox="0,0,0,0"
+              RelativePosition="Any" />
           </EdgeLayout.Labels>
         </EdgeLayout>
       </GraphLayout>
@@ -25121,39 +25687,17 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==</BinaryItem>
       <GraphLayout
         Capacity="8" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:assembly="http://schemas.microsoft.com/winfx/2006/xaml">
         <NodeLayout
-          Size="176,42"
+          Size="176,41.6"
           Id="Package\Process Data\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Customers\Sort by Division ASC"
           TopLeft="280,194" />
         <NodeLayout
-          Size="161,42"
-          Id="Package\Process Data\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Customers\KeithlinkAppData"
-          TopLeft="292,314" />
-        <NodeLayout
-          Size="143,42"
+          Size="143.2,41.6"
           Id="Package\Process Data\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Customers\FF_Customer"
           TopLeft="298,51" />
-        <EdgeLayout
-          Id="Package\Process Data\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Customers.Paths[Flat File Source Output]"
-          TopLeft="368.75,93">
-          <EdgeLayout.Curve>
-            <mssgle:Curve
-              StartConnector="{assembly:Null}"
-              EndConnector="0,101"
-              Start="0,0"
-              End="0,93.5">
-              <mssgle:Curve.Segments>
-                <mssgle:SegmentCollection
-                  Capacity="5">
-                  <mssgle:LineSegment
-                    End="0,93.5" />
-                </mssgle:SegmentCollection>
-              </mssgle:Curve.Segments>
-            </mssgle:Curve>
-          </EdgeLayout.Curve>
-          <EdgeLayout.Labels>
-            <EdgeLabelCollection />
-          </EdgeLayout.Labels>
-        </EdgeLayout>
+        <NodeLayout
+          Size="160.8,41.6"
+          Id="Package\Process Data\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Customers\KeithlinkAppData"
+          TopLeft="292,314" />
         <EdgeLayout
           Id="Package\Process Data\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Customers.Paths[Sort Output]"
           TopLeft="370.25,236">
@@ -25168,6 +25712,28 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==</BinaryItem>
                   Capacity="5">
                   <mssgle:LineSegment
                     End="0,70.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package\Process Data\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Customers.Paths[Flat File Source Output]"
+          TopLeft="368.75,93">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,101"
+              Start="0,0"
+              End="0,93.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,93.5" />
                 </mssgle:SegmentCollection>
               </mssgle:Curve.Segments>
             </mssgle:Curve>
@@ -25261,15 +25827,15 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==</BinaryItem>
     design-time-name="Package\Process Data\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Items">
     <LayoutInfo>
       <GraphLayout
-        Capacity="4" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:assembly="http://schemas.microsoft.com/winfx/2006/xaml">
-        <NodeLayout
-          Size="161,42"
-          Id="Package\Process Data\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Items\KeithlinkAppData"
-          TopLeft="435,302" />
+        Capacity="4" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:assembly="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:mssgm="clr-namespace:Microsoft.SqlServer.Graph.Model;assembly=Microsoft.SqlServer.Graph">
         <NodeLayout
           Size="127,42"
           Id="Package\Process Data\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Items\PRODCAT"
           TopLeft="288,214" />
+        <NodeLayout
+          Size="161,42"
+          Id="Package\Process Data\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Items\KeithlinkAppData"
+          TopLeft="435,302" />
         <EdgeLayout
           Id="Package\Process Data\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Items.Paths[OLE DB Source Output]"
           TopLeft="351.5,256">
@@ -25301,7 +25867,9 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==</BinaryItem>
             </mssgle:Curve>
           </EdgeLayout.Curve>
           <EdgeLayout.Labels>
-            <EdgeLabelCollection />
+            <mssgm:EdgeLabel
+              BoundingBox="0,0,0,0"
+              RelativePosition="Any" />
           </EdgeLayout.Labels>
         </EdgeLayout>
       </GraphLayout>
@@ -26043,11 +26611,11 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==</BinaryItem>
       <GraphLayout
         Capacity="4" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:assembly="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:mssgm="clr-namespace:Microsoft.SqlServer.Graph.Model;assembly=Microsoft.SqlServer.Graph">
         <NodeLayout
-          Size="NaN,NaN"
+          Size="159,42"
           Id="Package\Process Data\Process_ContractAndWorksheet\Import Contract Data\Product Spec\KeithlinkAppData"
           TopLeft="NaN,NaN" />
         <NodeLayout
-          Size="NaN,NaN"
+          Size="96,42"
           Id="Package\Process Data\Process_ContractAndWorksheet\Import Contract Data\Product Spec\FSE"
           TopLeft="NaN,NaN" />
         <EdgeLayout
@@ -26079,11 +26647,11 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==</BinaryItem>
       <GraphLayout
         Capacity="4" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:assembly="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:mssgm="clr-namespace:Microsoft.SqlServer.Graph.Model;assembly=Microsoft.SqlServer.Graph">
         <NodeLayout
-          Size="NaN,NaN"
+          Size="139,42"
           Id="Package\Process Data\Process_ContractAndWorksheet\Import Contract Data\Proprietary Item\FF_PropItem"
           TopLeft="NaN,NaN" />
         <NodeLayout
-          Size="NaN,NaN"
+          Size="199,42"
           Id="Package\Process Data\Process_ContractAndWorksheet\Import Contract Data\Proprietary Item\BEK_Commerce_AppData"
           TopLeft="NaN,NaN" />
         <EdgeLayout
@@ -26263,11 +26831,11 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==</BinaryItem>
       <GraphLayout
         Capacity="4" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:assembly="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:mssgm="clr-namespace:Microsoft.SqlServer.Graph.Model;assembly=Microsoft.SqlServer.Graph">
         <NodeLayout
-          Size="NaN,NaN"
+          Size="171,42"
           Id="Package\Process Data\Process_Invoices\Customer Invoice Import Tasks\Customer Terms\OLE DB Destination"
           TopLeft="NaN,NaN" />
         <NodeLayout
-          Size="NaN,NaN"
+          Size="151,42"
           Id="Package\Process Data\Process_Invoices\Customer Invoice Import Tasks\Customer Terms\Flat File Source"
           TopLeft="NaN,NaN" />
         <EdgeLayout
@@ -26297,15 +26865,15 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==</BinaryItem>
     design-time-name="Package\Process Data\Reference Tables\SIC Reference Table">
     <LayoutInfo>
       <GraphLayout
-        Capacity="4" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:assembly="http://schemas.microsoft.com/winfx/2006/xaml">
-        <NodeLayout
-          Size="153,42"
-          Id="Package\Process Data\Reference Tables\SIC Reference Table\Flat File Source"
-          TopLeft="455,107" />
+        Capacity="4" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:assembly="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:mssgm="clr-namespace:Microsoft.SqlServer.Graph.Model;assembly=Microsoft.SqlServer.Graph">
         <NodeLayout
           Size="173,42"
           Id="Package\Process Data\Reference Tables\SIC Reference Table\OLE DB Destination"
           TopLeft="440,259" />
+        <NodeLayout
+          Size="153,42"
+          Id="Package\Process Data\Reference Tables\SIC Reference Table\Flat File Source"
+          TopLeft="455,107" />
         <EdgeLayout
           Id="Package\Process Data\Reference Tables\SIC Reference Table.Paths[Flat File Source Output]"
           TopLeft="529,149">
@@ -26325,7 +26893,9 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==</BinaryItem>
             </mssgle:Curve>
           </EdgeLayout.Curve>
           <EdgeLayout.Labels>
-            <EdgeLabelCollection />
+            <mssgm:EdgeLabel
+              BoundingBox="0,0,0,0"
+              RelativePosition="Any" />
           </EdgeLayout.Labels>
         </EdgeLayout>
       </GraphLayout>

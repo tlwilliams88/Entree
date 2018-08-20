@@ -73,25 +73,32 @@ namespace KeithLink.Svc.Impl.Logic.SiteCatalog
         #endregion
 
         #region methods
-        private void AddCategoryImages(CategoriesReturn returnValue) {
-            foreach (Category c in returnValue.Categories) {
+        private void AddCategoryImages(CategoriesReturn returnValue)
+        {
+            foreach (Category c in returnValue.Categories)
+            {
                 c.CategoryImage = _categoryImageRepository.GetImageByCategory(c.Id).CategoryImage;
             }
         }
 
-        private void AddCategorySearchName(CategoriesReturn returnValue) {
-            foreach (Category c in returnValue.Categories) {
+        private void AddCategorySearchName(CategoriesReturn returnValue)
+        {
+            foreach (Category c in returnValue.Categories)
+            {
                 c.SearchName = GetCategorySearchName(c.Name);
                 foreach (SubCategory sc in c.SubCategories)
                     sc.SearchName = GetCategorySearchName(sc.Name);
             }
         }
 
-        private void AddItemHistoryToProduct(Product returnValue, UserSelectedContext catalogInfo) {
+        private void AddItemHistoryToProduct(Product returnValue, UserSelectedContext catalogInfo)
+        {
             List<OrderHistoryFile> history = GetLastFiveOrderHistory(catalogInfo, returnValue.ItemNumber);
 
-            foreach (OrderHistoryFile h in history) {
-                foreach (OrderHistoryDetail d in h.Details) {
+            foreach (OrderHistoryFile h in history)
+            {
+                foreach (OrderHistoryDetail d in h.Details)
+                {
                     if (returnValue.OrderHistory.ContainsKey(h.Header.DeliveryDate))
                         returnValue.OrderHistory[h.Header.DeliveryDate] += d.ShippedQuantity;
                     else
@@ -199,84 +206,114 @@ namespace KeithLink.Svc.Impl.Logic.SiteCatalog
         public void AddProductImageInfo(Product ret)
         {
             //ret.ProductImages = _imgRepository.GetImageList(ret.ItemNumber).ProductImages;
-            if (ret.Unfi != null) {
+            if (ret.Unfi != null)
+            {
                 ret.ProductImages = _imgRepository.GetImageList(ret.UPC, false).ProductImages;
-            } else {
+            }
+            else
+            {
                 ret.ProductImages = _imgRepository.GetImageList(ret.ItemNumber).ProductImages;
             }
         }
 
-        public string GetBranchId(string bekBranchId, string catalogType) {
-            if (catalogType.ToLower() != "bek") {
+        public string GetBranchId(string bekBranchId, string catalogType)
+        {
+            if (catalogType.ToLower() != "bek")
+            {
                 //Go get the code for this branch, hard code for now
                 //filteredList= listOfThings.Where(x => x.BranchId == "FOK");
-                List<ExportExternalCatalog> externalCatalog = _externalCatalogRepository.ReadExternalCatalogs()
-                                                                                        .Where(x => x.Type.Equals(catalogType, StringComparison.InvariantCultureIgnoreCase))
-                                                                                        .ToList();
+                List<ExportExternalCatalog> externalCatalog = _externalCatalogRepository
+                    .ReadExternalCatalogs()
+                    .Where(x => x.Type.Equals(catalogType, StringComparison.InvariantCultureIgnoreCase))
+                    .ToList();
 
-                List<ExportExternalCatalog> filteredList = externalCatalog.Where(x => bekBranchId.Equals(x.BekBranchId.Trim(), StringComparison.InvariantCultureIgnoreCase)).ToList();
+                List<ExportExternalCatalog> filteredList = externalCatalog
+                    .Where(x => bekBranchId.Equals(x.BekBranchId.Trim(), StringComparison.InvariantCultureIgnoreCase))
+                    .ToList();
 
-
-                if (filteredList.Count > 0) {
+                if (filteredList.Count > 0)
+                {
                     return filteredList[0].CatalogId;
-                } else {
+                }
+                else
+                {
                     return bekBranchId;
                 }
-            } else {
+            }
+            else
+            {
                 return bekBranchId;
             }
         }
 
-        public string GetCatalogTypeFromCatalogId(string catalogId) {
+        public string GetCatalogTypeFromCatalogId(string catalogId)
+        {
             //Go get the code for this branch, hard code for now
             //filteredList= listOfThings.Where(x => x.BranchId == "FOK");
-            List<ExportExternalCatalog> externalCatalog = _externalCatalogRepository.ReadExternalCatalogs()
-                                                                                    .Where(x => catalogId.Equals(x.CatalogId, StringComparison.InvariantCultureIgnoreCase))
-                                                                                    .ToList();
+            List<ExportExternalCatalog> externalCatalog = _externalCatalogRepository
+                .ReadExternalCatalogs()
+                .Where(x => catalogId.Equals(x.CatalogId, StringComparison.InvariantCultureIgnoreCase))
+                .ToList();
 
-            if (externalCatalog.Count > 0) {
-                if (externalCatalog[0].Type != null) {
+            if (externalCatalog.Count > 0)
+            {
+                if (externalCatalog[0].Type != null)
+                {
                     return externalCatalog[0].Type.ToString();
-                } else {
+                }
+                else
+                {
                     return catalogId;
                 }
-            } else {
+            }
+            else
+            {
                 return "BEK";
             }
         }
 
         public CategoriesReturn GetCategories(int from, int size, string catalogType)
         {
-            CategoriesReturn categoriesReturn = _catalogCacheRepository.GetItem<CategoriesReturn>(CACHE_GROUPNAME, CACHE_PREFIX, CACHE_NAME, GetCategoriesCacheKey(from, size, catalogType));
-            if (categoriesReturn == null) {
+            CategoriesReturn categoriesReturn = _catalogCacheRepository
+                .GetItem<CategoriesReturn>(CACHE_GROUPNAME, CACHE_PREFIX, CACHE_NAME, GetCategoriesCacheKey(from, size, catalogType));
+
+            if (categoriesReturn == null)
+            {
                 categoriesReturn = _catalogRepository.GetCategories(from, size, catalogType);
                 AddCategoryImages(categoriesReturn);
                 AddCategorySearchName(categoriesReturn);
                 _catalogCacheRepository.AddItem<CategoriesReturn>(CACHE_GROUPNAME, CACHE_PREFIX, CACHE_NAME, GetCategoriesCacheKey(from, size, catalogType), TimeSpan.FromHours(2), categoriesReturn);
             }
+
             return categoriesReturn;
         }
 
-        private string GetCategoriesCacheKey(int from, int size, string catalogType) {
+        private string GetCategoriesCacheKey(int from, int size, string catalogType)
+        {
             return String.Format("CategoriesReturn_{0}_{1}_{2}", from, size, catalogType);
         }
 
-        private string GetCategorySearchName(string categoryName) {
+        private string GetCategorySearchName(string categoryName)
+        {
             // remove ',' and '.', replace '&' with 'and', replace white space and / with _, lowercase
             if (!String.IsNullOrEmpty(categoryName))
                 return categoryName.Replace("&", "and").Replace(",", "").Replace(" ", "_").Replace("/", "_").Replace(".", "").ToLower();
+
             return categoryName;
         }
 
-        public List<Division> GetDivisions() {
+        public List<Division> GetDivisions()
+        {
             return _divisionLogic.GetDivisions();
         }
 
-        public List<String> GetExternalBranchIds(string bekBranchId) {
-            return _externalCatalogRepository.ReadExternalCatalogs()
-                                             .Where(x => bekBranchId.Equals(x.BekBranchId, StringComparison.InvariantCultureIgnoreCase))
-                                             .Select(c => c.CatalogId)
-                                             .ToList();
+        public List<String> GetExternalBranchIds(string bekBranchId)
+        {
+            return _externalCatalogRepository
+                .ReadExternalCatalogs()
+                .Where(x => bekBranchId.Equals(x.BekBranchId, StringComparison.InvariantCultureIgnoreCase))
+                .Select(c => c.CatalogId)
+                .ToList();
         }
 
         private string BlockSpecialFiltersInFacets(string facetFilters)
@@ -297,43 +334,51 @@ namespace KeithLink.Svc.Impl.Logic.SiteCatalog
             return ret.ToString();
         }
 
-        public Dictionary<string, int> GetHitsForCatalogs(UserSelectedContext catalogInfo, string search, SearchInputModel searchModel) {
-            var newSearchModel = new SearchInputModel();
-            newSearchModel.CatalogType = searchModel.CatalogType;
-            newSearchModel.Dept = searchModel.Dept;
-            newSearchModel.Facets = BlockSpecialFiltersInFacets(searchModel.Facets);
-            newSearchModel.From = searchModel.From;
-            newSearchModel.SDir = searchModel.SDir;
-            newSearchModel.SField = searchModel.SField;
-            newSearchModel.Size = 1; //This will minimize number returned from elastic search to minimize processing for only count
-
+        public Dictionary<string, int> GetHitsForCatalogs(UserSelectedContext catalogInfo, string search, SearchInputModel searchModel)
+        {
             List<ExportExternalCatalog> externalCatalog = _externalCatalogRepository.ReadExternalCatalogs().ToList();
             var listOfCatalogs = externalCatalog.Select(x => x.Type).Distinct().ToList();
             listOfCatalogs.Add("BEK");
 
-            var baseCatalogTypeIndex = listOfCatalogs.IndexOf(newSearchModel.CatalogType);
+            var baseCatalogTypeIndex = listOfCatalogs.IndexOf(searchModel.CatalogType);
             if (baseCatalogTypeIndex != -1)
                 listOfCatalogs.RemoveAt(baseCatalogTypeIndex);
 
-            var returnDict = new Dictionary<string, int>();
-            foreach (var catalog in listOfCatalogs) {
+            var nonSortingSearchModel = new SearchInputModel
+            {
+                CatalogType = searchModel.CatalogType,
+                Dept = searchModel.Dept,
+                Facets = BlockSpecialFiltersInFacets(searchModel.Facets),
+                From = searchModel.From,
+                Size = 1,  //This will minimize number returned from elastic search to minimize processing for only count
+            };
+
+            var hitCounts = new Dictionary<string, int>();
+            foreach (var catalog in listOfCatalogs)
+            {
                 var catalogTempInfo = new UserSelectedContext();
                 catalogTempInfo.CustomerId = catalogInfo.CustomerId;
                 catalogTempInfo.BranchId = GetBranchId(catalogInfo.BranchId, catalog);
-                returnDict.Add(catalog.ToLower(), _catalogRepository.GetHitsForSearchInIndex(catalogTempInfo, search, newSearchModel));
+
+                var hitCount = _catalogRepository.GetHitsForSearchInIndex(catalogTempInfo, search, nonSortingSearchModel);
+                hitCounts.Add(catalog.ToLower(), hitCount);
             }
 
-            return returnDict;
+            return hitCounts;
         }
 
-        public List<OrderHistoryFile> GetLastFiveOrderHistory(UserSelectedContext catalogInfo, string itemNumber) {
+        public List<OrderHistoryFile> GetLastFiveOrderHistory(UserSelectedContext catalogInfo, string itemNumber)
+        {
             List<OrderHistoryFile> returnValue = new List<OrderHistoryFile>();
 
             List<EF.OrderHistoryHeader> history = _orderHeaderRepo.GetLastFiveOrdersByItem(catalogInfo.BranchId, catalogInfo.CustomerId, itemNumber);
 
-            foreach(EF.OrderHistoryHeader h in history) {
-                OrderHistoryFile root = new OrderHistoryFile() {
-                    Header = new OrderHistoryHeader() {
+            foreach(EF.OrderHistoryHeader h in history)
+            {
+                OrderHistoryFile root = new OrderHistoryFile()
+                {
+                    Header = new OrderHistoryHeader()
+                    {
                         BranchId = h.BranchId,
                         CustomerNumber = h.CustomerNumber,
                         InvoiceNumber = h.CustomerNumber,
@@ -352,23 +397,29 @@ namespace KeithLink.Svc.Impl.Logic.SiteCatalog
                     }
                 };
 
-                root.Details.AddRange(_orderDetailRepo.Read(d => d.BranchId == h.BranchId &&
-                                                                 d.OrderHistoryHeader.Id == h.Id &&
-                                                                 d.ItemNumber == itemNumber)
-                                                      .Select(x => new OrderHistoryDetail() {
-                                                          LineNumber = x.LineNumber,
-                                                          ItemNumber = x.ItemNumber,
-                                                          OrderQuantity = x.OrderQuantity,
-                                                          ShippedQuantity = x.ShippedQuantity
-                                                      })
-                                                      .ToList());
+                var orderHistoryDetails = _orderDetailRepo
+                    .Read(d => d.BranchId == h.BranchId &&
+                               d.OrderHistoryHeader.Id == h.Id &&
+                               d.ItemNumber == itemNumber)
+                    .Select(x => new OrderHistoryDetail()
+                    {
+                        LineNumber = x.LineNumber,
+                        ItemNumber = x.ItemNumber,
+                        OrderQuantity = x.OrderQuantity,
+                        ShippedQuantity = x.ShippedQuantity
+                    })
+                    .ToList();
+
+                root.Details.AddRange(orderHistoryDetails);
+
                 returnValue.Add(root);
             }
 
             return returnValue;
         }
 
-        public Product GetProductById(UserSelectedContext catalogInfo, string id, UserProfile profile, string catalogType) {
+        public Product GetProductById(UserSelectedContext catalogInfo, string id, UserProfile profile, string catalogType)
+        {
             var bekBranchId = catalogInfo.BranchId;
             string catalogId = GetBranchId( catalogInfo.BranchId, catalogType );
             catalogInfo.BranchId = catalogId;  
@@ -390,7 +441,8 @@ namespace KeithLink.Svc.Impl.Logic.SiteCatalog
             pricingInfo = _priceLogic.GetPrices(bekBranchId, catalogInfo.CustomerId, DateTime.Now.AddDays(1), new List<Product>() { ret });
             //}
 
-            if (pricingInfo != null && pricingInfo.Prices.Where(p => p.ItemNumber.Equals(ret.ItemNumber)).Any()) {
+            if (pricingInfo != null && pricingInfo.Prices.Where(p => p.ItemNumber.Equals(ret.ItemNumber)).Any())
+            {
                 var price = pricingInfo.Prices.Where(p => p.ItemNumber.Equals(ret.ItemNumber)).First();
                 ret.CasePrice = price.CasePrice.ToString();
                 ret.CasePriceNumeric = price.CasePrice;
@@ -431,20 +483,23 @@ namespace KeithLink.Svc.Impl.Logic.SiteCatalog
             return ret;
         }
 
-        public Product GetProductByIdOrUPC(UserSelectedContext catalogInfo, string idorupc, UserProfile profile) {
+        public Product GetProductByIdOrUPC(UserSelectedContext catalogInfo, string idorupc, UserProfile profile)
+        {
             Product ret = null;
             if (idorupc.Length <= 6)
                 ret = _catalogRepository.GetProductById(catalogInfo.BranchId, idorupc);
-            else {
+            else
+            {
                 //Try to find by UPC
                 ProductsReturn products = GetProductsBySearch(catalogInfo, idorupc, new SearchInputModel() { From = 0, Size = 10, SField = "upc" }, profile);
-                foreach (Product p in products.Products) {
-                    if (p.UPC == idorupc) {
+                foreach (Product p in products.Products)
+                {
+                    if (p.UPC == idorupc)
+                    {
                         return p;
                     }
                 }
             }
-
 
             if (ret == null)
                 return null;
@@ -459,7 +514,8 @@ namespace KeithLink.Svc.Impl.Logic.SiteCatalog
             //else
             //    pricingInfo = _priceLogic.GetNonBekItemPrices(catalogInfo.BranchId, catalogInfo.CustomerId, GetCatalogTypeFromCatalogId(ret.CatalogId), DateTime.Now.AddDays(1), new List<Product>() { ret });
 
-            if (pricingInfo != null && pricingInfo.Prices.Where(p => p.ItemNumber.Equals(ret.ItemNumber)).Any()) {
+            if (pricingInfo != null && pricingInfo.Prices.Where(p => p.ItemNumber.Equals(ret.ItemNumber)).Any())
+            {
                 var price = pricingInfo.Prices.Where(p => p.ItemNumber.Equals(ret.ItemNumber)).First();
                 ret.CasePrice = price.CasePrice.ToString();
                 ret.CasePriceNumeric = price.CasePrice;
@@ -483,10 +539,12 @@ namespace KeithLink.Svc.Impl.Logic.SiteCatalog
             if ((searchModel.CatalogType.Equals(Constants.CATALOG_UNFI, StringComparison.InvariantCultureIgnoreCase)) |
                 (searchModel.CatalogType.Equals(Constants.CATALOG_UNFIEAST, StringComparison.InvariantCultureIgnoreCase)))
                 categoryName = categoryName.ToUpper();
+
             return categoryName;
         }
 
-        public ProductsReturn GetProductsByIds(string branch, List<string> ids) {
+        public ProductsReturn GetProductsByIds(string branch, List<string> ids)
+        {
             var products = new ProductsReturn() { Products = new List<Product>() };
 
             var branches = GetExternalBranchIds(branch);
@@ -525,7 +583,8 @@ namespace KeithLink.Svc.Impl.Logic.SiteCatalog
 
             returnValue = _catalogRepository.GetProductsByItemNumbers(context.BranchId, itemNumbers, searchModel);
 
-            foreach (Product product in returnValue.Products) {
+            foreach (Product product in returnValue.Products)
+            {
                 AddProductImageInfo(product);
             }
 
@@ -534,14 +593,17 @@ namespace KeithLink.Svc.Impl.Logic.SiteCatalog
             return returnValue;
         }
 
-        public ProductsReturn GetProductsByIdsWithPricing(UserSelectedContext catalogInfo, List<string> ids) {
+        public ProductsReturn GetProductsByIdsWithPricing(UserSelectedContext catalogInfo, List<string> ids)
+        {
             int totalProcessed = 0;
             var products = new ProductsReturn() { Products = new List<Product>() };
 
-            while (totalProcessed < ids.Count) {
+            while (totalProcessed < ids.Count)
+            {
                 var tempProducts = _catalogRepository.GetProductsByIds(catalogInfo.BranchId, ids.Skip(totalProcessed).Take(500).Distinct().ToList());
 
-                if (tempProducts != null && tempProducts.Products != null && tempProducts.Products.Count > 0) {
+                if (tempProducts != null && tempProducts.Products != null && tempProducts.Products.Count > 0)
+                {
                     products.Count += tempProducts.Count;
                     products.TotalCount += tempProducts.TotalCount;
                     products.Products.AddRange(tempProducts.Products);
@@ -558,9 +620,9 @@ namespace KeithLink.Svc.Impl.Logic.SiteCatalog
             return products;
         }
 
-        public ProductsReturn GetProductsBySearch(UserSelectedContext catalogInfo, string search, SearchInputModel searchModel, UserProfile profile) {
+        public ProductsReturn GetProductsBySearch(UserSelectedContext catalogInfo, string search, SearchInputModel searchModel, UserProfile profile)
+        {
             ProductsReturn ret;
-            var catalogCounts = GetHitsForCatalogs(catalogInfo, search, searchModel);
             var tempCatalogInfo = new UserSelectedContext();
             tempCatalogInfo.CustomerId = catalogInfo.CustomerId;
             tempCatalogInfo.BranchId = GetBranchId(catalogInfo.BranchId, searchModel.CatalogType);
@@ -568,19 +630,19 @@ namespace KeithLink.Svc.Impl.Logic.SiteCatalog
             List<string> specialFilters = _catalogRepository.SeekSpecialFilters(searchModel.Facets);
 
             // special handling for price sorting
-            if (searchModel.SField == "caseprice" || searchModel.SField == "unitprice")
+            if (searchModel.SField == "caseprice" || 
+                searchModel.SField == "unitprice")
             {
-                ret = _catalogRepository.GetProductsBySearch(tempCatalogInfo,
-                                                             search,
-                                                             new SearchInputModel()
-                                                             {
-                                                                 Facets = searchModel.Facets,
-                                                                 From = searchModel.From,
-                                                                 Size = Configuration.MaxSortByPriceItemCount,
-                                                                 Dept = searchModel.Dept,
-                                                                 CatalogType = searchModel.CatalogType
-                                                             }
-                                                            );
+                var nonSortingSearchModel = new SearchInputModel()
+                {
+                    CatalogType = searchModel.CatalogType,
+                    Dept = searchModel.Dept,
+                    Facets = searchModel.Facets,
+                    From = searchModel.From,
+                    Size = Configuration.MaxSortByPriceItemCount,
+                };
+
+                ret = _catalogRepository.GetProductsBySearch(tempCatalogInfo, search, nonSortingSearchModel);
             }
             else if (specialFilters.Contains("deviatedprices"))
             {
@@ -592,7 +654,8 @@ namespace KeithLink.Svc.Impl.Logic.SiteCatalog
             }
 
             AddPricingInfo(ret, catalogInfo, searchModel);
-            ret.CatalogCounts = catalogCounts;
+
+            ret.CatalogCounts = GetHitsForCatalogs(catalogInfo, search, searchModel);
 
             foreach (var product in ret.Products)
             {

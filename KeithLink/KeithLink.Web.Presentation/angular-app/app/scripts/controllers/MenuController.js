@@ -22,7 +22,7 @@ angular.module('bekApp')
   'localStorageService', 'CategoryService', 
   'BranchService', 'ConfigSettingsService',
   'DocumentService',
-  'UserProfileService',
+  'UserProfileService', 'SessionRecordingService',
     function (
       $scope, $timeout, $rootScope, $modalStack, $state, $q, $log, $window,  // built in angular services
       $modal,   // ui-bootstrap library
@@ -41,7 +41,7 @@ angular.module('bekApp')
       BranchService,
       ConfigSettingsService,
       DocumentService,
-      UserProfileService
+      UserProfileService, SessionRecordingService
     ) {
 
   $scope.$state = $state;
@@ -63,6 +63,12 @@ angular.module('bekApp')
   // define search term in user bar so it can be cleared in the SearchController after a user searches
   $scope.userBar = {};
   $scope.userBar.universalSearchTerm = '';
+  $scope.userBar.userNotificationsCount = NotificationService.userNotificationsCount;
+
+  $scope.isSidebarOpen = false;
+
+  $scope.flipsnackUrl = ENV.flipsnackUrl;
+
   $scope.userGuideUrl = '/Assets/help/User_Guide.pdf';
   $scope.systemUpdates = NotificationService.systemUpdates;
   ENV.username = localStorageService.get('userName');
@@ -102,10 +108,6 @@ angular.module('bekApp')
   // KBIT ACCESS
   var usernameToken = $scope.userProfile.usernametoken;
   $scope.cognosUrl = ENV.cognosUrl + '?username=' + usernameToken;
-
-  $scope.userBar.userNotificationsCount = NotificationService.userNotificationsCount;
-  $scope.specialCatalogOpen = false;
-  $scope.showSpecialtyCatalogs = true;
 
   if (AccessService.isOrderEntryCustomer()) {
 
@@ -305,17 +307,6 @@ angular.module('bekApp')
     }
   };
 
-  $scope.goToAdminLandingPage = function() {
-    // internal bek admin user
-    if ($scope.canViewCustomerGroups) {
-      $state.go('menu.admin.customergroup');
-
-    // external owner admin
-    } else {
-      $state.go('menu.admin.customergroupdashboard', { customerGroupId: null });
-    }
-  };
-
   function refreshPage() {
     location.replace('#/home/');
     location.reload();
@@ -331,15 +322,11 @@ angular.module('bekApp')
   $scope.changeCustomerLocation = function(selectedUserContext) {
     LocalStorage.setTempContext(selectedUserContext);
     LocalStorage.setSelectedCustomerInfo(selectedUserContext);
+
+    SessionRecordingService.tagCustomer(LocalStorage.getCustomerNumber());
+
     $state.go('menu.home');
     refreshPage();
-  };
-
-  //Submenu for specialty catalogs
-  $scope.toggleSpecialCatalogSubmenu = function() {
-    if ($scope.$state !== undefined) {
-      $scope.specialCatalogOpen = !$scope.specialCatalogOpen;
-    }
   };
 
   $scope.toggleSidebarMenu = function() {
@@ -404,18 +391,6 @@ angular.module('bekApp')
     }, function (error) {
       $log.debug('Scanning failed: ' + error);
     });
-  };
-
-  // Menumax
-  $scope.redirectToMenumax = function() {
-    UserProfileService.generateMenuMaxAuthToken().then(function(resp) {
-
-      var payload = '{"email":"' + $scope.userProfile.emailaddress + '",' + '"entreeSSOToken":"' + resp + '"}';
-      var url = ENV.menuMaxUrl;
-
-      $scope.openExternalLinkWithPost(url, "_blank", payload);
-
-    })
   };
 
   /**********

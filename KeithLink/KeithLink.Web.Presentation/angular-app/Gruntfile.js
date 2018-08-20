@@ -335,7 +335,7 @@ module.exports = function (grunt) {
           inspectletDebug: {
               files: [{
                 expand: true,
-                cwd: '<%= yeoman.app %>/inspectlet/inspectlet',
+                cwd: '<%= yeoman.app %>/inspectlet/inspectlet-dev',
                 dest: '<%= yeoman.dev %>/inspectlet',
                 src: '**/inspectlet.js'
               }]
@@ -343,7 +343,7 @@ module.exports = function (grunt) {
           inspectletTest: {
               files: [{
                 expand: true,
-                cwd: '<%= yeoman.app %>/inspectlet/inspectlet',
+                cwd: '<%= yeoman.app %>/inspectlet/inspectlet-test',
                 dest: '<%= yeoman.dist %>/inspectlet',
                 src: '**/inspectlet.js'
               }]
@@ -471,6 +471,7 @@ module.exports = function (grunt) {
                     googleAnalytics: '<%= config.environment.debug.googleAnalytics.web %>',
                     cognosUrl: '<%= config.environment.debug.cognosUrl %>',
                     menuMaxUrl: '<%= config.environment.debug.menuMaxUrl %>',
+                    flipsnackUrl: '<%= config.environment.debug.flipsnackUrl %>',
                     username: 'sabroussard@somecompany.com',
                     password: 'L1ttleStev1e',
                     mobileApp: '<%= config.environment.debug.mobileApp %>',
@@ -506,6 +507,7 @@ module.exports = function (grunt) {
                     googleAnalytics: '<%= config.environment.dev.googleAnalytics.web %>',
                     cognosUrl: '<%= config.environment.dev.cognosUrl %>',
                     menuMaxUrl: '<%= config.environment.dev.menuMaxUrl %>',
+                    flipsnackUrl: '<%= config.environment.dev.flipsnackUrl %>',
                     username: 'sabroussard@somecompany.com',
                     password: 'L1ttleStev1e',
                     mobileApp: false,
@@ -525,6 +527,7 @@ module.exports = function (grunt) {
                     googleAnalytics: '<%= config.environment.test.googleAnalytics.web %>',
                     cognosUrl: '<%= config.environment.test.cognosUrl %>',
                     menuMaxUrl: '<%= config.environment.test.menuMaxUrl %>',
+                    flipsnackUrl: '<%= config.environment.test.flipsnackUrl %>',
                     mobileApp: false,
                     lastListStorageTimeout: 48,
                     enableDebugInfo: false
@@ -542,6 +545,7 @@ module.exports = function (grunt) {
                     googleAnalytics: '<%= config.environment.prod.googleAnalytics.web %>',
                     cognosUrl: '<%= config.environment.prod.cognosUrl %>',
                     menuMaxUrl: '<%= config.environment.prod.menuMaxUrl %>',
+                    flipsnackUrl: '<%= config.environment.prod.flipsnackUrl %>',
                     mobileApp: false,
                     lastListStorageTimeout: 48,
                     enableDebugInfo: false

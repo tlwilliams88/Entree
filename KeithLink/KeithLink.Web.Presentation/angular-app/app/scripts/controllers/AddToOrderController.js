@@ -2,9 +2,9 @@
 
 angular.module('bekApp')
   .controller('AddToOrderController', ['$rootScope', '$scope', '$state', '$modal', '$q', '$stateParams', '$filter', '$timeout', '$interval', 'blockUI', 
-   'lists', 'selectedList', 'selectedCart', 'Constants', 'CartService', 'ListService', 'OrderService', 'UtilityService', 'DateService', 'PricingService', 'ListPagingModel', 'LocalStorage', '$analytics', 'toaster', 'ENV', 'SessionService', 'ProductService',
+   'lists', 'selectedList', 'selectedCart', 'Constants', 'CartService', 'ListService', 'OrderService', 'UtilityService', 'DateService', 'PricingService', 'ListPagingModel', 'LocalStorage', '$analytics', 'toaster', 'ENV', 'SessionService', 'ProductService', 'SessionRecordingService',
     function ($rootScope, $scope, $state, $modal, $q, $stateParams, $filter, $timeout, $interval, blockUI, lists, selectedList, selectedCart, Constants,
-     CartService, ListService, OrderService, UtilityService, DateService, PricingService, ListPagingModel, LocalStorage, $analytics, toaster, ENV, SessionService, ProductService) {
+     CartService, ListService, OrderService, UtilityService, DateService, PricingService, ListPagingModel, LocalStorage, $analytics, toaster, ENV, SessionService, ProductService, SessionRecordingService) {
 
       $scope.$on('$stateChangeStart', function(event, toState, toParams, fromState, fromParams){
           var toCart = (toState.name == 'menu.cart.items' || fromState.name == 'menu.cart.items'),
@@ -329,7 +329,8 @@ angular.module('bekApp')
       $scope.filteredCartItems = $filter('filter')($scope.selectedCart.items, {isShown:'!true'});
     }
 
-  $scope.pagingPageSize = LocalStorage.getPageSize();
+    $scope.pagingPageSize = LocalStorage.getPageSize();
+
   $scope.pageChanged = function(page, visited) {
     $scope.currentPage = page.currentPage;
     $scope.startingPoint = ((page.currentPage - 1)*parseInt($scope.pagingPageSize));
@@ -354,7 +355,10 @@ angular.module('bekApp')
       if(!foundStartPoint && visited[0].items.length > 0){
         appendListItems(visited[0].items);
       }
-       blockUI.stop();
+
+      listPagingModel.setPosition($scope.startingPoint);
+
+      blockUI.stop();
     }
   };
 
@@ -400,11 +404,12 @@ angular.module('bekApp')
       }
 
       $scope.startingPoint = 0;
-      $scope.visitedPages = [];
-      $scope.visitedPages.push({page: 1, items: $scope.selectedList.items});
       $scope.endPoint = parseInt($scope.pagingPageSize);
-      $scope.setCurrentPageAfterRedirect();
       $scope.setRange();
+
+      $scope.visitedPages = [];
+      $scope.visitedPages.push({ page: 1, items: $scope.selectedList.items });
+      $scope.setCurrentPageAfterRedirect();
 
       SessionService.sourceProductList.push('ATO: ' + $scope.selectedList.name);
 
@@ -509,7 +514,6 @@ angular.module('bekApp')
             });
           }
 
-          $scope.visitedPages.push({page: 1, items: selectedList.items});
           setSelectedList(selectedList);
           $scope.setCartItemsDisplayFlag();
           if($stateParams.cartId !== 'New' && $stateParams.searchTerm){
@@ -674,10 +678,9 @@ angular.module('bekApp')
         } else {
           sortOrder = 'asc';
         }
-        $scope.sort = [{
-          field: sortBy,
-          order: sortOrder
-        }];
+
+        $scope.sort = [{ field: sortBy, order: sortOrder }];
+
         clearItemWatches(watches);
         $stateParams.listItems = undefined;
         listPagingModel.sortListItems($scope.sort);
@@ -1029,6 +1032,8 @@ angular.module('bekApp')
 
       calculatePieces($scope.selectedCart.items);
       
+      SessionRecordingService.tagAddRecommendedItem('CartIQ;' + item.itemnumber);
+    
     }
 
     //Function includes support for saving items while filtering and saving cart when changing ship date
@@ -1112,7 +1117,18 @@ angular.module('bekApp')
     function refreshSubtotal(cartItems, listItems) {
       $scope.combinedItems = getCombinedCartAndListItems(cartItems, listItems);
       $scope.selectedCart.subtotal = PricingService.getSubtotalForItems($scope.combinedItems);
+      validateCart();
+
       return $scope.selectedCart.subtotal;
+    }
+
+    function validateCart() {
+      $scope.cartSubmissionApproved = $scope.selectedCart.subtotal > 0 ? $scope.selectedCart.approval.approvedamount <= $scope.selectedCart.subtotal : false;
+      $scope.selectedCart.approval.remainingamount = $scope.selectedCart.approval.approvedamount - $scope.selectedCart.subtotal;
+
+      if($scope.cartSubmissionApproved == false && $scope.selectedCart.approval.message == null) {
+        $scope.selectedCart.approval.message = "The cart total does not meet or exceed the minimum approved amount.  Please contact your DSR for more information.";
+      }
     }
 
     // update quantity from on hand amount and par level

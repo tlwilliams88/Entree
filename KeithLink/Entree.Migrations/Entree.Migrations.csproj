@@ -162,6 +162,8 @@
     <Compile Include="Migrations\v2018.07.00\Migration0079.cs" />
     <Compile Include="Migrations\v2018.07.00\Migration0078.cs" />
     <Compile Include="Migrations\v2018.07.00\Migration0076.cs" />
+    <Compile Include="Migrations\v2018.08.00\Migration0080.cs" />
+    <Compile Include="Migrations\v2018.08.00\Migration0081.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -327,6 +329,7 @@
     <Content Include="Scripts\AppData\Configuration\Tables\AppSettings\PostDeployment\jjdevonshire.local.configuration.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="Scripts\AppData\Configuration\Tables\AppSettings\PostDeployment\justin.local.configuration.sql" />
     <Content Include="Scripts\AppData\Configuration\Tables\AppSettings\PostDeployment\matt.local.configuration.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
@@ -406,6 +409,8 @@
     <Content Include="Scripts\AppData\Customers\Tables\GrowthAndRecoveryProductGroups\GrowthAndRecoveryProductGroups_0070_2018.05.00_up.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="Scripts\AppData\Customers\Tables\MinimumOrderAmount\MinimumOrderAmount_0080_2018.08.00_down.sql" />
+    <Content Include="Scripts\AppData\Customers\Tables\MinimumOrderAmount\MinimumOrderAmount_0080_2018.08.00_up.sql" />
     <Content Include="Scripts\AppData\Customers\Tables\RecommendedItemContexts\Indexes\IX_RecommendedItemContexts_0067_2018.04.00_down.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
@@ -833,6 +838,8 @@
     <Content Include="Scripts\AppData\ETL\Tables\Staging_Customer\Staging_Customer_0001_0001.11.00_up.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="Scripts\AppData\ETL\Tables\Staging_Customer\Staging_Customer_0080_2018.08.00_down.sql" />
+    <Content Include="Scripts\AppData\ETL\Tables\Staging_Customer\Staging_Customer_0080_2018.08.00_up.sql" />
     <Content Include="Scripts\AppData\ETL\Tables\Staging_Departments\Staging_Departments_0013_2017.02.00_down.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
@@ -2200,6 +2207,12 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Scripts\AppData\Orders\Tables\OrderHistoryHeader\OrderHistoryHeader_0001_0001.11.00_up.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Scripts\AppData\Orders\Tables\OrderHistoryHeader\OrderHistoryHeader_0081_2018.08.00_down.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Scripts\AppData\Orders\Tables\OrderHistoryHeader\OrderHistoryHeader_0081_2018.08.00_up.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Scripts\AppData\Orders\Tables\RecommendedItemsOrderedAnalytics\RecommendedItemsOrderedAnalytics_0073_2018.05.00_down.sql">

@@ -85,7 +85,7 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic {
             public void AnyCall_ProducesStream() {
                 // arrange
                 MockDependents mockDependents = new MockDependents();
-                IShoppingCartLogic testunit = MakeTestsLogic(true, ref mockDependents);
+                IShoppingCartLogic testunit = MakeTestsLogic(false, ref mockDependents);
                 UserProfile fakeUser = new UserProfile();
                 UserSelectedContext testContext = new UserSelectedContext {
                     BranchId = "FUT",
@@ -820,6 +820,8 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic {
 
             public Mock<IOrderedItemsFromListRepository> OrderedItemsFromListRepository { get; set; }
 
+            public Mock<IRecommendedItemsOrderedAnalyticsRepository> RecommendedItemsOrderedAnalyticsRepository { get; set; }
+
             public static void RegisterInContainer(ref ContainerBuilder cb) {
                 cb.RegisterInstance(MakeICacheRepository().Object)
                   .As<ICacheRepository>();
@@ -855,6 +857,8 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic {
                   .As<IOrderedFromListRepository>();
                 cb.RegisterInstance(MakeIOrderedItemsFromListRepository().Object)
                   .As<IOrderedItemsFromListRepository>();
+                cb.RegisterInstance(MakeIRecommendedItemsOrderedAnalyticsRepository().Object)
+                  .As<IRecommendedItemsOrderedAnalyticsRepository>();
             }
 
             public static Mock<ICacheRepository> MakeICacheRepository() {
@@ -1003,6 +1007,16 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic {
 
                 return mock;
             }
+
+            public static Mock<IRecommendedItemsOrderedAnalyticsRepository> MakeIRecommendedItemsOrderedAnalyticsRepository()
+            {
+                Mock<IRecommendedItemsOrderedAnalyticsRepository> mock = new Mock<IRecommendedItemsOrderedAnalyticsRepository>();
+
+                mock.Setup(f => f.GetOrderSources()).Returns(new List<string>());
+
+                return mock;
+            }
+
         }
 
         private static IShoppingCartLogic MakeTestsLogic(bool useAutoFac, ref MockDependents mockDependents) {
@@ -1034,6 +1048,7 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic {
             mockDependents.PriceLogic = MockDependents.MakeIPriceLogic();
             mockDependents.PurchaseOrderRepository = MockDependents.MakeIPurchaseOrderRepository();
             mockDependents.UserActiveCartLogic = MockDependents.MakeIUserActiveCartLogic();
+            mockDependents.RecommendedItemsOrderedAnalyticsRepository = MockDependents.MakeIRecommendedItemsOrderedAnalyticsRepository();
 
             ShoppingCartLogicImpl testunit = new ShoppingCartLogicImpl(mockDependents.BasketRepository.Object, mockDependents.CatalogLogic.Object, mockDependents.PriceLogic.Object,
                                                                        mockDependents.OrderQueueLogic.Object, mockDependents.PurchaseOrderRepository.Object, mockDependents.GenericQueueRepository.Object,
@@ -1041,7 +1056,7 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic {
                                                                        mockDependents.CustomerRepository.Object,
                                                                        mockDependents.AuditLogRepository.Object, mockDependents.NotesListLogic.Object, mockDependents.UserActiveCartLogic.Object,
                                                                        mockDependents.ExternalCatalogRepository.Object, mockDependents.CacheRepository.Object, mockDependents.EventLogRepository.Object,
-                                                                       mockDependents.OrderedFromListRepository.Object, null);
+                                                                       mockDependents.OrderedFromListRepository.Object, mockDependents.RecommendedItemsOrderedAnalyticsRepository.Object);
             return testunit;
         }
         #endregion Setup

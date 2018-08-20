@@ -70,7 +70,7 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
 		{
 			var dsrs = _dsrRepository.ReadAll();
 
-			return dsrs.Select(d => ToDsrModel(d)).ToList();
+			 return dsrs.Select(d => ToDsrModel(d)).ToList();
 		}
 
         public void CreateOrUpdateDsr(Dsr dsr)

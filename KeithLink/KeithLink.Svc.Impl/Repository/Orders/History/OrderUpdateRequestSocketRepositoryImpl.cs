@@ -7,8 +7,10 @@ using System.IO;
 using System.Net.Sockets;
 using System.Text;
 
-namespace KeithLink.Svc.Impl.Repository.Orders.History {
-    public class OrderUpdateRequestSocketRepositoryImpl : IOrderUpdateSocketConnectionRepository, IDisposable {
+namespace KeithLink.Svc.Impl.Repository.Orders.History
+{
+    public class OrderUpdateRequestSocketRepositoryImpl : IOrderUpdateSocketConnectionRepository, IDisposable
+    {
         #region attributes
         private TcpClient _clientConnection;
         private bool _connected;
@@ -19,16 +21,20 @@ namespace KeithLink.Svc.Impl.Repository.Orders.History {
         #endregion
 
         #region ctor
-        public OrderUpdateRequestSocketRepositoryImpl() {
+        public OrderUpdateRequestSocketRepositoryImpl()
+        {
             _connected = false;
             _disposed = false;
         }
         #endregion
 
         #region methods
-        public void Close() {
-            if (_connected) {
-                try {
+        public void Close()
+        {
+            if (_connected)
+            {
+                try
+                {
                     _writingStream.Close();
                     _readingStream.Close();
                     _netStream.Close();
@@ -36,22 +42,29 @@ namespace KeithLink.Svc.Impl.Repository.Orders.History {
                     if (_clientConnection.Connected) { _clientConnection.Close(); }
 
                     _connected = false;
-                } catch (Exception ex) {
+                }
+                catch (Exception ex)
+                {
                     throw new Exception("Could not close socket connection", ex);
                 }
             }
         }
 
-        public void Connect() {
-            if (!_connected) {
-                try {
+        public void Connect()
+        {
+            if (!_connected)
+            {
+                try
+                {
                     _clientConnection = new TcpClient(Configuration.MainframeIPAddress, Configuration.MainframeListeningPort);
                     _clientConnection.ReceiveTimeout = 60000;
 
                     _netStream = _clientConnection.GetStream();
                     _readingStream = new BinaryReader(_netStream);
                     _writingStream = new BinaryWriter(_netStream);
-                } catch (Exception ex) {
+                }
+                catch (Exception ex)
+                {
                     throw new EarlySocketException("Could not open socket", ex);
                 }
 
@@ -59,8 +72,10 @@ namespace KeithLink.Svc.Impl.Repository.Orders.History {
             }
         }
 
-        public void Dispose() {
-            if (!_disposed) {
+        public void Dispose()
+        {
+            if (!_disposed)
+            {
                 Close();
 
                 if (_netStream != null) { _netStream.Dispose(); }
@@ -69,7 +84,8 @@ namespace KeithLink.Svc.Impl.Repository.Orders.History {
             _disposed = true;
         }
 
-        public string Receive() {
+        public string Receive()
+        {
             throw new NotImplementedException("This method is not used for Order History Requests");
             ////putting dummy records in the bytes field at first to keep it from being null when reading in because that caused an exception
             //byte[] bytes = Encoding.ASCII.GetBytes("HI");
@@ -83,7 +99,8 @@ namespace KeithLink.Svc.Impl.Repository.Orders.History {
             //return ASCIIEncoding.ASCII.GetString(bytes, 0, bytes.Length);
         }
 
-        public void Send(string dataRecord) {
+        public void Send(string dataRecord)
+        {
             throw new NotImplementedException("This method is not used for Order History Requests");
             //if (!_connected) { throw new ApplicationException("Cannot send because a connection has not been established"); }
             //if (dataRecord.Length > Constants.MAINFRAME_ORDER_RECORD_LENGTH) {
@@ -99,20 +116,24 @@ namespace KeithLink.Svc.Impl.Repository.Orders.History {
             //}
         }
 
-        public void StartTransaction(string requestData) {
+        public void StartTransaction(string transactionId, string requestData)
+        {
             if (!_connected) { throw new ApplicationException("Cannot send because a connection has not been established"); }
 
             StringBuilder cmd = new StringBuilder();
-            cmd.Append(Configuration.MainframeHistoryTransactionId);
+            cmd.Append(transactionId);
             cmd.Append(" ");
             cmd.Append(requestData);
             cmd.Length = 50;
 
             byte[] bytes = ASCIIEncoding.ASCII.GetBytes(cmd.ToString());
 
-            try { 
-                _writingStream.Write(bytes); 
-            } catch (Exception ex) {
+            try
+            {
+                _writingStream.Write(bytes);
+            }
+            catch (Exception ex)
+            {
                 throw new EarlySocketException("Error creating transaction", ex);
             }
         }

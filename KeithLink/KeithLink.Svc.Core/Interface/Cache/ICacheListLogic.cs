@@ -24,9 +24,9 @@ namespace KeithLink.Svc.Core.Interface.Cache
 
         void AddCachedTypedLists(UserSelectedContext catalogInfo, ListType type, bool headerOnly, List<ListModel> lists);
 
-        List<ListModel> GetCachedCustomerLists(UserSelectedContext catalogInfo);
+        List<ListModel> GetCachedCustomerLists(UserSelectedContext catalogInfo, bool headerOnly);
 
-        void AddCachedCustomerLists(UserSelectedContext catalogInfo, List<ListModel> lists);
+        void AddCachedCustomerLists(UserSelectedContext catalogInfo, List<ListModel> lists, bool headerOnly);
 
         ListModel GetCachedSpecificList(UserSelectedContext catalogInfo, ListType type, long Id);
 

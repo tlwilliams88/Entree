@@ -27,6 +27,7 @@ using KeithLink.Svc.Core.Interface.Lists;
 using KeithLink.Svc.Core.Interface.SiteCatalog;
 using KeithLink.Svc.Core.Models.Paging;
 using KeithLink.Svc.Impl.Helpers;
+using KeithLink.Svc.Impl.Service;
 
 using Newtonsoft.Json;
 
@@ -45,6 +46,7 @@ namespace KeithLink.Svc.WebApi.Controllers
         private readonly IEventLogRepository _log;
         private readonly IListService _listService;
         private readonly ICatalogLogic _catalogLogic;
+        private readonly IShoppingCartService _shoppingCartService;
         #endregion
 
         #region ctor
@@ -56,14 +58,18 @@ namespace KeithLink.Svc.WebApi.Controllers
         /// <param name="logRepo"></param>
         /// <param name="userActiveCartLogic"></param>
         /// <param name="exportSettingsLogic"></param>
+        /// <param name="cartService"></param>
+        /// <param name="catalogLogic"></param>
+        /// <param name="listService"></param>
         public ShoppingCartController(IShoppingCartLogic shoppingCartLogic, IUserProfileLogic profileLogic, IEventLogRepository logRepo, IListService listService, ICatalogLogic catalogLogic,
-                                      IUserActiveCartLogic userActiveCartLogic, IExportSettingLogic exportSettingsLogic) : base(profileLogic) {
+                                      IUserActiveCartLogic userActiveCartLogic, IExportSettingLogic exportSettingsLogic, IShoppingCartService cartService) : base(profileLogic) {
             _activeCartLogic = userActiveCartLogic;
 			_shoppingCartLogic = shoppingCartLogic;
             _exportLogic = exportSettingsLogic;
             _listService = listService;
             _catalogLogic = catalogLogic;
             _log = logRepo;
+            _shoppingCartService = cartService;
         }
         #endregion
 
@@ -132,6 +138,10 @@ namespace KeithLink.Svc.WebApi.Controllers
             {
                 retVal.SuccessResponse = _shoppingCartLogic.ReadCart(this.AuthenticatedUser, this.SelectedUserContext, cartId);
                 retVal.IsSuccess = true;
+
+                ApprovedCartModel cartApproved = _shoppingCartService.ValidateCart(this.AuthenticatedUser, this.SelectedUserContext, cartId, null);
+
+                retVal.SuccessResponse.Approval = cartApproved;
             }
             catch (Exception ex)
             {
@@ -381,7 +391,11 @@ namespace KeithLink.Svc.WebApi.Controllers
             Models.OperationReturnModel<ShoppingCart> retVal = new Models.OperationReturnModel<ShoppingCart>();
             try
             {
+                ApprovedCartModel cartApproved = _shoppingCartService.ValidateCart(this.AuthenticatedUser, this.SelectedUserContext, updatedCart.CartId, null);
+
                 _shoppingCartLogic.UpdateCart(this.SelectedUserContext, this.AuthenticatedUser, updatedCart, deleteomitted);
+
+                updatedCart.Approval = cartApproved;
                 retVal.SuccessResponse = updatedCart;
                 retVal.IsSuccess = true;
             }

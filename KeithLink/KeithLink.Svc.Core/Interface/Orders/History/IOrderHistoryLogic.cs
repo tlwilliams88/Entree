@@ -4,6 +4,7 @@ using KeithLink.Svc.Core.Models.Paging;
 using KeithLink.Svc.Core.Models.SiteCatalog;
 using System;
 using System.Collections.Generic;
+using System.IO;
 
 namespace KeithLink.Svc.Core.Interface.Orders.History {
     public interface IOrderHistoryLogic {
@@ -13,13 +14,17 @@ namespace KeithLink.Svc.Core.Interface.Orders.History {
 
         void ListenForMainFrameCalls();
 
-        OrderHistoryFileReturn ParseMainframeFile(string rawFlatFile);
+        void ListenForQueueMessages();
+
+        void ProcessOrder(string rawOrder);
+
+        OrderHistoryFileReturn ParseMainframeFile(TextReader reader);
+
+        string ReadOrderFromQueue();
 
         void SaveOrder(OrderHistoryFile historyFile, bool isSpecialOrder);
 
         string SetLostOrder(string trackingNumber);
-
-        void ListenForQueueMessages();
 
         void StopListening();
 

@@ -2,6 +2,8 @@
 using KeithLink.Svc.Core.Interface.Cart;
 using KeithLink.Svc.Core.Interface.Profile;
 using KeithLink.Svc.Core.Interface.Orders;
+using KeithLink.Svc.Core.Interface.Customers;
+using KeithLink.Svc.Core.Interface.SiteCatalog;
 
 using KeithLink.Svc.Core.Models.Customers;
 using KeithLink.Svc.Core.Models.Orders;
@@ -10,7 +12,10 @@ using KeithLink.Svc.Core.Models.PowerMenu.Order;
 using KeithLink.Svc.Core.Models.ShoppingCart;
 using KeithLink.Svc.Core.Models.SiteCatalog;
 
+using KeithLink.Svc.Core.Helpers;
 using KeithLink.Svc.Core.Extensions.PowerMenu;
+
+using KeithLink.Svc.Impl.Logic.Orders;
 
 using System;
 using System.Collections.Generic;
@@ -28,17 +33,26 @@ namespace KeithLink.Svc.Impl.Service.ShoppingCart
         private readonly IShoppingCartLogic _shoppingCartLogic;
         private readonly IShipDateRepository _shipDateRepository;
         private readonly IUserProfileLogic _profileLogic;
+        private readonly IMinimumOrderAmountRepository _minimumAmountRepo;
+        private readonly IPriceLogic _priceLogic;
+        private readonly IOrderLogic _orderLogic;
         #endregion
 
         #region constructor
-        public ShoppingCartServiceImpl(IShoppingCartLogic cartLogic, ICustomerRepository customerRepo, IUserProfileLogic profileLogic, IEventLogRepository log, IShipDateRepository shipDateRepo)
+        public ShoppingCartServiceImpl(IShoppingCartLogic cartLogic, ICustomerRepository customerRepo, IUserProfileLogic profileLogic, IEventLogRepository log, IShipDateRepository shipDateRepo, IMinimumOrderAmountRepository minimumAmountRepo, IPriceLogic priceLogic, IOrderLogic orderLogic)
         {
             _shoppingCartLogic = cartLogic;
             _customerRepo = customerRepo;
             _profileLogic = profileLogic;
             _shipDateRepository = shipDateRepo;
             _log = log;
+            _minimumAmountRepo = minimumAmountRepo;
+            _priceLogic = priceLogic;
+            _orderLogic = orderLogic;
         }
+
+        public Core.Models.Orders.Order existingOrder { get; private set; }
+        public Core.Models.ShoppingCart.ShoppingCart currentCart { get; private set; }
         #endregion
 
         #region functions
@@ -76,6 +90,64 @@ namespace KeithLink.Svc.Impl.Service.ShoppingCart
             newCart.RequestedShipDate = validDates.ShipDates.FirstOrDefault().Date;
 
             return _shoppingCartLogic.CreateCart(user, context, newCart);
+        }
+
+        public ApprovedCartModel ValidateCart(UserProfile user, UserSelectedContext catalogInfo, Guid cartId, string orderNumber)
+        {
+
+            ApprovedCartModel ret = new ApprovedCartModel();
+
+            bool isCart = cartId != null && cartId != Guid.Empty ? true : false;
+            if(isCart == true)
+            {
+                Core.Models.ShoppingCart.ShoppingCart currentCart = new Core.Models.ShoppingCart.ShoppingCart();
+            }
+            else
+            {
+                Core.Models.Orders.Order existingOrder = new Core.Models.Orders.Order();
+            }
+
+            try
+            {
+                MinimumOrderAmountModel minimumOrderAmount = _minimumAmountRepo.GetMinimumOrderAmount(catalogInfo.CustomerId, catalogInfo.BranchId);
+
+                decimal subtotal = 0;
+
+                ret.ApprovedAmount = minimumOrderAmount.ApprovedAmount;
+
+                if (isCart == true)
+                {
+                    currentCart = _shoppingCartLogic.ReadCart(user, catalogInfo, cartId);
+
+                    subtotal = (decimal)PricingHelper.CalculateCartSubtotal(currentCart.Items);
+
+                }
+                else
+                {
+                    existingOrder = _orderLogic.ReadOrder(user, catalogInfo, orderNumber, false);
+
+                    subtotal = (decimal)existingOrder.OrderTotal;
+                }
+
+                ret.Approved = ret.ApprovedAmount <= subtotal;
+
+                ret.RemainingAmount = ret.ApprovedAmount - subtotal > 0 ? ret.ApprovedAmount - subtotal : 0;
+
+                if(ret.Approved == false)
+                {
+                    throw new Exception("The cart total does not meet or exceed the minimum approved amount.  Please contact your DSR for more information.");
+                }
+                
+            }
+            catch (Exception ex)
+            {
+                _log.WriteErrorLog("ValidateCart", ex);
+                ret.Message = ex.Message;
+                ret.Approved = false;
+            }
+
+            return ret;
+
         }
         #endregion
 
