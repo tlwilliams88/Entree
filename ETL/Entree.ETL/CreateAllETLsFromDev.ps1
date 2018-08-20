@@ -19,11 +19,9 @@
 
 # Copy ETL Process replacing needed configs/names with the proper identifier
 (get-content ETLProcess_DEV.dtsx) | foreach-object {$_ -replace "_DEV", "_QA"} | set-content -Encoding UTF8 ETLProcess_QA.dtsx
-(get-content ETLProcess_DEV.dtsx) | foreach-object {$_ -replace "_DEV", "_BETA"} | set-content -Encoding UTF8 ETLProcess_BETA.dtsx
 (get-content ETLProcess_DEV.dtsx) | foreach-object {$_ -replace "_DEV", "_RELEASE"} | set-content -Encoding UTF8 ETLProcess_RELEASE.dtsx
 
 
 # Copy UNFI ETL Processes replacing needed configs/names with proper identifier
 (get-content UNFIETLProcess_DEV.dtsx) | foreach-object {$_ -replace "_DEV", "_QA"} | set-content -Encoding UTF8 UNFIETLProcess_QA.dtsx
-(get-content UNFIETLProcess_DEV.dtsx) | foreach-object {$_ -replace "_DEV", "_BETA"} | set-content -Encoding UTF8 UNFIETLProcess_BETA.dtsx
 (get-content UNFIETLProcess_DEV.dtsx) | foreach-object {$_ -replace "_DEV", "_RELEASE"} | set-content -Encoding UTF8 UNFIETLProcess_RELEASE.dtsx
