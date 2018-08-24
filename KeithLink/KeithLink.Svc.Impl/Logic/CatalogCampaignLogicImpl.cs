@@ -27,28 +27,46 @@ namespace KeithLink.Svc.Impl.Logic {
         #region functions
         public CatalogCampaignReturnModel GetCampaign(int id, bool includeItems = true)
         {
-            CatalogCampaignReturnModel returnValue = new CatalogCampaignReturnModel();
-            returnValue = _campaignHeaderRepo.GetHeader(id).ToModel( BEKConfiguration.CatalogCampaignImagesUrl);
+            CatalogCampaignReturnModel campaign = new CatalogCampaignReturnModel();
 
-            if (includeItems)
+            var header = _campaignHeaderRepo.GetHeader(id);
+            if (header != null)
             {
-                returnValue.Items = _campaignItemRepo.GetByCampaign(id);
+                campaign = header.ToModel(BEKConfiguration.CatalogCampaignImagesUrl);
+
+                if (includeItems)
+                {
+                    campaign.Items = _campaignItemRepo.GetByCampaign(id);
+                }
+            }
+            else
+            {
+                throw new KeyNotFoundException("A catalog campaign header was not found for id " + id);
             }
 
-            return returnValue;
+            return campaign;
         }
 
         public CatalogCampaignReturnModel GetCampaignByUri(string uri, bool includeItems = true)
         {
-            CatalogCampaignReturnModel returnValue = new CatalogCampaignReturnModel();
-            returnValue = _campaignHeaderRepo.GetByUri(uri).ToModel(BEKConfiguration.CatalogCampaignImagesUrl);
+            CatalogCampaignReturnModel campaign = new CatalogCampaignReturnModel();
 
-            if (includeItems)
+            var header = _campaignHeaderRepo.GetByUri(uri);
+            if (header != null)
             {
-                returnValue.Items = _campaignItemRepo.GetByCampaign(returnValue.Id);
+                campaign = header.ToModel(BEKConfiguration.CatalogCampaignImagesUrl);
+
+                if (includeItems)
+                {
+                    campaign.Items = _campaignItemRepo.GetByCampaign(campaign.Id);
+                }
+            }
+            else
+            {
+                throw new KeyNotFoundException("A catalog campaign header was not found for id " + campaign.Id);
             }
 
-            return returnValue;
+            return campaign;
         }
 
         public CatalogCampaignsReturnModel GetAllAvailableCampaigns(UserSelectedContext context) {

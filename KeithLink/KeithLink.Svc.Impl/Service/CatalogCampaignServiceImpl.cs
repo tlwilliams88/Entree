@@ -23,10 +23,18 @@ namespace KeithLink.Svc.Impl.Service
         #endregion
 
         #region functions
-        public ProductsReturn GetCatalogCampaignProducts(string campaignUri, UserSelectedContext context, SearchInputModel model, UserProfile profile){
+        public ProductsReturn GetCatalogCampaignProducts(string campaignUri, UserSelectedContext context, SearchInputModel model, UserProfile profile)
+        {
             CatalogCampaignReturnModel campaign = _campaignLogic.GetCampaignByUri(campaignUri);
 
-            return _catalogLogic.GetProductsByItemNumbers(context, campaign.Items.Select(x => x.ItemNumber).ToList(), model, profile);
+            ProductsReturn products = null;
+            var items = campaign?.Items?.Select(x => x.ItemNumber).ToList();
+            if (items != null)
+            {
+                products = _catalogLogic.GetProductsByItemNumbers(context, items, model, profile);
+            }
+
+            return products;
         }
         #endregion
 
