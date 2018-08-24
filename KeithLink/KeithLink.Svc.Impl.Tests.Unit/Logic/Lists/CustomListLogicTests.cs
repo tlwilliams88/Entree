@@ -6,6 +6,7 @@ using Autofac;
 
 using FluentAssertions;
 
+using KeithLink.Common.Core.Interfaces.Logging;
 using KeithLink.Svc.Core.Interface.Lists;
 using KeithLink.Svc.Core.Models.Lists;
 using KeithLink.Svc.Core.Models.Lists.CustomList;
@@ -20,26 +21,52 @@ using Moq;
 using Xunit;
 
 namespace KeithLink.Svc.Impl.Tests.Unit.Logic.Lists {
-    public class CustomListLogicTests {
-        private static ICustomListLogic MakeMockLogic() {
+    public class CustomListLogicTests
+    {
+        private static Mock<ICustomListDetailsRepository> _mockDetailRepo;
+        private static Mock<ICustomListHeadersRepository> _mockHeaderRepo;
+        private static Mock<ICustomListSharesRepository> _mockShareRepo;
+        private static Mock<IEventLogRepository> _mockLogRepo;
+
+        private static List<Mock> CreateMocks()
+        {
+            _mockDetailRepo = MockDetailRepo();
+            _mockHeaderRepo = MockHeaderRepo();
+            _mockShareRepo = MockShareRepo();
+            _mockLogRepo = MockLogRepo();
+
+            List<Mock> mocks = new List<Mock>
+            {
+                _mockDetailRepo,
+                _mockHeaderRepo,
+                _mockShareRepo,
+                _mockLogRepo,
+            };
+
+            return mocks;
+        }
+
+        private static ICustomListLogic MakeMockLogic()
+        {
             ContainerBuilder cb = DependencyMapFactory.GetTestsContainer();
 
-            cb.RegisterInstance(MakeDetailRepo())
-              .AsImplementedInterfaces();
-            cb.RegisterInstance(MakeHeaderRepo())
-              .AsImplementedInterfaces();
-            cb.RegisterInstance(MakeShareRepo())
-              .AsImplementedInterfaces();
+            List<Mock> mocks = CreateMocks();
+
+            foreach (var mock in mocks)
+            {
+                cb.RegisterInstance(mock.Object)
+                  .AsImplementedInterfaces();
+            }
 
             IContainer diMap = cb.Build();
 
             return diMap.Resolve<ICustomListLogic>();
         }
 
-        private static ICustomListDetailsRepository MakeDetailRepo() {
-            Mock<ICustomListDetailsRepository> repo = new Mock<ICustomListDetailsRepository>();
+        private static Mock<ICustomListDetailsRepository> MockDetailRepo() {
+            Mock<ICustomListDetailsRepository> mock = new Mock<ICustomListDetailsRepository>();
 
-            repo.Setup(d => d.GetCustomListDetails(It.Is<long>(i => i == 1)))
+            mock.Setup(d => d.GetCustomListDetails(It.Is<long>(i => i == 1)))
                 .Returns(
                          new List<CustomListDetail> {
                              new CustomListDetail {
@@ -73,16 +100,16 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic.Lists {
                          }
                         );
 
-            repo.Setup(d => d.SaveCustomListDetail(It.Is<CustomListDetail>(m => m.Id == 1)))
+            mock.Setup(d => d.SaveCustomListDetail(It.Is<CustomListDetail>(m => m.Id == 1)))
                 .Returns(1);
 
-            return repo.Object;
+            return mock;
         }
 
-        private static ICustomListHeadersRepository MakeHeaderRepo() {
-            Mock<ICustomListHeadersRepository> repo = new Mock<ICustomListHeadersRepository>();
+        private static Mock<ICustomListHeadersRepository> MockHeaderRepo() {
+            Mock<ICustomListHeadersRepository> mock = new Mock<ICustomListHeadersRepository>();
 
-            repo.Setup(h => h.GetCustomListHeader(It.Is<long>(i => i == 1)))
+            mock.Setup(h => h.GetCustomListHeader(It.Is<long>(i => i == 1)))
                 .Returns(new CustomListHeader {
                     Active = true,
                     BranchId = "FUT",
@@ -94,7 +121,7 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic.Lists {
                     UserId = new Guid("c04afdba-90be-4cc9-8ec3-0969463a018c")
                 });
 
-            repo.Setup(h => h.GetCustomListHeadersByCustomer(It.Is<UserSelectedContext>(u => u.BranchId == "FUT" &&
+            mock.Setup(h => h.GetCustomListHeadersByCustomer(It.Is<UserSelectedContext>(u => u.BranchId == "FUT" &&
                                                                                              u.CustomerId == "123456")))
                 .Returns(new List<CustomListHeader> {
                     new CustomListHeader {
@@ -119,18 +146,18 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic.Lists {
                     }
                 });
 
-            repo.Setup(h => h.SaveCustomListHeader(It.Is<CustomListHeader>(l => l.Id == 1)))
+            mock.Setup(h => h.SaveCustomListHeader(It.Is<CustomListHeader>(l => l.Id == 1)))
                 .Returns(1);
-            repo.Setup(h => h.SaveCustomListHeader(It.Is<CustomListHeader>(l => l.Id == 0)))
+            mock.Setup(h => h.SaveCustomListHeader(It.Is<CustomListHeader>(l => l.Id == 0)))
                 .Returns(1);
 
-            return repo.Object;
+            return mock;
         }
 
-        private static ICustomListSharesRepository MakeShareRepo() {
-            Mock<ICustomListSharesRepository> repo = new Mock<ICustomListSharesRepository>();
+        private static Mock<ICustomListSharesRepository> MockShareRepo() {
+            Mock<ICustomListSharesRepository> mock = new Mock<ICustomListSharesRepository>();
 
-            repo.Setup(s => s.GetCustomListSharesByHeaderId(It.Is<long>(i => i == 1)))
+            mock.Setup(s => s.GetCustomListSharesByHeaderId(It.Is<long>(i => i == 1)))
                 .Returns(
                          new List<CustomListShare> {
                              new CustomListShare {
@@ -154,7 +181,7 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic.Lists {
                          }
                         );
 
-            repo.Setup(s => s.GetCustomListSharesByCustomer(It.Is<UserSelectedContext>(u => u.CustomerId == "111111")))
+            mock.Setup(s => s.GetCustomListSharesByCustomer(It.Is<UserSelectedContext>(u => u.CustomerId == "111111")))
                 .Returns(
                          new List<CustomListShare> {
                              new CustomListShare {
@@ -169,7 +196,31 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic.Lists {
                          }
                         );
 
-            return repo.Object;
+            mock.Setup(s => s.GetCustomListSharesByCustomer(It.Is<UserSelectedContext>(u => u.CustomerId == "333333")))
+                .Returns(
+                         new List<CustomListShare> {
+                             new CustomListShare {
+                                 Active = true,
+                                 BranchId = "FUT",
+                                 CreatedUtc = new DateTime(2017, 7, 7, 16, 25, 0, DateTimeKind.Utc),
+                                 CustomerNumber = "234567",
+                                 HeaderId = 888,
+                                 Id = 1,
+                                 ModifiedUtc = new DateTime(2017, 7, 7, 16, 26, 0, DateTimeKind.Utc)
+                             }
+                         }
+                        );
+
+            return mock;
+        }
+
+        private static Mock<IEventLogRepository> MockLogRepo()
+        {
+            Mock<IEventLogRepository> mock = new Mock<IEventLogRepository>();
+
+            mock.Setup(s => s.WriteWarningLog(It.IsAny<string>()));
+
+            return mock;
         }
 
         public class CreateOrUpdateList {
@@ -182,16 +233,14 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic.Lists {
                 int fakeId = 1;
                 string fakeName = "fake name";
                 UserProfile fakeUser = new UserProfile();
-                Mock<ICustomListDetailsRepository> detail = new Mock<ICustomListDetailsRepository>();
-                Mock<ICustomListHeadersRepository> header = new Mock<ICustomListHeadersRepository>();
-                Mock<ICustomListSharesRepository> shares = new Mock<ICustomListSharesRepository>();
-                CustomListLogicImpl logic = new CustomListLogicImpl(shares.Object, header.Object, detail.Object);
+
+                ICustomListLogic logic = MakeMockLogic();
 
                 // act
                 long results = logic.CreateOrUpdateList(fakeUser, fakeCustomer, fakeId, fakeName, fakeActive);
 
                 // assert
-                header.Verify(h => h.SaveCustomListHeader(It.IsAny<CustomListHeader>()), Times.Once);
+                _mockHeaderRepo.Verify(h => h.SaveCustomListHeader(It.IsAny<CustomListHeader>()), Times.Once);
             }
 
             [Fact]
@@ -244,16 +293,14 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic.Lists {
                     Name = "Fake Name"
                 };
                 UserProfile fakeUser = new UserProfile();
-                Mock<ICustomListDetailsRepository> detail = new Mock<ICustomListDetailsRepository>();
-                Mock<ICustomListHeadersRepository> header = new Mock<ICustomListHeadersRepository>();
-                Mock<ICustomListSharesRepository> shares = new Mock<ICustomListSharesRepository>();
-                CustomListLogicImpl logic = new CustomListLogicImpl(shares.Object, header.Object, detail.Object);
+
+                ICustomListLogic logic = MakeMockLogic();
 
                 // act
                 logic.DeleteList(fakeUser, fakeCustomer, fakeList);
 
                 // assert
-                header.Verify(h => h.SaveCustomListHeader(It.IsAny<CustomListHeader>()), Times.Once);
+                _mockHeaderRepo.Verify(h => h.SaveCustomListHeader(It.IsAny<CustomListHeader>()), Times.Once);
             }
         }
 
@@ -795,6 +842,25 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic.Lists {
             }
 
             [Fact]
+            public void GoodCustomerWithBrokenSharedList_WritesWarningToLog()
+            {
+                // arrange
+                ICustomListLogic logic = MakeMockLogic();
+                UserSelectedContext customer = new UserSelectedContext
+                {
+                    BranchId = "FUT",
+                    CustomerId = "333333"
+                };
+                UserProfile user = new UserProfile();
+
+                // act
+                List<ListModel> results = logic.ReadLists(user, customer, false);
+
+                // assert
+                _mockLogRepo.Verify(log => log.WriteWarningLog(It.IsAny<string>()), Times.Once);
+            }
+
+            [Fact]
             public void GoodUserWithoutDetails_ReturnsExpectedCountOfTwo() {
                 // arrange
                 ICustomListLogic logic = MakeMockLogic();
@@ -879,16 +945,13 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic.Lists {
                 CustomListDetail detail = new CustomListDetail {
                     HeaderId = 17
                 };
-                Mock<ICustomListDetailsRepository> detailRepo = new Mock<ICustomListDetailsRepository>();
-                Mock<ICustomListHeadersRepository> headerRepo = new Mock<ICustomListHeadersRepository>();
-                Mock<ICustomListSharesRepository> sharesRepo = new Mock<ICustomListSharesRepository>();
-                CustomListLogicImpl logic = new CustomListLogicImpl(sharesRepo.Object, headerRepo.Object, detailRepo.Object);
+                ICustomListLogic logic = MakeMockLogic();
 
                 // act
                 logic.SaveItem(detail);
 
                 // assert
-                detailRepo.Verify(r => r.SaveCustomListDetail(It.IsAny<CustomListDetail>()), Times.Once);
+                _mockDetailRepo.Verify(r => r.SaveCustomListDetail(It.IsAny<CustomListDetail>()), Times.Once);
             }
         }
 
@@ -899,16 +962,14 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic.Lists {
                 UserSelectedContext fakeCustomer = new UserSelectedContext();
                 ListModel farkModel = new ListModel();
                 UserProfile fakeUser = new UserProfile();
-                Mock<ICustomListDetailsRepository> detail = new Mock<ICustomListDetailsRepository>();
-                Mock<ICustomListHeadersRepository> header = new Mock<ICustomListHeadersRepository>();
-                Mock<ICustomListSharesRepository> shares = new Mock<ICustomListSharesRepository>();
-                CustomListLogicImpl logic = new CustomListLogicImpl(shares.Object, header.Object, detail.Object);
+
+                ICustomListLogic logic = MakeMockLogic();
 
                 // act
                 ListModel results = logic.SaveList(fakeUser, fakeCustomer, farkModel);
 
                 // assert
-                header.Verify(h => h.SaveCustomListHeader(It.IsAny<CustomListHeader>()), Times.Once);
+                _mockHeaderRepo.Verify(h => h.SaveCustomListHeader(It.IsAny<CustomListHeader>()), Times.Once);
             }
 
             [Fact]
@@ -927,16 +988,14 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic.Lists {
                     }
                 };
                 UserProfile fakeUser = new UserProfile();
-                Mock<ICustomListDetailsRepository> detail = new Mock<ICustomListDetailsRepository>();
-                Mock<ICustomListHeadersRepository> header = new Mock<ICustomListHeadersRepository>();
-                Mock<ICustomListSharesRepository> shares = new Mock<ICustomListSharesRepository>();
-                CustomListLogicImpl logic = new CustomListLogicImpl(shares.Object, header.Object, detail.Object);
+
+                ICustomListLogic logic = MakeMockLogic();
 
                 // act
                 ListModel results = logic.SaveList(fakeUser, fakeCustomer, fakeModel);
 
                 // assert
-                detail.Verify(d => d.SaveCustomListDetail(It.IsAny<CustomListDetail>()), Times.Exactly(2));
+                _mockDetailRepo.Verify(d => d.SaveCustomListDetail(It.IsAny<CustomListDetail>()), Times.Exactly(2));
             }
 
             [Fact]
@@ -945,16 +1004,14 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic.Lists {
                 UserSelectedContext fakeCustomer = new UserSelectedContext();
                 ListModel farkModel = new ListModel();
                 UserProfile fakeUser = new UserProfile();
-                Mock<ICustomListDetailsRepository> detail = new Mock<ICustomListDetailsRepository>();
-                Mock<ICustomListHeadersRepository> header = new Mock<ICustomListHeadersRepository>();
-                Mock<ICustomListSharesRepository> shares = new Mock<ICustomListSharesRepository>();
-                CustomListLogicImpl logic = new CustomListLogicImpl(shares.Object, header.Object, detail.Object);
+
+                ICustomListLogic logic = MakeMockLogic();
 
                 // act
                 ListModel results = logic.SaveList(fakeUser, fakeCustomer, farkModel);
 
                 // assert
-                detail.Verify(d => d.SaveCustomListDetail(It.IsAny<CustomListDetail>()), Times.Never);
+                _mockDetailRepo.Verify(d => d.SaveCustomListDetail(It.IsAny<CustomListDetail>()), Times.Never);
             }
 
             [Fact]
@@ -978,16 +1035,13 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic.Lists {
                     }
                 };
 
-                Mock<ICustomListDetailsRepository> detail = new Mock<ICustomListDetailsRepository>();
-                Mock<ICustomListHeadersRepository> header = new Mock<ICustomListHeadersRepository>();
-                Mock<ICustomListSharesRepository> shares = new Mock<ICustomListSharesRepository>();
-                CustomListLogicImpl logic = new CustomListLogicImpl(shares.Object, header.Object, detail.Object);
+                ICustomListLogic logic = MakeMockLogic();
 
                 // act
                 ListModel results = logic.SaveList(fakeUser, fakeCustomer, farkModel);
 
                 // assert
-                detail.Verify(x => x.SaveCustomListDetail(It.Is<CustomListDetail>(d => d.Active.Equals(true))), Times.Once);
+                _mockDetailRepo.Verify(x => x.SaveCustomListDetail(It.Is<CustomListDetail>(d => d.Active.Equals(true))), Times.Once);
             }
 
             [Fact]
@@ -1011,16 +1065,13 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic.Lists {
                     }
                 };
 
-                Mock<ICustomListDetailsRepository> detail = new Mock<ICustomListDetailsRepository>();
-                Mock<ICustomListHeadersRepository> header = new Mock<ICustomListHeadersRepository>();
-                Mock<ICustomListSharesRepository> shares = new Mock<ICustomListSharesRepository>();
-                CustomListLogicImpl logic = new CustomListLogicImpl(shares.Object, header.Object, detail.Object);
+                ICustomListLogic logic = MakeMockLogic();
 
                 // act
                 ListModel results = logic.SaveList(fakeUser, fakeCustomer, farkModel);
 
                 // assert
-                detail.Verify(x => x.SaveCustomListDetail(It.Is<CustomListDetail>(d => d.Active.Equals(false))), Times.Once);
+                _mockDetailRepo.Verify(x => x.SaveCustomListDetail(It.Is<CustomListDetail>(d => d.Active.Equals(false))), Times.Once);
             }
         }
     }
