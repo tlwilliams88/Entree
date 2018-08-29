@@ -60,8 +60,21 @@ namespace KeithLink.Svc.Core.Extensions.Orders.History {
             entity.UnitOfMeasure = value.UnitOfMeasure.ToShortString();
             entity.CatchWeight = value.CatchWeight;
             entity.ItemDeleted = value.ItemDeleted;
-            entity.SubbedOriginalItemNumber = value.SubbedOriginalItemNumber;
-            entity.ReplacedOriginalItemNumber = value.ReplacedOriginalItemNumber;
+
+            // The field in the table is defined as char(6) so it will contain 6 spaces when initialized with an empty string.
+            // We will avoid extraneous updates by EF if we treat 6 spaces equivalent to an empty string.
+            if (string.IsNullOrWhiteSpace(entity.SubbedOriginalItemNumber) == false || string.IsNullOrWhiteSpace(value.SubbedOriginalItemNumber) == false)
+            {
+                entity.SubbedOriginalItemNumber = value.SubbedOriginalItemNumber;
+            }
+
+            // The field in the table is defined as char(6) so it will contain 6 spaces when initialized with an empty string.
+            // We will avoid extraneous updates by EF if we treat 6 spaces equivalent to an empty string.
+            if (string.IsNullOrWhiteSpace(entity.ReplacedOriginalItemNumber) == false || string.IsNullOrWhiteSpace(value.ReplacedOriginalItemNumber) == false)
+            {
+                entity.ReplacedOriginalItemNumber = value.ReplacedOriginalItemNumber;
+            }
+
             entity.ItemStatus = value.ItemStatus;
             entity.TotalShippedWeight = decimal.Parse(value.TotalShippedWeight.ToString());
             entity.SellPrice = (decimal)value.SellPrice;

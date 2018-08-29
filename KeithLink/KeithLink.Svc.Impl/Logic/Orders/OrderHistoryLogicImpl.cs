@@ -41,6 +41,7 @@ using Newtonsoft.Json;
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
+using System.Data.Entity.Infrastructure;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -622,7 +623,33 @@ namespace KeithLink.Svc.Impl.Logic.Orders
 
             _conversionLogic.SaveOrderHistoryAsConfirmation(historyFile);
 
-            Retry.Do<int>(() => _unitOfWork.SaveChangesAndClearContext(), TimeSpan.FromSeconds(5), 5);
+            int retryLimit = 5;
+            TimeSpan retryInterval = TimeSpan.FromMilliseconds(200);
+
+            var exceptions = new List<Exception>();
+            for (int retryCount = 0; retryCount < retryLimit; retryCount++)
+            {
+                try
+                {
+                    _unitOfWork.SaveChangesAndClearContext();
+                    return;
+                }
+                catch (DbUpdateException exception)
+                {
+                    string entities = "";
+                    foreach (var entry in exception.Entries)
+                    {
+                        var entity = entry.Entity;
+                        entities += entity.GetType().Name + ", ";
+                    }
+                    var errorMessage = string.Format("ProcessOrder could not persist changes to {0}.", entities);
+                    _log.WriteErrorLog(errorMessage, exception);
+                    exceptions.Add(exception);
+
+                    Thread.Sleep(retryInterval);
+                }
+            }
+            throw new AggregateException(exceptions);
         }
 
         /// <summary>
