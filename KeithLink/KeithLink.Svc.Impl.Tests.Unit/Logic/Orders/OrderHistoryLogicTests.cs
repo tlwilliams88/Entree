@@ -124,6 +124,27 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic.Orders
 
                 //mockDependents.MockOrderHistoryHeaderRepository.VerifyAll();
             }
+
+            [Fact]
+            public void OrderHistoryWithSubbedAndReplacedItems_IsSentToRepositoryWithValidOrderDate()
+            {
+                // arrange
+                MockDependents mockDependents = new MockDependents();
+                IOrderHistoryLogic testunit = MakeUnitToBeTested(true, mockDependents);
+
+                //expect
+                string expectedOrderdate = new DateTime(2018, 07, 19, 16, 34, 51).ToLongDateFormatWithTime();
+
+                // act
+                string jsonOrderHistoryFile = GetMockData("OrderHistoryFileWithReplacementItems.json");
+                testunit.ProcessOrder(jsonOrderHistoryFile);
+
+                // assert
+                //mockDependents.MockOrderHistoryHeaderRepository
+                //    .Verify(m => m.CreateOrUpdate(It.Is<EF.OrderHistoryHeader>(header => header.OrderDateTime == expectedOrderdate)), Times.Once, "not called with expected order date.");
+
+                //mockDependents.MockOrderHistoryHeaderRepository.VerifyAll();
+            }
         }
         #endregion
 
@@ -397,11 +418,11 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic.Orders
             //cb.RegisterInstance(mockDependents.MockUnitOfWork.Object)
             //  .As<IUnitOfWork>();
 
-            cb.RegisterInstance(mockDependents.MockEventLogRepository.Object)
-              .As<IEventLogRepository>();
+            //cb.RegisterInstance(mockDependents.MockEventLogRepository.Object)
+            //  .As<IEventLogRepository>();
 
-            cb.RegisterInstance(mockDependents.MockGenericQueueRepository.Object)
-              .As<IGenericQueueRepository>();
+            //cb.RegisterInstance(mockDependents.MockGenericQueueRepository.Object)
+            //  .As<IGenericQueueRepository>();
 
             cb.RegisterInstance(mockDependents.MockOrderConversionLogic.Object)
               .As<IOrderConversionLogic>();

@@ -61,16 +61,16 @@ namespace KeithLink.Svc.Core.Extensions.Orders.History {
             entity.CatchWeight = value.CatchWeight;
             entity.ItemDeleted = value.ItemDeleted;
 
-            // The field in the table is defined as char(6) so it will contain 6 spaces when initialized with an empty string.
-            // We will avoid extraneous updates by EF if we treat 6 spaces equivalent to an empty string.
-            if (string.IsNullOrWhiteSpace(entity.SubbedOriginalItemNumber) == false || string.IsNullOrWhiteSpace(value.SubbedOriginalItemNumber) == false)
+            // The field in the table is defined as char(6) and will be padded with spaces.
+            // We will avoid extraneous updates by EF if we prevent changing the value when they are equivalent.
+            if (entity.SubbedOriginalItemNumber.TrimEnd() != value.SubbedOriginalItemNumber.TrimEnd())
             {
                 entity.SubbedOriginalItemNumber = value.SubbedOriginalItemNumber;
             }
 
-            // The field in the table is defined as char(6) so it will contain 6 spaces when initialized with an empty string.
-            // We will avoid extraneous updates by EF if we treat 6 spaces equivalent to an empty string.
-            if (string.IsNullOrWhiteSpace(entity.ReplacedOriginalItemNumber) == false || string.IsNullOrWhiteSpace(value.ReplacedOriginalItemNumber) == false)
+            // The field in the table is defined as char(6) and will be padded with spaces.
+            // We will avoid extraneous updates by EF if we prevent changing the value when they are equivalent.
+            if (entity.ReplacedOriginalItemNumber.TrimEnd() != value.ReplacedOriginalItemNumber.TrimEnd())
             {
                 entity.ReplacedOriginalItemNumber = value.ReplacedOriginalItemNumber;
             }

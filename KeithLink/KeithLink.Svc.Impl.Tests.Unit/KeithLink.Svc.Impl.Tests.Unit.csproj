@@ -150,6 +150,7 @@
     <EmbeddedResource Include="Logic\Orders\OrderFile.json" />
     <EmbeddedResource Include="Logic\Orders\OrderHistoryFile.json" />
     <EmbeddedResource Include="Logic\Orders\OT780FDF-2018206-10273884.TXT" />
+    <EmbeddedResource Include="Logic\Orders\OrderHistoryFileWithReplacementItems.json" />
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
