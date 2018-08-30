@@ -41,7 +41,6 @@ using Newtonsoft.Json;
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
-using System.Data.Entity.Infrastructure;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -255,6 +254,8 @@ namespace KeithLink.Svc.Impl.Logic.Orders
         {
             EF.OrderHistoryHeader header = GetHeaderAndMergeCurrentFile(currentFile, isSpecialOrder);
 
+            //ChangeAuditor.AuditChanges(_unitOfWork.Context, header, _log);
+
             bool hasSpecialItems = false;
 
             foreach (OrderHistoryDetail currentDetail in currentFile.Details.ToList())
@@ -288,6 +289,8 @@ namespace KeithLink.Svc.Impl.Logic.Orders
             {
                 detail = MergeWithCurrentOrderDetail(isSpecialOrder, header, currentDetail, detail);
             }
+
+            //ChangeAuditor.AuditChanges(_unitOfWork.Context, detail, _log);
         }
 
         private EF.OrderHistoryHeader GetHeaderAndMergeCurrentFile(OrderHistoryFile currentFile, bool isSpecialOrder)
@@ -623,33 +626,11 @@ namespace KeithLink.Svc.Impl.Logic.Orders
 
             _conversionLogic.SaveOrderHistoryAsConfirmation(historyFile);
 
-            int retryLimit = 5;
-            TimeSpan retryInterval = TimeSpan.FromMilliseconds(200);
+            int retryLimit = 10;
+            TimeSpan retryInterval = TimeSpan.FromSeconds(.5);
 
-            var exceptions = new List<Exception>();
-            for (int retryCount = 0; retryCount < retryLimit; retryCount++)
-            {
-                try
-                {
-                    _unitOfWork.SaveChangesAndClearContext();
-                    return;
-                }
-                catch (DbUpdateException exception)
-                {
-                    string entities = "";
-                    foreach (var entry in exception.Entries)
-                    {
-                        var entity = entry.Entity;
-                        entities += entity.GetType().Name + ", ";
-                    }
-                    var errorMessage = string.Format("ProcessOrder could not persist changes to {0}.", entities);
-                    _log.WriteErrorLog(errorMessage, exception);
-                    exceptions.Add(exception);
-
-                    Thread.Sleep(retryInterval);
-                }
-            }
-            throw new AggregateException(exceptions);
+            Func<int> saveChanges = () => _unitOfWork.SaveChangesAndClearContext();
+            Retry.Do<int>(saveChanges, _log, retryInterval, retryLimit);
         }
 
         /// <summary>
