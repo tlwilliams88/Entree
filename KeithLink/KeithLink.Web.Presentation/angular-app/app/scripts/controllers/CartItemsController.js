@@ -285,7 +285,12 @@ angular.module('bekApp')
 
     updateRecommendedItems();
 
-    $scope.saveCart($scope.currentCart);
+    if($scope.isChangeOrder == true) {
+      $scope.saveChangeOrder($scope.currentCart)
+    } else {
+      $scope.saveCart($scope.currentCart);
+    }
+
    };
 
     processingSaveCart = false;
@@ -676,7 +681,7 @@ angular.module('bekApp')
         $scope.changeAllSelectedItems(items, false);
       }
 
-      saveCart($scope.currentCart);
+      $scope.saveCart($scope.currentCart);
       
       updateRecommendedItems();
     };
