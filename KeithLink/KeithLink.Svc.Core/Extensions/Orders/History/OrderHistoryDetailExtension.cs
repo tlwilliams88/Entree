@@ -63,14 +63,22 @@ namespace KeithLink.Svc.Core.Extensions.Orders.History {
 
             // The field in the table is defined as char(6) and will be padded with spaces.
             // We will avoid extraneous updates by EF if we prevent changing the value when they are equivalent.
-            if (entity.SubbedOriginalItemNumber.TrimEnd() != value.SubbedOriginalItemNumber.TrimEnd())
+            bool equivalentValues = 
+                entity.SubbedOriginalItemNumber != null 
+                && value.SubbedOriginalItemNumber != null 
+                && entity.SubbedOriginalItemNumber.TrimEnd() == value.SubbedOriginalItemNumber.TrimEnd();
+            if (equivalentValues == false)
             {
                 entity.SubbedOriginalItemNumber = value.SubbedOriginalItemNumber;
             }
 
             // The field in the table is defined as char(6) and will be padded with spaces.
             // We will avoid extraneous updates by EF if we prevent changing the value when they are equivalent.
-            if (entity.ReplacedOriginalItemNumber.TrimEnd() != value.ReplacedOriginalItemNumber.TrimEnd())
+            equivalentValues = 
+                entity.ReplacedOriginalItemNumber != null 
+                && value.ReplacedOriginalItemNumber != null 
+                && entity.ReplacedOriginalItemNumber.TrimEnd() == value.ReplacedOriginalItemNumber.TrimEnd();
+            if (equivalentValues == false)
             {
                 entity.ReplacedOriginalItemNumber = value.ReplacedOriginalItemNumber;
             }

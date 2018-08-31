@@ -283,7 +283,7 @@ namespace KeithLink.Svc.Impl.Logic.Orders
 
             if (detail == null)
             {
-                AddNewDetailToOrder(isSpecialOrder, header, currentDetail);
+                detail = AddNewDetailToOrder(isSpecialOrder, header, currentDetail);
             }
             else
             {
@@ -340,7 +340,7 @@ namespace KeithLink.Svc.Impl.Logic.Orders
             return detail;
         }
 
-        private void AddNewDetailToOrder(bool isSpecialOrder, EF.OrderHistoryHeader header, OrderHistoryDetail currentDetail)
+        private EF.OrderHistoryDetail AddNewDetailToOrder(bool isSpecialOrder, EF.OrderHistoryHeader header, OrderHistoryDetail currentDetail)
         {
             EF.OrderHistoryDetail tempDetail = currentDetail.ToEntityFrameworkModel();
             tempDetail.BranchId = header.BranchId;
@@ -353,6 +353,7 @@ namespace KeithLink.Svc.Impl.Logic.Orders
             }
 
             header.OrderDetails.Add(tempDetail);
+            return tempDetail;
         }
 
         private void LookupAverageWeightOnDetails(OrderHistoryFile currentFile)
