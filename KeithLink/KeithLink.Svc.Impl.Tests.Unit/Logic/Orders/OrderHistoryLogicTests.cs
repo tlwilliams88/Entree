@@ -119,8 +119,8 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic.Orders
                 testunit.ProcessOrder(jsonOrderHistoryFile);
 
                 // assert
-                //mockDependents.MockOrderHistoryHeaderRepository
-                //    .Verify(m => m.CreateOrUpdate(It.Is<EF.OrderHistoryHeader>(header => header.OrderDateTime == expectedOrderdate)), Times.Once, "not called with expected order date.");
+                mockDependents.MockOrderHistoryHeaderRepository
+                    .Verify(m => m.CreateOrUpdate(It.Is<EF.OrderHistoryHeader>(header => header.OrderDateTime == expectedOrderdate)), Times.Once, "not called with expected order date.");
 
                 //mockDependents.MockOrderHistoryHeaderRepository.VerifyAll();
             }
@@ -140,8 +140,8 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic.Orders
                 testunit.ProcessOrder(jsonOrderHistoryFile);
 
                 // assert
-                //mockDependents.MockOrderHistoryHeaderRepository
-                //    .Verify(m => m.CreateOrUpdate(It.Is<EF.OrderHistoryHeader>(header => header.OrderDateTime == expectedOrderdate)), Times.Once, "not called with expected order date.");
+                mockDependents.MockOrderHistoryHeaderRepository
+                    .Verify(m => m.CreateOrUpdate(It.Is<EF.OrderHistoryHeader>(header => header.OrderDateTime == expectedOrderdate)), Times.Once, "not called with expected order date.");
 
                 //mockDependents.MockOrderHistoryHeaderRepository.VerifyAll();
             }
@@ -400,8 +400,8 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic.Orders
 
         public static void RegisterInContainer(ref ContainerBuilder cb, MockDependents mockDependents)
         {
-            //cb.RegisterInstance(mockDependents.MockOrderHistoryHeaderRepository.Object)
-            //  .As<IOrderHistoryHeaderRepsitory>();
+            cb.RegisterInstance(mockDependents.MockOrderHistoryHeaderRepository.Object)
+              .As<IOrderHistoryHeaderRepsitory>();
 
             cb.RegisterInstance(mockDependents.MockPurchaseOrderRepository.Object)
               .As<IPurchaseOrderRepository>();
@@ -412,17 +412,17 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic.Orders
             cb.RegisterInstance(mockDependents.MockCatalogLogic.Object)
               .As<ICatalogLogic>();
 
-            //cb.RegisterInstance(mockDependents.MockOrderHistoryDetailRepository.Object)
-            //  .As<IOrderHistoryDetailRepository>();
+            cb.RegisterInstance(mockDependents.MockOrderHistoryDetailRepository.Object)
+              .As<IOrderHistoryDetailRepository>();
 
-            //cb.RegisterInstance(mockDependents.MockUnitOfWork.Object)
-            //  .As<IUnitOfWork>();
+            cb.RegisterInstance(mockDependents.MockUnitOfWork.Object)
+              .As<IUnitOfWork>();
 
-            //cb.RegisterInstance(mockDependents.MockEventLogRepository.Object)
-            //  .As<IEventLogRepository>();
+            cb.RegisterInstance(mockDependents.MockEventLogRepository.Object)
+              .As<IEventLogRepository>();
 
-            //cb.RegisterInstance(mockDependents.MockGenericQueueRepository.Object)
-            //  .As<IGenericQueueRepository>();
+            cb.RegisterInstance(mockDependents.MockGenericQueueRepository.Object)
+              .As<IGenericQueueRepository>();
 
             cb.RegisterInstance(mockDependents.MockOrderConversionLogic.Object)
               .As<IOrderConversionLogic>();
