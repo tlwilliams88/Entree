@@ -29,9 +29,10 @@ namespace KeithLink.Svc.Impl.Logic.Lists {
             ListItemModel returnValue = null;
             NotesListHeader header = _headerRepo.GetHeadersForCustomer(catalogInfo);
 
-            if (header != null) {
-                 returnValue = _detailRepo.Get(header.Id, itemNumber)
-                                                    .ToWebModel();
+            if (header != null) 
+            {
+                var noteDetail = _detailRepo.Get(header.Id, itemNumber);
+                returnValue = noteDetail?.ToWebModel();
             }
 
             return returnValue;
@@ -77,7 +78,11 @@ namespace KeithLink.Svc.Impl.Logic.Lists {
             }
 
             long detailId = 0;
-            try { detailId = _detailRepo.Get(header.Id, detail.ItemNumber).Id; } catch { } 
+            var noteDetail = _detailRepo.Get(header.Id, detail.ItemNumber);
+            if (noteDetail != null)
+            {
+                detailId = noteDetail.Id;
+            }
 
             return _detailRepo.Save(detail.ToListModel(header.Id, detailId));
         }

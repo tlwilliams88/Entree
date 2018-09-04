@@ -6,6 +6,7 @@ using Autofac;
 
 using FluentAssertions;
 
+using KeithLink.Common.Core.Interfaces.Logging;
 using KeithLink.Svc.Core.Interface.Lists;
 using KeithLink.Svc.Core.Models.Lists;
 using KeithLink.Svc.Core.Models.Lists.CustomList;
@@ -20,26 +21,58 @@ using Moq;
 using Xunit;
 
 namespace KeithLink.Svc.Impl.Tests.Unit.Logic.Lists {
-    public class CustomListLogicTests {
-        private static ICustomListLogic MakeMockLogic() {
+    public class CustomListLogicTests
+    {
+        public class MockDependents
+        {
+            public Mock<ICustomListDetailsRepository> MockDetailRepo;
+            public Mock<ICustomListHeadersRepository> MockHeaderRepo;
+            public Mock<ICustomListSharesRepository> MockShareRepo;
+            public Mock<IEventLogRepository> MockLogRepo;
+
+            public MockDependents()
+            {
+                MockDetailRepo = MockDetailRepo();
+                MockHeaderRepo = MockHeaderRepo();
+                MockShareRepo = MockShareRepo();
+                MockLogRepo = MockLogRepo();
+            }
+        }
+
+        private static List<Mock> GetMocks(MockDependents mockDependents)
+        {
+            List<Mock> mocks = new List<Mock>
+            {
+                mockDependents.MockDetailRepo,
+                mockDependents.MockHeaderRepo,
+                mockDependents.MockShareRepo,
+                mockDependents.MockLogRepo,
+            };
+
+            return mocks;
+        }
+
+        private static ICustomListLogic MakeMockLogic(MockDependents mockDependents)
+        {
             ContainerBuilder cb = DependencyMapFactory.GetTestsContainer();
 
-            cb.RegisterInstance(MakeDetailRepo())
-              .AsImplementedInterfaces();
-            cb.RegisterInstance(MakeHeaderRepo())
-              .AsImplementedInterfaces();
-            cb.RegisterInstance(MakeShareRepo())
-              .AsImplementedInterfaces();
+            List<Mock> mocks = GetMocks(mockDependents);
+
+            foreach (var mock in mocks)
+            {
+                cb.RegisterInstance(mock.Object)
+                  .AsImplementedInterfaces();
+            }
 
             IContainer diMap = cb.Build();
 
             return diMap.Resolve<ICustomListLogic>();
         }
 
-        private static ICustomListDetailsRepository MakeDetailRepo() {
-            Mock<ICustomListDetailsRepository> repo = new Mock<ICustomListDetailsRepository>();
+        private static Mock<ICustomListDetailsRepository> MockDetailRepo() {
+            Mock<ICustomListDetailsRepository> mock = new Mock<ICustomListDetailsRepository>();
 
-            repo.Setup(d => d.GetCustomListDetails(It.Is<long>(i => i == 1)))
+            mock.Setup(d => d.GetCustomListDetails(It.Is<long>(i => i == 1)))
                 .Returns(
                          new List<CustomListDetail> {
                              new CustomListDetail {
@@ -73,16 +106,16 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic.Lists {
                          }
                         );
 
-            repo.Setup(d => d.SaveCustomListDetail(It.Is<CustomListDetail>(m => m.Id == 1)))
+            mock.Setup(d => d.SaveCustomListDetail(It.Is<CustomListDetail>(m => m.Id == 1)))
                 .Returns(1);
 
-            return repo.Object;
+            return mock;
         }
 
-        private static ICustomListHeadersRepository MakeHeaderRepo() {
-            Mock<ICustomListHeadersRepository> repo = new Mock<ICustomListHeadersRepository>();
+        private static Mock<ICustomListHeadersRepository> MockHeaderRepo() {
+            Mock<ICustomListHeadersRepository> mock = new Mock<ICustomListHeadersRepository>();
 
-            repo.Setup(h => h.GetCustomListHeader(It.Is<long>(i => i == 1)))
+            mock.Setup(h => h.GetCustomListHeader(It.Is<long>(i => i == 1)))
                 .Returns(new CustomListHeader {
                     Active = true,
                     BranchId = "FUT",
@@ -94,7 +127,7 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic.Lists {
                     UserId = new Guid("c04afdba-90be-4cc9-8ec3-0969463a018c")
                 });
 
-            repo.Setup(h => h.GetCustomListHeadersByCustomer(It.Is<UserSelectedContext>(u => u.BranchId == "FUT" &&
+            mock.Setup(h => h.GetCustomListHeadersByCustomer(It.Is<UserSelectedContext>(u => u.BranchId == "FUT" &&
                                                                                              u.CustomerId == "123456")))
                 .Returns(new List<CustomListHeader> {
                     new CustomListHeader {
@@ -119,18 +152,18 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic.Lists {
                     }
                 });
 
-            repo.Setup(h => h.SaveCustomListHeader(It.Is<CustomListHeader>(l => l.Id == 1)))
+            mock.Setup(h => h.SaveCustomListHeader(It.Is<CustomListHeader>(l => l.Id == 1)))
                 .Returns(1);
-            repo.Setup(h => h.SaveCustomListHeader(It.Is<CustomListHeader>(l => l.Id == 0)))
+            mock.Setup(h => h.SaveCustomListHeader(It.Is<CustomListHeader>(l => l.Id == 0)))
                 .Returns(1);
 
-            return repo.Object;
+            return mock;
         }
 
-        private static ICustomListSharesRepository MakeShareRepo() {
-            Mock<ICustomListSharesRepository> repo = new Mock<ICustomListSharesRepository>();
+        private static Mock<ICustomListSharesRepository> MockShareRepo() {
+            Mock<ICustomListSharesRepository> mock = new Mock<ICustomListSharesRepository>();
 
-            repo.Setup(s => s.GetCustomListSharesByHeaderId(It.Is<long>(i => i == 1)))
+            mock.Setup(s => s.GetCustomListSharesByHeaderId(It.Is<long>(i => i == 1)))
                 .Returns(
                          new List<CustomListShare> {
                              new CustomListShare {
@@ -154,7 +187,7 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic.Lists {
                          }
                         );
 
-            repo.Setup(s => s.GetCustomListSharesByCustomer(It.Is<UserSelectedContext>(u => u.CustomerId == "111111")))
+            mock.Setup(s => s.GetCustomListSharesByCustomer(It.Is<UserSelectedContext>(u => u.CustomerId == "111111")))
                 .Returns(
                          new List<CustomListShare> {
                              new CustomListShare {
@@ -169,41 +202,71 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic.Lists {
                          }
                         );
 
-            return repo.Object;
+            mock.Setup(s => s.GetCustomListSharesByCustomer(It.Is<UserSelectedContext>(u => u.CustomerId == "333333")))
+                .Returns(
+                         new List<CustomListShare> {
+                             new CustomListShare {
+                                 Active = true,
+                                 BranchId = "FUT",
+                                 CreatedUtc = new DateTime(2017, 7, 7, 16, 25, 0, DateTimeKind.Utc),
+                                 CustomerNumber = "234567",
+                                 HeaderId = 888,
+                                 Id = 1,
+                                 ModifiedUtc = new DateTime(2017, 7, 7, 16, 26, 0, DateTimeKind.Utc)
+                             }
+                         }
+                        );
+
+            return mock;
+        }
+
+        private static Mock<IEventLogRepository> MockLogRepo()
+        {
+            Mock<IEventLogRepository> mock = new Mock<IEventLogRepository>();
+
+            mock.Setup(s => s.WriteWarningLog(It.IsAny<string>()));
+
+            return mock;
         }
 
         public class CreateOrUpdateList {
             [Fact]
             public void CallingMethod_HitsTheSaveHeaderMethodOnce() {
                 // arrange
-                int expected = 1;
                 bool fakeActive = true;
                 UserSelectedContext fakeCustomer = new UserSelectedContext();
                 int fakeId = 1;
                 string fakeName = "fake name";
                 UserProfile fakeUser = new UserProfile();
-                Mock<ICustomListDetailsRepository> detail = new Mock<ICustomListDetailsRepository>();
-                Mock<ICustomListHeadersRepository> header = new Mock<ICustomListHeadersRepository>();
-                Mock<ICustomListSharesRepository> shares = new Mock<ICustomListSharesRepository>();
-                CustomListLogicImpl logic = new CustomListLogicImpl(shares.Object, header.Object, detail.Object);
+
+                MockDependents mockDependents = new MockDependents();
+                ICustomListLogic logic = MakeMockLogic(mockDependents);
+
+                // expect
+                int expected = 1;
 
                 // act
                 long results = logic.CreateOrUpdateList(fakeUser, fakeCustomer, fakeId, fakeName, fakeActive);
 
                 // assert
-                header.Verify(h => h.SaveCustomListHeader(It.IsAny<CustomListHeader>()), Times.Once);
+                mockDependents.MockHeaderRepo
+                    .Verify(h => h.SaveCustomListHeader(It.IsAny<CustomListHeader>()), Times.Once);
             }
 
             [Fact]
             public void ExistingHeader_ReturnsTheSameHeaderId() {
                 // arrange
-                int expected = 1;
                 bool fakeActive = true;
                 UserSelectedContext fakeCustomer = new UserSelectedContext();
                 int fakeId = 1;
                 string fakeName = "fake name";
                 UserProfile fakeUser = new UserProfile();
-                ICustomListLogic logic = MakeMockLogic();
+
+                MockDependents mockDependents = new MockDependents();
+                ICustomListLogic logic = MakeMockLogic(mockDependents);
+
+                // expect
+                int expected = 1;
 
                 // act
                 long results = logic.CreateOrUpdateList(fakeUser, fakeCustomer, fakeId, fakeName, fakeActive);
@@ -216,13 +279,17 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic.Lists {
             [Fact]
             public void NewHeader_ReturnsTheNextAvailableHeaderId() {
                 // arrange
-                int expected = 1;
                 bool fakeActive = true;
                 UserSelectedContext fakeCustomer = new UserSelectedContext();
                 int fakeId = 0;
                 string fakeName = "fake name";
                 UserProfile fakeUser = new UserProfile();
-                ICustomListLogic logic = MakeMockLogic();
+
+                MockDependents mockDependents = new MockDependents();
+                ICustomListLogic logic = MakeMockLogic(mockDependents);
+
+                // expect
+                int expected = 1;
 
                 // act
                 long results = logic.CreateOrUpdateList(fakeUser, fakeCustomer, fakeId, fakeName, fakeActive);
@@ -237,23 +304,24 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic.Lists {
             [Fact]
             public void CallingMethod_HitsTheSaveHeaderMethodOnce() {
                 // arrange
-                int expected = 1;
                 UserSelectedContext fakeCustomer = new UserSelectedContext();
                 ListModel fakeList = new ListModel {
                     ListId = 1,
                     Name = "Fake Name"
                 };
                 UserProfile fakeUser = new UserProfile();
-                Mock<ICustomListDetailsRepository> detail = new Mock<ICustomListDetailsRepository>();
-                Mock<ICustomListHeadersRepository> header = new Mock<ICustomListHeadersRepository>();
-                Mock<ICustomListSharesRepository> shares = new Mock<ICustomListSharesRepository>();
-                CustomListLogicImpl logic = new CustomListLogicImpl(shares.Object, header.Object, detail.Object);
+
+                MockDependents mockDependents = new MockDependents();
+                ICustomListLogic logic = MakeMockLogic(mockDependents);
+
+                // expect
+                int expected = 1;
 
                 // act
                 logic.DeleteList(fakeUser, fakeCustomer, fakeList);
 
                 // assert
-                header.Verify(h => h.SaveCustomListHeader(It.IsAny<CustomListHeader>()), Times.Once);
+                mockDependents.MockHeaderRepo.Verify(h => h.SaveCustomListHeader(It.IsAny<CustomListHeader>()), Times.Once);
             }
         }
 
@@ -261,9 +329,7 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic.Lists {
             [Fact]
             public void BadBranchId_ReturnsExpectedList() {
                 // arrange
-                ICustomListLogic logic = MakeMockLogic();
                 int headerId = 1;
-                int expected = 1;
                 UserSelectedContext customer = new UserSelectedContext {
                     BranchId = "XXX",
                     CustomerId = "123456"
@@ -271,6 +337,12 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic.Lists {
                 UserProfile user = new UserProfile {
                     UserId = new Guid("c04afdba-90be-4cc9-8ec3-0969463a018c")
                 };
+
+                MockDependents mockDependents = new MockDependents();
+                ICustomListLogic logic = MakeMockLogic(mockDependents);
+
+                // expect
+                int expected = 1;
 
                 // act
                 ListModel results = logic.GetListModel(user, customer, headerId);
@@ -284,9 +356,7 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic.Lists {
             [Fact]
             public void BadCustomerId_ReturnsExpectedList() {
                 // arrange
-                ICustomListLogic logic = MakeMockLogic();
                 int headerId = 1;
-                int expected = 1;
                 UserSelectedContext customer = new UserSelectedContext {
                     BranchId = "FUT",
                     CustomerId = "999999"
@@ -294,6 +364,12 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic.Lists {
                 UserProfile user = new UserProfile {
                     UserId = new Guid("c04afdba-90be-4cc9-8ec3-0969463a018c")
                 };
+
+                MockDependents mockDependents = new MockDependents();
+                ICustomListLogic logic = MakeMockLogic(mockDependents);
+
+                // expect
+                int expected = 1;
 
                 // act
                 ListModel results = logic.GetListModel(user, customer, headerId);
@@ -307,7 +383,6 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic.Lists {
             [Fact]
             public void BadHeaderId_ReturnsNull() {
                 // arrange
-                ICustomListLogic logic = MakeMockLogic();
                 int headerId = 157;
                 UserSelectedContext customer = new UserSelectedContext {
                     BranchId = "FUT",
@@ -316,6 +391,9 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic.Lists {
                 UserProfile user = new UserProfile {
                     UserId = new Guid("9615ef5f-fa2a-4497-a59f-69f34cbe6921")
                 };
+
+                MockDependents mockDependents = new MockDependents();
+                ICustomListLogic logic = MakeMockLogic(mockDependents);
 
                 // act
                 ListModel results = logic.GetListModel(user, customer, headerId);
@@ -328,9 +406,7 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic.Lists {
             [Fact]
             public void BadUser_ReturnsExpectedList() {
                 // arrange
-                ICustomListLogic logic = MakeMockLogic();
                 int headerId = 1;
-                int expected = 1;
                 UserSelectedContext customer = new UserSelectedContext {
                     BranchId = "FUT",
                     CustomerId = "123456"
@@ -338,6 +414,12 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic.Lists {
                 UserProfile user = new UserProfile {
                     UserId = new Guid("9615ef5f-fa2a-4497-a59f-69f34cbe6921")
                 };
+
+                MockDependents mockDependents = new MockDependents();
+                ICustomListLogic logic = MakeMockLogic(mockDependents);
+
+                // expect
+                int expected = 1;
 
                 // act
                 ListModel results = logic.GetListModel(user, customer, headerId);
@@ -351,9 +433,7 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic.Lists {
             [Fact]
             public void GoodHeaderId_ReturnsExpectedItemCount() {
                 // arrange
-                ICustomListLogic logic = MakeMockLogic();
                 int headerId = 1;
-                int expected = 2;
                 UserSelectedContext customer = new UserSelectedContext {
                     BranchId = "FUT",
                     CustomerId = "123456"
@@ -361,6 +441,12 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic.Lists {
                 UserProfile user = new UserProfile {
                     UserId = new Guid("c04afdba-90be-4cc9-8ec3-0969463a018c")
                 };
+
+                MockDependents mockDependents = new MockDependents();
+                ICustomListLogic logic = MakeMockLogic(mockDependents);
+
+                // expect
+                int expected = 2;
 
                 // act
                 ListModel results = logic.GetListModel(user, customer, headerId);
@@ -375,9 +461,7 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic.Lists {
             [Fact]
             public void GoodHeaderId_ReturnsExpectedList() {
                 // arrange
-                ICustomListLogic logic = MakeMockLogic();
                 int headerId = 1;
-                int expected = 1;
                 UserSelectedContext customer = new UserSelectedContext {
                     BranchId = "FUT",
                     CustomerId = "123456"
@@ -385,6 +469,12 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic.Lists {
                 UserProfile user = new UserProfile {
                     UserId = new Guid("c04afdba-90be-4cc9-8ec3-0969463a018c")
                 };
+
+                MockDependents mockDependents = new MockDependents();
+                ICustomListLogic logic = MakeMockLogic(mockDependents);
+
+                // expect
+                int expected = 1;
 
                 // act
                 ListModel results = logic.GetListModel(user, customer, headerId);
@@ -398,9 +488,7 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic.Lists {
             [Fact]
             public void GoodHeaderId_ReturnsExpectedSharedCount() {
                 // arrange
-                ICustomListLogic logic = MakeMockLogic();
                 int headerId = 1;
-                int expected = 2;
                 UserSelectedContext customer = new UserSelectedContext {
                     BranchId = "FUT",
                     CustomerId = "123456"
@@ -408,6 +496,12 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic.Lists {
                 UserProfile user = new UserProfile {
                     UserId = new Guid("c04afdba-90be-4cc9-8ec3-0969463a018c")
                 };
+
+                MockDependents mockDependents = new MockDependents();
+                ICustomListLogic logic = MakeMockLogic(mockDependents);
+
+                // expect
+                int expected = 2;
 
                 // act
                 ListModel results = logic.GetListModel(user, customer, headerId);
@@ -425,11 +519,13 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic.Lists {
             public void BadHeaderIdWithoutItems_ReturnsNull() {
                 // arrange
                 int headerId = 0;
-                ICustomListLogic logic = MakeMockLogic();
                 UserSelectedContext userSelectedContext = new UserSelectedContext {
                     BranchId = "FUT",
                     CustomerId = "123456"
                 };
+
+                MockDependents mockDependents = new MockDependents();
+                ICustomListLogic logic = MakeMockLogic(mockDependents);
 
                 // act
                 ListModel results = logic.ReadList(headerId, userSelectedContext, true);
@@ -442,13 +538,17 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic.Lists {
             [Fact]
             public void GoodHeaderIdWithItems_ReturnsExpectedItemCount() {
                 // arrange
-                int expected = 2;
                 int headerId = 1;
-                ICustomListLogic logic = MakeMockLogic();
                 UserSelectedContext userSelectedContext = new UserSelectedContext {
                     BranchId = "FUT",
                     CustomerId = "123456"
                 };
+
+                MockDependents mockDependents = new MockDependents();
+                ICustomListLogic logic = MakeMockLogic(mockDependents);
+
+                // expect
+                int expected = 2;
 
                 // act
                 ListModel result = logic.ReadList(headerId, userSelectedContext, false);
@@ -463,13 +563,17 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic.Lists {
             [Fact]
             public void GoodHeaderIdWithItems_ReturnsExpectedListModel() {
                 // arrange
-                int expected = 1;
                 int headerId = 1;
-                ICustomListLogic logic = MakeMockLogic();
                 UserSelectedContext userSelectedContext = new UserSelectedContext {
                     BranchId = "FUT",
                     CustomerId = "123456"
                 };
+
+                MockDependents mockDependents = new MockDependents();
+                ICustomListLogic logic = MakeMockLogic(mockDependents);
+
+                // expect
+                int expected = 1;
 
                 // act
                 ListModel result = logic.ReadList(headerId, userSelectedContext, false);
@@ -483,13 +587,17 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic.Lists {
             [Fact]
             public void GoodHeaderIdWithItems_ReturnsExpectedShareCount() {
                 // arrange
-                int expected = 2;
                 int headerId = 1;
-                ICustomListLogic logic = MakeMockLogic();
                 UserSelectedContext userSelectedContext = new UserSelectedContext {
                     BranchId = "FUT",
                     CustomerId = "123456"
                 };
+
+                MockDependents mockDependents = new MockDependents();
+                ICustomListLogic logic = MakeMockLogic(mockDependents);
+
+                // expect
+                int expected = 2;
 
                 // act
                 ListModel result = logic.ReadList(headerId, userSelectedContext, false);
@@ -504,13 +612,17 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic.Lists {
             [Fact]
             public void GoodHeaderIdWithoutItems_ReturnsExpectedItemCount() {
                 // arrange
-                int expected = 0;
                 int headerId = 1;
-                ICustomListLogic logic = MakeMockLogic();
                 UserSelectedContext userSelectedContext = new UserSelectedContext {
                     BranchId = "FUT",
                     CustomerId = "123456"
                 };
+
+                MockDependents mockDependents = new MockDependents();
+                ICustomListLogic logic = MakeMockLogic(mockDependents);
+
+                // expect
+                int expected = 0;
 
                 // act
                 ListModel result = logic.ReadList(headerId, userSelectedContext, true);
@@ -525,13 +637,17 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic.Lists {
             [Fact]
             public void GoodHeaderIdWithoutItems_ReturnsExpectedListModel() {
                 // arrange
-                int expected = 1;
                 int headerId = 1;
-                ICustomListLogic logic = MakeMockLogic();
                 UserSelectedContext userSelectedContext = new UserSelectedContext {
                     BranchId = "FUT",
                     CustomerId = "123456"
                 };
+
+                MockDependents mockDependents = new MockDependents();
+                ICustomListLogic logic = MakeMockLogic(mockDependents);
+
+                // expect
+                int expected = 1;
 
                 // act
                 ListModel result = logic.ReadList(headerId, userSelectedContext, true);
@@ -545,13 +661,17 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic.Lists {
             [Fact]
             public void GoodHeaderIdWithoutItems_ReturnsExpectedShareCount() {
                 // arrange
-                int expected = 0;
                 int headerId = 1;
-                ICustomListLogic logic = MakeMockLogic();
                 UserSelectedContext userSelectedContext = new UserSelectedContext {
                     BranchId = "FUT",
                     CustomerId = "123456"
                 };
+
+                MockDependents mockDependents = new MockDependents();
+                ICustomListLogic logic = MakeMockLogic(mockDependents);
+
+                // expect
+                int expected = 0;
 
                 // act
                 ListModel result = logic.ReadList(headerId, userSelectedContext, true);
@@ -568,12 +688,16 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic.Lists {
             [Fact]
             public void BadBranchIdWithDetails_ReturnsListWithNoHeaders() {
                 // arrange
-                ICustomListLogic logic = MakeMockLogic();
                 UserSelectedContext customer = new UserSelectedContext {
                     BranchId = "XXX",
                     CustomerId = "123456"
                 };
                 UserProfile user = new UserProfile();
+
+                MockDependents mockDependents = new MockDependents();
+                ICustomListLogic logic = MakeMockLogic(mockDependents);
+
+                // expect
                 int expected = 0;
 
                 // act
@@ -588,12 +712,16 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic.Lists {
             [Fact]
             public void BadBranchIdWithoutDetails_ReturnsListWithNoHeaders() {
                 // arrange
-                ICustomListLogic logic = MakeMockLogic();
                 UserSelectedContext customer = new UserSelectedContext {
                     BranchId = "XXX",
                     CustomerId = "123456"
                 };
                 UserProfile user = new UserProfile();
+
+                MockDependents mockDependents = new MockDependents();
+                ICustomListLogic logic = MakeMockLogic(mockDependents);
+
+                // expect
                 int expected = 0;
 
                 // act
@@ -608,12 +736,16 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic.Lists {
             [Fact]
             public void BadCustomerIdWithDetails_ReturnsListWithNoHeaders() {
                 // arrange
-                ICustomListLogic logic = MakeMockLogic();
                 UserSelectedContext customer = new UserSelectedContext {
                     BranchId = "FUT",
                     CustomerId = "999999"
                 };
                 UserProfile user = new UserProfile();
+
+                MockDependents mockDependents = new MockDependents();
+                ICustomListLogic logic = MakeMockLogic(mockDependents);
+
+                // expect
                 int expected = 0;
 
                 // act
@@ -628,12 +760,16 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic.Lists {
             [Fact]
             public void BadCustomerIdWithoutDetails_ReturnsListWithNoHeaders() {
                 // arrange
-                ICustomListLogic logic = MakeMockLogic();
                 UserSelectedContext customer = new UserSelectedContext {
                     BranchId = "FUT",
                     CustomerId = "999999"
                 };
                 UserProfile user = new UserProfile();
+
+                MockDependents mockDependents = new MockDependents();
+                ICustomListLogic logic = MakeMockLogic(mockDependents);
+
+                // expect
                 int expected = 0;
 
                 // act
@@ -648,7 +784,6 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic.Lists {
             [Fact]
             public void BadUserWithoutDetails_ReturnsExpectedCountOfTwo() {
                 // arrange
-                ICustomListLogic logic = MakeMockLogic();
                 UserSelectedContext customer = new UserSelectedContext {
                     BranchId = "FUT",
                     CustomerId = "123456"
@@ -656,6 +791,11 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic.Lists {
                 UserProfile user = new UserProfile {
                     UserId = new Guid("9615ef5f-fa2a-4497-a59f-69f34cbe6921")
                 };
+
+                MockDependents mockDependents = new MockDependents();
+                ICustomListLogic logic = MakeMockLogic(mockDependents);
+
+                // expect
                 int expected = 2;
 
                 // act
@@ -670,12 +810,16 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic.Lists {
             [Fact]
             public void CustomerWithNoSharedList_DoesNotSeeList() {
                 // arrange
-                ICustomListLogic logic = MakeMockLogic();
                 UserSelectedContext customer = new UserSelectedContext {
                     BranchId = "FUT",
                     CustomerId = "222222"
                 };
                 UserProfile user = new UserProfile();
+
+                MockDependents mockDependents = new MockDependents();
+                ICustomListLogic logic = MakeMockLogic(mockDependents);
+
+                // expect
                 int expected = 0;
 
                 // act
@@ -690,12 +834,16 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic.Lists {
             [Fact]
             public void GoodCustomerWithDetails_ReturnsExpectedCountOfTwo() {
                 // arrange
-                ICustomListLogic logic = MakeMockLogic();
                 UserSelectedContext customer = new UserSelectedContext {
                     BranchId = "FUT",
                     CustomerId = "123456"
                 };
                 UserProfile user = new UserProfile();
+
+                MockDependents mockDependents = new MockDependents();
+                ICustomListLogic logic = MakeMockLogic(mockDependents);
+
+                // expect
                 int expected = 2;
 
                 // act
@@ -710,13 +858,17 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic.Lists {
             [Fact]
             public void GoodCustomerWithDetails_ReturnsExpectedCountOfTwoItemsForHeaderIdOf1() {
                 // arrange
-                ICustomListLogic logic = MakeMockLogic();
                 UserSelectedContext customer = new UserSelectedContext {
                     BranchId = "FUT",
                     CustomerId = "123456"
                 };
                 UserProfile user = new UserProfile();
                 int headerId = 1;
+
+                MockDependents mockDependents = new MockDependents();
+                ICustomListLogic logic = MakeMockLogic(mockDependents);
+
+                // expect
                 int expected = 2;
 
                 // act
@@ -733,13 +885,17 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic.Lists {
             [Fact]
             public void GoodCustomerWithDetails_ReturnsExpectedCountOfTwoSharesForHeaderIdOf1() {
                 // arrange
-                ICustomListLogic logic = MakeMockLogic();
                 UserSelectedContext customer = new UserSelectedContext {
                     BranchId = "FUT",
                     CustomerId = "123456"
                 };
                 UserProfile user = new UserProfile();
                 int headerId = 1;
+
+                MockDependents mockDependents = new MockDependents();
+                ICustomListLogic logic = MakeMockLogic(mockDependents);
+
+                // expect
                 int expected = 2;
 
                 // act
@@ -756,12 +912,16 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic.Lists {
             [Fact]
             public void GoodCustomerWithoutDetails_ReturnsExpectedCountOfTwo() {
                 // arrange
-                ICustomListLogic logic = MakeMockLogic();
                 UserSelectedContext customer = new UserSelectedContext {
                     BranchId = "FUT",
                     CustomerId = "123456"
                 };
                 UserProfile user = new UserProfile();
+
+                MockDependents mockDependents = new MockDependents();
+                ICustomListLogic logic = MakeMockLogic(mockDependents);
+
+                // expect
                 int expected = 2;
 
                 // act
@@ -776,12 +936,16 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic.Lists {
             [Fact]
             public void GoodCustomerWithSharedList_ReturnsExpectedListId() {
                 // arrange
-                ICustomListLogic logic = MakeMockLogic();
                 UserSelectedContext customer = new UserSelectedContext {
                     BranchId = "FUT",
                     CustomerId = "111111"
                 };
                 UserProfile user = new UserProfile();
+
+                MockDependents mockDependents = new MockDependents();
+                ICustomListLogic logic = MakeMockLogic(mockDependents);
+
+                // expect
                 int expected = 1;
 
                 // act
@@ -795,9 +959,29 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic.Lists {
             }
 
             [Fact]
+            public void GoodCustomerWithBrokenSharedList_WritesWarningToLog()
+            {
+                // arrange
+                UserSelectedContext customer = new UserSelectedContext
+                {
+                    BranchId = "FUT",
+                    CustomerId = "333333"
+                };
+                UserProfile user = new UserProfile();
+
+                MockDependents mockDependents = new MockDependents();
+                ICustomListLogic logic = MakeMockLogic(mockDependents);
+
+                // act
+                List<ListModel> results = logic.ReadLists(user, customer, false);
+
+                // assert
+                mockDependents.MockLogRepo.Verify(log => log.WriteWarningLog(It.IsAny<string>()), Times.Once);
+            }
+
+            [Fact]
             public void GoodUserWithoutDetails_ReturnsExpectedCountOfTwo() {
                 // arrange
-                ICustomListLogic logic = MakeMockLogic();
                 UserSelectedContext customer = new UserSelectedContext {
                     BranchId = "FUT",
                     CustomerId = "123456"
@@ -805,6 +989,11 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic.Lists {
                 UserProfile user = new UserProfile {
                     UserId = new Guid("c04afdba-90be-4cc9-8ec3-0969463a018c")
                 };
+
+                MockDependents mockDependents = new MockDependents();
+                ICustomListLogic logic = MakeMockLogic(mockDependents);
+
+                // expect
                 int expected = 2;
 
                 // act
@@ -819,12 +1008,16 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic.Lists {
             [Fact]
             public void NullUserWithDetails_ReturnsCountOfTwoHeaders() {
                 // arrange
-                ICustomListLogic logic = MakeMockLogic();
                 UserSelectedContext customer = new UserSelectedContext {
                     BranchId = "FUT",
                     CustomerId = "123456"
                 };
                 UserProfile user = null;
+
+                MockDependents mockDependents = new MockDependents();
+                ICustomListLogic logic = MakeMockLogic(mockDependents);
+
+                // expect
                 int expected = 2;
 
                 // act
@@ -839,12 +1032,16 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic.Lists {
             [Fact]
             public void NullUserWithoutDetails_ReturnsCountOfTwoHeaders() {
                 // arrange
-                ICustomListLogic logic = MakeMockLogic();
                 UserSelectedContext customer = new UserSelectedContext {
                     BranchId = "FUT",
                     CustomerId = "123456"
                 };
                 UserProfile user = null;
+
+                MockDependents mockDependents = new MockDependents();
+                ICustomListLogic logic = MakeMockLogic(mockDependents);
+
+                // expect
                 int expected = 2;
 
                 // act
@@ -863,7 +1060,9 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic.Lists {
             public void BadHeaderId_ThrowsArgumentException() {
                 // arrange
                 CustomListDetail detail = new CustomListDetail();
-                ICustomListLogic logic = MakeMockLogic();
+
+                MockDependents mockDependents = new MockDependents();
+                ICustomListLogic logic = MakeMockLogic(mockDependents);
 
                 // act
                 Action act = () => logic.SaveItem(detail);
@@ -879,16 +1078,15 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic.Lists {
                 CustomListDetail detail = new CustomListDetail {
                     HeaderId = 17
                 };
-                Mock<ICustomListDetailsRepository> detailRepo = new Mock<ICustomListDetailsRepository>();
-                Mock<ICustomListHeadersRepository> headerRepo = new Mock<ICustomListHeadersRepository>();
-                Mock<ICustomListSharesRepository> sharesRepo = new Mock<ICustomListSharesRepository>();
-                CustomListLogicImpl logic = new CustomListLogicImpl(sharesRepo.Object, headerRepo.Object, detailRepo.Object);
+
+                MockDependents mockDependents = new MockDependents();
+                ICustomListLogic logic = MakeMockLogic(mockDependents);
 
                 // act
                 logic.SaveItem(detail);
 
                 // assert
-                detailRepo.Verify(r => r.SaveCustomListDetail(It.IsAny<CustomListDetail>()), Times.Once);
+                mockDependents.MockDetailRepo.Verify(r => r.SaveCustomListDetail(It.IsAny<CustomListDetail>()), Times.Once);
             }
         }
 
@@ -899,16 +1097,15 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic.Lists {
                 UserSelectedContext fakeCustomer = new UserSelectedContext();
                 ListModel farkModel = new ListModel();
                 UserProfile fakeUser = new UserProfile();
-                Mock<ICustomListDetailsRepository> detail = new Mock<ICustomListDetailsRepository>();
-                Mock<ICustomListHeadersRepository> header = new Mock<ICustomListHeadersRepository>();
-                Mock<ICustomListSharesRepository> shares = new Mock<ICustomListSharesRepository>();
-                CustomListLogicImpl logic = new CustomListLogicImpl(shares.Object, header.Object, detail.Object);
+
+                MockDependents mockDependents = new MockDependents();
+                ICustomListLogic logic = MakeMockLogic(mockDependents);
 
                 // act
                 ListModel results = logic.SaveList(fakeUser, fakeCustomer, farkModel);
 
                 // assert
-                header.Verify(h => h.SaveCustomListHeader(It.IsAny<CustomListHeader>()), Times.Once);
+                mockDependents.MockHeaderRepo.Verify(h => h.SaveCustomListHeader(It.IsAny<CustomListHeader>()), Times.Once);
             }
 
             [Fact]
@@ -927,16 +1124,15 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic.Lists {
                     }
                 };
                 UserProfile fakeUser = new UserProfile();
-                Mock<ICustomListDetailsRepository> detail = new Mock<ICustomListDetailsRepository>();
-                Mock<ICustomListHeadersRepository> header = new Mock<ICustomListHeadersRepository>();
-                Mock<ICustomListSharesRepository> shares = new Mock<ICustomListSharesRepository>();
-                CustomListLogicImpl logic = new CustomListLogicImpl(shares.Object, header.Object, detail.Object);
+
+                MockDependents mockDependents = new MockDependents();
+                ICustomListLogic logic = MakeMockLogic(mockDependents);
 
                 // act
                 ListModel results = logic.SaveList(fakeUser, fakeCustomer, fakeModel);
 
                 // assert
-                detail.Verify(d => d.SaveCustomListDetail(It.IsAny<CustomListDetail>()), Times.Exactly(2));
+                mockDependents.MockDetailRepo.Verify(d => d.SaveCustomListDetail(It.IsAny<CustomListDetail>()), Times.Exactly(2));
             }
 
             [Fact]
@@ -945,16 +1141,15 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic.Lists {
                 UserSelectedContext fakeCustomer = new UserSelectedContext();
                 ListModel farkModel = new ListModel();
                 UserProfile fakeUser = new UserProfile();
-                Mock<ICustomListDetailsRepository> detail = new Mock<ICustomListDetailsRepository>();
-                Mock<ICustomListHeadersRepository> header = new Mock<ICustomListHeadersRepository>();
-                Mock<ICustomListSharesRepository> shares = new Mock<ICustomListSharesRepository>();
-                CustomListLogicImpl logic = new CustomListLogicImpl(shares.Object, header.Object, detail.Object);
+
+                MockDependents mockDependents = new MockDependents();
+                ICustomListLogic logic = MakeMockLogic(mockDependents);
 
                 // act
                 ListModel results = logic.SaveList(fakeUser, fakeCustomer, farkModel);
 
                 // assert
-                detail.Verify(d => d.SaveCustomListDetail(It.IsAny<CustomListDetail>()), Times.Never);
+                mockDependents.MockDetailRepo.Verify(d => d.SaveCustomListDetail(It.IsAny<CustomListDetail>()), Times.Never);
             }
 
             [Fact]
@@ -978,16 +1173,14 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic.Lists {
                     }
                 };
 
-                Mock<ICustomListDetailsRepository> detail = new Mock<ICustomListDetailsRepository>();
-                Mock<ICustomListHeadersRepository> header = new Mock<ICustomListHeadersRepository>();
-                Mock<ICustomListSharesRepository> shares = new Mock<ICustomListSharesRepository>();
-                CustomListLogicImpl logic = new CustomListLogicImpl(shares.Object, header.Object, detail.Object);
+                MockDependents mockDependents = new MockDependents();
+                ICustomListLogic logic = MakeMockLogic(mockDependents);
 
                 // act
                 ListModel results = logic.SaveList(fakeUser, fakeCustomer, farkModel);
 
                 // assert
-                detail.Verify(x => x.SaveCustomListDetail(It.Is<CustomListDetail>(d => d.Active.Equals(true))), Times.Once);
+                mockDependents.MockDetailRepo.Verify(x => x.SaveCustomListDetail(It.Is<CustomListDetail>(d => d.Active.Equals(true))), Times.Once);
             }
 
             [Fact]
@@ -1011,16 +1204,14 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic.Lists {
                     }
                 };
 
-                Mock<ICustomListDetailsRepository> detail = new Mock<ICustomListDetailsRepository>();
-                Mock<ICustomListHeadersRepository> header = new Mock<ICustomListHeadersRepository>();
-                Mock<ICustomListSharesRepository> shares = new Mock<ICustomListSharesRepository>();
-                CustomListLogicImpl logic = new CustomListLogicImpl(shares.Object, header.Object, detail.Object);
+                MockDependents mockDependents = new MockDependents();
+                ICustomListLogic logic = MakeMockLogic(mockDependents);
 
                 // act
                 ListModel results = logic.SaveList(fakeUser, fakeCustomer, farkModel);
 
                 // assert
-                detail.Verify(x => x.SaveCustomListDetail(It.Is<CustomListDetail>(d => d.Active.Equals(false))), Times.Once);
+                mockDependents.MockDetailRepo.Verify(x => x.SaveCustomListDetail(It.Is<CustomListDetail>(d => d.Active.Equals(false))), Times.Once);
             }
         }
     }

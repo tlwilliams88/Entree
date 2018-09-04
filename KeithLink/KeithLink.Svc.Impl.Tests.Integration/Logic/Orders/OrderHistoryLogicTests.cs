@@ -81,16 +81,31 @@ namespace KeithLink.Svc.Impl.Tests.Integration.Logic.Orders
         public class ProcessOrder : MigratedDatabaseTest
         {
             [Fact]
-            public void OrderHistory_IsSentToRepositoryWithValidOrderDate()
+            public void OrderHistory_ExecutesInReasonableTimeSpan()
             {
                 // arrange
                 IOrderHistoryLogic testunit = MakeUnitToBeTested();
 
                 // act
                 string jsonOrderHistoryFile = GetMockData("OrderHistoryFile.json");
-                testunit.ProcessOrder(jsonOrderHistoryFile);
+                Action processOrder = () => testunit.ProcessOrder(jsonOrderHistoryFile);
 
                 // assert
+                processOrder.ExecutionTime().Should().BeLessOrEqualTo(TimeSpan.FromSeconds(10));
+            }
+
+            [Fact]
+            public void OrderHistoryWithSubbedAndReplacedItems_ExecutesInReasonableTimeSpan()
+            {
+                // arrange
+                IOrderHistoryLogic testunit = MakeUnitToBeTested();
+
+                // act
+                string jsonOrderHistoryFile = GetMockData("OrderHistoryFileWithReplacementItems.json");
+                Action processOrder = () => testunit.ProcessOrder(jsonOrderHistoryFile);
+
+                // assert
+                processOrder.ExecutionTime().Should().BeLessOrEqualTo(TimeSpan.FromSeconds(10));
             }
         }
         #endregion

@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Amazon.CloudFront.Model;
+using KeithLink.Common.Core.Interfaces.Logging;
 using KeithLink.Svc.Core.Extensions;
 using KeithLink.Svc.Core.Extensions.Lists;
 using KeithLink.Svc.Core.Interface.Lists;
@@ -21,14 +22,19 @@ namespace KeithLink.Svc.Impl.Logic.Lists
         private readonly ICustomListDetailsRepository _detailsRepo;
         private readonly ICustomListHeadersRepository _headersRepo;
         private readonly ICustomListSharesRepository _sharesRepo;
+        private readonly IEventLogRepository _log;
         #endregion
 
         #region ctor
-        public CustomListLogicImpl(ICustomListSharesRepository customListSharesRepository, ICustomListHeadersRepository headersRepo, ICustomListDetailsRepository detailsRepo)
+        public CustomListLogicImpl(ICustomListSharesRepository customListSharesRepository, 
+                                   ICustomListHeadersRepository headersRepo, 
+                                   ICustomListDetailsRepository detailsRepo,
+                                   IEventLogRepository eventLogRepository )
         {
             _headersRepo = headersRepo;
             _detailsRepo = detailsRepo;
             _sharesRepo = customListSharesRepository;
+            _log = eventLogRepository;
         }
         #endregion
 
@@ -55,8 +61,19 @@ namespace KeithLink.Svc.Impl.Logic.Lists
                     headers = new List<CustomListHeader>();
                 }
 
-                foreach (var share in shares) {
-                    headers.Add(_headersRepo.GetCustomListHeader(share.HeaderId));
+                foreach (var share in shares)
+                {
+                    var header = _headersRepo.GetCustomListHeader(share.HeaderId);
+
+                    if (header != null)
+                    {
+                        headers.Add(header);
+                    }
+                    else
+                    {
+                        var warningMessage = string.Format("A custom list header with id {0} referenced by share id {1} is missing for customer {2} serviced by {3}.", share.HeaderId, share.Id, catalogInfo.CustomerId, catalogInfo.BranchId);
+                        _log.WriteWarningLog(warningMessage);
+                    }
                 }
             }
 
