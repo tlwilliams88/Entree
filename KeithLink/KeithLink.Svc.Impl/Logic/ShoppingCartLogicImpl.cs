@@ -36,7 +36,9 @@ using KeithLink.Svc.Core.Interface.SiteCatalog;
 
 using CS = KeithLink.Svc.Core.Models.Generated;
 using KeithLink.Svc.Core.Models.Lists;
+using KeithLink.Svc.Core.Models.Messaging.Queue;
 using KeithLink.Svc.Core.Models.Orders;
+using KeithLink.Svc.Core.Models.Orders.History;
 using KeithLink.Svc.Core.Models.Profile;
 using KeithLink.Svc.Core.Models.ShoppingCart;
 using KeithLink.Svc.Core.Models.SiteCatalog;
@@ -698,7 +700,9 @@ namespace KeithLink.Svc.Impl.Logic
 
                 bool isSpecialOrder = catalogLogic.IsSpecialtyCatalog(null, catalogId);
 
-                _historyLogic.SaveOrder(newPurchaseOrder.ToOrderHistoryFile(user, catalogInfo), isSpecialOrder); // save to order history
+                // save to order history
+                OrderHistoryFile orderHistoryFile = newPurchaseOrder.ToOrderHistoryFile(user, catalogInfo);
+                _historyLogic.SaveOrder(orderHistoryFile, isSpecialOrder);
 
                 if (isSpecialOrder)
                 {
@@ -748,18 +752,18 @@ namespace KeithLink.Svc.Impl.Logic
         private void PublishSpecialOrderNotification(CS.PurchaseOrder po)
         {
             Order order = po.ToOrder();
-            Core.Models.Messaging.Queue.OrderChange orderChange = new Core.Models.Messaging.Queue.OrderChange();
+            OrderChange orderChange = new OrderChange();
             orderChange.OrderName = (string)po.Properties["DisplayName"];
             orderChange.OriginalStatus = "Requested";
             orderChange.CurrentStatus = "Requested";
-            orderChange.ItemChanges = new List<Core.Models.Messaging.Queue.OrderLineChange>();
-            orderChange.Items = new List<Core.Models.Messaging.Queue.OrderLineChange>();
+            orderChange.ItemChanges = new List<OrderLineChange>();
+            orderChange.Items = new List<OrderLineChange>();
             orderChange.SpecialInstructions = "";
             orderChange.ShipDate = DateTime.MinValue.ToShortDateString();
             foreach (var lineItem in ((CommerceServer.Foundation.CommerceRelationshipList)po.Properties["LineItems"]))
             {
                 var item = (CS.LineItem)lineItem.Target;
-                orderChange.Items.Add(new Core.Models.Messaging.Queue.OrderLineChange()
+                orderChange.Items.Add(new OrderLineChange()
                 {
                     ItemNumber = item.ProductId,
                     ItemCatalog = item.CatalogName,
@@ -769,7 +773,7 @@ namespace KeithLink.Svc.Impl.Logic
                     ItemPrice = item.PlacedPrice.Value
                 });
             } 
-            Core.Models.Messaging.Queue.OrderConfirmationNotification orderConfNotification = new Core.Models.Messaging.Queue.OrderConfirmationNotification();
+            OrderConfirmationNotification orderConfNotification = new OrderConfirmationNotification();
             orderConfNotification.OrderChange = orderChange;
             orderConfNotification.OrderNumber = (string)po.Properties["OrderNumber"];
             orderConfNotification.CustomerNumber = (string)po.Properties["CustomerId"];

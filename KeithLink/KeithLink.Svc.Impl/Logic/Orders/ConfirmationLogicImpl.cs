@@ -23,6 +23,7 @@ using KeithLink.Svc.Core.Interface.Orders.History;
 using KeithLink.Svc.Core.Interface.SiteCatalog;
 
 using KeithLink.Svc.Core.Models.Common;
+using KeithLink.Svc.Core.Models.Messaging.Queue;
 using KeithLink.Svc.Core.Models.Orders.Confirmations;
 using KeithLink.Svc.Core.Models.Orders.History;
 using EF = KeithLink.Svc.Core.Models.Orders.History.EF;
@@ -50,6 +51,8 @@ namespace KeithLink.Svc.Impl.Logic.Orders
         private IGenericQueueRepository genericeQueueRepository;
         private IGenericSubscriptionQueueRepository genericSubscriptionQueue;
         private IOrderConversionLogic _conversionLogic;
+        private IOrderHistoryLogic _orderHistoryLogic;
+        private IOrderHistoryHeaderRepsitory _orderHistoryRepo;
         private IEventLogRepository _log;
         private ISocketListenerRepository _socket;
         private readonly IUnitOfWork _unitOfWork;
@@ -59,13 +62,21 @@ namespace KeithLink.Svc.Impl.Logic.Orders
         #endregion
 
         #region constructor
-        public ConfirmationLogicImpl(IEventLogRepository eventLogRepository, ISocketListenerRepository socketListenerRepository, IGenericQueueRepository internalMessagingLogic, 
-                                     IOrderConversionLogic conversionLogic, IUnitOfWork unitOfWork, IGenericSubscriptionQueueRepository subscriptionQueue) {
+        public ConfirmationLogicImpl(IEventLogRepository eventLogRepository, 
+                                     ISocketListenerRepository socketListenerRepository, 
+                                     IGenericQueueRepository internalMessagingLogic, 
+                                     IOrderConversionLogic conversionLogic,
+                                     IOrderHistoryLogic orderHistoryLogic,
+                                     IOrderHistoryHeaderRepsitory orderHistoryRepo,
+                                     IUnitOfWork unitOfWork, 
+                                     IGenericSubscriptionQueueRepository subscriptionQueue) {
             _log = eventLogRepository;
             _socket = socketListenerRepository;
             this.genericeQueueRepository = internalMessagingLogic;
             this.genericSubscriptionQueue = subscriptionQueue;
             _conversionLogic = conversionLogic;
+            _orderHistoryLogic = orderHistoryLogic;
+            _orderHistoryRepo = orderHistoryRepo;
             _unitOfWork = unitOfWork;
 
             _socket.FileReceived            += SocketFileReceived;
@@ -119,14 +130,14 @@ namespace KeithLink.Svc.Impl.Logic.Orders
         #endregion
 
         #region methods/functions
-        private Core.Models.Messaging.Queue.OrderChange BuildOrderChanges(PurchaseOrder po, LineItem[] currLineItems, LineItem[] origLineItems, 
+        private OrderChange BuildOrderChanges(PurchaseOrder po, LineItem[] currLineItems, LineItem[] origLineItems, 
                                                                           string originalStatus, string specialInstructions, string shipDate) {
-            Core.Models.Messaging.Queue.OrderChange orderChange = new Core.Models.Messaging.Queue.OrderChange();
+            OrderChange orderChange = new OrderChange();
             orderChange.OrderName = (string)po["DisplayName"];
             orderChange.OriginalStatus = originalStatus;
             orderChange.CurrentStatus = po.Status;
-            orderChange.ItemChanges = new List<Core.Models.Messaging.Queue.OrderLineChange>();
-            orderChange.Items = new List<Core.Models.Messaging.Queue.OrderLineChange>();
+            orderChange.ItemChanges = new List<OrderLineChange>();
+            orderChange.Items = new List<OrderLineChange>();
 			orderChange.SpecialInstructions = specialInstructions;
             orderChange.ShipDate = shipDate;
 			
@@ -134,7 +145,7 @@ namespace KeithLink.Svc.Impl.Logic.Orders
                 LineItem newItem = currLineItems.Where(i => i.ProductId == origItem.ProductId).FirstOrDefault();
                 if (newItem != null) {
                     if (origItem["MainFrameStatus"] != newItem["MainFrameStatus"])
-                        orderChange.ItemChanges.Add(new Core.Models.Messaging.Queue.OrderLineChange() { 
+                        orderChange.ItemChanges.Add(new OrderLineChange() { 
                                                         NewStatus = (string)newItem["MainFrameStatus"], 
                                                         OriginalStatus = (string)origItem["MainFrameStatus"], 
                                                         ItemNumber = origItem.ProductId,
@@ -146,7 +157,7 @@ namespace KeithLink.Svc.Impl.Logic.Orders
                                                         Each = (bool)newItem["Each"]
                                                     });
                 } else {
-                    orderChange.ItemChanges.Add(new Core.Models.Messaging.Queue.OrderLineChange() { 
+                    orderChange.ItemChanges.Add(new OrderLineChange() { 
                                                     NewStatus = "Removed", 
                                                     OriginalStatus = "", 
                                                     ItemNumber = origItem.ProductId,
@@ -162,7 +173,7 @@ namespace KeithLink.Svc.Impl.Logic.Orders
             foreach (LineItem newItem in currLineItems) {
                 LineItem origItem = origLineItems.Where(o => o.ProductId == newItem.ProductId).FirstOrDefault();
                 if (origItem == null)
-                    orderChange.ItemChanges.Add(new Core.Models.Messaging.Queue.OrderLineChange() { 
+                    orderChange.ItemChanges.Add(new OrderLineChange() { 
                                                     NewStatus = "Added", 
                                                     OriginalStatus = "", 
                                                     ItemNumber = newItem.ProductId,
@@ -174,7 +185,7 @@ namespace KeithLink.Svc.Impl.Logic.Orders
                                                     Each = (bool)newItem["Each"]
                                                 }); // would we ever hit this?
 
-                orderChange.Items.Add(new Core.Models.Messaging.Queue.OrderLineChange() {
+                orderChange.Items.Add(new OrderLineChange() {
                     ItemNumber = (string)newItem.ProductId,
                     ItemCatalog = (string)po["BranchId"],
                     ItemDescription = newItem.DisplayName,
@@ -213,6 +224,14 @@ namespace KeithLink.Svc.Impl.Logic.Orders
             } else {
                 return null;
             }
+        }
+
+        private string GetUserEmailAddress(string orderNumber)
+        {
+            var header = _orderHistoryRepo.Read(history => history.ControlNumber == orderNumber)
+                            .FirstOrDefault();
+
+            return header.UserEmailAddress;
         }
 
         /// <summary>
@@ -433,15 +452,16 @@ namespace KeithLink.Svc.Impl.Logic.Orders
                 po.Save();
 
                 // use internal messaging logic to put order up message on the queue
-                Core.Models.Messaging.Queue.OrderChange orderChange = BuildOrderChanges(po, currLineItems, origLineItems, originalStatus, confirmation.Header.SpecialInstructions, confirmation.Header.ShipDate);
+                OrderChange orderChange = BuildOrderChanges(po, currLineItems, origLineItems, originalStatus, confirmation.Header.SpecialInstructions, confirmation.Header.ShipDate);
                 if (orderChange.OriginalStatus != orderChange.CurrentStatus || orderChange.ItemChanges.Count > 0) {
-                    Core.Models.Messaging.Queue.OrderConfirmationNotification orderConfNotification = new Core.Models.Messaging.Queue.OrderConfirmationNotification();
+                    OrderConfirmationNotification orderConfNotification = new OrderConfirmationNotification();
                     orderConfNotification.OrderChange = orderChange;
                     orderConfNotification.OrderNumber = (string)po["OrderNumber"];
                     orderConfNotification.CustomerNumber = (string)po["CustomerId"];
                     orderConfNotification.BranchId = (string)po["BranchId"];
                     orderConfNotification.InvoiceNumber = confirmation.Header.InvoiceNumber;
-					
+                    orderConfNotification.UserEmailAddress = GetUserEmailAddress(orderConfNotification.OrderNumber);
+
                     genericeQueueRepository.PublishToDirectedExchange(orderConfNotification.ToJson(), Configuration.RabbitMQNotificationServer,
                         Configuration.RabbitMQNotificationUserNamePublisher, Configuration.RabbitMQNotificationUserPasswordPublisher,
                         Configuration.RabbitMQVHostNotification, Configuration.RabbitMQExchangeNotificationV2, 
