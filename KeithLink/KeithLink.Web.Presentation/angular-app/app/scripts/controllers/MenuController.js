@@ -69,7 +69,7 @@ angular.module('bekApp')
 
   $scope.flipsnackUrl = ENV.flipsnackUrl;
 
-  $scope.userGuideUrl = '/Assets/help/User_Guide.pdf';
+  $scope.userGuideUrl = 'images/User_Guide.pdf';
   $scope.systemUpdates = NotificationService.systemUpdates;
   ENV.username = localStorageService.get('userName');
 
@@ -102,6 +102,25 @@ angular.module('bekApp')
   // Using 3 different values for potential hotfix mobile submissions
   $scope.iOS = (/iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream && $scope.isMobileApp);
   $scope.Android = (!(/iPad|iPhone|iPod/.test(navigator.userAgent)) && !window.MSStream && $scope.isMobileApp);
+
+  $scope.openAppstore = function(platform){
+    var store = $scope.iOS == false && $scope.Android == false ? platform + ' desktop' : platform;
+
+    switch (store) {
+      case 'android':
+        $scope.openExternalLink("market://details?id=com.benekeith.entreeprod");
+        break;
+      case 'iOS':
+        $scope.openExternalLink("itms-apps://itunes.apple.com/us/app/entree-system-powered-by-ben/id985751465?mt=8");
+        break;
+      case 'android desktop':
+        $scope.openExternalLink("https://play.google.com/store/apps/details?id=com.benekeith.entreeprod");
+        break;
+      case 'iOS desktop':
+        $scope.openExternalLink("https://itunes.apple.com/us/app/entree-system-powered-by-ben/id985751465?mt=8");
+        break;
+    }
+  }
 
   $scope.versionNum = ENV.version;
 
