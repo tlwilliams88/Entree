@@ -164,7 +164,6 @@
     <Compile Include="Migrations\v2018.07.00\Migration0076.cs" />
     <Compile Include="Migrations\v2018.08.00\Migration0080.cs" />
     <Compile Include="Migrations\v2018.08.00\Migration0081.cs" />
-    <Compile Include="Migrations\v2018.09.00\Migration0082.cs" />
     <Compile Include="Migrations\v2018.09.00\Migration0083.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
