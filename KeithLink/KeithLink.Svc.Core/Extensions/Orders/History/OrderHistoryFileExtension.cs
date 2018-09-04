@@ -5,6 +5,7 @@ using KeithLink.Svc.Core.Extensions.Orders.Confirmations;
 using CS = KeithLink.Svc.Core.Models.Generated;
 using KeithLink.Svc.Core.Models.Orders.Confirmations;
 using KeithLink.Svc.Core.Models.Orders.History;
+using KeithLink.Svc.Core.Models.Profile;
 using KeithLink.Svc.Core.Models.SiteCatalog;
 using System;
 using System.Collections.Generic;
@@ -82,11 +83,11 @@ namespace KeithLink.Svc.Core.Extensions.Orders.History {
             return detail;
         }
 
-        public static OrderHistoryFile ToOrderHistoryFile(this CS.PurchaseOrder value, UserSelectedContext customerInfo, string specialCatalogId = null)
+        public static OrderHistoryFile ToOrderHistoryFile(this CS.PurchaseOrder value, UserProfile userInfo, UserSelectedContext customerInfo, string specialCatalogId = null)
         {
             OrderHistoryFile retVal = new OrderHistoryFile();
 
-            retVal.Header = value.ToOrderHistoryHeader(customerInfo, specialCatalogId);
+            retVal.Header = value.ToOrderHistoryHeader(userInfo, customerInfo, specialCatalogId);
             if (value.Properties["LineItems"] != null) {
                 retVal.Details = ((CommerceServer.Foundation.CommerceRelationshipList)value.Properties["LineItems"])
                                    .Select(l => ToOrderHistoryDetail((CS.LineItem)l.Target, customerInfo.BranchId, retVal.Header.InvoiceNumber)).ToList();

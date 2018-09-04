@@ -18,6 +18,9 @@ namespace KeithLink.Svc.Core.Models.Orders.History {
         [DataMember(Name="customernumber")]
         public string CustomerNumber { get; set; }
 
+        [DataMember(Name = "useremailaddress")]
+        public string UserEmailAddress { get; set; }
+
         [DataMember(Name="invoicenumber")]
         public string InvoiceNumber { get; set; }
 

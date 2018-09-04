@@ -291,8 +291,8 @@ namespace KeithLink.Svc.WebApi.Controllers
             Models.OperationReturnModel<Order> retVal = new Models.OperationReturnModel<Order>();
             try
             {
-                
-                Order order = _orderLogic.UpdateOrderForEta(AuthenticatedUser, _orderLogic.GetOrder(SelectedUserContext.BranchId, orderNumber.Trim()));
+                Order order = _orderLogic.GetOrder(SelectedUserContext.BranchId, orderNumber.Trim());
+                order = _orderLogic.UpdateOrderForEta(AuthenticatedUser, order);
 
                 ApprovedCartModel orderApproved = _shoppingCartService.ValidateCart(this.AuthenticatedUser, this.SelectedUserContext, Guid.Empty, order.OrderNumber);
 

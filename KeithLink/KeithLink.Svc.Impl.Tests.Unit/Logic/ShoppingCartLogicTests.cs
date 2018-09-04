@@ -18,6 +18,7 @@ using KeithLink.Svc.Core.Interface.Profile;
 using KeithLink.Svc.Core.Interface.SiteCatalog;
 using KeithLink.Svc.Core.Models.Lists;
 using KeithLink.Svc.Core.Models.Orders;
+using KeithLink.Svc.Core.Models.Orders.History;
 using KeithLink.Svc.Core.Models.Profile;
 using KeithLink.Svc.Core.Models.ShoppingCart;
 using KeithLink.Svc.Core.Models.SiteCatalog;
@@ -30,6 +31,8 @@ using Xunit;
 
 using Basket = KeithLink.Svc.Core.Models.Generated.Basket;
 using LineItem = KeithLink.Svc.Core.Models.Generated.LineItem;
+using KeithLink.Svc.Impl.com.benekeith.FoundationService;
+using static CommerceServer.Foundation.Definitions.CommerceEntityDefinition;
 
 namespace KeithLink.Svc.Impl.Tests.Unit.Logic {
     public class ShoppingCartLogicTests : BaseDITests {
@@ -784,6 +787,75 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic {
 
         }
 
+        //public class SaveAsOrder
+        //{
+        //    [Fact]
+        //    public void EveryCall_CallsRepositoryToSaveAsOrderOnce()
+        //    {
+        //        // arrange
+        //        UserProfile fakeUser = new UserProfile();
+        //        UserSelectedContext testContext = new UserSelectedContext
+        //        {
+        //            BranchId = "FUT",
+        //            CustomerId = "234567"
+        //        };
+
+        //        Guid testCart = new Guid("dddddddddddddddddddddddddddddddd");
+
+        //        //ShoppingCart testCart = new ShoppingCart
+        //        //{
+        //        //    Active = true,
+        //        //    BranchId = "FUT",
+        //        //    CartId = new Guid("dddddddddddddddddddddddddddddddd"),
+        //        //    Name = "Fake Cart Name",
+        //        //    Items = new List<ShoppingCartItem> {
+        //        //        new ShoppingCartItem {
+        //        //            ItemNumber = "123456",
+        //        //            CatalogId = "FUT"
+        //        //        }
+        //        //    }
+        //        //};
+        //        Basket basket = new Basket
+        //        {
+        //            Active = true,
+        //            Id = new Guid(1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1).ToString(),
+        //            DisplayName = "Fake Name",
+        //            BranchId = "FUT",
+        //            RequestedShipDate = "1/1/2017",
+        //            ListType = (int)BasketType.Cart,
+        //            TempSubTotal = 0,
+        //            ReadOnly = false,
+        //            LineItems = new List<LineItem>(),
+        //        };
+
+
+        //        string modelName = "Basket";
+        //        CommerceServer.Foundation.CommerceEntity commerceEntity = new CommerceServer.Foundation.CommerceEntity(modelName);
+        //        commerceEntity.GetPropertyValue(RelationshipName.RelationshipDefinitions.LineItems);
+
+        //        basket.LineItems[0] = new LineItem
+        //        {
+        //            CatalogName = "BEK",
+        //            ProductId = "3434",
+        //            Notes = "",
+        //            Quantity = 0,
+        //        };
+
+        //        MockDependents mockDependents = new MockDependents();
+        //        mockDependents.BasketLogic.Setup(f => f.RetrieveSharedCustomerBasket(It.IsAny<UserProfile>(), It.IsAny<UserSelectedContext>(), It.IsAny<Guid>()))
+        //            .Returns(basket);
+
+        //        IShoppingCartLogic testunit = MakeTestsLogic(false, ref mockDependents);
+
+        //        // act
+        //        var result = testunit.SaveAsOrder(fakeUser, testContext, testCart);
+
+        //        mockDependents.OrderHistoryLogic.Verify(m => m.SaveOrder(It.IsAny<OrderHistoryFile>(), It.IsAny<bool>()), Times.Once);
+        //    }
+
+
+        //}
+
         #region Setup
         public class MockDependents {
             public Mock<ICacheRepository> CacheRepository { get; set; }
@@ -930,7 +1002,7 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic {
             public static Mock<IBasketLogic> MakeIBasketLogic() {
                 Mock<IBasketLogic> mock = new Mock<IBasketLogic>();
 
-                Basket returnedBasket = new Basket {
+                Basket basket = new Basket {
                     Active = true,
                     Id = new Guid(1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1).ToString(),
                     DisplayName = "Fake Name",
@@ -941,7 +1013,7 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic {
                     ReadOnly = false
                 };
                 mock.Setup(f => f.RetrieveSharedCustomerBasket(It.IsAny<UserProfile>(), It.IsAny<UserSelectedContext>(), It.IsAny<Guid>()))
-                    .Returns(returnedBasket);
+                    .Returns(basket);
 
                 return mock;
             }
@@ -995,6 +1067,16 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic {
 
             public static Mock<IOrderedFromListRepository> MakeIOrderedFromListRepository() {
                 Mock<IOrderedFromListRepository> mock = new Mock<IOrderedFromListRepository>();
+
+                var orderedFrmList = new OrderedFromList
+                {
+                    ControlNumber = "7777",
+                    ListId = 232323,
+                    ListType = ListType.Custom,
+                };
+
+                mock.Setup(f => f.Read(It.IsAny<string>()))
+                    .Returns(orderedFrmList);
 
                 return mock;
             }

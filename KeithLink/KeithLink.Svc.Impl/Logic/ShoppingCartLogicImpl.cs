@@ -698,7 +698,7 @@ namespace KeithLink.Svc.Impl.Logic
 
                 bool isSpecialOrder = catalogLogic.IsSpecialtyCatalog(null, catalogId);
 
-                _historyLogic.SaveOrder(newPurchaseOrder.ToOrderHistoryFile(catalogInfo), isSpecialOrder); // save to order history
+                _historyLogic.SaveOrder(newPurchaseOrder.ToOrderHistoryFile(user, catalogInfo), isSpecialOrder); // save to order history
 
                 if (isSpecialOrder)
                 {

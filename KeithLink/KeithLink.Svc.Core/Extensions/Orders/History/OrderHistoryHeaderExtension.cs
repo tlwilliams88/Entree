@@ -5,6 +5,7 @@ using CS = KeithLink.Svc.Core.Models.Generated;
 using KeithLink.Svc.Core.Models.Orders;
 using KeithLink.Svc.Core.Models.Orders.History;
 using EF = KeithLink.Svc.Core.Models.Orders.History.EF;
+using KeithLink.Svc.Core.Models.Profile;
 using KeithLink.Svc.Core.Models.SiteCatalog;
 using System;
 using System.Collections.Concurrent;
@@ -141,6 +142,7 @@ namespace KeithLink.Svc.Core.Extensions.Orders.History {
             entity.OrderSystem = header.OrderSystem.ToShortString();
             entity.BranchId = header.BranchId;
             entity.CustomerNumber = header.CustomerNumber;
+            entity.UserEmailAddress = header.UserEmailAddress;
             entity.InvoiceNumber = header.InvoiceNumber;
             entity.OrderDateTime = header.OrderDateTime;
             entity.DeliveryDate = header.DeliveryDate.ToDateTime().Value.ToLongDateFormat();
@@ -154,7 +156,18 @@ namespace KeithLink.Svc.Core.Extensions.Orders.History {
             entity.OrderStatus = header.OrderStatus;
             entity.FutureItems = header.FutureItems;
             entity.ErrorStatus = header.ErrorStatus;
-            entity.RouteNumber = header.RouteNumber;
+
+            // The field in the table is defined as char(4) and will be padded with spaces.
+            // We will avoid extraneous updates by EF if we prevent changing the value when they are equivalent.
+            bool equivalentValues = 
+                entity.RouteNumber != null 
+                && header.RouteNumber != null 
+                && entity.RouteNumber.TrimEnd() == header.RouteNumber.TrimEnd();
+            if (equivalentValues == false)
+            {
+                entity.RouteNumber = header.RouteNumber;
+            }
+
             entity.StopNumber = header.StopNumber;
             //entity.IsSpecialOrder = 
 
@@ -201,6 +214,7 @@ namespace KeithLink.Svc.Core.Extensions.Orders.History {
             entity.OrderSystem = header.OrderSystem.ToShortString();
             entity.BranchId = header.BranchId;
             entity.CustomerNumber = header.CustomerNumber;
+            entity.UserEmailAddress = header.UserEmailAddress;
             entity.InvoiceNumber = header.InvoiceNumber;
             entity.OrderDateTime = header.OrderDateTime;
             entity.DeliveryDate = header.DeliveryDate.ToDateTime().Value.ToLongDateFormat();
@@ -339,7 +353,7 @@ namespace KeithLink.Svc.Core.Extensions.Orders.History {
             return header;
         }
 
-        public static OrderHistoryHeader ToOrderHistoryHeader(this CS.PurchaseOrder value, UserSelectedContext customerInfo, string specialCatalogId = null)
+        public static OrderHistoryHeader ToOrderHistoryHeader(this CS.PurchaseOrder value, UserProfile userInfo, UserSelectedContext customerInfo, string specialCatalogId = null)
         {
             OrderHistoryHeader header = new OrderHistoryHeader();
 
@@ -351,6 +365,7 @@ namespace KeithLink.Svc.Core.Extensions.Orders.History {
             //    header.BranchId = specialCatalogId;
 
             header.CustomerNumber = customerInfo.CustomerId;
+            header.UserEmailAddress = userInfo.EmailAddress;
             header.InvoiceNumber = value.Properties["MasterNumber"] == null ? "Processing" : value.Properties["MasterNumber"].ToString();
             header.DeliveryDate = value.Properties["RequestedShipDate"].ToString().ToDateTime().Value.ToLongDateFormat();
             header.PONumber = value.Properties["PONumber"] == null ? string.Empty : value.Properties["PONumber"].ToString();

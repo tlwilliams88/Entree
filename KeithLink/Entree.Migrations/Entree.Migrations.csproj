@@ -2305,6 +2305,7 @@
     <Folder Include="Migrations\Data\IntegrationTests\Invoice\" />
     <Folder Include="Migrations\Data\IntegrationTests\Messaging\" />
     <Folder Include="Migrations\Data\IntegrationTests\Profile\" />
+    <Folder Include="Migrations\v2018.09.00\" />
     <Folder Include="Scripts\AppData\List\Stored Procedures\UpdateSentOnContractListChangeByCustomerNumberBranch\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
