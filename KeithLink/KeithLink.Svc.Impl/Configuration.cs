@@ -247,8 +247,17 @@ namespace KeithLink.Svc.Impl
         private const string KEY_EXPORT_ADDTITLE = "ExportAddTitle";
         private const string KEY_EXPORT_ADDCUSTOMER = "ExportAddCustomer";
 
-        //Contract List Changes
+        // Contract List Changes
         private const string KEY_CONTRACTLISTCHANGE_PRICEBLOCKDELETED = "ContractListDeleteBlockPrices";
+
+        // Diagnostics
+        private const string KEY_DIAGNOSTICS_AUDIT_ORDER_HISTORY_HEADER_CHANGES = "DiagnosticsAuditOrderHistoryHeaderChanges";
+        private const string KEY_DIAGNOSTICS_AUDIT_ORDER_HISTORY_DETAIL_CHANGES = "DiagnosticsAuditOrderHistoryDetailChanges";
+
+        // Order History processing options
+        private const string KEY_ORDER_HISTORY_PERSISTENCE_ATTEMPT_LIMIT = "OrderHistoryPersistenceAttemptLimit";
+        private const string KEY_ORDER_HISTORY_PERSISTENCE_ATTEMPT_INTERVAL = "OrderHistoryPersistenceAttemptInterval";
+
         #endregion
 
         #region methods
@@ -1741,6 +1750,39 @@ namespace KeithLink.Svc.Impl
                 {
                     return -7;
                 }
+            }
+        }
+
+        public static bool DiagnosticsAuditOrderHistoryHeaderChanges
+        {
+            get
+            {
+                return bool.Parse(DBAppSettingsRepositoryImpl.GetValue(KEY_DIAGNOSTICS_AUDIT_ORDER_HISTORY_HEADER_CHANGES, "false"));
+            }
+        }
+
+        public static bool DiagnosticsAuditOrderHistoryDetailChanges
+        {
+            get
+            {
+                return bool.Parse(DBAppSettingsRepositoryImpl.GetValue(KEY_DIAGNOSTICS_AUDIT_ORDER_HISTORY_DETAIL_CHANGES, "false"));
+            }
+        }
+
+        public static int OrderHistoryPersistenceAttemptLimit
+        {
+            get
+            {
+                return int.Parse(DBAppSettingsRepositoryImpl.GetValue(KEY_ORDER_HISTORY_PERSISTENCE_ATTEMPT_LIMIT, "10"));
+            }
+        }
+
+        public static TimeSpan OrderHistoryPersistenceAttemptInterval
+        {
+            get
+            {
+                double seconds = double.Parse(DBAppSettingsRepositoryImpl.GetValue(KEY_ORDER_HISTORY_PERSISTENCE_ATTEMPT_INTERVAL, ".5"));
+                return TimeSpan.FromSeconds(seconds);
             }
         }
         #endregion

@@ -84,7 +84,7 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic.Orders
             {
                 // arrange
                 MockDependents mockDependents = new MockDependents();
-                IOrderHistoryLogic testunit = MakeUnitToBeTested(false, mockDependents);
+                IOrderHistoryLogic testunit = MakeUnitToBeTested(true, mockDependents);
 
                 // act
                 string jsonOrderHistoryFile = testunit.ReadOrderFromQueue();
@@ -109,13 +109,34 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic.Orders
             {
                 // arrange
                 MockDependents mockDependents = new MockDependents();
-                IOrderHistoryLogic testunit = MakeUnitToBeTested(false, mockDependents);
+                IOrderHistoryLogic testunit = MakeUnitToBeTested(true, mockDependents);
 
                 //expect
                 string expectedOrderdate = new DateTime(2018, 07, 19, 16, 34, 51).ToLongDateFormatWithTime();
 
                 // act
                 string jsonOrderHistoryFile = GetMockData("OrderHistoryFile.json");
+                testunit.ProcessOrder(jsonOrderHistoryFile);
+
+                // assert
+                mockDependents.MockOrderHistoryHeaderRepository
+                    .Verify(m => m.CreateOrUpdate(It.Is<EF.OrderHistoryHeader>(header => header.OrderDateTime == expectedOrderdate)), Times.Once, "not called with expected order date.");
+
+                //mockDependents.MockOrderHistoryHeaderRepository.VerifyAll();
+            }
+
+            [Fact]
+            public void OrderHistoryWithSubbedAndReplacedItems_IsSentToRepositoryWithValidOrderDate()
+            {
+                // arrange
+                MockDependents mockDependents = new MockDependents();
+                IOrderHistoryLogic testunit = MakeUnitToBeTested(true, mockDependents);
+
+                //expect
+                string expectedOrderdate = new DateTime(2018, 07, 19, 16, 34, 51).ToLongDateFormatWithTime();
+
+                // act
+                string jsonOrderHistoryFile = GetMockData("OrderHistoryFileWithReplacementItems.json");
                 testunit.ProcessOrder(jsonOrderHistoryFile);
 
                 // assert

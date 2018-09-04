@@ -41,13 +41,21 @@ namespace KeithLink.Svc.Impl.Repository.EF.Operational {
             }
 
             var context = UnitOfWork.Context;
-            var transient = ReadTransient(domainObject);
-            if (transient != null) {
-                context.Entry(transient).CurrentValues.SetValues(domainObject);
-                UnitOfWork.Context.Entry(transient).State = EntityState.Modified;
-            } else {
-                this.Create(domainObject);
+
+            if (context.Entry(domainObject).State == EntityState.Detached)
+            {
+                var transient = ReadTransient(domainObject);
+                if (transient != null)
+                {
+                    context.Entry(transient).CurrentValues.SetValues(domainObject);
+                    UnitOfWork.Context.Entry(transient).State = EntityState.Modified;
+                }
+                else
+                {
+                    Entities.Add(domainObject);
+                }
             }
+
         }
 
         public virtual void Delete(Expression<Func<T, bool>> where) {
