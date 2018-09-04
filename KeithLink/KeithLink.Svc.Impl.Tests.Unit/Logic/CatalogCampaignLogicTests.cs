@@ -480,19 +480,13 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic {
                 BEKConfiguration.Add("CampaignImagesUrl", "http://test/");
 
                 // act
-                try
-                {
-                    var ret = logic.GetCampaign(id, includeItems);
-                }
-                catch
-                {
-                    // assert
-                    true.Should().BeTrue();
-                }
-                finally
-                {
-                    BEKConfiguration.Reset();
-                }
+                Action getCampaign = () => logic.GetCampaign(id, includeItems);
+
+                // assert
+                getCampaign.Should()
+                    .Throw<KeyNotFoundException>();
+
+                BEKConfiguration.Reset();
             }
 
             [Fact]
@@ -504,19 +498,13 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic {
                 BEKConfiguration.Add("CampaignImagesUrl", "http://test/");
 
                 // act
-                try
-                {
-                    var ret = logic.GetCampaign(id, includeItems);
-                }
-                catch
-                {
-                    // assert
-                    true.Should().BeTrue();
-                }
-                finally
-                {
-                    BEKConfiguration.Reset();
-                }
+                Action getCampaign = () => logic.GetCampaign(id, includeItems);
+
+                // assert
+                getCampaign.Should()
+                    .Throw<KeyNotFoundException>();
+
+                BEKConfiguration.Reset();
             }
 
             [Fact]
@@ -590,23 +578,17 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic {
                 BEKConfiguration.Add("CampaignImagesUrl", "http://test/");
 
                 // act
-                try
-                {
-                    var ret = logic.GetCampaignByUri(uri, includeItems);
-                }
-                catch
-                {
-                    // assert
-                    true.Should().BeTrue();
-                }
-                finally
-                {
-                    BEKConfiguration.Reset();
-                }
+                Action getCampaignByUri = () => logic.GetCampaignByUri(uri, includeItems);
+
+                // assert
+                getCampaignByUri.Should()
+                    .Throw<KeyNotFoundException>();
+
+                BEKConfiguration.Reset();
             }
 
             [Fact]
-            public void BadIdWithItems_ThrowsException() {
+            public void BadUrlWithItems_ThrowsException() {
                 // arrange
                 var logic = MakeLogic();
                 var uri = "bad uri";
@@ -614,19 +596,13 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic {
                 BEKConfiguration.Add("CampaignImagesUrl", "http://test/");
 
                 // act
-                try
-                {
-                    var ret = logic.GetCampaignByUri(uri, includeItems);
-                }
-                catch
-                {
-                    // assert
-                    true.Should().BeTrue();
-                }
-                finally
-                {
-                    BEKConfiguration.Reset();
-                }
+                Action getCampaignByUri = () => logic.GetCampaignByUri(uri, includeItems);
+
+                // assert
+                getCampaignByUri.Should()
+                    .Throw<KeyNotFoundException>();
+
+                BEKConfiguration.Reset();
             }
 
             [Fact]
