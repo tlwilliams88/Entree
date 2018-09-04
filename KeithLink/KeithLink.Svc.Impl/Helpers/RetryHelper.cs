@@ -13,16 +13,16 @@ namespace KeithLink.Svc.Impl.Helpers
 {
     public static class Retry
     {
-        public static void Do(Action action, TimeSpan retryInterval, int retryCount = 3)
+        public static void Do(Action action, TimeSpan attemptInterval, int attemptLimit = 3)
         {
-            Do<object>(() => { action(); return null; }, retryInterval, retryCount);
+            Do<object>(() => { action(); return null; }, attemptInterval, attemptLimit);
         }
 
-        public static T Do<T>(Func<T> action, TimeSpan retryInterval, int retryCount = 3)
+        public static T Do<T>(Func<T> action, TimeSpan attemptInterval, int attemptLimit = 3)
         {
             var exceptions = new List<Exception>();
 
-            for (int retry = 1; retry <= retryCount; retry++)
+            for (int attemptCount = 1; attemptCount <= attemptLimit; attemptCount++)
             {
                 try
                 {
@@ -31,18 +31,18 @@ namespace KeithLink.Svc.Impl.Helpers
                 catch (Exception ex)
                 {
                     exceptions.Add(ex);
-                    Thread.Sleep(retryInterval);
+                    Thread.Sleep(attemptInterval);
                 }
             }
 
             throw new AggregateException(exceptions);
         }
 
-        public static T Do<T>(Func<T> action, IEventLogRepository log, TimeSpan retryInterval, int retryCount = 3)
+        public static T Do<T>(Func<T> action, IEventLogRepository log, TimeSpan attemptInterval, int attemptLimit = 3)
         {
             var exceptions = new List<Exception>();
 
-            for (int retry = 1; retry <= retryCount; retry++)
+            for (int attemptCount = 1; attemptCount <= attemptLimit; attemptCount++)
             {
                 try
                 {
@@ -61,16 +61,16 @@ namespace KeithLink.Svc.Impl.Helpers
                         var entityName = ObjectContext.GetObjectType(entity.GetType()).Name;
                         entityNames += entityName;
                     }
-                    var errorMessage = string.Format("Could not persist changes to {0} with {1} attempts.", entityNames, retryCount);
+                    var errorMessage = string.Format("Could not persist changes to {0} with {1} attempts.", entityNames, attemptLimit);
                     log.WriteErrorLog(errorMessage, exception);
 
                     exceptions.Add(exception);
-                    Thread.Sleep(retryInterval);
+                    Thread.Sleep(attemptInterval);
                 }
                 catch (Exception ex)
                 {
                     exceptions.Add(ex);
-                    Thread.Sleep(retryInterval);
+                    Thread.Sleep(attemptInterval);
                 }
             }
 

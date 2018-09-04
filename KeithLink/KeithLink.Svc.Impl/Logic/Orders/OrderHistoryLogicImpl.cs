@@ -254,7 +254,10 @@ namespace KeithLink.Svc.Impl.Logic.Orders
         {
             EF.OrderHistoryHeader header = GetHeaderAndMergeCurrentFile(currentFile, isSpecialOrder);
 
-            //ChangeAuditor.AuditChanges(_unitOfWork.Context, header, _log);
+            if (Configuration.DiagnosticsAuditOrderHistoryHeaderChanges)
+            {
+                ChangeAuditor.AuditChanges(_unitOfWork.Context, header, _log);
+            }
 
             bool hasSpecialItems = false;
 
@@ -290,7 +293,10 @@ namespace KeithLink.Svc.Impl.Logic.Orders
                 detail = MergeWithCurrentOrderDetail(isSpecialOrder, header, currentDetail, detail);
             }
 
-            //ChangeAuditor.AuditChanges(_unitOfWork.Context, detail, _log);
+            if (Configuration.DiagnosticsAuditOrderHistoryDetailChanges)
+            {
+                ChangeAuditor.AuditChanges(_unitOfWork.Context, detail, _log);
+            }
         }
 
         private EF.OrderHistoryHeader GetHeaderAndMergeCurrentFile(OrderHistoryFile currentFile, bool isSpecialOrder)
@@ -627,11 +633,11 @@ namespace KeithLink.Svc.Impl.Logic.Orders
 
             _conversionLogic.SaveOrderHistoryAsConfirmation(historyFile);
 
-            int retryLimit = 10;
-            TimeSpan retryInterval = TimeSpan.FromSeconds(.5);
+            int attemptLimit = Configuration.OrderHistoryPersistenceAttemptLimit;
+            TimeSpan attemptInterval = Configuration.OrderHistoryPersistenceAttemptInterval;
 
             Func<int> saveChanges = () => _unitOfWork.SaveChangesAndClearContext();
-            Retry.Do<int>(saveChanges, _log, retryInterval, retryLimit);
+            Retry.Do<int>(saveChanges, _log, attemptInterval, attemptLimit);
         }
 
         /// <summary>
