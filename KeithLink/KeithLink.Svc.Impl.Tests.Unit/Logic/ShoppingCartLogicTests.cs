@@ -32,8 +32,6 @@ using Xunit;
 using CS = KeithLink.Svc.Core.Models.Generated;
 using Basket = KeithLink.Svc.Core.Models.Generated.Basket;
 using LineItem = KeithLink.Svc.Core.Models.Generated.LineItem;
-//using KeithLink.Svc.Impl.com.benekeith.FoundationService;
-using CommerceServer.Foundation;
 
 namespace KeithLink.Svc.Impl.Tests.Unit.Logic {
     public class ShoppingCartLogicTests : BaseDITests {
