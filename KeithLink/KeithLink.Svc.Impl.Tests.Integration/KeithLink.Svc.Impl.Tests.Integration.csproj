@@ -129,6 +129,7 @@
     <Compile Include="Repository\Marketing\CatalogCampaignHeaderRepositoryTests.cs" />
     <Compile Include="Repository\MigratedDatabaseTest.cs" />
     <Compile Include="Repository\Orders\OrderedFromListRepositoryTestscs.cs" />
+    <Compile Include="Repository\Queue\QueueManagerTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Email\" />
@@ -148,7 +149,6 @@
     <Folder Include="Repository\OnlinePayments\" />
     <Folder Include="Repository\PowerMenu\" />
     <Folder Include="Repository\Profile\" />
-    <Folder Include="Repository\Queue\" />
     <Folder Include="Repository\Reports\" />
     <Folder Include="Repository\SingleSignOn\" />
     <Folder Include="Repository\SiteCatalog\" />
