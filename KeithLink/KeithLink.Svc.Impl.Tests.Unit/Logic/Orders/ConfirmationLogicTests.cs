@@ -18,6 +18,7 @@ using KeithLink.Svc.Core.Exceptions.Orders;
 using KeithLink.Svc.Core.Interface.Common;
 using KeithLink.Svc.Core.Interface.Orders;
 using KeithLink.Svc.Core.Interface.Orders.Confirmations;
+using KeithLink.Svc.Core.Interface.Orders.History;
 using KeithLink.Svc.Core.Models.Orders;
 using KeithLink.Svc.Impl.Logic.Orders;
 using KeithLink.Svc.Impl.Repository.EF.Operational;
@@ -71,6 +72,8 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic.Orders
             public Mock<ISocketListenerRepository> MockSocketListenerRepository { get; set; }
             public Mock<IGenericQueueRepository> MockGenericQueueRepository { get; set; }
             public Mock<IOrderConversionLogic> MockOrderConversionLogic { get; set; }
+            public Mock<IOrderHistoryLogic> MockOrderHistoryLogic { get; set; }
+            public Mock<IOrderHistoryHeaderRepsitory> MockOrderHistoryHeaderRepository { get; set; }
             public Mock<IUnitOfWork> MockUnitOfWork { get; set; }
             public Mock<IGenericSubscriptionQueueRepository> MockGenericSubscriptionQueueRepository { get; set; }
 
@@ -80,6 +83,8 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic.Orders
                 MockSocketListenerRepository = new Mock<ISocketListenerRepository>();
                 MockGenericQueueRepository = new Mock<IGenericQueueRepository>();
                 MockOrderConversionLogic = new Mock<IOrderConversionLogic>();
+                MockOrderHistoryLogic = new Mock<IOrderHistoryLogic>();
+                MockOrderHistoryHeaderRepository = new Mock<IOrderHistoryHeaderRepsitory>();
                 MockUnitOfWork = new Mock<IUnitOfWork>();
                 MockGenericSubscriptionQueueRepository = new Mock<IGenericSubscriptionQueueRepository>();
             }
@@ -104,6 +109,8 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic.Orders
                 mockDependents.MockSocketListenerRepository.Object,
                 mockDependents.MockGenericQueueRepository.Object,
                 mockDependents.MockOrderConversionLogic.Object,
+                mockDependents.MockOrderHistoryLogic.Object,
+                mockDependents.MockOrderHistoryHeaderRepository.Object,
                 mockDependents.MockUnitOfWork.Object,
                 mockDependents.MockGenericSubscriptionQueueRepository.Object);
 
@@ -122,6 +129,12 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic.Orders
               .As<IGenericQueueRepository>();
 
             cb.RegisterInstance(mockDependents.MockOrderConversionLogic.Object)
+              .As<IOrderConversionLogic>();
+
+            cb.RegisterInstance(mockDependents.MockOrderHistoryLogic.Object)
+              .As<IOrderConversionLogic>();
+
+            cb.RegisterInstance(mockDependents.MockOrderHistoryHeaderRepository.Object)
               .As<IOrderConversionLogic>();
 
             cb.RegisterInstance(mockDependents.MockUnitOfWork.Object)

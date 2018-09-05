@@ -97,7 +97,8 @@ namespace KeithLink.Svc.Impl.Logic.Orders {
             BEKFoundationServiceClient client = new BEKFoundationServiceClient();
             string newOrderNumber = client.CancelPurchaseOrder(customer.CustomerId, commerceId);
             CS.PurchaseOrder order = _poRepo.ReadPurchaseOrder(customer.CustomerId, newOrderNumber);
-            _orderQueueLogic.WriteFileToQueue(userProfile.EmailAddress, newOrderNumber, order, OrderType.DeleteOrder, null);
+            OrderFile orderFile = order.ToOrderFile(newOrderNumber, OrderType.DeleteOrder, null, userProfile.EmailAddress);
+            _orderQueueLogic.WriteFileToQueue(orderFile);
             return new NewOrderReturn {OrderNumber = newOrderNumber};
         }
 
@@ -805,9 +806,10 @@ namespace KeithLink.Svc.Impl.Logic.Orders {
 
             string originalOrderNumber = order.Properties["OriginalOrderNumber"].ToString();
 
-            OrderType type = originalOrderNumber == controlNumberMainFrameFormat ? OrderType.NormalOrder : OrderType.ChangeOrder;
+            OrderType orderType = originalOrderNumber == controlNumberMainFrameFormat ? OrderType.NormalOrder : OrderType.ChangeOrder;
 
-            _orderQueueLogic.WriteFileToQueue(userProfile.EmailAddress, controlNumberMainFrameFormat, order, type, null); // TODO, logic to compare original order number and control number
+            OrderFile orderFile = order.ToOrderFile(controlNumberMainFrameFormat, orderType, null, userProfile.EmailAddress); // TODO, logic to compare original order number and control number
+            _orderQueueLogic.WriteFileToQueue(orderFile);
 
             return true;
         }
@@ -839,7 +841,8 @@ namespace KeithLink.Svc.Impl.Logic.Orders {
 
             order = _poRepo.ReadPurchaseOrder(customer.CustomerId, newOrderNumber);
 
-            _orderQueueLogic.WriteFileToQueue(userProfile.EmailAddress, newOrderNumber, order, OrderType.ChangeOrder, null);
+            OrderFile orderFile = order.ToOrderFile(newOrderNumber, OrderType.ChangeOrder, null, userProfile.EmailAddress);
+            _orderQueueLogic.WriteFileToQueue(orderFile);
 
             client.CleanUpChangeOrder(customer.CustomerId, Guid.Parse(order.Id));
 

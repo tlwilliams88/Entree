@@ -601,6 +601,7 @@ namespace KeithLink.Svc.Impl.Logic
         public SaveOrderReturn SaveAsOrder(UserProfile user, UserSelectedContext catalogInfo, Guid cartId)
 		{
             var customer = customerRepository.GetCustomerByCustomerNumber(catalogInfo.CustomerId, catalogInfo.BranchId);
+
 			//Check that RequestedShipDate
 			var basket = basketLogic.RetrieveSharedCustomerBasket(user, catalogInfo, cartId);
 
@@ -672,9 +673,9 @@ namespace KeithLink.Svc.Impl.Logic
                 
 
 
-                CS.PurchaseOrder newPurchaseOrder = purchaseOrderRepository.ReadPurchaseOrder(customer.CustomerId, orderNumber);
+                CS.PurchaseOrder purchaseOrder = purchaseOrderRepository.ReadPurchaseOrder(customer.CustomerId, orderNumber);
 
-                foreach (var lineItem in ((CommerceServer.Foundation.CommerceRelationshipList)newPurchaseOrder.Properties["LineItems"]))
+                foreach (var lineItem in ((CommerceServer.Foundation.CommerceRelationshipList)purchaseOrder.Properties["LineItems"]))
                 {
                     var item = (CS.LineItem)lineItem.Target;
                     var products = catalogLogic.GetProductsByIds(catalogId, new List<string>() {item.ProductId});
@@ -694,30 +695,31 @@ namespace KeithLink.Svc.Impl.Logic
                 // Log the control number to the recommended items for this cart
                 _recommendedItemsOrderedAnalyticsRepository.UpdateAnalyticsForCardIdWithControlNumber(cartId.ToString(), orderNumber);
 
-
-                var type = catalogLogic.GetCatalogTypeFromCatalogId(catalogId).ToUpper().Substring(0, 3);
-
+                string catalogType = catalogLogic.GetCatalogTypeFromCatalogId(catalogId).ToUpper().Substring(0, 3);
 
                 bool isSpecialOrder = catalogLogic.IsSpecialtyCatalog(null, catalogId);
 
                 // save to order history
-                OrderHistoryFile orderHistoryFile = newPurchaseOrder.ToOrderHistoryFile(user, catalogInfo);
+                OrderHistoryFile orderHistoryFile = purchaseOrder.ToOrderHistoryFile(user, catalogInfo);
                 _historyLogic.SaveOrder(orderHistoryFile, isSpecialOrder);
 
+                // post order to queue
                 if (isSpecialOrder)
                 {
-                    client.UpdatePurchaseOrderStatus(customer.CustomerId, newPurchaseOrder.Id.ToGuid(), "Requested");
+                    client.UpdatePurchaseOrderStatus(customer.CustomerId, purchaseOrder.Id.ToGuid(), "Requested");
 
-                    orderQueueLogic.WriteFileToQueue(user.EmailAddress, orderNumber, newPurchaseOrder, OrderType.SpecialOrder, type, customer.DsrNumber, customer.Address.StreetAddress, customer.Address.City, customer.Address.RegionCode, customer.Address.PostalCode);
+                    OrderFile orderFile = purchaseOrder.ToOrderFile(orderNumber, OrderType.SpecialOrder, catalogType, user.EmailAddress, customer.DsrNumber, customer.Address);
+                    orderQueueLogic.WriteFileToQueue(orderFile);
                 }
                 else
                 {
-                    orderQueueLogic.WriteFileToQueue(user.EmailAddress, orderNumber, newPurchaseOrder, OrderType.NormalOrder, type); // send to queue - mainframe only for BEK
+                    OrderFile orderFile = purchaseOrder.ToOrderFile(orderNumber, OrderType.NormalOrder, catalogType, user.EmailAddress);
+                    orderQueueLogic.WriteFileToQueue(orderFile);    // send to queue - mainframe only for BEK
                 }
 
                 auditLogRepository.WriteToAuditLog(Common.Core.Enumerations.AuditType.OrderSubmited, user.EmailAddress, String.Format("Order: {0}, Customer: {1}", orderNumber, customer.CustomerNumber));
 
-                returnOrders.OrdersReturned.Add(new NewOrderReturn() { OrderNumber = orderNumber, CatalogType = type, IsSpecialOrder = isSpecialOrder });
+                returnOrders.OrdersReturned.Add(new NewOrderReturn() { OrderNumber = orderNumber, CatalogType = catalogType, IsSpecialOrder = isSpecialOrder });
 
                 var itemsToDelete = basket.LineItems.Where(l => l.CatalogName.Equals(catalogId)).Select(l => l.Id).ToList();
                 foreach(var toDelete in itemsToDelete) {
@@ -726,7 +728,7 @@ namespace KeithLink.Svc.Impl.Logic
 
                 if (isSpecialOrder)
                 {
-                    PublishSpecialOrderNotification(newPurchaseOrder);
+                    PublishSpecialOrderNotification(purchaseOrder);
                 }
             }
 

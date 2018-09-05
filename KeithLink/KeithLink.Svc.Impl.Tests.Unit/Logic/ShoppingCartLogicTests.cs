@@ -29,10 +29,11 @@ using FluentAssertions;
 using Moq;
 using Xunit;
 
+using CS = KeithLink.Svc.Core.Models.Generated;
 using Basket = KeithLink.Svc.Core.Models.Generated.Basket;
 using LineItem = KeithLink.Svc.Core.Models.Generated.LineItem;
-using KeithLink.Svc.Impl.com.benekeith.FoundationService;
-using static CommerceServer.Foundation.Definitions.CommerceEntityDefinition;
+//using KeithLink.Svc.Impl.com.benekeith.FoundationService;
+using CommerceServer.Foundation;
 
 namespace KeithLink.Svc.Impl.Tests.Unit.Logic {
     public class ShoppingCartLogicTests : BaseDITests {
@@ -786,75 +787,6 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic {
             }
 
         }
-
-        //public class SaveAsOrder
-        //{
-        //    [Fact]
-        //    public void EveryCall_CallsRepositoryToSaveAsOrderOnce()
-        //    {
-        //        // arrange
-        //        UserProfile fakeUser = new UserProfile();
-        //        UserSelectedContext testContext = new UserSelectedContext
-        //        {
-        //            BranchId = "FUT",
-        //            CustomerId = "234567"
-        //        };
-
-        //        Guid testCart = new Guid("dddddddddddddddddddddddddddddddd");
-
-        //        //ShoppingCart testCart = new ShoppingCart
-        //        //{
-        //        //    Active = true,
-        //        //    BranchId = "FUT",
-        //        //    CartId = new Guid("dddddddddddddddddddddddddddddddd"),
-        //        //    Name = "Fake Cart Name",
-        //        //    Items = new List<ShoppingCartItem> {
-        //        //        new ShoppingCartItem {
-        //        //            ItemNumber = "123456",
-        //        //            CatalogId = "FUT"
-        //        //        }
-        //        //    }
-        //        //};
-        //        Basket basket = new Basket
-        //        {
-        //            Active = true,
-        //            Id = new Guid(1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1).ToString(),
-        //            DisplayName = "Fake Name",
-        //            BranchId = "FUT",
-        //            RequestedShipDate = "1/1/2017",
-        //            ListType = (int)BasketType.Cart,
-        //            TempSubTotal = 0,
-        //            ReadOnly = false,
-        //            LineItems = new List<LineItem>(),
-        //        };
-
-
-        //        string modelName = "Basket";
-        //        CommerceServer.Foundation.CommerceEntity commerceEntity = new CommerceServer.Foundation.CommerceEntity(modelName);
-        //        commerceEntity.GetPropertyValue(RelationshipName.RelationshipDefinitions.LineItems);
-
-        //        basket.LineItems[0] = new LineItem
-        //        {
-        //            CatalogName = "BEK",
-        //            ProductId = "3434",
-        //            Notes = "",
-        //            Quantity = 0,
-        //        };
-
-        //        MockDependents mockDependents = new MockDependents();
-        //        mockDependents.BasketLogic.Setup(f => f.RetrieveSharedCustomerBasket(It.IsAny<UserProfile>(), It.IsAny<UserSelectedContext>(), It.IsAny<Guid>()))
-        //            .Returns(basket);
-
-        //        IShoppingCartLogic testunit = MakeTestsLogic(false, ref mockDependents);
-
-        //        // act
-        //        var result = testunit.SaveAsOrder(fakeUser, testContext, testCart);
-
-        //        mockDependents.OrderHistoryLogic.Verify(m => m.SaveOrder(It.IsAny<OrderHistoryFile>(), It.IsAny<bool>()), Times.Once);
-        //    }
-
-
-        //}
 
         #region Setup
         public class MockDependents {

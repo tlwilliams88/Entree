@@ -1,12 +1,15 @@
-﻿using KeithLink.Svc.Core.Enumerations.Order;
+﻿using KeithLink.Common.Core.Extensions;
+using KeithLink.Svc.Core.Enumerations.Order;
+using KeithLink.Svc.Core.Extensions.Enumerations;
+using KeithLink.Svc.Core.Models.Profile;
 using KeithLink.Svc.Core.Models.Orders;
 using CS = KeithLink.Svc.Core.Models.Generated;
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using KeithLink.Svc.Core.Extensions.Enumerations;
 
 namespace KeithLink.Svc.Core.Extensions.Orders {
     public static class PurchaseOrderExtension {
@@ -69,6 +72,84 @@ namespace KeithLink.Svc.Core.Extensions.Orders {
             int.TryParse(lineItem.LinePosition, out ln);
             if (ln > 0) ol.LineNumber = ln;
             return ol;
+        }
+
+        public static OrderFile ToOrderFile(this CS.PurchaseOrder purchaseOrder, string orderNumber, OrderType orderType, string catalogType, string orderingUserEmail, string dsrNumber = null, Address address = null)
+        {
+            var orderFile = new OrderFile()
+            {
+                Header = new OrderHeader()
+                {
+                    OrderingSystem = OrderSource.Entree,
+                    Branch = purchaseOrder.Properties["BranchId"].ToString().ToUpper(),
+                    CustomerNumber = purchaseOrder.Properties["CustomerId"].ToString(),
+                    DsrNumber = dsrNumber,
+                    AddressStreet = address?.StreetAddress,
+                    AddressCity = address?.City,
+                    AddressRegionCode = address?.RegionCode,
+                    AddressPostalCode = address?.PostalCode,
+                    DeliveryDate = purchaseOrder.Properties["RequestedShipDate"].ToString(),
+                    PONumber = purchaseOrder.Properties["PONumber"] == null ? string.Empty : purchaseOrder.Properties["PONumber"].ToString(),
+                    Specialinstructions = string.Empty,
+                    ControlNumber = int.Parse(orderNumber),
+                    OrderType = orderType,
+                    InvoiceNumber = orderType == OrderType.NormalOrder ? string.Empty : (string)purchaseOrder.Properties["MasterNumber"],
+                    OrderCreateDateTime = purchaseOrder.Properties["DateCreated"].ToString().ToDateTime().Value,
+                    OrderSendDateTime = DateTime.Now.ToLongDateFormatWithTime(),
+                    UserId = orderingUserEmail.ToUpper(),
+                    OrderFilled = false,
+                    FutureOrder = false,
+                    CatalogType = catalogType
+                },
+                Details = new List<OrderDetail>()
+            };
+
+            foreach (var lineItem in ((CommerceServer.Foundation.CommerceRelationshipList)purchaseOrder.Properties["LineItems"]))
+            {
+                var item = (CS.LineItem)lineItem.Target;
+                if ((orderType == OrderType.ChangeOrder && String.IsNullOrEmpty(item.Status))
+                    || orderType == OrderType.DeleteOrder) // do not include line items a) during a change order with no change or b) during a delete order
+                    continue;
+
+                OrderDetail detail = new OrderDetail()
+                {
+                    ItemNumber = item.ProductId,
+                    OrderedQuantity = (short)item.Quantity,
+                    UnitOfMeasure = ((bool)item.Each ? UnitOfMeasure.Package : UnitOfMeasure.Case),
+                    SellPrice = (double)item.PlacedPrice,
+                    Catchweight = (bool)item.CatchWeight,
+                    LineNumber = Convert.ToInt16(lineItem.Target.Properties["LinePosition"]),
+                    SubOriginalItemNumber = string.Empty,
+                    ReplacedOriginalItemNumber = string.Empty,
+                    Description = item.DisplayName,
+                    ManufacturerName = item.Notes,
+                    UnitCost = (decimal)item.ListPrice
+                };
+
+                if (orderType == OrderType.ChangeOrder)
+                {
+                    switch (item.Status)
+                    {
+                        case "added":
+                            detail.ItemChange = LineType.Add;
+                            break;
+                        case "changed":
+                            detail.ItemChange = LineType.Change;
+                            break;
+                        case "deleted":
+                            detail.ItemChange = LineType.Delete;
+                            break;
+                        default:
+                            detail.ItemChange = LineType.NoChange;
+                            break;
+                    }
+                }
+
+                orderFile.Details.Add(detail);
+            }
+
+            return orderFile;
+
         }
     }
 }

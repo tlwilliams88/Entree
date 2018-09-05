@@ -1,5 +1,4 @@
 ﻿using KeithLink.Common.Core.Interfaces.Logging;
-using KeithLink.Common.Core.Extensions;
 using KeithLink.Common.Impl.Email;
 
 using KeithLink.Svc.Core;
@@ -8,10 +7,7 @@ using KeithLink.Svc.Core.Exceptions.Orders;
 using KeithLink.Svc.Core.Extensions.Orders;
 using KeithLink.Svc.Core.Interface.Common;
 using KeithLink.Svc.Core.Interface.Orders;
-using KeithLink.Svc.Core.Interface.SpecialOrders;
-using KeithLink.Svc.Core.Models.Common;
 using KeithLink.Svc.Core.Models.Orders;
-using CS = KeithLink.Svc.Core.Models.Generated;
 
 using Newtonsoft.Json;
 
@@ -272,87 +268,14 @@ namespace KeithLink.Svc.Impl.Logic.Orders
             }
         }
 
-        public void WriteFileToQueue(string orderingUserEmail, string orderNumber, CS.PurchaseOrder newPurchaseOrder, OrderType orderType, string catalogType, string dsrNumber,
-            string addressStreet, string addressCity, string addressState, string addressZip)
+        public void WriteFileToQueue(OrderFile orderFile)
         {
-            var newOrderFile = new OrderFile()
-            {
-                SenderApplicationName = Configuration.ApplicationName,
-                SenderProcessName = "Send order to queue",
+            orderFile.SenderApplicationName = Configuration.ApplicationName;
+            orderFile.SenderProcessName = "Send order to queue";
 
-                Header = new OrderHeader()
-                {
-                    OrderingSystem = OrderSource.Entree,
-                    Branch = newPurchaseOrder.Properties["BranchId"].ToString().ToUpper(),
-                    CustomerNumber = newPurchaseOrder.Properties["CustomerId"].ToString(),
-                    DsrNumber = dsrNumber,
-                    AddressStreet = addressStreet,
-                    AddressCity = addressCity,
-                    AddressRegionCode = addressState,
-                    AddressPostalCode = addressZip,
-                    DeliveryDate = newPurchaseOrder.Properties["RequestedShipDate"].ToString(),
-                    PONumber = newPurchaseOrder.Properties["PONumber"] == null ? string.Empty : newPurchaseOrder.Properties["PONumber"].ToString(),
-                    Specialinstructions = string.Empty,
-                    ControlNumber = int.Parse(orderNumber),
-                    OrderType = orderType,
-                    InvoiceNumber = orderType == OrderType.NormalOrder ? string.Empty : (string)newPurchaseOrder.Properties["MasterNumber"],
-                    OrderCreateDateTime = newPurchaseOrder.Properties["DateCreated"].ToString().ToDateTime().Value,
-                    OrderSendDateTime = DateTime.Now.ToLongDateFormatWithTime(),
-                    UserId = orderingUserEmail.ToUpper(),
-                    OrderFilled = false,
-                    FutureOrder = false,
-                    CatalogType = catalogType
-                },
-                Details = new List<OrderDetail>()
-            };
+            _log.WriteInformationLog(string.Format("Writing order to queue: {0}", JsonConvert.SerializeObject(orderFile)));
 
-            foreach (var lineItem in ((CommerceServer.Foundation.CommerceRelationshipList)newPurchaseOrder.Properties["LineItems"]))
-            {
-                var item = (CS.LineItem)lineItem.Target;
-                if ((orderType == OrderType.ChangeOrder && String.IsNullOrEmpty(item.Status))
-                    || orderType == OrderType.DeleteOrder) // do not include line items a) during a change order with no change or b) during a delete order
-                    continue;
-
-                OrderDetail detail = new OrderDetail()
-                {
-                    ItemNumber = item.ProductId,
-                    OrderedQuantity = (short)item.Quantity,
-                    UnitOfMeasure = ((bool)item.Each ? UnitOfMeasure.Package : UnitOfMeasure.Case),
-                    SellPrice = (double)item.PlacedPrice,
-                    Catchweight = (bool)item.CatchWeight,
-                    LineNumber = Convert.ToInt16(lineItem.Target.Properties["LinePosition"]),
-                    SubOriginalItemNumber = string.Empty,
-                    ReplacedOriginalItemNumber = string.Empty,
-                    Description = item.DisplayName,
-                    ManufacturerName = item.Notes,
-                    UnitCost = (decimal)item.ListPrice
-                };
-
-                if (orderType == OrderType.ChangeOrder)
-                {
-                    switch (item.Status)
-                    {
-                        case "added":
-                            detail.ItemChange = LineType.Add;
-                            break;
-                        case "changed":
-                            detail.ItemChange = LineType.Change;
-                            break;
-                        case "deleted":
-                            detail.ItemChange = LineType.Delete;
-                            break;
-                        default:
-                            detail.ItemChange = LineType.NoChange;
-                            break;
-                    }
-                }
-
-                newOrderFile.Details.Add(detail);
-            }
-
-            _log.WriteInformationLog(string.Format("Writing order to queue: {0}", JsonConvert.SerializeObject(newOrderFile)));
-
-            _orderQueue.PublishToQueue(JsonConvert.SerializeObject(newOrderFile), Configuration.RabbitMQOrderServer, Configuration.RabbitMQUserNamePublisher, Configuration.RabbitMQUserPasswordPublisher, Configuration.RabbitMQVHostOrder, GetSelectedExchange(OrderQueueLocation.Normal));
+            _orderQueue.PublishToQueue(JsonConvert.SerializeObject(orderFile), Configuration.RabbitMQOrderServer, Configuration.RabbitMQUserNamePublisher, Configuration.RabbitMQUserPasswordPublisher, Configuration.RabbitMQVHostOrder, GetSelectedExchange(OrderQueueLocation.Normal));
 
             //set order status ID to 5
 
