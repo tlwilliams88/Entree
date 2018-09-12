@@ -96,10 +96,6 @@
             <li>Send Feedback</li>
           </button>
           <button class="btn-no-style"
-                  ng-click="openExternalLink(userGuideUrl)">
-            <li>User Guide</li>
-          </button>
-          <button class="btn-no-style"
                   ng-click="logout()">
             <li>Sign Out</li>
           </button>
@@ -152,9 +148,9 @@
       </script>
       <script type="text/javascript" src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
       <div>
-        <a ng-if="!Android" href="https://itunes.apple.com/us/app/entree-system-powered-by-ben/id985751465?mt=8" target="_blank">iOS App</a>
+        <a ng-if="!Android" ng-click="openAppstore('iOS')" target="_blank">iOS App</a>
         <span ng-if="!iOS && !Android" class="icon-dot"></span>
-        <a ng-if="!iOS" href="https://play.google.com/store/apps/details?id=com.benekeith.entreeprod" target="_blank">Android App</a>
+        <a ng-if="!iOS" ng-click="openAppstore('android');" target="_blank">Android App</a>
       </div>
       <div>
         <span>Version: {{versionNum}}</span>
@@ -294,7 +290,7 @@
         <!-- Back Icon (large) -->
         <!----------------------->
         <div class="pull-left row hidden-print user-bar-mobile visible-md" style="margin-left:0px; margin-right:none; border:none;" ng-if="isMobile">
-          <ul style="float: left; margin-left: -12px; padding-right: 8px;">
+          <ul style="float: left; margin-left: -12px;">
             <a ng-hide="$state.current.name === 'menu.home'" ng-click="navigateBack()"><li class="tablet-menu-item"><span title="Back" class="icon-back"></span></li></a>
           </ul>
         </div>

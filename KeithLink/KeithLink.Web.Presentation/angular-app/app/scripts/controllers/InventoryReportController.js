@@ -304,6 +304,7 @@ angular.module('bekApp')
       $scope.saveReport = function() {
         // $scope.report.items.reverse();
         var report = angular.copy($scope.report);
+        $scope.selectedReportName = report.name;
         var sameDayReports = [];
         if(!report.name){
           report.name = $scope.today;
@@ -396,13 +397,13 @@ angular.module('bekApp')
         $scope.report.isRenaming = false;
       };
 
-      $scope.deleteReport = function(list){
+      $scope.deleteReport = function(id, type){
           List.delete({
-            listId: list.listid,
-            listType: list.type
+            listId: id,
+            listType: type
           }).$promise.then(function() {
             $scope.reports.forEach(function(report, index){
-              if(report.listid === list.listid){
+              if(report.listid === id){
                 $scope.reports.splice(index,1);
               }
             });
