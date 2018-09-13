@@ -131,6 +131,29 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
             _uow.SaveChanges();
         }
 
+        /// <summary>
+        /// Finds all the settings for the customer.
+        /// </summary>
+        /// <param name="userId">Guid - userId</param>
+        /// <returns>A collection (list) of SettingModel objects.</returns>
+        public SettingsModelReturn GetStoredUserKey(Guid userId, string uuid)
+        {
+            SettingsModelReturn returnValue = new SettingsModelReturn();
+
+            IQueryable<Core.Models.Profile.EF.Settings> settings = _repo.ReadByUser(userId);
+
+            foreach (Core.Models.Profile.EF.Settings s in settings)
+            {
+                if (s.Value.Equals(uuid))
+                {
+                    returnValue = s.ToReturnModel();
+                    returnValue.Key = s.Key;
+                }
+            }
+
+            return returnValue;
+        }
+
         public void DeleteSettings(SettingsModel settings)
         {
             Settings mySettings = _repo.Read( x => x.Key == settings.Key && x.UserId == settings.UserId ).FirstOrDefault();

@@ -139,6 +139,11 @@ angular.module('bekApp')
         return UtilityService.resolvePromise(promise);
       },
 
+      getUserKey: function(key) {
+        var promise = $http.post('/profile/getuserkey', { key: key });
+        return UtilityService.resolvePromise(promise);
+      },
+
       setDefaultOrderList: function(list){
         var defaultList = {
           listid: list.listId,

@@ -1338,6 +1338,32 @@ namespace KeithLink.Svc.WebApi.Controllers
         }
 
         /// <summary>
+        /// Get a user's stored key for biometric authen
+        /// </summary>
+        /// <returns></returns>
+        [HttpPost]
+        [ApiKeyedRoute("profile/getstoreduserkey")]
+        public OperationReturnModel<SettingsModelReturn> GetStoredUserKey(SettingsModel key)
+        {
+            OperationReturnModel<SettingsModelReturn> returnValue = new OperationReturnModel<SettingsModelReturn>() { SuccessResponse = null };
+
+            try
+            {
+                returnValue.SuccessResponse = _settingLogic.GetStoredUserKey
+                    (key.UserId, key.Value);
+                returnValue.IsSuccess = true;
+            }
+            catch (Exception ex)
+            {
+                returnValue.ErrorMessage = ex.Message;
+                _log.WriteErrorLog(returnValue.ErrorMessage, ex);
+                returnValue.IsSuccess = false;
+            }
+
+            return returnValue;
+        }
+
+        /// <summary>
         /// Delete profile settings
         /// </summary>
         /// <param name="settings">settings object</param>

@@ -81,6 +81,11 @@ angular.module('bekApp')
   $scope.login = function(loginInfo) {
     $scope.loginErrorMessage = '';
 
+    var uuid = null;
+    if(ENV.isMobileApp) {
+      uuid = device.uuid;
+    }
+
     if($scope.saveUserName){
       LocalStorage.setDefaultUserName(loginInfo.username);
     } else {
@@ -102,14 +107,19 @@ angular.module('bekApp')
 
   $scope.displayBiometricsLogin = function() {
 
-    window.plugins.touchid.verify("Entree_Credential_Pass", "Use " + $scope.authenMethod + " to login", successCallBack, errorCallBack);
+    window.plugins.touchid.verify("Entree_Credential_User", "Use " + $scope.authenMethod + " to login", successCallBack, errorCallBack);
 
-    function successCallBack(password) {
+    var userDevice = device.uuid.toString();
 
-      var credentials = {
-        username: 'jmmills@benekeith.com', //Will be replaced by api call to get username
-        password: password
-      }
+    function successCallBack(storedKey) {
+
+      var key = {
+        userid: storedKey,
+        key:null,
+        value: userDevice
+      };
+
+      var credentials = ApplicationSettingsService.getUserKey(key);
 
       $scope.login(credentials);
     }
@@ -120,12 +130,12 @@ angular.module('bekApp')
         return;
       } else {
       // Need to save username via api call here
-      window.plugins.touchid.save("Entree_Credential_Pass", $scope.loginInfo.password, true, function() {
+      window.plugins.touchid.save("Entree_Credential_User", $scope.loginInfo.userid, true, function() {
 
-        var enteredUserName = {userid: $scope.loginInfo.username, key: 'Entree_Credential_User', value: device.udid};
-        ApplicationSettingsService.saveApplicationSettings(enteredUserName);
+        var userKey = {userid: $scope.loginInfo.userid, key: 'Entree_Credential_User'+$scope.loginInfo.username, value: userDevice};
+        ApplicationSettingsService.saveApplicationSettings(userKey);
 
-        window.plugins.touchid.verify("Entree_Credential_Pass", "Register " + $scope.authenMethod, successCallBack, errorCallBack);
+        window.plugins.touchid.verify("Entree_Credential_User", "Register " + $scope.authenMethod, successCallBack, errorCallBack);
 
       })
       }
