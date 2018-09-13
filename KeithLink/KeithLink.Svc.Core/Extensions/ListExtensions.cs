@@ -199,7 +199,9 @@ namespace KeithLink.Svc.Core.Extensions
                 ListId = list.ListId,
                 Name = list.Name,
                 Type = list.Type,
-                Items = list.Items.OrderBy(m => m.Position).Select(i => new ListItemIntegrationsReturnModel()
+                Items = list.Items.OrderBy(m => m.Position)
+                    .Where(i => i.IsValid == true)
+                    .Select(i => new ListItemIntegrationsReturnModel()
                 {
                     ItemNumber = i.ItemNumber,
                     Name = i.Name,
