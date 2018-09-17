@@ -254,6 +254,11 @@ namespace KeithLink.Svc.Impl.Logic.Orders
         {
             EF.OrderHistoryHeader header = GetHeaderAndMergeCurrentFile(currentFile, isSpecialOrder);
 
+            if (Configuration.DiagnosticsAuditOrderHistoryHeaderChanges)
+            {
+                ChangeAuditor.AuditChanges(_unitOfWork.Context, header, _log);
+            }
+
             bool hasSpecialItems = false;
 
             foreach (OrderHistoryDetail currentDetail in currentFile.Details.ToList())
@@ -281,11 +286,16 @@ namespace KeithLink.Svc.Impl.Logic.Orders
 
             if (detail == null)
             {
-                AddNewDetailToOrder(isSpecialOrder, header, currentDetail);
+                detail = AddNewDetailToOrder(isSpecialOrder, header, currentDetail);
             }
             else
             {
                 detail = MergeWithCurrentOrderDetail(isSpecialOrder, header, currentDetail, detail);
+            }
+
+            if (Configuration.DiagnosticsAuditOrderHistoryDetailChanges)
+            {
+                ChangeAuditor.AuditChanges(_unitOfWork.Context, detail, _log);
             }
         }
 
@@ -336,7 +346,7 @@ namespace KeithLink.Svc.Impl.Logic.Orders
             return detail;
         }
 
-        private void AddNewDetailToOrder(bool isSpecialOrder, EF.OrderHistoryHeader header, OrderHistoryDetail currentDetail)
+        private EF.OrderHistoryDetail AddNewDetailToOrder(bool isSpecialOrder, EF.OrderHistoryHeader header, OrderHistoryDetail currentDetail)
         {
             EF.OrderHistoryDetail tempDetail = currentDetail.ToEntityFrameworkModel();
             tempDetail.BranchId = header.BranchId;
@@ -349,6 +359,7 @@ namespace KeithLink.Svc.Impl.Logic.Orders
             }
 
             header.OrderDetails.Add(tempDetail);
+            return tempDetail;
         }
 
         private void LookupAverageWeightOnDetails(OrderHistoryFile currentFile)
@@ -622,7 +633,11 @@ namespace KeithLink.Svc.Impl.Logic.Orders
 
             _conversionLogic.SaveOrderHistoryAsConfirmation(historyFile);
 
-            Retry.Do<int>(() => _unitOfWork.SaveChangesAndClearContext(), TimeSpan.FromSeconds(5), 5);
+            int attemptLimit = Configuration.OrderHistoryPersistenceAttemptLimit;
+            TimeSpan attemptInterval = Configuration.OrderHistoryPersistenceAttemptInterval;
+
+            Func<int> saveChanges = () => _unitOfWork.SaveChangesAndClearContext();
+            Retry.Do<int>(saveChanges, _log, attemptInterval, attemptLimit);
         }
 
         /// <summary>

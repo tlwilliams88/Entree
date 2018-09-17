@@ -28,7 +28,7 @@
         ng-disabled="renameReportForm.$invalid"
         class="btn-no-style"
         type="submit"
-        ng-click="renameReport(selectedReportName); renameReportForm.$setPristine();">
+        ng-click="renameReport(selectedReportName); renameReportForm.$setPristine(); selectedReportName = report.name;">
         <span class="large-icon text-green icon-checkmark"></span>
       </button>
 
@@ -45,8 +45,8 @@
   <button
     class="btn-lg btn btn-danger"
     ng-show="reports.length > 0"
-    confirmed-click="deleteReport(report)"
-    ng-confirm-click="{{'This will delete the report created on ' + report.name + '. Are you sure you want to delete this report?'}}">Delete
+    confirmed-click="deleteReport(report.listid, report.type)"
+    ng-confirm-click="{{'This will delete the report ' + report.name + '. Are you sure you want to delete this report?'}}">Delete
   </button>
     <button class="btn btn-lg btn-default" ng-click="clearReport(report.listid)" type="button">Clear</button>
     <a class="btn btn-icon btn-default" ng-click="print()" title="Print"><span class="icon-printer"></span></a>
@@ -61,7 +61,7 @@
   <button
     class="btn-no-style page-subheader-bar__button button-right"
     confirmed-click="deleteReport(report.listid, report.type)"
-    ng-confirm-click="{{'This will delete the report created on ' + report.name + '. Are you sure you want to delete this report?'}}"
+    ng-confirm-click="{{'This will delete the report ' + report.name + '. Are you sure you want to delete this report?'}}"
     ng-show="reports.length > 0"
     type="button">
     Delete
@@ -95,9 +95,9 @@
 
 </div>
 
-<div class="page-content inventory-report hidden-xs hidden-sm" style="margin-bottom: 20px;" fsm-sticky-header scroll-body="'.table-inventory-valuation'" scroll-stop="40" scroll-offset="150">
+<div class="page-content inventory-report hidden-xs hidden-sm margin-bottom-20" fsm-sticky-header scroll-body="'.table-inventory-valuation'" scroll-stop="40" scroll-offset="150">
     <form name="listSearchForm" class="hidden-print pull-right">
-      <div class="col-xs-3 firefox-margin-right" style="z-index: 998; float: right; margin-right: 15px; margin-bottom: 20px;">
+      <div class="col-xs-3 firefox-margin-right pull-right margin-bottom-20 margin-right-15" style="z-index: 998;">
           <div class="input-group input-group-lg">
 
               <input
@@ -121,20 +121,21 @@
 
     <a class="col-xs-12 hidden-print text-large btn-link max-width-100px" ui-sref="menu.reports"><span class="icon-arrow-left6"></span> Back</a>
 
-    <form class="hidden-print col-md-12 col-lg-10 form-inline" name="addItemByNumberForm" style="float: right;">
+    <form class="hidden-print col-md-12 col-lg-10 form-inline pull-right padding-right-0" name="addItemByNumberForm" style="margin-right: -10px;">
       <div class="form-group pull-right text-right">
 
         <p class="text-green margin-right-25" ng-show="successMessage">{{successMessage}}</p>
         <p class="text-red margin-right-25" ng-show="errorMessage">{{errorMessage}}</p>
-        <button type="submit" class="btn btn-primary btn-lg margin-right-25 float-right margin-bottom-6"  ng-disabled="!itemNumber"  ng-click="addItemByItemNumber(itemNumber)">Add Item</button>
+        <button type="submit" class="btn btn-primary btn-lg margin-right-25 float-right margin-bottom-6" ng-disabled="!itemNumber" ng-click="addItemByItemNumber(itemNumber)">Add Item</button>
         <input
           type="text"
           placeholder="Item Number"
           ng-model="itemNumber"
           class="item-number-input form-control input-lg  margin-bottom-6 float-right"
           integer
-          allowleadingzeroes='true'/>
-        <div class=" btn-group hidden-print padding-right-25" dropdown is-open="status.listactions" style="text-align:right max-width:100px !important;">
+          allowleadingzeroes='true'
+          style="margin-right: 5px;"/>
+        <div class=" btn-group hidden-print padding-right-25" dropdown is-open="status.listactions" style="text-align:right;">
           <button type="button" class="btn btn-lg btn-default dropdown-toggle" ng-disabled="listsLoading">
             <div ng-if="!listsLoading">Add Items from List <span class="icon-arrow-down6"></span></div>
             <div class="text-red" ng-if="listsLoading">Loading Lists...
@@ -262,7 +263,7 @@
             <td class="hidden-mobile-visible-print label-col">{{item.label}}</td>
             <td class="input-col nowrap counter-container">
             <button type="button" class="btn btn-warning icon-minus3 hidden-lg hidden-print" min="0" ng-disabled = "item.quantity < 1"  ng-click="item.quantity = item.quantity -1;"></button>
-              <input type="tel"
+              <input type="number"
                 id="defaultElement-{{currentIndex}}"
                 numeric-validation
                 class="input-number tabstop"

@@ -160,6 +160,7 @@
     <None Include="App.config" />
     <EmbeddedResource Include="Logic\Orders\OrderFile.json" />
     <EmbeddedResource Include="Logic\Orders\OrderHistoryFile.json" />
+    <EmbeddedResource Include="Logic\Orders\OrderHistoryFileWithReplacementItems.json" />
     <None Include="packages.config">
       <SubType>Designer</SubType>
     </None>

@@ -60,8 +60,29 @@ namespace KeithLink.Svc.Core.Extensions.Orders.History {
             entity.UnitOfMeasure = value.UnitOfMeasure.ToShortString();
             entity.CatchWeight = value.CatchWeight;
             entity.ItemDeleted = value.ItemDeleted;
-            entity.SubbedOriginalItemNumber = value.SubbedOriginalItemNumber;
-            entity.ReplacedOriginalItemNumber = value.ReplacedOriginalItemNumber;
+
+            // The field in the table is defined as char(6) and will be padded with spaces.
+            // We will avoid extraneous updates by EF if we prevent changing the value when they are equivalent.
+            bool equivalentValues = 
+                entity.SubbedOriginalItemNumber != null 
+                && value.SubbedOriginalItemNumber != null 
+                && entity.SubbedOriginalItemNumber.TrimEnd() == value.SubbedOriginalItemNumber.TrimEnd();
+            if (equivalentValues == false)
+            {
+                entity.SubbedOriginalItemNumber = value.SubbedOriginalItemNumber;
+            }
+
+            // The field in the table is defined as char(6) and will be padded with spaces.
+            // We will avoid extraneous updates by EF if we prevent changing the value when they are equivalent.
+            equivalentValues = 
+                entity.ReplacedOriginalItemNumber != null 
+                && value.ReplacedOriginalItemNumber != null 
+                && entity.ReplacedOriginalItemNumber.TrimEnd() == value.ReplacedOriginalItemNumber.TrimEnd();
+            if (equivalentValues == false)
+            {
+                entity.ReplacedOriginalItemNumber = value.ReplacedOriginalItemNumber;
+            }
+
             entity.ItemStatus = value.ItemStatus;
             entity.TotalShippedWeight = decimal.Parse(value.TotalShippedWeight.ToString());
             entity.SellPrice = (decimal)value.SellPrice;

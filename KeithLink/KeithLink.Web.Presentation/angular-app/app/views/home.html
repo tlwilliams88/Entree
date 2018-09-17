@@ -36,6 +36,17 @@
             </div>
           </div>
         </div>
+        <div ng-if="canViewInvoices" class="hidden-md hidden-lg" style="margin-top: 15px; text-align: center;">
+          <a 
+            class="btn btn-primary btn-lg"
+            style="width: 50%;"
+            analytics-on 
+            analytics-category="Homepage-Pay-Invoice" 
+            analytics-event="Pay Invoice Button">
+            <span ng-hide="selectedUserContext.customer.balance.totalbalance == 0 || hidePayNowButton">Pay Now</span>
+            <span ng-show="selectedUserContext.customer.balance.totalbalance == 0 || hidePayNowButton" >View Invoices</span>
+          </a>
+        </div>
       </div>
       <div class="info-box account-summary__graph hidden-xs hidden-sm" style="padding-left: 0; padding-bottom: 0;" ng-controller="OrderSummaryGraphController" ng-if="canViewOrders" ui-sref="menu.invoice">
         <div style="margin-left: 15px;">
