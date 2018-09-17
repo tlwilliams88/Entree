@@ -131,6 +131,36 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
             _uow.SaveChanges();
         }
 
+        private string StoredUserKey(string custemail)
+        {
+            return string.Format("{0},{1}", "defaultorderlist", custemail);
+        }
+
+        /// <summary>
+        /// Creates or Updates the passed in Settings Model
+        /// </summary>
+        /// <param name="settings"></param>
+        public void CreateOrUpdateUserKey(SettingsModel settings)
+        {
+            string key = StoredUserKey(settings.Key);
+            Settings userSettings = _repo.Read(x =>
+                x.Key == key &&
+                x.UserId == settings.UserId).FirstOrDefault();
+
+            if (userSettings != null)
+            {
+                userSettings.Value = settings.Value;
+            }
+            else
+            {
+                userSettings = settings.ToEFSettings();
+                userSettings.Key = StoredUserKey(settings.Key);
+            }
+
+            _repo.CreateOrUpdate(userSettings);
+            _uow.SaveChanges();
+        }
+
         /// <summary>
         /// Finds all the settings for the customer.
         /// </summary>

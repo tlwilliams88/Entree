@@ -1341,7 +1341,7 @@ namespace KeithLink.Svc.WebApi.Controllers
         /// Get a user's stored key for biometric authen
         /// </summary>
         /// <returns></returns>
-        [HttpPost]
+        [HttpGet]
         [ApiKeyedRoute("profile/getstoreduserkey")]
         public OperationReturnModel<SettingsModelReturn> GetStoredUserKey(SettingsModel key)
         {
@@ -1356,6 +1356,41 @@ namespace KeithLink.Svc.WebApi.Controllers
             catch (Exception ex)
             {
                 returnValue.ErrorMessage = ex.Message;
+                _log.WriteErrorLog(returnValue.ErrorMessage, ex);
+                returnValue.IsSuccess = false;
+            }
+
+            return returnValue;
+        }
+
+        /// <summary>
+        /// Create or update user's default order list for selected customer
+        /// </summary>
+        /// <param name="key">settings object</param>
+        /// <returns></returns>
+        [HttpPost]
+        [ApiKeyedRoute("profile/userkey")]
+        public OperationReturnModel<bool> CreateOrUpdateUserKey(SettingsModel key)
+        {
+            OperationReturnModel<bool> returnValue = new OperationReturnModel<bool>() { SuccessResponse = false };
+
+            try
+            {
+                _settingLogic.CreateOrUpdateUserCustomerDefaultOrderList
+                    (SelectedUserContext.CustomerId,
+                     SelectedUserContext.BranchId,
+                     new SettingsModel()
+                     {
+                         UserId = AuthenticatedUser.UserId,
+                         Key = key.Key,
+                         Value = key.Value
+                     });
+                returnValue.SuccessResponse = true;
+                returnValue.IsSuccess = true;
+            }
+            catch (Exception ex)
+            {
+                returnValue.ErrorMessage = string.Format("Error saving profile settings for user: {0}", ex);
                 _log.WriteErrorLog(returnValue.ErrorMessage, ex);
                 returnValue.IsSuccess = false;
             }

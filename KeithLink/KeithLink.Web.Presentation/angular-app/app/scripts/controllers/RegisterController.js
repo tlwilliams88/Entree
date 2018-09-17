@@ -133,7 +133,7 @@ angular.module('bekApp')
       window.plugins.touchid.save("Entree_Credential_User", $scope.loginInfo.userid, true, function() {
 
         var userKey = {userid: $scope.loginInfo.userid, key: 'Entree_Credential_User'+$scope.loginInfo.username, value: userDevice};
-        ApplicationSettingsService.saveApplicationSettings(userKey);
+        ApplicationSettingsService.setUserKey(userKey);
 
         window.plugins.touchid.verify("Entree_Credential_User", "Register " + $scope.authenMethod, successCallBack, errorCallBack);
 
