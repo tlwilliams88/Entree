@@ -69,7 +69,7 @@ angular.module('bekApp')
 
   $scope.flipsnackUrl = ENV.flipsnackUrl;
 
-  $scope.userGuideUrl = 'images/User_Guide.pdf';
+  $scope.userGuideUrl = '/Assets/help/User_Guide.pdf';
   $scope.systemUpdates = NotificationService.systemUpdates;
   ENV.username = localStorageService.get('userName');
 
