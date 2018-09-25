@@ -9,6 +9,7 @@ using System.IO;
 using Microsoft.Reporting.WinForms;
 using System.Reflection;
 
+using KeithLink.Common.Core.Enumerations;
 using KeithLink.Common.Core.Extensions;
 using KeithLink.Common.Core.Interfaces.Logging;
 
@@ -607,14 +608,21 @@ namespace KeithLink.Svc.Impl.Logic
             if (basket.LineItems == null || basket.LineItems.Count == 0)
                 throw new ApplicationException("Cannot submit order with 0 line items");
 
-			//Save to Commerce Server
-			com.benekeith.FoundationService.BEKFoundationServiceClient client = new com.benekeith.FoundationService.BEKFoundationServiceClient();
+            _log.WriteInformationLog(string.Format("ShoppingCartLogicImpl.SaveAsOrder: saving basket to Commerce Server for customer {0}.", customer.CustomerId));
+
+            //Save to Commerce Server
+            com.benekeith.FoundationService.BEKFoundationServiceClient client = new com.benekeith.FoundationService.BEKFoundationServiceClient();
 
             //split into multiple orders
             var catalogList = basket.LineItems.Select(i => i.CatalogName).Distinct(StringComparer.CurrentCultureIgnoreCase).ToList();
             var returnOrders = new SaveOrderReturn();
-            returnOrders.NumberOfOrders = catalogList.Count();
+            returnOrders.NumberOfOrders = catalogList.Count;
             returnOrders.OrdersReturned = new List<NewOrderReturn>();
+
+            if (catalogList.Count > 1)
+            {
+                _log.WriteInformationLog(string.Format("ShoppingCartLogicImpl.SaveAsOrder: splitting basket into {0} carts for customer {1}.", catalogList.Count, customer.CustomerId));
+            }
 
             OrderedFromList o2l = _orderedFromListRepository.Read(cartId.ToString());
 
@@ -643,6 +651,7 @@ namespace KeithLink.Svc.Impl.Logic
                 };
                 LookupProductDetails(user, catalogInfo, shoppingCart);
 
+                _log.WriteInformationLog(string.Format("ShoppingCartLogicImpl.SaveAsOrder: CreateCart with {0} items for catalog {1} and customer {2}.", shoppingCart.Items.Count, catalogId, customer.CustomerId));
                 var newCartId = CreateCart(user, catalogInfo, shoppingCart, catalogId.ToUpper());
                 string orderNumber = null;
                 try
@@ -700,6 +709,7 @@ namespace KeithLink.Svc.Impl.Logic
 
                 _historyLogic.SaveOrder(newPurchaseOrder.ToOrderHistoryFile(catalogInfo), isSpecialOrder); // save to order history
 
+                _log.WriteInformationLog(string.Format("ShoppingCartLogicImpl.SaveAsOrder: WriteFileToQueue for order {0} and customer {1}.", orderNumber, customer.CustomerId));
                 if (isSpecialOrder)
                 {
                     client.UpdatePurchaseOrderStatus(customer.CustomerId, newPurchaseOrder.Id.ToGuid(), "Requested");
@@ -711,7 +721,7 @@ namespace KeithLink.Svc.Impl.Logic
                     orderQueueLogic.WriteFileToQueue(user.EmailAddress, orderNumber, newPurchaseOrder, OrderType.NormalOrder, type); // send to queue - mainframe only for BEK
                 }
 
-                auditLogRepository.WriteToAuditLog(Common.Core.Enumerations.AuditType.OrderSubmited, user.EmailAddress, String.Format("Order: {0}, Customer: {1}", orderNumber, customer.CustomerNumber));
+                auditLogRepository.WriteToAuditLog(AuditType.OrderSubmited, user.EmailAddress, String.Format("Order: {0}, Customer: {1}", orderNumber, customer.CustomerNumber));
 
                 returnOrders.OrdersReturned.Add(new NewOrderReturn() { OrderNumber = orderNumber, CatalogType = type, IsSpecialOrder = isSpecialOrder });
 

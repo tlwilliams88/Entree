@@ -34,6 +34,7 @@ angular.module('bekApp')
       }
 
       $scope.openCreateOrderModal = function(size) {
+        $scope.disableCreateOrderButton = true;
         selectedList = ApplicationSettingsService.getDefaultOrderList();
         var modalInstance = $modal.open({
           templateUrl: 'views/modals/createordermodal.html',
@@ -88,6 +89,9 @@ angular.module('bekApp')
               $state.go('menu.addtoorder.items', { listId: cart.listId, listType: cart.listType, cartId: cart.id});
             }
           }
+        })
+        .finally(function () {
+          $scope.disableCreateOrderButton = false;
         });
       };
 
