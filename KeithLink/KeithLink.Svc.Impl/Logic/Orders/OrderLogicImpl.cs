@@ -87,8 +87,15 @@ namespace KeithLink.Svc.Impl.Logic.Orders {
         #endregion
 
         #region methods
-        public bool IsSubmitted(UserProfile user, UserSelectedContext catalogInfo, string orderNumber) {
-            return OrderSubmissionHelper.CheckOrderBlock(user, catalogInfo, null, orderNumber, _poRepo, _historyHeaderRepo, _cache);
+        public bool IsSubmitted(UserProfile user, UserSelectedContext catalogInfo, string orderNumber)
+        {
+            bool isSubmitted = OrderSubmissionHelper.CheckOrderBlock(user, catalogInfo, null, orderNumber, _poRepo, _historyHeaderRepo, _cache);
+            if (isSubmitted)
+            {
+                string logMessage = string.Format("OrderLogicImpl.IsSubmitted: An order was already submitted with order number {0} for customer {1}.", orderNumber, catalogInfo.CustomerId);
+                _log.WriteWarningLog(logMessage);
+            }
+            return isSubmitted;
         }
 
         public NewOrderReturn CancelOrder(UserProfile userProfile, UserSelectedContext catalogInfo, Guid commerceId) {
