@@ -2,16 +2,17 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using System.Text.RegularExpressions;
 using System.IO;
 using Microsoft.Reporting.WinForms;
-using System.Reflection;
 
 using KeithLink.Common.Core.Enumerations;
 using KeithLink.Common.Core.Extensions;
 using KeithLink.Common.Core.Interfaces.Logging;
+using KeithLink.Common.Core.Models.Logging;
 
 using KeithLink.Svc.Core;
 using KeithLink.Svc.Core.Enumerations.Order;
@@ -471,11 +472,19 @@ namespace KeithLink.Svc.Impl.Logic
 
         public bool IsSubmitted(UserProfile user, UserSelectedContext catalogInfo, Guid cartId)
         {
+            var context = new TransactionContext
+            {
+                TransactionType = "customer shopping cart",
+                TransactionId = "basket:" + cartId,
+                ClassName = GetType().Name,
+                MethodName = MethodBase.GetCurrentMethod().Name,
+            };
+
             bool isSubmitted = OrderSubmissionHelper.CheckOrderBlock(user, catalogInfo, cartId, null, purchaseOrderRepository, null, _cache);
             if (isSubmitted)
             {
-                string logMessage = string.Format("ShoppingCartLogicImpl.IsSubmitted: An order was already submitted from basket {0} for customer {1}.", cartId, catalogInfo.CustomerId);
-                _log.WriteWarningLog(logMessage);
+                string logMessage = string.Format("An order was already submitted from basket {0} for customer {1}.", cartId, catalogInfo.CustomerId);
+                _log.WriteWarningLog(logMessage, context);
             }
             return isSubmitted;
         }
@@ -607,6 +616,14 @@ namespace KeithLink.Svc.Impl.Logic
 
         public SaveOrderReturn SaveAsOrder(UserProfile user, UserSelectedContext catalogInfo, Guid cartId)
 		{
+            var context = new TransactionContext
+            {
+                TransactionType = "customer shopping cart",
+                TransactionId = "basket:" + cartId,
+                ClassName = GetType().Name,
+                MethodName = MethodBase.GetCurrentMethod().Name,
+            };
+
             var customer = customerRepository.GetCustomerByCustomerNumber(catalogInfo.CustomerId, catalogInfo.BranchId);
 
 			//Check that RequestedShipDate
@@ -617,8 +634,8 @@ namespace KeithLink.Svc.Impl.Logic
             if (basket.LineItems == null || basket.LineItems.Count == 0)
                 throw new ApplicationException("Cannot submit order with 0 line items");
 
-            string logMessage = string.Format("ShoppingCartLogicImpl.SaveAsOrder: saving contents of basket {0} to Commerce Server for customer {0}.", cartId, customer.CustomerId);
-            _log.WriteInformationLog(logMessage);
+            string logMessage = string.Format("Saving contents of basket {0} to Commerce Server for customer {0}.", cartId, customer.CustomerId);
+            _log.WriteInformationLog(logMessage, context);
 
             //Save to Commerce Server
             com.benekeith.FoundationService.BEKFoundationServiceClient client = new com.benekeith.FoundationService.BEKFoundationServiceClient();
@@ -631,8 +648,8 @@ namespace KeithLink.Svc.Impl.Logic
 
             if (catalogList.Count > 1)
             {
-                logMessage = string.Format("ShoppingCartLogicImpl.SaveAsOrder: splitting basket {0} into {1} carts for customer {2}.", cartId, catalogList.Count, customer.CustomerId);
-                _log.WriteInformationLog(logMessage);
+                logMessage = string.Format("Splitting basket {0} into {1} carts for customer {2}.", cartId, catalogList.Count, customer.CustomerId);
+                _log.WriteInformationLog(logMessage, context);
             }
 
             OrderedFromList o2l = _orderedFromListRepository.Read(cartId.ToString());
@@ -662,8 +679,8 @@ namespace KeithLink.Svc.Impl.Logic
                 };
                 LookupProductDetails(user, catalogInfo, shoppingCart);
 
-                logMessage = string.Format("ShoppingCartLogicImpl.SaveAsOrder: calling CreateCart with {0} items from basket {1} for catalog {2} and customer {3}.", shoppingCart.Items.Count, cartId, catalogId, customer.CustomerId);
-                _log.WriteInformationLog(logMessage);
+                logMessage = string.Format("Calling CreateCart with {0} items from basket {1} for catalog {2} and customer {3}.", shoppingCart.Items.Count, cartId, catalogId, customer.CustomerId);
+                _log.WriteInformationLog(logMessage, context);
 
                 var newCartId = CreateCart(user, catalogInfo, shoppingCart, catalogId.ToUpper());
                 string orderNumber = null;
@@ -687,11 +704,11 @@ namespace KeithLink.Svc.Impl.Logic
                 }
                 catch (Exception exception)
                 {
-                    logMessage = string.Format("ShoppingCartLogicImpl.SaveAsOrder: exception while processing {0} items from basket {1} for catalog {2} and customer {3}.", shoppingCart.Items.Count, cartId, catalogId, customer.CustomerId);
-                    _log.WriteErrorLog(logMessage, exception);
+                    logMessage = string.Format("Exception while processing {0} items from basket {1} for catalog {2} and customer {3}.", shoppingCart.Items.Count, cartId, catalogId, customer.CustomerId);
+                    _log.WriteErrorLog(logMessage, exception, context);
 
                     // continuing may allow submission of remaining parts of a split order
-                    // but allow the retention of the full basket
+                    // but allow the retention of a partial basket
                     continue;   
                 }
 
@@ -727,8 +744,8 @@ namespace KeithLink.Svc.Impl.Logic
                 OrderHistoryFile orderHistoryFile = newPurchaseOrder.ToOrderHistoryFile(catalogInfo);
                 _historyLogic.SaveOrder(orderHistoryFile, isSpecialOrder);
 
-                logMessage = string.Format("ShoppingCartLogicImpl.SaveAsOrder: calling WriteFileToQueue for order {0} and customer {1}.", orderNumber, customer.CustomerId);
-                _log.WriteInformationLog(logMessage);
+                logMessage = string.Format("Calling WriteFileToQueue for order {0} and customer {1}.", orderNumber, customer.CustomerId);
+                _log.WriteInformationLog(logMessage, context);
 
                 // post order to queue
                 if (isSpecialOrder)
@@ -751,8 +768,8 @@ namespace KeithLink.Svc.Impl.Logic
                 {
                     DeleteItem(user, catalogInfo, cartId, toDelete.ToGuid());
                 }
-                logMessage = string.Format("ShoppingCartLogicImpl.SaveAsOrder: Deleted {0} items with {1} remaining in basket {2} for customer {3}.", itemsToDelete.Count, basket.LineItems.Count, cartId, customer.CustomerId);
-                _log.WriteInformationLog(logMessage);
+                logMessage = string.Format("Deleted {0} items with {1} remaining in basket {2} for customer {3}.", itemsToDelete.Count, basket.LineItems.Count, cartId, customer.CustomerId);
+                _log.WriteInformationLog(logMessage, context);
 
                 if (isSpecialOrder)
                 {
@@ -770,20 +787,20 @@ namespace KeithLink.Svc.Impl.Logic
                 }
             }
 
-            logMessage = string.Format("ShoppingCartLogicImpl.SaveAsOrder: {0} orders submitted from basket {1} for customer {2}.", returnOrders.OrdersReturned.Count, cartId, customer.CustomerId);
-            _log.WriteInformationLog(logMessage);
+            logMessage = string.Format("{0} orders submitted from basket {1} for customer {2}.", returnOrders.OrdersReturned.Count, cartId, customer.CustomerId);
+            _log.WriteInformationLog(logMessage, context);
 
             // delete original cart if all orders succeed
             if (returnOrders.NumberOfOrders == returnOrders.OrdersReturned.Count)
             {
-                logMessage = string.Format("ShoppingCartLogicImpl.SaveAsOrder: Deleting basket {0} for customer {1}.", cartId, customer.CustomerId);
-                _log.WriteInformationLog(logMessage);
+                logMessage = string.Format("Deleting basket {0} for customer {1}.", cartId, customer.CustomerId);
+                _log.WriteInformationLog(logMessage, context);
                 DeleteCart(user, catalogInfo, cartId);
             }
             else
             {
-                logMessage = string.Format("ShoppingCartLogicImpl.SaveAsOrder: Basket {0} remains with {1} items for customer {2}.", cartId, basket.LineItems.Count, customer.CustomerId);
-                _log.WriteWarningLog(logMessage);
+                logMessage = string.Format("Basket {0} remains with {1} items for customer {2}.", cartId, basket.LineItems.Count, customer.CustomerId);
+                _log.WriteWarningLog(logMessage, context);
             }
 
             return returnOrders; //Return actual order number
