@@ -363,13 +363,13 @@ angular.module('bekApp')
               processingSaveCart = false;
               $scope.saveCart(cart)
                 .then(CartService.submitOrder)
-                .then(function (data) { processSubmitSuccess(data, cart); }, processSubmitError)
-                .finally(function ()
-                {
-                  processingSubmitOrder = false;
-                  $scope.disableSubmitButtons = false;
-                });
+                .then(function (data) { processSubmitSuccess(data, cart); }, processSubmitError);
             }
+          })
+          .finally(function ()
+          {
+            processingSubmitOrder = false;
+            $scope.disableSubmitButtons = false;
           });
       }
     };
