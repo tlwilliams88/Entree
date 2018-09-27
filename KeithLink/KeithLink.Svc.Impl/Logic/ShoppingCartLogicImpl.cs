@@ -2,16 +2,19 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using System.Text.RegularExpressions;
 using System.IO;
+
+using CommerceServer.Foundation;
 using Microsoft.Reporting.WinForms;
-using System.Reflection;
 
 using KeithLink.Common.Core.Enumerations;
 using KeithLink.Common.Core.Extensions;
 using KeithLink.Common.Core.Interfaces.Logging;
+using KeithLink.Common.Core.Models.Logging;
 
 using KeithLink.Svc.Core;
 using KeithLink.Svc.Core.Enumerations.Order;
@@ -37,7 +40,9 @@ using KeithLink.Svc.Core.Interface.SiteCatalog;
 
 using CS = KeithLink.Svc.Core.Models.Generated;
 using KeithLink.Svc.Core.Models.Lists;
+using KeithLink.Svc.Core.Models.Messaging.Queue;
 using KeithLink.Svc.Core.Models.Orders;
+using KeithLink.Svc.Core.Models.Orders.History;
 using KeithLink.Svc.Core.Models.Profile;
 using KeithLink.Svc.Core.Models.ShoppingCart;
 using KeithLink.Svc.Core.Models.SiteCatalog;
@@ -469,7 +474,21 @@ namespace KeithLink.Svc.Impl.Logic
 
         public bool IsSubmitted(UserProfile user, UserSelectedContext catalogInfo, Guid cartId)
         {
-            return OrderSubmissionHelper.CheckOrderBlock(user, catalogInfo, cartId, null, purchaseOrderRepository, null, _cache);
+            var context = new TransactionContext
+            {
+                TransactionType = "customer shopping cart",
+                TransactionId = "basket:" + cartId,
+                ClassName = GetType().Name,
+                MethodName = MethodBase.GetCurrentMethod().Name,
+            };
+
+            bool isSubmitted = OrderSubmissionHelper.CheckOrderBlock(user, catalogInfo, cartId, null, purchaseOrderRepository, null, _cache);
+            if (isSubmitted)
+            {
+                string logMessage = string.Format("An order was already submitted from basket {0} for customer {1}.", cartId, catalogInfo.CustomerId);
+                _log.WriteWarningLog(logMessage, context);
+            }
+            return isSubmitted;
         }
 
         public ShoppingCart ReadCart(UserProfile user, UserSelectedContext catalogInfo, Guid cartId)
@@ -599,7 +618,16 @@ namespace KeithLink.Svc.Impl.Logic
 
         public SaveOrderReturn SaveAsOrder(UserProfile user, UserSelectedContext catalogInfo, Guid cartId)
 		{
+            var context = new TransactionContext
+            {
+                TransactionType = "customer shopping cart",
+                TransactionId = "basket:" + cartId,
+                ClassName = GetType().Name,
+                MethodName = MethodBase.GetCurrentMethod().Name,
+            };
+
             var customer = customerRepository.GetCustomerByCustomerNumber(catalogInfo.CustomerId, catalogInfo.BranchId);
+
 			//Check that RequestedShipDate
 			var basket = basketLogic.RetrieveSharedCustomerBasket(user, catalogInfo, cartId);
 
@@ -608,20 +636,20 @@ namespace KeithLink.Svc.Impl.Logic
             if (basket.LineItems == null || basket.LineItems.Count == 0)
                 throw new ApplicationException("Cannot submit order with 0 line items");
 
-            _log.WriteInformationLog(string.Format("ShoppingCartLogicImpl.SaveAsOrder: saving basket to Commerce Server for customer {0}.", customer.CustomerId));
-
-            //Save to Commerce Server
+            //use Commerce Server
             com.benekeith.FoundationService.BEKFoundationServiceClient client = new com.benekeith.FoundationService.BEKFoundationServiceClient();
 
-            //split into multiple orders
+            //split into multiple orders when multiple catalogs
             var catalogList = basket.LineItems.Select(i => i.CatalogName).Distinct(StringComparer.CurrentCultureIgnoreCase).ToList();
             var returnOrders = new SaveOrderReturn();
             returnOrders.NumberOfOrders = catalogList.Count;
             returnOrders.OrdersReturned = new List<NewOrderReturn>();
 
+            string logMessage = null;
             if (catalogList.Count > 1)
             {
-                _log.WriteInformationLog(string.Format("ShoppingCartLogicImpl.SaveAsOrder: splitting basket into {0} carts for customer {1}.", catalogList.Count, customer.CustomerId));
+                logMessage = string.Format($"Splitting basket into {catalogList.Count} carts for customer {customer.CustomerNumber}.");
+                _log.WriteInformationLog(logMessage, context);
             }
 
             OrderedFromList o2l = _orderedFromListRepository.Read(cartId.ToString());
@@ -651,7 +679,9 @@ namespace KeithLink.Svc.Impl.Logic
                 };
                 LookupProductDetails(user, catalogInfo, shoppingCart);
 
-                _log.WriteInformationLog(string.Format("ShoppingCartLogicImpl.SaveAsOrder: CreateCart with {0} items for catalog {1} and customer {2}.", shoppingCart.Items.Count, catalogId, customer.CustomerId));
+                logMessage = string.Format($"Calling CreateCart with {shoppingCart.Items.Count} items for catalog {catalogId} and customer {customer.CustomerNumber}.");
+                _log.WriteInformationLog(logMessage, context);
+
                 var newCartId = CreateCart(user, catalogInfo, shoppingCart, catalogId.ToUpper());
                 string orderNumber = null;
                 try
@@ -672,16 +702,22 @@ namespace KeithLink.Svc.Impl.Logic
                         });
                     }
                 }
-                catch// (Exception e)
+                catch (Exception exception)
                 {
-                    continue;
+                    logMessage = string.Format($"Exception while processing basket for customer {customer.CustomerNumber}.");
+                    _log.WriteErrorLog(logMessage, exception, context);
+
+                    // continuing may allow submission of remaining parts of a split order
+                    // but allow the retention of a partial basket
+                    continue;   
                 }
-                
 
 
-                CS.PurchaseOrder newPurchaseOrder = purchaseOrderRepository.ReadPurchaseOrder(customer.CustomerId, orderNumber);
 
-                foreach (var lineItem in ((CommerceServer.Foundation.CommerceRelationshipList)newPurchaseOrder.Properties["LineItems"]))
+                CS.PurchaseOrder purchaseOrder = purchaseOrderRepository.ReadPurchaseOrder(customer.CustomerId, orderNumber);
+
+                var lineItems = ((CommerceRelationshipList)purchaseOrder.Properties["LineItems"]);
+                foreach (var lineItem in lineItems)
                 {
                     var item = (CS.LineItem)lineItem.Target;
                     var products = catalogLogic.GetProductsByIds(catalogId, new List<string>() {item.ProductId});
@@ -701,38 +737,44 @@ namespace KeithLink.Svc.Impl.Logic
                 // Log the control number to the recommended items for this cart
                 _recommendedItemsOrderedAnalyticsRepository.UpdateAnalyticsForCardIdWithControlNumber(cartId.ToString(), orderNumber);
 
-
-                var type = catalogLogic.GetCatalogTypeFromCatalogId(catalogId).ToUpper().Substring(0, 3);
-
+                string catalogType = catalogLogic.GetCatalogTypeFromCatalogId(catalogId).ToUpper().Substring(0, 3);
 
                 bool isSpecialOrder = catalogLogic.IsSpecialtyCatalog(null, catalogId);
 
-                _historyLogic.SaveOrder(newPurchaseOrder.ToOrderHistoryFile(catalogInfo), isSpecialOrder); // save to order history
+                // save to order history
+                OrderHistoryFile orderHistoryFile = purchaseOrder.ToOrderHistoryFile(catalogInfo);
+                _historyLogic.SaveOrder(orderHistoryFile, isSpecialOrder);
 
-                _log.WriteInformationLog(string.Format("ShoppingCartLogicImpl.SaveAsOrder: WriteFileToQueue for order {0} and customer {1}.", orderNumber, customer.CustomerId));
+                logMessage = string.Format($"Calling WriteFileToQueue with control number {orderNumber} for customer {customer.CustomerNumber}.");
+                _log.WriteInformationLog(logMessage, context);
+
+                // post order to queue
                 if (isSpecialOrder)
                 {
-                    client.UpdatePurchaseOrderStatus(customer.CustomerId, newPurchaseOrder.Id.ToGuid(), "Requested");
+                    client.UpdatePurchaseOrderStatus(customer.CustomerId, purchaseOrder.Id.ToGuid(), "Requested");
 
-                    orderQueueLogic.WriteFileToQueue(user.EmailAddress, orderNumber, newPurchaseOrder, OrderType.SpecialOrder, type, customer.DsrNumber, customer.Address.StreetAddress, customer.Address.City, customer.Address.RegionCode, customer.Address.PostalCode);
+                    orderQueueLogic.WriteFileToQueue(user.EmailAddress, orderNumber, purchaseOrder, OrderType.SpecialOrder, catalogType, customer.DsrNumber, customer.Address.StreetAddress, customer.Address.City, customer.Address.RegionCode, customer.Address.PostalCode);
                 }
                 else
                 {
-                    orderQueueLogic.WriteFileToQueue(user.EmailAddress, orderNumber, newPurchaseOrder, OrderType.NormalOrder, type); // send to queue - mainframe only for BEK
+                    orderQueueLogic.WriteFileToQueue(user.EmailAddress, orderNumber, purchaseOrder, OrderType.NormalOrder, catalogType); // send to queue - mainframe only for BEK
                 }
 
                 auditLogRepository.WriteToAuditLog(AuditType.OrderSubmited, user.EmailAddress, String.Format("Order: {0}, Customer: {1}", orderNumber, customer.CustomerNumber));
 
-                returnOrders.OrdersReturned.Add(new NewOrderReturn() { OrderNumber = orderNumber, CatalogType = type, IsSpecialOrder = isSpecialOrder });
+                returnOrders.OrdersReturned.Add(new NewOrderReturn() { OrderNumber = orderNumber, CatalogType = catalogType, IsSpecialOrder = isSpecialOrder });
 
                 var itemsToDelete = basket.LineItems.Where(l => l.CatalogName.Equals(catalogId)).Select(l => l.Id).ToList();
-                foreach(var toDelete in itemsToDelete) {
+                logMessage = string.Format($"Calling DeleteItem for {itemsToDelete.Count} items from basket for customer {customer.CustomerNumber}.");
+                _log.WriteInformationLog(logMessage, context);
+                foreach (var toDelete in itemsToDelete)
+                {
                     DeleteItem(user, catalogInfo, cartId, toDelete.ToGuid());
                 }
 
                 if (isSpecialOrder)
                 {
-                    PublishSpecialOrderNotification(newPurchaseOrder);
+                    PublishSpecialOrderNotification(purchaseOrder);
                 }
             }
 
@@ -746,9 +788,15 @@ namespace KeithLink.Svc.Impl.Logic
                 }
             }
 
+            logMessage = string.Format($"{returnOrders.OrdersReturned.Count} orders submitted for customer {customer.CustomerNumber}.");
+            _log.WriteInformationLog(logMessage, context);
+
             // delete original cart if all orders succeed
             if (returnOrders.NumberOfOrders == returnOrders.OrdersReturned.Count)
             {
+                logMessage = string.Format($"Calling DeleteCart for customer {customer.CustomerNumber}.");
+                _log.WriteInformationLog(logMessage, context);
+
                 DeleteCart(user, catalogInfo, cartId);
             }
 
@@ -758,18 +806,18 @@ namespace KeithLink.Svc.Impl.Logic
         private void PublishSpecialOrderNotification(CS.PurchaseOrder po)
         {
             Order order = po.ToOrder();
-            Core.Models.Messaging.Queue.OrderChange orderChange = new Core.Models.Messaging.Queue.OrderChange();
+            OrderChange orderChange = new OrderChange();
             orderChange.OrderName = (string)po.Properties["DisplayName"];
             orderChange.OriginalStatus = "Requested";
             orderChange.CurrentStatus = "Requested";
-            orderChange.ItemChanges = new List<Core.Models.Messaging.Queue.OrderLineChange>();
-            orderChange.Items = new List<Core.Models.Messaging.Queue.OrderLineChange>();
+            orderChange.ItemChanges = new List<OrderLineChange>();
+            orderChange.Items = new List<OrderLineChange>();
             orderChange.SpecialInstructions = "";
             orderChange.ShipDate = DateTime.MinValue.ToShortDateString();
             foreach (var lineItem in ((CommerceServer.Foundation.CommerceRelationshipList)po.Properties["LineItems"]))
             {
                 var item = (CS.LineItem)lineItem.Target;
-                orderChange.Items.Add(new Core.Models.Messaging.Queue.OrderLineChange()
+                orderChange.Items.Add(new OrderLineChange()
                 {
                     ItemNumber = item.ProductId,
                     ItemCatalog = item.CatalogName,
@@ -779,7 +827,7 @@ namespace KeithLink.Svc.Impl.Logic
                     ItemPrice = item.PlacedPrice.Value
                 });
             } 
-            Core.Models.Messaging.Queue.OrderConfirmationNotification orderConfNotification = new Core.Models.Messaging.Queue.OrderConfirmationNotification();
+            OrderConfirmationNotification orderConfNotification = new OrderConfirmationNotification();
             orderConfNotification.OrderChange = orderChange;
             orderConfNotification.OrderNumber = (string)po.Properties["OrderNumber"];
             orderConfNotification.CustomerNumber = (string)po.Properties["CustomerId"];

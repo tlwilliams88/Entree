@@ -32,6 +32,7 @@ using KeithLink.Svc.Core.Models.SiteCatalog;
 using KeithLink.Svc.Impl.Repository.EF.Operational;
 
 using Newtonsoft.Json;
+
 using System;
 using System.Collections.Generic;
 using System.Collections.Concurrent;
@@ -431,7 +432,7 @@ namespace KeithLink.Svc.Impl.Logic.Orders
                 // use internal messaging logic to put order up message on the queue
                 OrderChange orderChange = BuildOrderChanges(po, currLineItems, origLineItems, originalStatus, confirmation.Header.SpecialInstructions, confirmation.Header.ShipDate);
                 if (orderChange.OriginalStatus != orderChange.CurrentStatus || orderChange.ItemChanges.Count > 0) {
-                    Core.Models.Messaging.Queue.OrderConfirmationNotification orderConfNotification = new Core.Models.Messaging.Queue.OrderConfirmationNotification();
+                    OrderConfirmationNotification orderConfNotification = new OrderConfirmationNotification();
                     orderConfNotification.OrderChange = orderChange;
                     orderConfNotification.OrderNumber = (string)po["OrderNumber"];
                     orderConfNotification.CustomerNumber = (string)po["CustomerId"];
