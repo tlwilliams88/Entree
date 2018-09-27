@@ -7,6 +7,8 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Text.RegularExpressions;
 using System.IO;
+
+using CommerceServer.Foundation;
 using Microsoft.Reporting.WinForms;
 
 using KeithLink.Common.Core.Enumerations;
@@ -634,21 +636,19 @@ namespace KeithLink.Svc.Impl.Logic
             if (basket.LineItems == null || basket.LineItems.Count == 0)
                 throw new ApplicationException("Cannot submit order with 0 line items");
 
-            string logMessage = string.Format("Saving contents of basket {0} to Commerce Server for customer {0}.", cartId, customer.CustomerId);
-            _log.WriteInformationLog(logMessage, context);
-
-            //Save to Commerce Server
+            //use Commerce Server
             com.benekeith.FoundationService.BEKFoundationServiceClient client = new com.benekeith.FoundationService.BEKFoundationServiceClient();
 
-            //split into multiple orders
+            //split into multiple orders when multiple catalogs
             var catalogList = basket.LineItems.Select(i => i.CatalogName).Distinct(StringComparer.CurrentCultureIgnoreCase).ToList();
             var returnOrders = new SaveOrderReturn();
             returnOrders.NumberOfOrders = catalogList.Count;
             returnOrders.OrdersReturned = new List<NewOrderReturn>();
 
+            string logMessage = null;
             if (catalogList.Count > 1)
             {
-                logMessage = string.Format("Splitting basket {0} into {1} carts for customer {2}.", cartId, catalogList.Count, customer.CustomerId);
+                logMessage = string.Format($"Splitting basket into {catalogList.Count} carts for customer {customer.CustomerNumber}.");
                 _log.WriteInformationLog(logMessage, context);
             }
 
@@ -679,7 +679,7 @@ namespace KeithLink.Svc.Impl.Logic
                 };
                 LookupProductDetails(user, catalogInfo, shoppingCart);
 
-                logMessage = string.Format("Calling CreateCart with {0} items from basket {1} for catalog {2} and customer {3}.", shoppingCart.Items.Count, cartId, catalogId, customer.CustomerId);
+                logMessage = string.Format($"Calling CreateCart with {shoppingCart.Items.Count} items for catalog {catalogId} and customer {customer.CustomerNumber}.");
                 _log.WriteInformationLog(logMessage, context);
 
                 var newCartId = CreateCart(user, catalogInfo, shoppingCart, catalogId.ToUpper());
@@ -704,7 +704,7 @@ namespace KeithLink.Svc.Impl.Logic
                 }
                 catch (Exception exception)
                 {
-                    logMessage = string.Format("Exception while processing {0} items from basket {1} for catalog {2} and customer {3}.", shoppingCart.Items.Count, cartId, catalogId, customer.CustomerId);
+                    logMessage = string.Format($"Exception while processing basket for customer {customer.CustomerNumber}.");
                     _log.WriteErrorLog(logMessage, exception, context);
 
                     // continuing may allow submission of remaining parts of a split order
@@ -714,9 +714,10 @@ namespace KeithLink.Svc.Impl.Logic
 
 
 
-                CS.PurchaseOrder newPurchaseOrder = purchaseOrderRepository.ReadPurchaseOrder(customer.CustomerId, orderNumber);
+                CS.PurchaseOrder purchaseOrder = purchaseOrderRepository.ReadPurchaseOrder(customer.CustomerId, orderNumber);
 
-                foreach (var lineItem in ((CommerceServer.Foundation.CommerceRelationshipList)newPurchaseOrder.Properties["LineItems"]))
+                var lineItems = ((CommerceRelationshipList)purchaseOrder.Properties["LineItems"]);
+                foreach (var lineItem in lineItems)
                 {
                     var item = (CS.LineItem)lineItem.Target;
                     var products = catalogLogic.GetProductsByIds(catalogId, new List<string>() {item.ProductId});
@@ -741,22 +742,22 @@ namespace KeithLink.Svc.Impl.Logic
                 bool isSpecialOrder = catalogLogic.IsSpecialtyCatalog(null, catalogId);
 
                 // save to order history
-                OrderHistoryFile orderHistoryFile = newPurchaseOrder.ToOrderHistoryFile(catalogInfo);
+                OrderHistoryFile orderHistoryFile = purchaseOrder.ToOrderHistoryFile(catalogInfo);
                 _historyLogic.SaveOrder(orderHistoryFile, isSpecialOrder);
 
-                logMessage = string.Format("Calling WriteFileToQueue for order {0} and customer {1}.", orderNumber, customer.CustomerId);
+                logMessage = string.Format($"Calling WriteFileToQueue with control number {orderNumber} for customer {customer.CustomerNumber}.");
                 _log.WriteInformationLog(logMessage, context);
 
                 // post order to queue
                 if (isSpecialOrder)
                 {
-                    client.UpdatePurchaseOrderStatus(customer.CustomerId, newPurchaseOrder.Id.ToGuid(), "Requested");
+                    client.UpdatePurchaseOrderStatus(customer.CustomerId, purchaseOrder.Id.ToGuid(), "Requested");
 
-                    orderQueueLogic.WriteFileToQueue(user.EmailAddress, orderNumber, newPurchaseOrder, OrderType.SpecialOrder, catalogType, customer.DsrNumber, customer.Address.StreetAddress, customer.Address.City, customer.Address.RegionCode, customer.Address.PostalCode);
+                    orderQueueLogic.WriteFileToQueue(user.EmailAddress, orderNumber, purchaseOrder, OrderType.SpecialOrder, catalogType, customer.DsrNumber, customer.Address.StreetAddress, customer.Address.City, customer.Address.RegionCode, customer.Address.PostalCode);
                 }
                 else
                 {
-                    orderQueueLogic.WriteFileToQueue(user.EmailAddress, orderNumber, newPurchaseOrder, OrderType.NormalOrder, catalogType); // send to queue - mainframe only for BEK
+                    orderQueueLogic.WriteFileToQueue(user.EmailAddress, orderNumber, purchaseOrder, OrderType.NormalOrder, catalogType); // send to queue - mainframe only for BEK
                 }
 
                 auditLogRepository.WriteToAuditLog(AuditType.OrderSubmited, user.EmailAddress, String.Format("Order: {0}, Customer: {1}", orderNumber, customer.CustomerNumber));
@@ -764,16 +765,16 @@ namespace KeithLink.Svc.Impl.Logic
                 returnOrders.OrdersReturned.Add(new NewOrderReturn() { OrderNumber = orderNumber, CatalogType = catalogType, IsSpecialOrder = isSpecialOrder });
 
                 var itemsToDelete = basket.LineItems.Where(l => l.CatalogName.Equals(catalogId)).Select(l => l.Id).ToList();
-                foreach(var toDelete in itemsToDelete)
+                logMessage = string.Format($"Calling DeleteItem for {itemsToDelete.Count} items from basket for customer {customer.CustomerNumber}.");
+                _log.WriteInformationLog(logMessage, context);
+                foreach (var toDelete in itemsToDelete)
                 {
                     DeleteItem(user, catalogInfo, cartId, toDelete.ToGuid());
                 }
-                logMessage = string.Format("Deleted {0} items with {1} remaining in basket {2} for customer {3}.", itemsToDelete.Count, basket.LineItems.Count, cartId, customer.CustomerId);
-                _log.WriteInformationLog(logMessage, context);
 
                 if (isSpecialOrder)
                 {
-                    PublishSpecialOrderNotification(newPurchaseOrder);
+                    PublishSpecialOrderNotification(purchaseOrder);
                 }
             }
 
@@ -787,20 +788,16 @@ namespace KeithLink.Svc.Impl.Logic
                 }
             }
 
-            logMessage = string.Format("{0} orders submitted from basket {1} for customer {2}.", returnOrders.OrdersReturned.Count, cartId, customer.CustomerId);
+            logMessage = string.Format($"{returnOrders.OrdersReturned.Count} orders submitted for customer {customer.CustomerNumber}.");
             _log.WriteInformationLog(logMessage, context);
 
             // delete original cart if all orders succeed
             if (returnOrders.NumberOfOrders == returnOrders.OrdersReturned.Count)
             {
-                logMessage = string.Format("Deleting basket {0} for customer {1}.", cartId, customer.CustomerId);
+                logMessage = string.Format($"Calling DeleteCart for customer {customer.CustomerNumber}.");
                 _log.WriteInformationLog(logMessage, context);
+
                 DeleteCart(user, catalogInfo, cartId);
-            }
-            else
-            {
-                logMessage = string.Format("Basket {0} remains with {1} items for customer {2}.", cartId, basket.LineItems.Count, customer.CustomerId);
-                _log.WriteWarningLog(logMessage, context);
             }
 
             return returnOrders; //Return actual order number

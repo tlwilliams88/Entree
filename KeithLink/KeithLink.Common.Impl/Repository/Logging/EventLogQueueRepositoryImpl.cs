@@ -56,12 +56,6 @@ namespace KeithLink.Common.Impl.Repository.Logging
             newMessage.Application.Environment = ConfigurationHelper.GetActiveConfiguration();
             newMessage.Application.Name = ConfigurationManager.AppSettings["AppName"];
 
-            if (Configuration.LogSystemPerformance)
-            {
-                newMessage.Machine.CpuUtilization = GetCurrentCPU();
-                newMessage.Machine.MemoryUsed = GetCurrentRAMUsage();
-            }
-
             var httpContext = HttpContext.Current;
             if (httpContext != null)
             {
@@ -81,14 +75,20 @@ namespace KeithLink.Common.Impl.Repository.Logging
 
             if (context != null)
             {
-                newMessage.Message = string.Format("[{0}] {1)", context.TransactionId, newMessage.Message);
-                newMessage.Method.Name = string.Format("{0}.{1)", context.ClassName, context.MethodName);
+                newMessage.Message = string.Format($"[{context.TransactionId}] {newMessage.Message}");
+                newMessage.Method.Name = string.Format($"{context.ClassName}.{context.MethodName}");
             }
 
             if (exception != null)
             {
                 newMessage.Exception.Message = exception.Message;
                 newMessage.Exception.StackTrace = GetStackTrace(exception);
+
+                if (Configuration.LogSystemPerformance)
+                {
+                    newMessage.Machine.CpuUtilization = GetCurrentCPU();
+                    newMessage.Machine.MemoryUsed = GetCurrentRAMUsage();
+                }
             }
 
             return newMessage;
