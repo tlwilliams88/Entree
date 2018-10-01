@@ -1349,8 +1349,7 @@ namespace KeithLink.Svc.WebApi.Controllers
 
             try
             {
-                returnValue.SuccessResponse = _settingLogic.GetStoredUserKey
-                    (key.UserId, key.Value);
+                returnValue.SuccessResponse = _settingLogic.GetStoredUserKey(key.UserId, key.Value);
                 returnValue.IsSuccess = true;
             }
             catch (Exception ex)
@@ -1376,15 +1375,14 @@ namespace KeithLink.Svc.WebApi.Controllers
 
             try
             {
-                _settingLogic.CreateOrUpdateUserCustomerDefaultOrderList
-                    (SelectedUserContext.CustomerId,
-                     SelectedUserContext.BranchId,
-                     new SettingsModel()
-                     {
-                         UserId = AuthenticatedUser.UserId,
-                         Key = key.Key,
-                         Value = key.Value
-                     });
+                _settingLogic.CreateOrUpdateUserKey
+                    (new SettingsModel()
+                        {
+                            UserId = AuthenticatedUser.UserId,
+                            Key = key.Key,
+                            Value = key.Value
+                        }
+                    );
                 returnValue.SuccessResponse = true;
                 returnValue.IsSuccess = true;
             }

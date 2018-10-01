@@ -133,7 +133,7 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
 
         private string StoredUserKey(string custemail)
         {
-            return string.Format("{0},{1}", "defaultorderlist", custemail);
+            return string.Format("{0},{1}", "Entree_Credential_User", custemail);
         }
 
         /// <summary>
@@ -149,16 +149,14 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
 
             if (userSettings != null)
             {
+                userSettings.Key = key;
+
                 userSettings.Value = settings.Value;
-            }
-            else
-            {
-                userSettings = settings.ToEFSettings();
-                userSettings.Key = StoredUserKey(settings.Key);
+
+                _repo.CreateOrUpdate(userSettings);
+                _uow.SaveChanges();
             }
 
-            _repo.CreateOrUpdate(userSettings);
-            _uow.SaveChanges();
         }
 
         /// <summary>
@@ -182,6 +180,32 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
             }
 
             return returnValue;
+        }
+
+        /// <summary>
+        /// Finds all the settings for the customer.
+        /// </summary>
+        /// <param name="userId">Guid - userId</param>
+        /// <returns>A collection (list) of SettingModel objects.</returns>
+        public bool CheckForStoredKey(string user)
+        {
+            SettingsModelReturn returnValue = new SettingsModelReturn();
+
+            string key = StoredUserKey(user);
+
+            IQueryable<Core.Models.Profile.EF.Settings> settings = _repo.ReadByKey(key);
+
+            bool hasKey = false;
+
+            foreach (Core.Models.Profile.EF.Settings s in settings)
+            {
+                if (s.Value.Equals(user))
+                {
+                    hasKey = true;
+                }
+            }
+
+            return hasKey;
         }
 
         public void DeleteSettings(SettingsModel settings)

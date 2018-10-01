@@ -11,6 +11,8 @@ using System.DirectoryServices;
 using System.DirectoryServices.AccountManagement;
 using System.Linq;
 
+using KeithLink.Svc.Impl.Logic.Profile;
+
 namespace KeithLink.Svc.Impl.Repository.Profile
 {
     public class ExternalUserDomainRepository : ICustomerDomainRepository
@@ -31,14 +33,16 @@ namespace KeithLink.Svc.Impl.Repository.Profile
 
         IEventLogRepository _logger;
 		IAuditLogRepository _auditLog;
+        private readonly ISettingsLogic _settingsLogic;
         //ICustomerContainerRepository _containerRepo;
         #endregion
 
         #region ctor
-        public ExternalUserDomainRepository(IEventLogRepository logger, IAuditLogRepository auditLog)
+        public ExternalUserDomainRepository(IEventLogRepository logger, IAuditLogRepository auditLog, ISettingsLogic settingsLogic)
         {
             _logger = logger;
 			_auditLog = auditLog;
+            _settingsLogic = settingsLogic;
             //_containerRepo = customerContainerRepo;
         }
         #endregion
@@ -79,12 +83,13 @@ namespace KeithLink.Svc.Impl.Repository.Profile
         /// </remarks>
         public AuthenticationModel AuthenticateUser(string userName, string password)
         {
-            AuthenticationModel returnValue = new AuthenticationModel(); 
+            AuthenticationModel returnValue = new AuthenticationModel();
 
+            bool userKey = _settingsLogic.CheckForStoredKey(userName);
             if (userName.Length == 0) { throw new ArgumentException("userName is required", "userName"); }
             if (userName == null) { throw new ArgumentNullException("userName", "userName is null"); }
-            if (password.Length == 0) { throw new ArgumentException("password is required", "password"); }
-            if (password == null) { throw new ArgumentNullException("password", "password is null"); }
+            if (password.Length == 0 && userKey == false) { throw new ArgumentException("password is required", "password"); }
+            if (password == null && userKey == false) { throw new ArgumentNullException("password", "password is null"); }
 
             returnValue.Message = null;
 
@@ -144,7 +149,7 @@ namespace KeithLink.Svc.Impl.Repository.Profile
                     }
                     
                     // validate password
-                   if (boundServer.ValidateCredentials(userName, password, ContextOptions.SimpleBind))
+                   if (String.IsNullOrEmpty(password) == false && boundServer.ValidateCredentials(userName, password, ContextOptions.SimpleBind))
                     {
                         if (returnValue.Status.Equals( AuthenticationStatus.PasswordExpired )) {
                             // Turn the password expired flag back on
@@ -157,6 +162,12 @@ namespace KeithLink.Svc.Impl.Repository.Profile
                             returnValue.Status = AuthenticationStatus.Successful;
                             return returnValue;
                         }
+                    }
+                    else if (String.IsNullOrEmpty(password) == true && userKey == true)
+                    {
+                        _auditLog.WriteToAuditLog(AuditType.AuthenticationSucceeded, userName, string.Concat("Authentication successfull: ", userName));
+                        returnValue.Status = AuthenticationStatus.Successful;
+                        return returnValue;
                     }
                     else
                     {

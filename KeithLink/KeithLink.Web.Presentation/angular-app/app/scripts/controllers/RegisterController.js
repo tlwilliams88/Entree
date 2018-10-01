@@ -130,9 +130,9 @@ angular.module('bekApp')
         return;
       } else {
       // Need to save username via api call here
-      window.plugins.touchid.save("Entree_Credential_User", $scope.loginInfo.userid, true, function() {
+      window.plugins.touchid.save("Entree_Credential_User", $scope.loginInfo.username, true, function() {
 
-        var userKey = {userid: $scope.loginInfo.userid, key: 'Entree_Credential_User'+$scope.loginInfo.username, value: userDevice};
+        var userKey = {userid: $scope.loginInfo.userid, key: $scope.loginInfo.username, value: userDevice};
         ApplicationSettingsService.setUserKey(userKey);
 
         window.plugins.touchid.verify("Entree_Credential_User", "Register " + $scope.authenMethod, successCallBack, errorCallBack);

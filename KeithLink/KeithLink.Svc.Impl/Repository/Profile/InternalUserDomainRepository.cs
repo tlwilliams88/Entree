@@ -8,18 +8,22 @@ using System.Text;
 using System.Linq;
 using KeithLink.Common.Core.Interfaces.Logging;
 
+using KeithLink.Svc.Impl.Logic.Profile;
+
 namespace KeithLink.Svc.Impl.Repository.Profile
 {
     public class InternalUserDomainRepository : IUserDomainRepository
     {
         #region attributes
         IEventLogRepository _logger;
+        private readonly ISettingsLogic _settingsLogic;
         #endregion
 
         #region ctor
-        public InternalUserDomainRepository(IEventLogRepository logger)
+        public InternalUserDomainRepository(IEventLogRepository logger, ISettingsLogic settingsLogic)
         {
             _logger = logger;
+            _settingsLogic = settingsLogic;
         }
         #endregion
 
@@ -59,10 +63,11 @@ namespace KeithLink.Svc.Impl.Repository.Profile
         /// </remarks>
         public bool AuthenticateUser(string emailAddress, string password, out string errorMessage)
         {
+            bool userKey = _settingsLogic.CheckForStoredKey(emailAddress);
             if (emailAddress == null) { throw new ArgumentNullException("emailAddress", "emailAddress is null"); }
             if (emailAddress.Length == 0) { throw new ArgumentException("emailAddress is required", "emailAddress"); }
-            if (password == null) { throw new ArgumentNullException("password", "password is null"); }
-            if (password.Length == 0) { throw new ArgumentException("password is required", "password"); }
+            if (password == null && userKey == false) { throw new ArgumentNullException("password", "password is null"); }
+            if (password.Length == 0 && userKey == false) { throw new ArgumentException("password is required", "password"); }
 
             errorMessage = null;
 
@@ -113,10 +118,12 @@ namespace KeithLink.Svc.Impl.Repository.Profile
                     }
 
                     // validate password
-                    if (boundServer.ValidateCredentials(userName, password)) {
+                    if (String.IsNullOrEmpty(password) == false && boundServer.ValidateCredentials(userName, password)) {
+                        return true;
+                    } else if (String.IsNullOrEmpty(password) == true && userKey == true) {
                         return true;
                     } else {
-                        if (authenticatingUser.BadLogonCount >= Configuration.ActiveDirectoryInvalidAttempts) 
+                        if (authenticatingUser.BadLogonCount >= Configuration.ActiveDirectoryInvalidAttempts)
                             errorMessage = "User account is locked and cannot sign in now";
                         else
                             errorMessage = "User name or password is invalid";
