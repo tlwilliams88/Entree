@@ -131,6 +131,83 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
             _uow.SaveChanges();
         }
 
+        private string StoredUserKey(string custemail)
+        {
+            return string.Format("{0},{1}", "Entree_Credential_User", custemail);
+        }
+
+        /// <summary>
+        /// Creates or Updates the passed in Settings Model
+        /// </summary>
+        /// <param name="settings"></param>
+        public void CreateOrUpdateUserKey(SettingsModel settings)
+        {
+            string key = StoredUserKey(settings.Key);
+            Settings userSettings = _repo.Read(x =>
+                x.Key == key &&
+                x.UserId == settings.UserId).FirstOrDefault();
+
+            if (userSettings != null)
+            {
+                userSettings.Key = key;
+
+                userSettings.Value = settings.Value;
+
+                _repo.CreateOrUpdate(userSettings);
+                _uow.SaveChanges();
+            }
+
+        }
+
+        /// <summary>
+        /// Finds all the settings for the customer.
+        /// </summary>
+        /// <param name="userId">Guid - userId</param>
+        /// <returns>A collection (list) of SettingModel objects.</returns>
+        public SettingsModelReturn GetStoredUserKey(Guid userId, string uuid)
+        {
+            SettingsModelReturn returnValue = new SettingsModelReturn();
+
+            IQueryable<Core.Models.Profile.EF.Settings> settings = _repo.ReadByUser(userId);
+
+            foreach (Core.Models.Profile.EF.Settings s in settings)
+            {
+                if (s.Value.Equals(uuid))
+                {
+                    returnValue = s.ToReturnModel();
+                    returnValue.Key = s.Key;
+                }
+            }
+
+            return returnValue;
+        }
+
+        /// <summary>
+        /// Finds all the settings for the customer.
+        /// </summary>
+        /// <param name="userId">Guid - userId</param>
+        /// <returns>A collection (list) of SettingModel objects.</returns>
+        public bool CheckForStoredKey(string user)
+        {
+            SettingsModelReturn returnValue = new SettingsModelReturn();
+
+            string key = StoredUserKey(user);
+
+            IQueryable<Core.Models.Profile.EF.Settings> settings = _repo.ReadByKey(key);
+
+            bool hasKey = false;
+
+            foreach (Core.Models.Profile.EF.Settings s in settings)
+            {
+                if (s.Value.Equals(user))
+                {
+                    hasKey = true;
+                }
+            }
+
+            return hasKey;
+        }
+
         public void DeleteSettings(SettingsModel settings)
         {
             Settings mySettings = _repo.Read( x => x.Key == settings.Key && x.UserId == settings.UserId ).FirstOrDefault();

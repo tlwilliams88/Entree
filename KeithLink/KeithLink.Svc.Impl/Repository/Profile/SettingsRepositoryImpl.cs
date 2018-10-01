@@ -24,8 +24,14 @@ namespace KeithLink.Svc.Impl.Repository.Profile {
 
         #region methods / functions
 
-        public IQueryable<Settings> ReadByUser( Guid userId ) {
+        public IQueryable<Settings> ReadByUser( Guid userId )
+        {
             return this.Entities.Where( s => s.UserId.Equals( userId ) );
+        }
+
+        public IQueryable<Settings> ReadByKey( String key )
+        {
+            return this.Entities.Where( s => s.Key.Equals( key ) );
         }
 
         #endregion

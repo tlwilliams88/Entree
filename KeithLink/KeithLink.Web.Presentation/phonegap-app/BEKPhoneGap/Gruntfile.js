@@ -20,6 +20,7 @@ module.exports = function(grunt) {
           'cordova-plugin-statusbar',
           'cordova-plugin-console',
           'cordova-plugin-inappbrowser',
+          'https://github.com/sjhoeksma/cordova-plugin-keychain-touch-id',
           'https://github.com/wildabeast/BarcodeScanner.git',
           'https://github.com/phonegap-build/GAPlugin.git',
           'https://github.com/apache/cordova-plugin-whitelist.git'
@@ -202,6 +203,8 @@ module.exports = function(grunt) {
             loggingEnabled: config.environment.test.loggingEnabled,
             googleAnalytics: '<%= config.environment.test.googleAnalytics.mobile %>',
             mobileApp: true,
+            authenMethod: '<%= config.environment.test.authenMethod %>',
+            passwordAvailable: '<%= config.environment.test.passwordAvailable %>',
             username: 'bek.qa.user@gmail.com',
             password: 'Ab12345'
           }
@@ -215,7 +218,9 @@ module.exports = function(grunt) {
             apiEndpoint: '<%= config.environment.test.apiEndpoint %>',
             loggingEnabled: config.environment.prod.loggingEnabled,
             googleAnalytics: '<%= config.environment.test.googleAnalytics.mobile %>',
-            mobileApp: true
+            mobileApp: true,
+            authenMethod: '<%= config.environment.test.authenMethod %>',
+            passwordAvailable: '<%= config.environment.test.passwordAvailable %>'
           }
         }
       },
@@ -228,7 +233,9 @@ module.exports = function(grunt) {
             apiEndpoint: '<%= config.environment.prod.apiEndpoint %>',
             loggingEnabled: config.environment.prod.loggingEnabled,
             googleAnalytics: '<%= config.environment.prod.googleAnalytics.mobile %>',
-            mobileApp: true
+            mobileApp: true,
+            authenMethod: '<%= config.environment.prod.authenMethod %>',
+            passwordAvailable: '<%= config.environment.prod.passwordAvailable %>',
           }
         }
       }
