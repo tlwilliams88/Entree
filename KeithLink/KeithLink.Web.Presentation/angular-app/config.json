@@ -20,6 +20,8 @@
       "flipsnackUrl": "https://www.flipsnack.com/BenEKeithFoods/keith-kitchen-essentials-2018-catalog.html",
       "lastListStorageTimeout": "48",
       "mobileApp": false,
+      "authenMethod": "standard",
+      "passwordAvailable": false,
       "enableDebugInfo": true,
       "googleAnalytics": {
         "web": "UA-58495462-2",
@@ -34,6 +36,7 @@
       "cognosUrl": "http://corpmisdev2d.bekco.com/ibmcognos/setCookie.htm",
       "lastListStorageTimeout": "48",
       "mobileApp": false,
+      "authenMethod": "standard",
       "enableDebugInfo": false,
       "googleAnalytics": {
         "web": "UA-58495462-2",
@@ -52,6 +55,8 @@
       "flipsnackUrl": "https://www.flipsnack.com/BenEKeithFoods/keith-kitchen-essentials-2018-catalog.html",
       "lastListStorageTimeout": "48",
       "mobileApp": false,
+      "authenMethod": "standard",
+      "passwordAvailable": false,
       "enableDebugInfo": true,
       "googleAnalytics": {
         "web": "UA-58495462-2",
@@ -68,6 +73,8 @@
       "flipsnackUrl": "https://www.flipsnack.com/BenEKeithFoods/keith-kitchen-essentials-2018-catalog.html",
       "lastListStorageTimeout": "48",
       "mobileApp": false,
+      "authenMethod": "standard",
+      "passwordAvailable": false,
       "enableDebugInfo": true,
       "phonegapAppId": "com.benekeith.entree",
       "googleAnalytics": {
@@ -84,6 +91,8 @@
       "flipsnackUrl": "https://www.flipsnack.com/BenEKeithFoods/keith-kitchen-essentials-2018-catalog.html",
       "lastListStorageTimeout": "48",
       "mobileApp": false,
+      "authenMethod": "standard",
+      "passwordAvailable": false,
       "enableDebugInfo": false,
       "loggingEnabled": false,
       "phonegapAppId": "com.benekeith.entreeprod",
@@ -99,6 +108,8 @@
       "cognosUrl": "https://kbitcustomer.benekeith.com/cognos10/setCookie.htm",
       "lastListStorageTimeout": "48",
       "mobileApp": false,
+      "authenMethod": "standard",
+      "passwordAvailable": false,
       "enableDebugInfo": false,
       "loggingEnabled": false,
       "phonegapAppId": "com.benekeith.entreeprod",
@@ -112,6 +123,8 @@
       "apiKey": "web_stage_v1",
       "cognosUrl": "https://kbitcustomer.benekeith.com/cognos10/setCookie.htm",
       "mobileApp": false,
+      "authenMethod": "standard",
+      "passwordAvailable": false,
       "enableDebugInfo": false,
       "loggingEnabled": false,
       "googleAnalytics": {

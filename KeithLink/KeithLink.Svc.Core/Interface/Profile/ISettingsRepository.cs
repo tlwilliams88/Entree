@@ -13,5 +13,7 @@ using System.Threading.Tasks;
 namespace KeithLink.Svc.Core.Interface.Profile {
     public interface ISettingsRepository : IBaseEFREpository<Settings>  {
         IQueryable<Settings> ReadByUser( Guid userId );
+
+        IQueryable<Settings> ReadByKey( string key );
     }
 }

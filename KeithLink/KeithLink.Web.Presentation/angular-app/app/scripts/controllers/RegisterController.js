@@ -8,14 +8,29 @@
  * Controller of the bekApp
  */
 angular.module('bekApp')
-  .controller('RegisterController', ['$scope', '$state', 'ENV', 'toaster', 'AuthenticationService', 'AccessService', 'BranchService', 'UserProfileService', 'PhonegapPushService', 'LocalStorage', 'Constants', '$window', 'localStorageService', 'blockUI', '$interval',
-    function ($scope, $state, ENV, toaster, AuthenticationService, AccessService, BranchService, UserProfileService, PhonegapPushService, LocalStorage, Constants, $window, localStorageService, blockUI, $interval) {
+  .controller('RegisterController', ['$scope', '$state', 'ENV', 'toaster', 'AuthenticationService', 'BranchService', 'UserProfileService', 'PhonegapPushService', 'LocalStorage', 'blockUI', '$interval', 'ApplicationSettingsService',
+    function ($scope, $state, ENV, toaster, AuthenticationService, BranchService, UserProfileService, PhonegapPushService, LocalStorage, blockUI, $interval, ApplicationSettingsService) {
 
   $scope.isMobileApp = ENV.mobileApp;
   $scope.signUpBool = false;
   $scope.isInternalEmail = false;
   $scope.defaultUserName = ENV.username;
   $scope.saveUserName = $scope.defaultUserName ? true : false;
+
+  if(ENV.mobileApp == true) {
+
+    window.plugins.touchid.isAvailable(function(biometryType) {
+
+      $scope.authenMethod = biometryType == 'touch' || biometryType == 'OK' ? 'TouchID' : 'FaceID';
+      window.plugins.touchid.has("Entree_Credential_Pass", function() {
+        $scope.passwordAvailable = true;
+      }, function() {
+        $scope.passwordAvailable = false;
+      });
+      }, function(msg) {
+        $scope.authenMethod = 'standard'
+      });
+  };
 
   // gets prepopulated login info for dev environment
   if(ENV.username) {
@@ -66,6 +81,11 @@ angular.module('bekApp')
   $scope.login = function(loginInfo) {
     $scope.loginErrorMessage = '';
 
+    var uuid = null;
+    if(ENV.isMobileApp) {
+      uuid = device.uuid;
+    }
+
     if($scope.saveUserName){
       LocalStorage.setDefaultUserName(loginInfo.username);
     } else {
@@ -83,6 +103,43 @@ angular.module('bekApp')
         $scope.loginErrorMessage = errorMessage;
       });
 
+  };
+
+  $scope.displayBiometricsLogin = function() {
+
+    window.plugins.touchid.verify("Entree_Credential_User", "Use " + $scope.authenMethod + " to login", successCallBack, errorCallBack);
+
+    var userDevice = device.uuid.toString();
+
+    function successCallBack(storedKey) {
+
+      var key = {
+        userid: storedKey,
+        key:null,
+        value: userDevice
+      };
+
+      var credentials = ApplicationSettingsService.getUserKey(key);
+
+      $scope.login(credentials);
+    }
+
+    function errorCallBack(msg) {
+
+      if(msg && msg.ErrorMessage == "Canceled by user.") {
+        return;
+      } else {
+      // Need to save username via api call here
+      window.plugins.touchid.save("Entree_Credential_User", $scope.loginInfo.username, true, function() {
+
+        var userKey = {userid: $scope.loginInfo.userid, key: $scope.loginInfo.username, value: userDevice};
+        ApplicationSettingsService.setUserKey(userKey);
+
+        window.plugins.touchid.verify("Entree_Credential_User", "Register " + $scope.authenMethod, successCallBack, errorCallBack);
+
+      })
+      }
+    }
   };
 
   $scope.forgotPassword = function(email) {
