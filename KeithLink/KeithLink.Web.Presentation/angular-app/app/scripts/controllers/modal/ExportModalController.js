@@ -63,6 +63,7 @@ angular.module('bekApp')
             filter: null,
             daterange: null,
             sort: null,
+            search: null,
             selectedtype: null,
         },
         exportRequest = exportRequestModel;
@@ -78,6 +79,7 @@ angular.module('bekApp')
       }
       exportRequest.daterange = exportParams.params.filter[0] && exportParams.params.filter[0].daterange ? exportParams.params.filter[0].daterange : null;
       exportRequest.sort = exportParams.params.sort ? exportParams.params.sort : null;
+      exportRequest.search = exportParams.search ? exportParams.search : null;
             
       // This model is used for invoice exports
       $scope.invoiceExportRequest = exportRequest;
