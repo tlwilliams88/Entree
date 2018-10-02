@@ -22,7 +22,7 @@ angular.module('bekApp')
     window.plugins.touchid.isAvailable(function(biometryType) {
 
       $scope.authenMethod = biometryType == 'touch' || biometryType == 'OK' ? 'TouchID' : 'FaceID';
-      window.plugins.touchid.has("Entree_Credential_Pass", function() {
+      window.plugins.touchid.has("Entree_Credential_User", function() {
         $scope.passwordAvailable = true;
       }, function() {
         $scope.passwordAvailable = false;
@@ -95,6 +95,8 @@ angular.module('bekApp')
     AuthenticationService.login(loginInfo.username, loginInfo.password)
       .then(UserProfileService.getCurrentUserProfile)
       .then(function(profile) {
+        storeUserKeyForBiometricLogin(profile);
+
         if (ENV.mobileApp) { // ask to allow push notifications
           PhonegapPushService.register();
         }
@@ -109,19 +111,15 @@ angular.module('bekApp')
 
     window.plugins.touchid.verify("Entree_Credential_User", "Use " + $scope.authenMethod + " to login", successCallBack, errorCallBack);
 
-    var userDevice = device.uuid.toString();
-
     function successCallBack(storedKey) {
 
-      var key = {
-        userid: storedKey,
-        key:null,
-        value: userDevice
-      };
+      var credentials = {};
 
-      var credentials = ApplicationSettingsService.getUserKey(key);
+      ApplicationSettingsService.getUserKey(storedKey, device.uuid).then(function(resp) {
+       credentials = resp;
 
-      $scope.login(credentials);
+       $scope.login(credentials);
+      })
     }
 
     function errorCallBack(msg) {
@@ -132,15 +130,19 @@ angular.module('bekApp')
       // Need to save username via api call here
       window.plugins.touchid.save("Entree_Credential_User", $scope.loginInfo.username, true, function() {
 
-        var userKey = {userid: $scope.loginInfo.userid, key: $scope.loginInfo.username, value: userDevice};
-        ApplicationSettingsService.setUserKey(userKey);
-
-        window.plugins.touchid.verify("Entree_Credential_User", "Register " + $scope.authenMethod, successCallBack, errorCallBack);
+        $scope.login($scope.loginInfo);
 
       })
       }
     }
   };
+
+  function storeUserKeyForBiometricLogin(user) {
+    var userDevice = device.uuid.toString(),
+        userKey = {userid: user.userid, key: $scope.loginInfo.username, value: userDevice};
+
+    ApplicationSettingsService.setUserKey(userKey);
+  }
 
   $scope.forgotPassword = function(email) {
     $scope.checkForInternalEmail(email);

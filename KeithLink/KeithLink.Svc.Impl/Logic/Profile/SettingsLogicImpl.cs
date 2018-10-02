@@ -133,7 +133,7 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
 
         private string StoredUserKey(string custemail)
         {
-            return string.Format("{0},{1}", "Entree_Credential_User", custemail);
+            return string.Format("{0}{1}", "Entree_Credential_User", custemail);
         }
 
         /// <summary>
@@ -164,11 +164,13 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
         /// </summary>
         /// <param name="userId">Guid - userId</param>
         /// <returns>A collection (list) of SettingModel objects.</returns>
-        public SettingsModelReturn GetStoredUserKey(Guid userId, string uuid)
+        public SettingsModelReturn GetStoredUserKey(string user, string uuid)
         {
             SettingsModelReturn returnValue = new SettingsModelReturn();
 
-            IQueryable<Core.Models.Profile.EF.Settings> settings = _repo.ReadByUser(userId);
+            string key = StoredUserKey(user);
+
+            IQueryable<Core.Models.Profile.EF.Settings> settings = _repo.ReadByKey(key);
 
             foreach (Core.Models.Profile.EF.Settings s in settings)
             {
@@ -199,7 +201,7 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
 
             foreach (Core.Models.Profile.EF.Settings s in settings)
             {
-                if (s.Value.Equals(user))
+                if (s.Key.Equals(key))
                 {
                     hasKey = true;
                 }

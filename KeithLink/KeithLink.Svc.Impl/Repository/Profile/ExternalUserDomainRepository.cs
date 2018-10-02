@@ -88,8 +88,7 @@ namespace KeithLink.Svc.Impl.Repository.Profile
             bool userKey = _settingsLogic.CheckForStoredKey(userName);
             if (userName.Length == 0) { throw new ArgumentException("userName is required", "userName"); }
             if (userName == null) { throw new ArgumentNullException("userName", "userName is null"); }
-            if (password.Length == 0 && userKey == false) { throw new ArgumentException("password is required", "password"); }
-            if (password == null && userKey == false) { throw new ArgumentNullException("password", "password is null"); }
+            if (String.IsNullOrEmpty(password) == true && userKey == false) { throw new ArgumentException("password is required", "password"); }
 
             returnValue.Message = null;
 
