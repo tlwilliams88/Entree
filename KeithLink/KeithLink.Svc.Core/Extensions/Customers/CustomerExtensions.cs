@@ -16,7 +16,7 @@ namespace KeithLink.Svc.Core.Extensions.Customers
         public static PagedResultsForCustomersIntegration<CustomerIntegrationsReturnModel> ToPagedForCustomersIntegration(this PagedResults<Customer> pagedCustomers) {
             PagedResultsForCustomersIntegration<CustomerIntegrationsReturnModel> returnValue = new PagedResultsForCustomersIntegration<CustomerIntegrationsReturnModel>();
             returnValue.Results = new List<CustomerIntegrationsReturnModel>();
-            foreach (Customer model in pagedCustomers.Results.OrderBy(c=>c.CustomerNumber).ToList()) {
+            foreach (Customer model in pagedCustomers.Results) {
                 CustomerIntegrationsReturnModel returnCustomer = new CustomerIntegrationsReturnModel();
                 returnCustomer.CustomerName = model.CustomerName;
                 returnCustomer.CustomerNumber = model.CustomerNumber;
