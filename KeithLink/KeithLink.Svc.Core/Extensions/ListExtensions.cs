@@ -194,7 +194,7 @@ namespace KeithLink.Svc.Core.Extensions
         }
         public static ListModelIntegrationsReturnModel ToListModelIntegrationsReturnModel(this ListModel list)
         {
-            var model = new ListModelIntegrationsReturnModel()
+            ListModelIntegrationsReturnModel model = new ListModelIntegrationsReturnModel()
             {
                 ListId = list.ListId,
                 Name = list.Name,
