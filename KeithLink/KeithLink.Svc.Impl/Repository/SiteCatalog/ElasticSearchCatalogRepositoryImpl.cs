@@ -79,8 +79,10 @@ namespace KeithLink.Svc.Impl.Repository.SiteCatalog
             List<dynamic> musts = new List<dynamic>();
             if (searchExpression != null)
             {
-                musts.Add(new {
-                    multi_match = new {
+                musts.Add(new
+                {
+                    multi_match = new
+                    {
                         query = searchExpression,
                         @type = "most_fields",
                         fields = fieldsToSearch,
@@ -166,6 +168,23 @@ namespace KeithLink.Svc.Impl.Repository.SiteCatalog
                         }
                     }
             };
+        }
+
+        private dynamic BuildBrandFilter(string filterTerms)
+        {
+            List<dynamic> brandsToSearch = new List<dynamic>();
+
+            string brandSeparator = " OR ";
+            string[] brands = filterTerms.Split(new string[] { " " }, StringSplitOptions.RemoveEmptyEntries);
+
+            brandsToSearch.Add(new {
+                query_string = new {
+                    default_field = "brand_control_label.keyword",
+                    query = string.Format(String.Join(brandSeparator, brands))
+                    }
+            });
+
+            return brandsToSearch[0];
         }
 
 
@@ -461,7 +480,9 @@ namespace KeithLink.Svc.Impl.Repository.SiteCatalog
 
             List<dynamic> filterTerms = BuildFilterTerms(searchModel.Facets, catalogInfo);
 
-            dynamic categorySearchExpression = BuildBoolMultiMatchQuery(searchModel, filterTerms, new List<string>() { "brand_control_label.keyword" }, brandControlLabel, "or");
+            filterTerms.Add(BuildBrandFilter(brandControlLabel));
+
+            dynamic categorySearchExpression = BuildBoolMultiMatchQuery(searchModel, filterTerms, null, null);
 
             return GetProductsFromElasticSearch(catalogInfo.BranchId.ToLower(), true, "", categorySearchExpression);
         }
