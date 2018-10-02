@@ -5,6 +5,7 @@ using System.Data;
 using System.Diagnostics;
 using System.Globalization;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
@@ -15,6 +16,8 @@ using CommerceServer.Core;
 using KeithLink.Common.Core.Extensions;
 using KeithLink.Common.Core.Helpers;
 using KeithLink.Common.Core.Interfaces.Logging;
+using KeithLink.Common.Core.Models.Logging;
+
 using KeithLink.Svc.Core.Enumerations;
 using KeithLink.Svc.Core.Enumerations.Order;
 using KeithLink.Svc.Core.Extensions;
@@ -87,8 +90,23 @@ namespace KeithLink.Svc.Impl.Logic.Orders {
         #endregion
 
         #region methods
-        public bool IsSubmitted(UserProfile user, UserSelectedContext catalogInfo, string orderNumber) {
-            return OrderSubmissionHelper.CheckOrderBlock(user, catalogInfo, null, orderNumber, _poRepo, _historyHeaderRepo, _cache);
+        public bool IsSubmitted(UserProfile user, UserSelectedContext catalogInfo, string orderNumber)
+        {
+            var context = new TransactionContext
+            {
+                TransactionType = "customer change order",
+                TransactionId = "order:" + orderNumber,
+                ClassName = GetType().Name,
+                MethodName = MethodBase.GetCurrentMethod().Name,
+            };
+
+            bool isSubmitted = OrderSubmissionHelper.CheckOrderBlock(user, catalogInfo, null, orderNumber, _poRepo, _historyHeaderRepo, _cache);
+            if (isSubmitted)
+            {
+                string logMessage = string.Format("An order was already submitted with order number {0} for customer {1}.", orderNumber, catalogInfo.CustomerId);
+                _log.WriteWarningLog(logMessage, context);
+            }
+            return isSubmitted;
         }
 
         public NewOrderReturn CancelOrder(UserProfile userProfile, UserSelectedContext catalogInfo, Guid commerceId) {

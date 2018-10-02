@@ -784,6 +784,36 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic {
 
         }
 
+        public class SaveAsOrder
+        {
+            [Fact]
+            public void EveryCall_CallsRepositoryToCreateOrUpdateCartOnce()
+            {
+                // arrange
+                MockDependents mockDependents = new MockDependents();
+                IShoppingCartLogic testunit = MakeTestsLogic(false, ref mockDependents);
+                UserProfile fakeUser = new UserProfile();
+                UserSelectedContext testContext = new UserSelectedContext
+                {
+                    BranchId = "FUT",
+                    CustomerId = "234567"
+                };
+
+                Guid cartId = new Guid("dddddddddddddddddddddddddddddddd");
+
+                // act
+                var result = testunit.SaveAsOrder(fakeUser, testContext, cartId);
+
+                // assert - verify that createorupdatebasket is called once where the lineposition of the first item is "1"
+                mockDependents.BasketRepository.Verify(m => m.CreateOrUpdateBasket(It.IsAny<Guid>(),
+                                                       It.IsAny<string>(),
+                                                       It.IsAny<Basket>(),
+                                                       It.IsAny<List<LineItem>>(),
+                                                       It.IsAny<bool>()), Times.Once);
+            }
+
+
+        }
         #region Setup
         public class MockDependents {
             public Mock<ICacheRepository> CacheRepository { get; set; }
@@ -930,7 +960,7 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic {
             public static Mock<IBasketLogic> MakeIBasketLogic() {
                 Mock<IBasketLogic> mock = new Mock<IBasketLogic>();
 
-                Basket returnedBasket = new Basket {
+                Basket basket = new Basket {
                     Active = true,
                     Id = new Guid(1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1).ToString(),
                     DisplayName = "Fake Name",
@@ -941,7 +971,7 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic {
                     ReadOnly = false
                 };
                 mock.Setup(f => f.RetrieveSharedCustomerBasket(It.IsAny<UserProfile>(), It.IsAny<UserSelectedContext>(), It.IsAny<Guid>()))
-                    .Returns(returnedBasket);
+                    .Returns(basket);
 
                 return mock;
             }
@@ -993,8 +1023,19 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic {
                 return mock;
             }
 
-            public static Mock<IOrderedFromListRepository> MakeIOrderedFromListRepository() {
+            public static Mock<IOrderedFromListRepository> MakeIOrderedFromListRepository()
+            {
                 Mock<IOrderedFromListRepository> mock = new Mock<IOrderedFromListRepository>();
+
+                var orderedFromList = new OrderedFromList
+                {
+                    ControlNumber = "7777",
+                    ListId = 232323,
+                    ListType = ListType.Custom,
+                };
+
+                mock.Setup(f => f.Read(It.IsAny<string>()))
+                    .Returns(orderedFromList);
 
                 return mock;
             }
