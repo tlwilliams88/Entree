@@ -10,7 +10,7 @@ angular.module('bekApp')
         
         var data;
         // must use query string, authen request does not work if sending data as a JSON object
-        if(password.length > 0){
+        if(password != null && password.length > 0){
           data = 'grant_type=password&username=' + username + '&password=' + encodeURIComponent(password) + '&apiKey=' + ENV.apiKey + '&message=Loading...';
         } else {
           data = 'grant_type=password&username=' + username + '&password=' + '&apiKey=' + ENV.apiKey + '&message=Loading...';

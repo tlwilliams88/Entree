@@ -144,8 +144,8 @@ angular.module('bekApp')
         return UtilityService.resolvePromise(promise);
       },
 
-      getUserKey: function(key) {
-        var promise = $http.get('/profile/getuserkey', { key: key });
+      getUserKey: function(key, value) {
+        var promise = $http.post('/profile/getstoreduserkey', { key: key, value: value });
         return UtilityService.resolvePromise(promise);
       },
 
