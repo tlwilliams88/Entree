@@ -36,6 +36,7 @@ namespace KeithLink.Svc.WebApi.Controllers
         #region attributes
         private readonly IUserProfileLogic _profileLogic;
         private readonly IListService _listService;
+        private readonly IEventLogRepository _log;
         #endregion
 
         #region ctor
@@ -46,11 +47,13 @@ namespace KeithLink.Svc.WebApi.Controllers
         /// <param name="listService"></param>
         public IntegrationsController(
             IUserProfileLogic profileLogic,
-            IListService listService
+            IListService listService,
+            IEventLogRepository log
             ) : base(profileLogic)
         {
             _profileLogic = profileLogic;
             _listService = listService;
+            _log = log;
         }
         #endregion
 
@@ -93,11 +96,13 @@ namespace KeithLink.Svc.WebApi.Controllers
             }
             catch (ApplicationException axe)
             {
+                _log.WriteErrorLog("CustomerSearch", axe);
                 retVal.ErrorMessage = axe.Message;
                 retVal.IsSuccess = false;
             }
             catch (Exception ex)
             {
+                _log.WriteErrorLog("CustomerSearch-ex", ex);
                 retVal.ErrorMessage = "Could not complete the request. " + ex.Message;
                 retVal.IsSuccess = false;
             }
@@ -128,6 +133,7 @@ namespace KeithLink.Svc.WebApi.Controllers
             }
             catch (Exception ex)
             {
+                _log.WriteErrorLog("ReadUserList", ex);
                 ret.IsSuccess = false;
                 ret.ErrorMessage = ex.Message;
             }
@@ -156,6 +162,7 @@ namespace KeithLink.Svc.WebApi.Controllers
             }
             catch (Exception ex)
             {
+                _log.WriteErrorLog("ReadList", ex);
                 ret.IsSuccess = false;
                 ret.ErrorMessage = ex.Message;
             }
