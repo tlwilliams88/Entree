@@ -124,6 +124,7 @@
     <Compile Include="Interfaces\Logging\IEventLogRepository.cs" />
     <Compile Include="Interfaces\Settings\IAppSettingLogic.cs" />
     <Compile Include="Interfaces\Settings\IDBAppSettingsRepository.cs" />
+    <Compile Include="Models\Logging\TransactionContext.cs" />
     <Compile Include="Models\Settings\Setting.cs" />
     <Compile Include="Models\Settings\SettingUpdate.cs" />
     <Compile Include="Parsing\StringHelpers.cs" />
