@@ -1006,6 +1006,7 @@ angular.module('bekApp')
         exportParams: function () {
           return {
             isViewingAllCustomers: $scope.viewingAllCustomers,
+            search: $scope.searchFilter,
             params: {
                 size: Constants.infiniteScrollPageSize,
                 from: 0,

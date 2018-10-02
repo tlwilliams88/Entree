@@ -11,6 +11,7 @@ using KeithLink.Svc.Core.Models.ModelExport;
 using KeithLink.Svc.Core.Models.Orders;
 using KeithLink.Svc.Core.Models.Profile;
 using KeithLink.Svc.Core.Models.SiteCatalog;
+using KeithLink.Svc.Core;
 using KeithLink.Svc.Impl.Helpers;
 using System;
 using System.Collections.Generic;
@@ -169,6 +170,15 @@ namespace KeithLink.Svc.Impl.Service.Invoices
                 {
                     exportData.AddRange(customer.PagedResults.Results);
                 }
+            }
+
+            if (request.Search!=null && 
+                request.Search.Field.Equals
+                    (Constants.INVOICEREQUESTFILTER_CREDITMEMO_FIELDKEY, StringComparison.CurrentCultureIgnoreCase) &&
+                request.Search.Value.Equals
+                    (Constants.INVOICEREQUESTFILTER_CREDITMEMO_VALUECMONLY, StringComparison.CurrentCultureIgnoreCase))
+            {
+                exportData = exportData.Where(i => i.HasCreditMemos).ToList();
             }
 
             return exportData;
