@@ -1341,7 +1341,7 @@ namespace KeithLink.Svc.WebApi.Controllers
         /// Get a user's stored key for biometric authen
         /// </summary>
         /// <returns></returns>
-        [HttpGet]
+        [HttpPost]
         [ApiKeyedRoute("profile/getstoreduserkey")]
         public OperationReturnModel<SettingsModelReturn> GetStoredUserKey(SettingsModel key)
         {
@@ -1349,7 +1349,7 @@ namespace KeithLink.Svc.WebApi.Controllers
 
             try
             {
-                returnValue.SuccessResponse = _settingLogic.GetStoredUserKey(key.UserId, key.Value);
+                returnValue.SuccessResponse = _settingLogic.GetStoredUserKey(key.Key, key.Value);
                 returnValue.IsSuccess = true;
             }
             catch (Exception ex)
