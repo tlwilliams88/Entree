@@ -16,7 +16,7 @@ namespace KeithLink.Svc.Core.Interface.Profile {
 
         SettingsModelReturn GetUserCustomerDefaultOrderList(Guid userId, string customernumber, string branchid);
 
-        SettingsModelReturn GetStoredUserKey(Guid userId, string uuid);
+        SettingsModelReturn GetStoredUserKey(string user, string uuid);
 
         bool CheckForStoredKey(string email);
 

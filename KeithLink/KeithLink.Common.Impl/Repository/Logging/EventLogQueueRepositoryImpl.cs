@@ -1,18 +1,20 @@
-﻿using KeithLink.Common.Core.Interfaces.Logging;
+﻿using BEKlibrary;
+using BEKlibrary.EventLog.BusinessLayer;
+
+using KeithLink.Common.Core.Interfaces.Logging;
+using KeithLink.Common.Core.Models.Logging;
 
 using System;
 using System.Configuration;
 using System.Diagnostics;
-using System.IO;
 using System.Text;
 using System.Threading;
+using System.Web;
 
-using BEKlibrary;
-using BEKlibrary.EventLog.BusinessLayer;
-using BEKlibrary.EventLog.Datalayer;
-
-namespace KeithLink.Common.Impl.Repository.Logging {
-    public class EventLogQueueRepositoryImpl : IEventLogRepository {
+namespace KeithLink.Common.Impl.Repository.Logging
+{
+    public class EventLogQueueRepositoryImpl : IEventLogRepository
+    {
         #region attributes
         private IQueueRepository _queue;
 
@@ -24,21 +26,27 @@ namespace KeithLink.Common.Impl.Repository.Logging {
         #endregion
 
         #region ctor
-        public EventLogQueueRepositoryImpl(IQueueRepository queueRepository) {
+        public EventLogQueueRepositoryImpl(IQueueRepository queueRepository)
+        {
             _queue = queueRepository;
         }
 
-        public EventLogQueueRepositoryImpl(string applicationName) {
-            if (Configuration.LoggingConnectionString == null) {
+        public EventLogQueueRepositoryImpl(string applicationName)
+        {
+            if (Configuration.LoggingConnectionString == null)
+            {
                 FailoverToWindowsEventLog("EventLog connection string was not found in the configuration file", null, EventLogEntryType.Warning);
-            } else {
+            }
+            else
+            {
                 _queue = new BEKlibrary.EventLog.Datalayer.QueueRepository();
             }
         }
         #endregion
 
         #region methods
-        private LogMessage GetLogMessage(string message, Exception ex, int severity) {
+        private LogMessage GetLogMessage(string message, int severity, TransactionContext context, Exception exception = null)
+        {
             LogMessage newMessage = new LogMessage();
 
             newMessage.Message = message;
@@ -48,63 +56,70 @@ namespace KeithLink.Common.Impl.Repository.Logging {
             newMessage.Application.Environment = ConfigurationHelper.GetActiveConfiguration();
             newMessage.Application.Name = ConfigurationManager.AppSettings["AppName"];
 
-            if (Configuration.LogSystemPerformance) {
-                newMessage.Machine.CpuUtilization = GetCurrentCPU();
-                newMessage.Machine.MemoryUsed = GetCurrentRAMUsage();
-            }
-
-            if (System.Web.HttpContext.Current != null) {
-                if (System.Web.HttpContext.Current.Request.LogonUserIdentity.Name != null) {
-                    newMessage.UserName = System.Web.HttpContext.Current.Request.LogonUserIdentity.Name;
+            var httpContext = HttpContext.Current;
+            if (httpContext != null)
+            {
+                var httpRequest = httpContext.Request;
+                if (httpRequest.LogonUserIdentity.Name != null)
+                {
+                    newMessage.UserName = httpRequest.LogonUserIdentity.Name;
                 }
-                newMessage.Web.HttpVerb = System.Web.HttpContext.Current.Request.HttpMethod;
-                newMessage.Web.Url = System.Web.HttpContext.Current.Request.RawUrl;
-                newMessage.Web.ClientIpAddress = System.Web.HttpContext.Current.Request.UserHostAddress;
-                newMessage.Web.Status = System.Web.HttpContext.Current.Response.StatusCode.ToString();
-                newMessage.Method.Parameters.Add("UserSelectedContext", System.Web.HttpContext.Current.Request.Headers["userSelectedContext"]);
+                newMessage.Web.HttpVerb = httpRequest.HttpMethod;
+                newMessage.Web.Url = httpRequest.RawUrl;
+                newMessage.Web.ClientIpAddress = httpRequest.UserHostAddress;
+                newMessage.Method.Parameters.Add("UserSelectedContext", httpRequest.Headers["userSelectedContext"]);
+
+                var httpResponse = httpContext.Response;
+                newMessage.Web.Status = httpResponse.StatusCode.ToString();
             }
 
-            StringBuilder stackTrace = new StringBuilder();
-            stackTrace.AppendLine(ex.Message);
-            stackTrace.AppendLine();
-            stackTrace.AppendLine("Exception Stack:");
-            stackTrace.AppendLine("  Outer Stack:");
-            stackTrace.AppendLine(ex.StackTrace);
-            stackTrace.AppendLine();
+            if (context != null)
+            {
+                newMessage.Message = string.Format($"[{context.TransactionId}] {newMessage.Message}");
+                newMessage.Method.Name = string.Format($"{context.ClassName}.{context.MethodName}");
+            }
 
-            // This will iterate through all the inner exceptions and add them to the stack trace
-            if (ex.InnerException != null) {
-                var exception = ex;
+            if (exception != null)
+            {
+                newMessage.Exception.Message = exception.Message;
+                newMessage.Exception.StackTrace = GetStackTrace(exception);
 
-                while (exception.InnerException != null) {
-                    exception = exception.InnerException;
-
-                    stackTrace.AppendLine(exception.Message);
-                    stackTrace.AppendLine("  Inner Stack:");
-                    stackTrace.AppendLine(exception.StackTrace);
-                    stackTrace.AppendLine();
+                if (Configuration.LogSystemPerformance)
+                {
+                    newMessage.Machine.CpuUtilization = GetCurrentCPU();
+                    newMessage.Machine.MemoryUsed = GetCurrentRAMUsage();
                 }
             }
-
-            newMessage.Exception.Message = ex.Message;
-            newMessage.Exception.StackTrace = stackTrace.ToString();
 
             return newMessage;
         }
 
-        private LogMessage GetSingleMessageLog(string message, int severity) {
-            LogMessage logMessage = new LogMessage();
+        private string GetStackTrace(Exception exception)
+        {
+            StringBuilder stackTrace = new StringBuilder();
+            stackTrace.AppendLine(exception.Message);
+            stackTrace.AppendLine();
+            stackTrace.AppendLine("Exception Stack:");
+            stackTrace.AppendLine("  Outer Stack:");
+            stackTrace.AppendLine(exception.StackTrace);
+            stackTrace.AppendLine();
 
-            logMessage.Message = message;
-            logMessage.EntryType.Id = severity;
-            logMessage.Machine.Name = Environment.MachineName;
-            logMessage.Application.Name = ConfigurationManager.AppSettings["AppName"];
-            logMessage.Application.Environment = ConfigurationHelper.GetActiveConfiguration();
+            // This will iterate through all the inner exceptions and add them to the stack trace
+            while (exception.InnerException != null)
+            {
+                exception = exception.InnerException;
 
-            return logMessage;
+                stackTrace.AppendLine(exception.Message);
+                stackTrace.AppendLine("  Inner Stack:");
+                stackTrace.AppendLine(exception.StackTrace);
+                stackTrace.AppendLine();
+            }
+
+            return stackTrace.ToString();
         }
 
-        private string GetCurrentCPU() {
+        private string GetCurrentCPU()
+        {
             var cpuCounter = new PerformanceCounter("Processor", "% Processor Time", "_Total");
             cpuCounter.NextValue();
             //You need to read the NextValue twice, with 1 second in between each call: http://blogs.msdn.com/b/bclteam/archive/2006/06/02/618156.aspx
@@ -114,7 +129,8 @@ namespace KeithLink.Common.Impl.Repository.Logging {
                              .ToString();
         }
 
-        private string GetCurrentRAMUsage() {
+        private string GetCurrentRAMUsage()
+        {
             var ramCounter = new PerformanceCounter("Memory", "Available MBytes");
             ramCounter.NextValue();
             //You need to read the NextValue twice, with 1 second in between each call: http://blogs.msdn.com/b/bclteam/archive/2006/06/02/618156.aspx
@@ -124,71 +140,99 @@ namespace KeithLink.Common.Impl.Repository.Logging {
                              .ToString();
         }
 
-        public void WriteErrorLog(string logMessage) {
-            try {
-                _queue.PublishLogMessage(GetSingleMessageLog(logMessage, SEVERITY_ERROR));
-            } catch {
+        public void WriteErrorLog(string logMessage, TransactionContext context = null)
+        {
+            try
+            {
+                _queue.PublishLogMessage(GetLogMessage(logMessage, SEVERITY_ERROR, context));
+            }
+            catch
+            {
                 FailoverToWindowsEventLog(logMessage, null, EventLogEntryType.Error);
             }
         }
 
-        public void WriteErrorLog(string logMessage, Exception ex) {
-            try {
-                _queue.PublishLogMessage(GetLogMessage(logMessage, ex, SEVERITY_ERROR));
-            } catch {
-                FailoverToWindowsEventLog(logMessage, ex, EventLogEntryType.Error);
+        public void WriteErrorLog(string logMessage, Exception exception, TransactionContext context = null)
+        {
+            try
+            {
+                _queue.PublishLogMessage(GetLogMessage(logMessage, SEVERITY_ERROR, context, exception));
+            }
+            catch
+            {
+                FailoverToWindowsEventLog(logMessage, exception, EventLogEntryType.Error);
             }
         }
 
-        public void WriteInformationLog(string logMessage) {
-            try {
-                _queue.PublishLogMessage(GetSingleMessageLog(logMessage, SEVERITY_INFORMATION));
-            } catch {
+        public void WriteInformationLog(string logMessage, TransactionContext context = null)
+        {
+            try
+            {
+                _queue.PublishLogMessage(GetLogMessage(logMessage, SEVERITY_INFORMATION, context));
+            }
+            catch
+            {
                 FailoverToWindowsEventLog(logMessage, null, EventLogEntryType.Information);
             }
         }
 
-        public void WriteInformationLog(string logMessage, Exception ex) {
-            try {
-                _queue.PublishLogMessage(GetLogMessage(logMessage, ex, SEVERITY_INFORMATION));
-            } catch {
-                FailoverToWindowsEventLog(logMessage, ex, EventLogEntryType.Error);
+        public void WriteInformationLog(string logMessage, Exception exception, TransactionContext context = null)
+        {
+            try
+            {
+                _queue.PublishLogMessage(GetLogMessage(logMessage, SEVERITY_INFORMATION, context, exception));
+            }
+            catch
+            {
+                FailoverToWindowsEventLog(logMessage, exception, EventLogEntryType.Error);
             }
         }
 
-        public void WriteWarningLog(string logMessage) {
-            try {
-                _queue.PublishLogMessage(GetSingleMessageLog(logMessage, SEVERITY_WARNING));
-            } catch {
+        public void WriteWarningLog(string logMessage, TransactionContext context = null)
+        {
+            try
+            {
+                _queue.PublishLogMessage(GetLogMessage(logMessage, SEVERITY_WARNING, context));
+            }
+            catch
+            {
                 FailoverToWindowsEventLog(logMessage, null, EventLogEntryType.Warning);
             }
         }
 
-        public void WriteWarningLog(string logMessage, Exception ex) {
-            try {
-                _queue.PublishLogMessage(GetLogMessage(logMessage, ex, SEVERITY_WARNING));
-            } catch {
-                FailoverToWindowsEventLog(logMessage, ex, EventLogEntryType.Warning);
+        public void WriteWarningLog(string logMessage, Exception exception, TransactionContext context = null)
+        {
+            try
+            {
+                _queue.PublishLogMessage(GetLogMessage(logMessage, SEVERITY_WARNING, context, exception));
+            }
+            catch
+            {
+                FailoverToWindowsEventLog(logMessage, exception, EventLogEntryType.Warning);
             }
         }
 
-        private void FailoverToWindowsEventLog(string logMessage, Exception ex, EventLogEntryType type) {
+        private void FailoverToWindowsEventLog(string logMessage, Exception exception, EventLogEntryType type)
+        {
             string sSource = "BEK_KeithLink";
             string sLog = "Application";
 
             StringBuilder message = new StringBuilder(logMessage);
 
-            if (ex != null) {
+            if (exception != null)
+            {
                 message.AppendLine();
-                message.Append(ex.ToString());
+                message.Append(exception.ToString());
             }
 
-            try {
+            try
+            {
                 if (!EventLog.SourceExists(sSource))
                     EventLog.CreateEventSource(sSource, sLog);
 
                 EventLog.WriteEntry(sSource, message.ToString(), type, 234);
-            } catch { } //If this fails too, then just swallow the error. Logging should not be able to take down the entire site
+            }
+            catch { } //If this fails too, then just swallow the error. Logging should not be able to take down the entire site
         }
         #endregion
     }

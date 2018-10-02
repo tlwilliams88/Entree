@@ -23,6 +23,7 @@ using KeithLink.Svc.Core.Interface.Orders.History;
 using KeithLink.Svc.Core.Interface.SiteCatalog;
 
 using KeithLink.Svc.Core.Models.Common;
+using KeithLink.Svc.Core.Models.Messaging.Queue;
 using KeithLink.Svc.Core.Models.Orders.Confirmations;
 using KeithLink.Svc.Core.Models.Orders.History;
 using EF = KeithLink.Svc.Core.Models.Orders.History.EF;
@@ -31,6 +32,7 @@ using KeithLink.Svc.Core.Models.SiteCatalog;
 using KeithLink.Svc.Impl.Repository.EF.Operational;
 
 using Newtonsoft.Json;
+
 using System;
 using System.Collections.Generic;
 using System.Collections.Concurrent;
@@ -398,14 +400,6 @@ namespace KeithLink.Svc.Impl.Logic.Orders
             NewRelic.Api.Agent.NewRelic.AddCustomParameter("Branch", confirmation.Header.Branch);
             NewRelic.Api.Agent.NewRelic.AddCustomParameter("ItemCount", confirmation.Detail.Count());
 
-            string logMessage = "Processing confirmation for control number: {ConfirmationNumber}, {Status} get purchase order";
-            object logInfo = new {
-                ConfirmationNumber = confirmation.Header.ConfirmationNumber,
-                Status = (po == null ? "did not " : "did")
-            };
-
-            _log.WriteInformationLog(logMessage.Inject(logInfo));
-
             if (po == null) {
                 _log.WriteWarningLog("Could not find PO for confirmation number: {ConfirmationNumber}, Line: 399, Method: ProcessIncomingConfirmation".InjectSingleValue("ConfirmationNumber", poNum));
             } else {    
@@ -430,12 +424,15 @@ namespace KeithLink.Svc.Impl.Logic.Orders
 
                 SetCsHeaderInfo(confirmation, po, currLineItems);
 
+                string logMessage = string.Format("Updating purchase order status to '{0}' for tracking number {1}, confirmation number {2}, and invoice number {3}.", po.Status, po.TrackingNumber, confirmation.Header.ConfirmationNumber, confirmation.Header.InvoiceNumber);
+                _log.WriteInformationLog(logMessage);
+
                 po.Save();
 
                 // use internal messaging logic to put order up message on the queue
-                Core.Models.Messaging.Queue.OrderChange orderChange = BuildOrderChanges(po, currLineItems, origLineItems, originalStatus, confirmation.Header.SpecialInstructions, confirmation.Header.ShipDate);
+                OrderChange orderChange = BuildOrderChanges(po, currLineItems, origLineItems, originalStatus, confirmation.Header.SpecialInstructions, confirmation.Header.ShipDate);
                 if (orderChange.OriginalStatus != orderChange.CurrentStatus || orderChange.ItemChanges.Count > 0) {
-                    Core.Models.Messaging.Queue.OrderConfirmationNotification orderConfNotification = new Core.Models.Messaging.Queue.OrderConfirmationNotification();
+                    OrderConfirmationNotification orderConfNotification = new OrderConfirmationNotification();
                     orderConfNotification.OrderChange = orderChange;
                     orderConfNotification.OrderNumber = (string)po["OrderNumber"];
                     orderConfNotification.CustomerNumber = (string)po["CustomerId"];
@@ -533,8 +530,6 @@ namespace KeithLink.Svc.Impl.Logic.Orders
                 po[Constants.CS_PURCHASE_ORDER_MASTER_NUMBER] = confirmation.Header.InvoiceNumber; // read this from the confirmation file
             }
 
-            _log.WriteInformationLog("Updating purchase order status with: " + po.Status + ", for confirmation status: _" + trimmedConfirmationStatus + "_");
-
             return trimmedConfirmationStatus;
         }
 
@@ -562,14 +557,6 @@ namespace KeithLink.Svc.Impl.Logic.Orders
                                       detail.SubstitutedItemNumber(orderFormLineItem),
                                       GetItemPrice(brokenCase, detail),
                                       int.Parse(detail.RecordNumber));
-
-                    string logMessage = "Confirmation line item processed for Item: {ItemNumber}, main frame status: {MainframeStatus}, confirmation status: _{ConfirmationStatus}_";
-                    object logInfo = new {
-                        ItemNumber = orderFormLineItem.ProductId,
-                        MainframeStatus = (string)orderFormLineItem["MainFrameStatus"],
-                        ConfirmationStatus = detail.DisplayStatus()
-                    };
-                    _log.WriteInformationLog(logMessage.Inject(logInfo));
                 }
             }
 

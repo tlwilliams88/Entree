@@ -81,6 +81,22 @@ angular.module('bekApp')
     });
   };
 
+  $scope.deleteStoredBiometricLogin = function() {
+    var key = 'Entree_Credential_User'+$scope.userProfile.emailaddress;
+
+
+
+    ApplicationSettingsService.resetApplicationSettings(key).then(function() {
+      
+      window.plugins.touchid.delete(key, function() {
+        toaster.pop('success', null, ENV.biometryType + ' login has been deleted');
+      });
+    },
+    function() {
+      toaster.pop('error', 'Unable to delete ' + ENV.biometryType + ' login.  Please try again.')
+    })
+  };
+
   $scope.changePassword = function (changePasswordData) {
     $scope.changePasswordErrorMessage = null;
     changePasswordData.email = $scope.userProfile.emailaddress;

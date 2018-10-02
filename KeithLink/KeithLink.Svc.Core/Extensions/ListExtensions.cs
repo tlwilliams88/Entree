@@ -194,24 +194,26 @@ namespace KeithLink.Svc.Core.Extensions
         }
         public static ListModelIntegrationsReturnModel ToListModelIntegrationsReturnModel(this ListModel list)
         {
-            return new ListModelIntegrationsReturnModel()
+            ListModelIntegrationsReturnModel model = new ListModelIntegrationsReturnModel()
             {
                 ListId = list.ListId,
                 Name = list.Name,
                 Type = list.Type,
                 Items = list.Items.OrderBy(m => m.Position)
-                    .Where(i => i.IsValid == true)
+                    .Where(i => String.IsNullOrEmpty(i.ItemNumber) == false && String.IsNullOrEmpty(i.Name) == false && i.CasePrice != null && i.Pack != null && i.Size != null)
                     .Select(i => new ListItemIntegrationsReturnModel()
-                {
-                    ItemNumber = i.ItemNumber,
-                    Name = i.Name,
-                    Brand = i.BrandExtendedDescription,
-                    CasePrice = i.CasePrice,
-                    UPC = i.UPC,
-                    Pack = i.Pack,
-                    Size = i.Size
-                }).ToList()
-            };
+                    {
+                        ItemNumber = i.ItemNumber,
+                        Name = i.Name,
+                        Brand = i.BrandExtendedDescription,
+                        CasePrice = i.CasePrice,
+                        UPC = i.UPC,
+                        Pack = i.Pack,
+                        Size = i.Size
+                    }).ToList();
+            }
+
+            return model;
         }
 
         #endregion
