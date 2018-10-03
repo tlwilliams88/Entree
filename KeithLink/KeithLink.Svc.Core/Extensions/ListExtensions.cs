@@ -198,8 +198,11 @@ namespace KeithLink.Svc.Core.Extensions
             {
                 ListId = list.ListId,
                 Name = list.Name,
-                Type = list.Type,
-                Items = list.Items.OrderBy(m => m.Position)
+                Type = list.Type
+            };
+            if (list.Items != null)
+            {
+                model.Items = list.Items.OrderBy(m => m.Position)
                     .Where(i => String.IsNullOrEmpty(i.ItemNumber) == false && String.IsNullOrEmpty(i.Name) == false && i.CasePrice != null && i.Pack != null && i.Size != null)
                     .Select(i => new ListItemIntegrationsReturnModel()
                     {
