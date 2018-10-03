@@ -1378,7 +1378,7 @@ namespace KeithLink.Svc.WebApi.Controllers
                 _settingLogic.CreateOrUpdateUserKey
                     (new SettingsModel()
                         {
-                            UserId = AuthenticatedUser.UserId,
+                            UserId = key.UserId,
                             Key = key.Key,
                             Value = key.Value
                         }
@@ -1389,6 +1389,35 @@ namespace KeithLink.Svc.WebApi.Controllers
             catch (Exception ex)
             {
                 returnValue.ErrorMessage = string.Format("Error saving profile settings for user: {0}", ex);
+                _log.WriteErrorLog(returnValue.ErrorMessage, ex);
+                returnValue.IsSuccess = false;
+            }
+
+            return returnValue;
+        }
+
+        /// <summary>
+        /// Delete profile settings
+        /// </summary>
+        /// <param name="settings">settings object</param>
+        /// <returns></returns>
+        [HttpDelete]
+        [ApiKeyedRoute("profile/deletekey")]
+        public OperationReturnModel<bool> DeleteStoredUserKey(SettingsModel settings)
+        {
+            OperationReturnModel<bool> returnValue = new OperationReturnModel<bool>() { SuccessResponse = false };
+
+            settings.UserId = AuthenticatedUser.UserId;
+
+            try
+            {
+                _settingLogic.DeleteSettings(settings);
+                returnValue.SuccessResponse = true;
+                returnValue.IsSuccess = true;
+            }
+            catch (Exception ex)
+            {
+                returnValue.ErrorMessage = String.Format("Error deleting profile settings {0} for userId {1}", settings.Key, settings.UserId);
                 _log.WriteErrorLog(returnValue.ErrorMessage, ex);
                 returnValue.IsSuccess = false;
             }
