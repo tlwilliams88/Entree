@@ -140,12 +140,12 @@ angular.module('bekApp')
       },
 
       setUserKey: function(key) {
-        var promise = $http.post('/profile/userkey', { key: key });
+        var promise = $http.post('/profile/userkey', key);
         return UtilityService.resolvePromise(promise);
       },
 
-      getUserKey: function(key, value) {
-        var promise = $http.post('/profile/getstoreduserkey', { key: key, value: value });
+      getUserKey: function(key) {
+        var promise = $http.post('/profile/getstoreduserkey', key);
         return UtilityService.resolvePromise(promise);
       },
 
