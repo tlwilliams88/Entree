@@ -81,11 +81,6 @@ angular.module('bekApp')
   $scope.login = function(loginInfo) {
     $scope.loginErrorMessage = '';
 
-    var uuid = null;
-    if(ENV.isMobileApp) {
-      uuid = device.uuid;
-    }
-
     if($scope.saveUserName){
       LocalStorage.setDefaultUserName(loginInfo.username);
     } else {
@@ -95,7 +90,10 @@ angular.module('bekApp')
     AuthenticationService.login(loginInfo.username, loginInfo.password)
       .then(UserProfileService.getCurrentUserProfile)
       .then(function(profile) {
-        storeUserKeyForBiometricLogin(profile);
+
+        if(ENV.isMobileApp == true) {
+          storeUserKeyForBiometricLogin(profile);
+        }
 
         if (ENV.mobileApp) { // ask to allow push notifications
           PhonegapPushService.register();
@@ -113,9 +111,13 @@ angular.module('bekApp')
 
     function successCallBack(storedKey) {
 
-      var credentials = {};
+      var credentials = {},
+          key = {
+            key: storedKey,
+            value: device.uuid
+          };
 
-      ApplicationSettingsService.getUserKey(storedKey, device.uuid).then(function(resp) {
+      ApplicationSettingsService.getUserKey(key).then(function(resp) {
        credentials = resp;
 
        $scope.login(credentials);
