@@ -151,9 +151,9 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
             if (userSettings == null)
             {
                 Settings userKey = new Settings();
-                userSettings.UserId = settings.UserId;
-                userSettings.Key = key;
-                userSettings.Value = settings.Value;
+                userKey.UserId = settings.UserId;
+                userKey.Key = key;
+                userKey.Value = settings.Value;
 
                 _repo.CreateOrUpdate(userKey);
                 _uow.SaveChanges();
