@@ -143,17 +143,19 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
         public void CreateOrUpdateUserKey(SettingsModel settings)
         {
             string key = StoredUserKey(settings.Key);
+                
             Settings userSettings = _repo.Read(x =>
                 x.Key == key &&
                 x.Value == settings.Value).FirstOrDefault();
 
             if (userSettings == null)
             {
+                Settings userKey = new Settings();
                 userSettings.UserId = settings.UserId;
                 userSettings.Key = key;
                 userSettings.Value = settings.Value;
 
-                _repo.CreateOrUpdate(userSettings);
+                _repo.CreateOrUpdate(userKey);
                 _uow.SaveChanges();
             }
 
