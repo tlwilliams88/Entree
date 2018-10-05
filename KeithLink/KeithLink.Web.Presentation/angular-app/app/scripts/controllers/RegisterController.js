@@ -91,11 +91,8 @@ angular.module('bekApp')
       .then(UserProfileService.getCurrentUserProfile)
       .then(function(profile) {
 
-        if(ENV.isMobileApp == true) {
-          storeUserKeyForBiometricLogin(profile);
-        }
-
         if (ENV.mobileApp) { // ask to allow push notifications
+          storeUserKeyForBiometricLogin(profile);
           PhonegapPushService.register();
         }
         $scope.redirectUserToCorrectHomepage();
