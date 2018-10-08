@@ -518,8 +518,18 @@ namespace KeithLink.Svc.Impl.Repository.Profile
             for (int i = 0; i < dsrList.Count; i++) {
                 if (!String.IsNullOrEmpty(dsrList[i].DsrNumber) && !String.IsNullOrEmpty(dsrList[i].Branch))
                 {
-                    if (i > 0) { whereText.Append(" OR "); }
+                    if (i > 0) {
+                        whereText.Append(" OR ");
+                    }
+                    else if (dsrList.Count > 1)
+                    {
+                        whereText.Append(" ( ");
+                    }
                     whereText.AppendFormat("(u_branch_number = '{0}' AND u_dsr_number = '{1}')", dsrList[i].Branch, dsrList[i].DsrNumber);
+                    if (i == dsrList.Count -1 && dsrList.Count > 1)
+                    {
+                        whereText.Append(" ) ");
+                    }
                 }
             }
 
