@@ -1,12 +1,17 @@
 'use strict';
 
 angular.module('bekApp')
-  .controller('UserProfileController', ['$scope', 'UserProfileService', 'branches', 'SessionService', '$state', 'AccessService', 'ApplicationSettingsService', 'DsrAliasService',
-    function ($scope, UserProfileService, branches, SessionService, $state, AccessService, ApplicationSettingsService, DsrAliasService) {
+  .controller('UserProfileController', ['$scope', 'UserProfileService', 'branches', 'SessionService', '$state', 'AccessService', 'ApplicationSettingsService', 'DsrAliasService', 'LocalStorage', 'ENV', 'toaster',
+    function ($scope, UserProfileService, branches, SessionService, $state, AccessService, ApplicationSettingsService, DsrAliasService, LocalStorage, ENV, toaster) {
 
   var init = function(){
     $scope.branches = branches;
 
+    if(ENV.mobileApp == true && LocalStorage.getBiometryEnabled())
+    {
+      $scope.authenMethod = LocalStorage.getBiometryType();
+    }
+    
     $scope.isInternalUser = $scope.userProfile.emailaddress.indexOf('@benekeith.com') > -1;
 
     if (AccessService.isOrderEntryCustomer()){
@@ -82,18 +87,21 @@ angular.module('bekApp')
   };
 
   $scope.deleteStoredBiometricLogin = function() {
-    var key = 'Entree_Credential_User'+$scope.userProfile.emailaddress;
+    var config = {
+      userid: '',
+      key: 'Entree_Credential_User'+$scope.userProfile.emailaddress,
+      value: device.uuid
+    };
+        
 
-
-
-    ApplicationSettingsService.resetApplicationSettings(key).then(function() {
+    ApplicationSettingsService.deleteUserKey(config).then(function() {
       
       window.plugins.touchid.delete(key, function() {
-        toaster.pop('success', null, ENV.biometryType + ' login has been deleted');
+        toaster.pop('success', null, $scope.authenMethod + ' login has been deleted');
       });
     },
     function() {
-      toaster.pop('error', 'Unable to delete ' + ENV.biometryType + ' login.  Please try again.')
+      toaster.pop('error', 'Unable to delete ' + $scope.authenMethod + ' login.  Please try again.')
     })
   };
 

@@ -21,11 +21,14 @@ angular.module('bekApp')
 
     window.plugins.touchid.isAvailable(function(biometryType) {
 
-      $scope.authenMethod = biometryType == 'touch' || biometryType == 'OK' ? 'TouchID' : 'FaceID';
+      $scope.authenMethod = biometryType == 'touch' && biometryType != 'OK' ? 'Touch ID' : 'Face ID'; // iOS
+      if($scope.authenMethod == 'OK') {
+        $scope.authenMethod = 'Fingerprint'; // Android
+      }
       window.plugins.touchid.has("Entree_Credential_User", function() {
-        $scope.passwordAvailable = true;
+        $scope.keyAvailable = true;
       }, function() {
-        $scope.passwordAvailable = false;
+        $scope.keyAvailable = false;
       });
       }, function(msg) {
         $scope.authenMethod = 'standard'
@@ -66,7 +69,7 @@ angular.module('bekApp')
   BranchService.getBranches().then(function(resp) {
     var branches = [],
         maintenanceMessage = 'We\'re currently undergoing maintenance for an extended period today.\n We\'ll be back soon.\n Thank you for your patience.';
-    if(resp == -1 && ENV.isMobileApp) {
+    if(resp == -1 && ENV.mobileApp) {
       blockUI.start(maintenanceMessage).then(function() {
         branchCheck = $interval(checkForBranches, 30000);
       })
@@ -80,6 +83,14 @@ angular.module('bekApp')
 
   $scope.login = function(loginInfo) {
     $scope.loginErrorMessage = '';
+
+    if(loginInfo.key) {
+      loginInfo.username = loginInfo.key.slice(22);
+      delete loginInfo.key;
+
+      loginInfo.password = '';
+      delete loginInfo.value; 
+    }
 
     if($scope.saveUserName){
       LocalStorage.setDefaultUserName(loginInfo.username);
@@ -104,37 +115,71 @@ angular.module('bekApp')
 
   $scope.displayBiometricsLogin = function() {
 
-    window.plugins.touchid.verify("Entree_Credential_User", "Use " + $scope.authenMethod + " to login", successCallBack, errorCallBack);
+    window.plugins.touchid.verify("Entree_Credential_User", "Use " + $scope.authenMethod + " to login", entreeCredentialFound, entreeBiometricResponse);
 
-    function successCallBack(storedKey) {
-
-      var credentials = {},
-          key = {
-            key: storedKey,
-            value: device.uuid
-          };
-
-      ApplicationSettingsService.getUserKey(key).then(function(resp) {
-       credentials = resp;
-
-       $scope.login(credentials);
-      })
-    }
-
-    function errorCallBack(msg) {
-
-      if(msg && msg.ErrorMessage == "Canceled by user.") {
-        return;
-      } else {
-      // Need to save username via api call here
-      window.plugins.touchid.save("Entree_Credential_User", $scope.loginInfo.username, true, function() {
-
-        $scope.login($scope.loginInfo);
-
-      })
-      }
-    }
   };
+
+  function entreeCredentialFound(storedKey) {
+
+    var credentials = {},
+        key = {
+          key: storedKey,
+          value: device.uuid
+        };
+
+    ApplicationSettingsService.getUserKey(key).then(function(resp) {
+      credentials = resp;
+
+      LocalStorage.setBiometryEnabled(true);
+      LocalStorage.setBiometryType($scope.authenMethod);
+
+      $scope.login(credentials);
+    })
+  }
+
+  function entreeBiometricResponse(msg) {
+    switch(msg) 
+    {
+
+      case 'Canceled by user.':
+        return toaster.pop('error', null, msg.ErrorMessage);
+      break;
+
+      case 'Fallback authentication mechanism selected.':
+        $scope.displayAlternateAuthentication(false);
+      break;
+
+      case 'Biometry is locked out.':
+        biometryUnavailable(msg.ErrorMessage);
+      break;
+
+      case 'User has denied the use of biometry for this app.':
+        biometryUnavailable(msg.ErrorMessage);
+      break;
+
+      case '-1':
+        window.plugins.touchid.verify("Entree_Credential_User", "Verifying" + $scope.authenMethod + "authentication", entreeCredentialFound, saveCredentialLocally);
+      break;
+
+    }
+    
+  }
+
+  function saveCredentialLocally() {
+    window.plugins.touchid.save("Entree_Credential_User", $scope.loginInfo.username, true, successfullySavedCredential, errorSavingCredential);
+  }
+
+  function successfullySavedCredential() {
+    window.plugins.touchid.verify("Entree_Credential_User", "Use " + $scope.authenMethod + " to login", entreeCredentialFound, entreeBiometricResponse);
+  }
+
+  function errorSavingCredential() {
+    return;
+  }
+
+  function biometryUnavailable() {
+    $scope.displayBiometrics = false;
+  }
 
   function storeUserKeyForBiometricLogin(user) {
     var userDevice = device.uuid.toString(),
@@ -142,6 +187,10 @@ angular.module('bekApp')
 
     ApplicationSettingsService.setUserKey(userKey);
   }
+
+  $scope.displayAlternateAuthentication = function(set) {
+    $scope.displayBiometrics = set;
+  };
 
   $scope.forgotPassword = function(email) {
     $scope.checkForInternalEmail(email);

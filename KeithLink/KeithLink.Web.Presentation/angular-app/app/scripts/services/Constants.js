@@ -21,7 +21,9 @@ angular.module('bekApp')
       hideTutorialHome: 'hideTutorialHome',
       hideTutorialSearch: 'hideTutorialSearch',
       hideTutorialAddToOrder: 'hideTutorialAddToOrder',
-      searchTerms: 'searchTerms'
+      searchTerms: 'searchTerms',
+      biometryEnabled: 'biometryEnabled',
+      biometryType: 'biometryType'
     },
     
     listType: {
