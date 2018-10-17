@@ -207,7 +207,7 @@ namespace KeithLink.Svc.Core.Extensions
                     .Select(i => new ListItemIntegrationsReturnModel()
                     {
                         ItemNumber = i.ItemNumber,
-                        Name = i.Name,
+                        Name = i.Detail,
                         Brand = i.BrandExtendedDescription,
                         CasePrice = i.CasePrice,
                         UPC = i.UPC,
