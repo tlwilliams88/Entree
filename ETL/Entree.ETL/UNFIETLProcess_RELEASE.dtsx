@@ -12,8 +12,8 @@
   DTS:LocaleID="1033"
   DTS:ObjectName="UNFIETLProcess_RELEASE"
   DTS:PackageType="5"
-  DTS:VersionBuild="144"
-  DTS:VersionGUID="{29F88880-C22D-468B-AD41-266F16E44DB6}">
+  DTS:VersionBuild="145"
+  DTS:VersionGUID="{529A4929-2FE8-49C4-9C04-1BB3A4B01036}">
   <DTS:Property
     DTS:Name="PackageFormatVersion">8</DTS:Property>
   <DTS:ConnectionManagers>
@@ -772,11 +772,11 @@
             <DTS:Property
               DTS:Name="ServerPassword"
               Sensitive="1"
-              Encrypted="1">AQAAANCMnd8BFdERjHoAwE/Cl+sBAAAAXNK8DzCMwUSdTLI29vfI8wAAAAAIAAAARABUAFMAAAADZgAAwAAAABAAAAAHrG/el/XlqROe6tfosQnaAAAAAASAAACgAAAAEAAAANyoJTpD5iXap/0piZb5NwgIAAAAoRKm/H3WwLUUAAAAgng6WYapTB+FXfoCIp35NuUPejQ</DTS:Property>
+              Encrypted="1">AQAAANCMnd8BFdERjHoAwE/Cl+sBAAAAIRnJnsjlP0Was4hdt52FtQAAAAAIAAAARABUAFMAAAADZgAAwAAAABAAAADWHU6Dt+MkQgC0gGpC53iOAAAAAASAAACgAAAAEAAAAPizyBJRLFko+TMxramL6WoIAAAAYHcYYl8Hv4oUAAAA7AhSKmULH9akntOiiJEPGwO/hUg</DTS:Property>
             <DTS:Property
               DTS:Name="ProxyPassword"
               Sensitive="1"
-              Encrypted="1">AQAAANCMnd8BFdERjHoAwE/Cl+sBAAAAXNK8DzCMwUSdTLI29vfI8wAAAAAIAAAARABUAFMAAAADZgAAwAAAABAAAAB5B0nGkObbAIxbA0VcY5h5AAAAAASAAACgAAAAEAAAAMK9CkKJ9LDXbBL7reemWmYIAAAAGik9KA1e7IMUAAAAAk4SaZfjI51WlLONu+roHXN+lAY</DTS:Property>
+              Encrypted="1">AQAAANCMnd8BFdERjHoAwE/Cl+sBAAAAIRnJnsjlP0Was4hdt52FtQAAAAAIAAAARABUAFMAAAADZgAAwAAAABAAAACFeLCaqZ2RrcTjJ0jcK+jkAAAAAASAAACgAAAAEAAAADwKy1CeUFEwq+9htk4X28gIAAAAW0dvsO+O0K8UAAAATyeaIg6vjsEFYAc+K/b3gBolztg</DTS:Property>
           </DTS:HttpConnection>
         </DTS:ConnectionManager>
       </DTS:ObjectData>
@@ -3425,6 +3425,31 @@
                                   name="FriendlyExpression">3</property>
                               </properties>
                             </inputColumn>
+                            <inputColumn
+                              refId="Package\Sequence Container Stage Data\Sequence Container UNFI EAST\Stage UNFI Products\Derived Column.Inputs[Derived Column Input].Columns[Unit Price]"
+                              cachedCodepage="1252"
+                              cachedDataType="str"
+                              cachedLength="50"
+                              cachedName="Unit Price"
+                              errorOrTruncationOperation="Computation"
+                              errorRowDisposition="FailComponent"
+                              lineageId="Package\Sequence Container Stage Data\Sequence Container UNFI EAST\Stage UNFI Products\Flat File Source.Outputs[Flat File Source Output].Columns[Unit Price]"
+                              truncationRowDisposition="FailComponent"
+                              usageType="readWrite">
+                              <properties>
+                                <property
+                                  containsID="true"
+                                  dataType="System.String"
+                                  description="Derived Column Expression"
+                                  name="Expression">0.00</property>
+                                <property
+                                  containsID="true"
+                                  dataType="System.String"
+                                  description="Derived Column Friendly Expression"
+                                  expressionType="Notify"
+                                  name="FriendlyExpression">0.00</property>
+                              </properties>
+                            </inputColumn>
                           </inputColumns>
                           <externalMetadataColumns />
                         </input>
@@ -5401,7 +5426,7 @@
         <NodeLayout
           Size="177,42"
           Id="Package\Sequence Container Stage Data\Sequence Container UNFI EAST\Stage UNFI Products"
-          TopLeft="80,107.5" />
+          TopLeft="80,111.5" />
         <NodeLayout
           Size="188,42"
           Id="Package\Sequence Container Stage Data\Sequence Container UNFI EAST\Truncate Staging Table"
@@ -5412,14 +5437,14 @@
           <EdgeLayout.Curve>
             <mssgle:Curve
               StartConnector="{assembly:Null}"
-              EndConnector="0,60"
+              EndConnector="0,64"
               Start="0,0"
-              End="0,52.5">
+              End="0,56.5">
               <mssgle:Curve.Segments>
                 <mssgle:SegmentCollection
                   Capacity="5">
                   <mssgle:LineSegment
-                    End="0,52.5" />
+                    End="0,56.5" />
                 </mssgle:SegmentCollection>
               </mssgle:Curve.Segments>
             </mssgle:Curve>
@@ -5613,9 +5638,7 @@
             </mssgle:Curve>
           </EdgeLayout.Curve>
           <EdgeLayout.Labels>
-            <mssgm:EdgeLabel
-              BoundingBox="0,0,0,0"
-              RelativePosition="Any" />
+            <EdgeLabelCollection />
           </EdgeLayout.Labels>
         </EdgeLayout>
         <EdgeLayout
@@ -5637,9 +5660,7 @@
             </mssgle:Curve>
           </EdgeLayout.Curve>
           <EdgeLayout.Labels>
-            <mssgm:EdgeLabel
-              BoundingBox="0,0,0,0"
-              RelativePosition="Any" />
+            <EdgeLabelCollection />
           </EdgeLayout.Labels>
         </EdgeLayout>
       </GraphLayout>
@@ -5651,21 +5672,43 @@
       <GraphLayout
         Capacity="8" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:assembly="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:mssgm="clr-namespace:Microsoft.SqlServer.Graph.Model;assembly=Microsoft.SqlServer.Graph">
         <NodeLayout
-          Size="151,42"
-          Id="Package\Sequence Container Stage Data\Sequence Container UNFI EAST\Stage UNFI Products\Flat File Source"
-          TopLeft="52.5,10.5" />
-        <NodeLayout
-          Size="154,42"
-          Id="Package\Sequence Container Stage Data\Sequence Container UNFI EAST\Stage UNFI Products\Derived Column"
-          TopLeft="53.5,100.5" />
-        <NodeLayout
           Size="171,42"
           Id="Package\Sequence Container Stage Data\Sequence Container UNFI EAST\Stage UNFI Products\OLE DB Destination"
           TopLeft="42.5,312.5" />
         <NodeLayout
+          Size="151,42"
+          Id="Package\Sequence Container Stage Data\Sequence Container UNFI EAST\Stage UNFI Products\Flat File Source"
+          TopLeft="52.5,10.5" />
+        <NodeLayout
           Size="155,42"
           Id="Package\Sequence Container Stage Data\Sequence Container UNFI EAST\Stage UNFI Products\Conditional Split"
           TopLeft="48.5,226.5" />
+        <NodeLayout
+          Size="154,42"
+          Id="Package\Sequence Container Stage Data\Sequence Container UNFI EAST\Stage UNFI Products\Derived Column"
+          TopLeft="53.5,100.5" />
+        <EdgeLayout
+          Id="Package\Sequence Container Stage Data\Sequence Container UNFI EAST\Stage UNFI Products.Paths[Derived Column Output]"
+          TopLeft="128.25,142.5">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,84"
+              Start="0,0"
+              End="0,76.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,76.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
         <EdgeLayout
           Id="Package\Sequence Container Stage Data\Sequence Container UNFI EAST\Stage UNFI Products.Paths[Output]"
           TopLeft="127,268.5">
@@ -5704,28 +5747,6 @@
                   Capacity="5">
                   <mssgle:LineSegment
                     End="0,40.5" />
-                </mssgle:SegmentCollection>
-              </mssgle:Curve.Segments>
-            </mssgle:Curve>
-          </EdgeLayout.Curve>
-          <EdgeLayout.Labels>
-            <EdgeLabelCollection />
-          </EdgeLayout.Labels>
-        </EdgeLayout>
-        <EdgeLayout
-          Id="Package\Sequence Container Stage Data\Sequence Container UNFI EAST\Stage UNFI Products.Paths[Derived Column Output]"
-          TopLeft="128.25,142.5">
-          <EdgeLayout.Curve>
-            <mssgle:Curve
-              StartConnector="{assembly:Null}"
-              EndConnector="0,84"
-              Start="0,0"
-              End="0,76.5">
-              <mssgle:Curve.Segments>
-                <mssgle:SegmentCollection
-                  Capacity="5">
-                  <mssgle:LineSegment
-                    End="0,76.5" />
                 </mssgle:SegmentCollection>
               </mssgle:Curve.Segments>
             </mssgle:Curve>
