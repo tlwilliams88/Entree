@@ -8,12 +8,12 @@
   DTS:DTSID="{E2113F13-3CC5-483F-AF74-1C7A4C32EE15}"
   DTS:EnableConfig="True"
   DTS:ExecutableType="Microsoft.Package"
-  DTS:LastModifiedProductVersion="13.0.2165.0"
+  DTS:LastModifiedProductVersion="14.0.3002.106"
   DTS:LocaleID="1033"
   DTS:ObjectName="Entree_BI_Process"
   DTS:PackageType="5"
-  DTS:VersionBuild="93"
-  DTS:VersionGUID="{73E83A23-1404-438C-A943-1C627E0F78B4}"
+  DTS:VersionBuild="97"
+  DTS:VersionGUID="{0CFC309C-6B29-48B7-82D9-728E6AF01285}"
   DTS:VersionMajor="2018"
   DTS:VersionMinor="4">
   <DTS:Property
@@ -62,8 +62,8 @@
               DTS:MaximumWidth="50"
               DTS:DataType="129"
               DTS:TextQualified="True"
-              DTS:ObjectName="&quot;Name&quot;"
-              DTS:DTSID="{5C043A9B-1B8B-4E6C-8AA1-D3165BF0E06D}"
+              DTS:ObjectName="CustomerInsightKey"
+              DTS:DTSID="{684DFB0D-E5F9-41FA-ADFE-28CADCB6A8D3}"
               DTS:CreationName="" />
             <DTS:FlatFileColumn
               DTS:ColumnType="Delimited"
@@ -71,8 +71,8 @@
               DTS:MaximumWidth="50"
               DTS:DataType="129"
               DTS:TextQualified="True"
-              DTS:ObjectName="&quot;CurrencyIsoCode&quot;"
-              DTS:DTSID="{768E78CD-0434-4B5B-9CC3-7BB1A85B89B8}"
+              DTS:ObjectName="CustomerInsightVersionKey"
+              DTS:DTSID="{9D8C68D4-258F-47ED-B4D6-CF3CD66F55E7}"
               DTS:CreationName="" />
             <DTS:FlatFileColumn
               DTS:ColumnType="Delimited"
@@ -80,8 +80,8 @@
               DTS:MaximumWidth="50"
               DTS:DataType="129"
               DTS:TextQualified="True"
-              DTS:ObjectName="&quot;CustomerInsightKey&quot;"
-              DTS:DTSID="{816CFA2C-4E29-4B9F-8BA0-A0382CB0691A}"
+              DTS:ObjectName="CustomerId"
+              DTS:DTSID="{3D50F347-F7CA-4C41-B462-A5077B70D116}"
               DTS:CreationName="" />
             <DTS:FlatFileColumn
               DTS:ColumnType="Delimited"
@@ -89,8 +89,8 @@
               DTS:MaximumWidth="50"
               DTS:DataType="129"
               DTS:TextQualified="True"
-              DTS:ObjectName="&quot;CustomerInsightVersionKey&quot;"
-              DTS:DTSID="{E098EE58-2C5F-45D9-BD39-C302C212EA69}"
+              DTS:ObjectName="Name"
+              DTS:DTSID="{F723813D-FAE0-462D-ACB2-BACBAAECA02B}"
               DTS:CreationName="" />
             <DTS:FlatFileColumn
               DTS:ColumnType="Delimited"
@@ -98,8 +98,8 @@
               DTS:MaximumWidth="50"
               DTS:DataType="129"
               DTS:TextQualified="True"
-              DTS:ObjectName="&quot;CustomerId&quot;"
-              DTS:DTSID="{BA8B4D70-B75B-4B53-AAC2-B7F12DDC70F8}"
+              DTS:ObjectName="CustomerCity"
+              DTS:DTSID="{0BC180DF-32B4-402B-910E-50FE33646719}"
               DTS:CreationName="" />
             <DTS:FlatFileColumn
               DTS:ColumnType="Delimited"
@@ -107,8 +107,8 @@
               DTS:MaximumWidth="50"
               DTS:DataType="129"
               DTS:TextQualified="True"
-              DTS:ObjectName="&quot;CustomerCity&quot;"
-              DTS:DTSID="{F9CA3A14-002C-4812-9BDF-70EC1652C25E}"
+              DTS:ObjectName="CustomerState"
+              DTS:DTSID="{76A7E5EB-63DC-49FD-92BC-EFB10CC12E92}"
               DTS:CreationName="" />
             <DTS:FlatFileColumn
               DTS:ColumnType="Delimited"
@@ -116,8 +116,17 @@
               DTS:MaximumWidth="50"
               DTS:DataType="129"
               DTS:TextQualified="True"
-              DTS:ObjectName="&quot;CustomerState&quot;"
-              DTS:DTSID="{5A483B0E-C362-4AEE-B71A-666CB544D9C5}"
+              DTS:ObjectName="CustomerCountry"
+              DTS:DTSID="{DAC5499B-3D60-46EA-A393-6555C57BF602}"
+              DTS:CreationName="" />
+            <DTS:FlatFileColumn
+              DTS:ColumnType="Delimited"
+              DTS:ColumnDelimiter="_x002C_"
+              DTS:MaximumWidth="50"
+              DTS:DataType="130"
+              DTS:TextQualified="True"
+              DTS:ObjectName="CurrencyIsoCode"
+              DTS:DTSID="{7EFE6293-31B5-442E-9B23-8402C350DCED}"
               DTS:CreationName="" />
             <DTS:FlatFileColumn
               DTS:ColumnType="Delimited"
@@ -125,8 +134,8 @@
               DTS:MaximumWidth="50"
               DTS:DataType="129"
               DTS:TextQualified="True"
-              DTS:ObjectName="&quot;CustomerCountry&quot;"
-              DTS:DTSID="{756E34AC-D349-497D-9DA8-9CF6D0CC1BF4}"
+              DTS:ObjectName="StatusSummary"
+              DTS:DTSID="{F470692A-23CC-453E-B777-8D44CE96CD8A}"
               DTS:CreationName="" />
             <DTS:FlatFileColumn
               DTS:ColumnType="Delimited"
@@ -134,8 +143,8 @@
               DTS:MaximumWidth="50"
               DTS:DataType="129"
               DTS:TextQualified="True"
-              DTS:ObjectName="&quot;StatusSummary&quot;"
-              DTS:DTSID="{523DF64F-5D3E-47E3-81AF-37FC36CBE684}"
+              DTS:ObjectName="CustomerInsightStatus"
+              DTS:DTSID="{528E18D1-82AB-4E5D-A16B-A259CCA2B981}"
               DTS:CreationName="" />
             <DTS:FlatFileColumn
               DTS:ColumnType="Delimited"
@@ -143,8 +152,8 @@
               DTS:MaximumWidth="50"
               DTS:DataType="129"
               DTS:TextQualified="True"
-              DTS:ObjectName="&quot;CustomerInsightStatus&quot;"
-              DTS:DTSID="{306D5E69-1863-4358-B673-F9EF958B8DE9}"
+              DTS:ObjectName="FlaggedForInitialDelivery"
+              DTS:DTSID="{3D18BE1B-1346-4C24-995F-85D83377A299}"
               DTS:CreationName="" />
             <DTS:FlatFileColumn
               DTS:ColumnType="Delimited"
@@ -152,8 +161,8 @@
               DTS:MaximumWidth="50"
               DTS:DataType="129"
               DTS:TextQualified="True"
-              DTS:ObjectName="&quot;FlaggedForInitialDelivery&quot;"
-              DTS:DTSID="{D9C6EE33-08AD-403C-A6C3-CB2864CAAF5B}"
+              DTS:ObjectName="InitiativeName"
+              DTS:DTSID="{9C56002B-3869-4FF2-97AF-B9F34DDAB084}"
               DTS:CreationName="" />
             <DTS:FlatFileColumn
               DTS:ColumnType="Delimited"
@@ -161,17 +170,8 @@
               DTS:MaximumWidth="50"
               DTS:DataType="129"
               DTS:TextQualified="True"
-              DTS:ObjectName="&quot;InitiativeName&quot;"
-              DTS:DTSID="{3DA881ED-3E15-4C0D-828B-96D93B43A0FF}"
-              DTS:CreationName="" />
-            <DTS:FlatFileColumn
-              DTS:ColumnType="Delimited"
-              DTS:ColumnDelimiter="_x002C_"
-              DTS:MaximumWidth="50"
-              DTS:DataType="129"
-              DTS:TextQualified="True"
-              DTS:ObjectName="&quot;ReportingGroup&quot;"
-              DTS:DTSID="{3A7ED7DB-DAA3-49B5-8BC4-355A561F7254}"
+              DTS:ObjectName="ReportingGroup"
+              DTS:DTSID="{C338EAB9-962C-47FB-82F2-1C363BE2A503}"
               DTS:CreationName="" />
             <DTS:FlatFileColumn
               DTS:ColumnType="Delimited"
@@ -179,8 +179,8 @@
               DTS:MaximumWidth="50"
               DTS:DataType="129"
               DTS:TextQualified="True"
-              DTS:ObjectName="&quot;CustomerInsightType&quot;"
-              DTS:DTSID="{728D8902-ADF1-4C07-8047-6F13FAFDE9F2}"
+              DTS:ObjectName="CustomerInsightType"
+              DTS:DTSID="{BB1F08CB-C37A-417C-8275-6841CBF13B24}"
               DTS:CreationName="" />
           </DTS:FlatFileColumns>
         </DTS:ConnectionManager>
@@ -255,10 +255,10 @@
               DTS:ColumnType="Delimited"
               DTS:ColumnDelimiter="_x002C_"
               DTS:MaximumWidth="50"
-              DTS:DataType="130"
+              DTS:DataType="129"
               DTS:TextQualified="True"
-              DTS:ObjectName="&quot;CurrencyIsoCode&quot;"
-              DTS:DTSID="{35FE8B7D-207D-4E40-85C1-DE08E328E801}"
+              DTS:ObjectName="ProductGroupingInsightKey"
+              DTS:DTSID="{3DC4886D-C635-485C-B338-3479B24E858C}"
               DTS:CreationName="" />
             <DTS:FlatFileColumn
               DTS:ColumnType="Delimited"
@@ -266,8 +266,26 @@
               DTS:MaximumWidth="50"
               DTS:DataType="130"
               DTS:TextQualified="True"
-              DTS:ObjectName="&quot;ProductGroupingInsightKey&quot;"
-              DTS:DTSID="{66F6F363-90BE-410D-8077-9741C486979D}"
+              DTS:ObjectName="CurrencyIsoCode"
+              DTS:DTSID="{01939F29-C128-46A0-BF22-375457C18A77}"
+              DTS:CreationName="" />
+            <DTS:FlatFileColumn
+              DTS:ColumnType="Delimited"
+              DTS:ColumnDelimiter="_x002C_"
+              DTS:MaximumWidth="50"
+              DTS:DataType="129"
+              DTS:TextQualified="True"
+              DTS:ObjectName="Amount"
+              DTS:DTSID="{2A736684-79EF-4054-8C1B-CB1C2664F740}"
+              DTS:CreationName="" />
+            <DTS:FlatFileColumn
+              DTS:ColumnType="Delimited"
+              DTS:ColumnDelimiter="_x002C_"
+              DTS:MaximumWidth="50"
+              DTS:DataType="129"
+              DTS:TextQualified="True"
+              DTS:ObjectName="CustomerInsight"
+              DTS:DTSID="{3D475F9B-8DE6-497A-8112-5D735C97DD59}"
               DTS:CreationName="" />
             <DTS:FlatFileColumn
               DTS:ColumnType="Delimited"
@@ -275,8 +293,17 @@
               DTS:MaximumWidth="50"
               DTS:DataType="130"
               DTS:TextQualified="True"
-              DTS:ObjectName="&quot;Amount&quot;"
-              DTS:DTSID="{D6E2B6EA-B741-47CF-8F70-49ABCBF75625}"
+              DTS:ObjectName="State"
+              DTS:DTSID="{3FA5662E-81F0-444A-BCFE-B4AAD3706D23}"
+              DTS:CreationName="" />
+            <DTS:FlatFileColumn
+              DTS:ColumnType="Delimited"
+              DTS:ColumnDelimiter="_x002C_"
+              DTS:MaximumWidth="50"
+              DTS:DataType="129"
+              DTS:TextQualified="True"
+              DTS:ObjectName="ProductGrouping"
+              DTS:DTSID="{5867A24B-7E93-4A9B-A6FD-699FA43C7246}"
               DTS:CreationName="" />
             <DTS:FlatFileColumn
               DTS:ColumnType="Delimited"
@@ -284,8 +311,17 @@
               DTS:MaximumWidth="50"
               DTS:DataType="130"
               DTS:TextQualified="True"
-              DTS:ObjectName="&quot;CustomerInsight&quot;"
-              DTS:DTSID="{770490F6-DD4F-44F8-9A20-6D8E8FE46E0E}"
+              DTS:ObjectName="RunDate"
+              DTS:DTSID="{B0561AC5-C644-4949-A43A-01E1E6920BF0}"
+              DTS:CreationName="" />
+            <DTS:FlatFileColumn
+              DTS:ColumnType="Delimited"
+              DTS:ColumnDelimiter="_x002C_"
+              DTS:MaximumWidth="50"
+              DTS:DataType="129"
+              DTS:TextQualified="True"
+              DTS:ObjectName="ProductGroupingInsightType"
+              DTS:DTSID="{B5F4762D-243B-4A25-8CC6-CABAEA274522}"
               DTS:CreationName="" />
             <DTS:FlatFileColumn
               DTS:ColumnType="Delimited"
@@ -293,8 +329,8 @@
               DTS:MaximumWidth="50"
               DTS:DataType="130"
               DTS:TextQualified="True"
-              DTS:ObjectName="&quot;State&quot;"
-              DTS:DTSID="{EB6BFDF3-5204-4F40-B495-B292893A4BE4}"
+              DTS:ObjectName="CurrentPrice"
+              DTS:DTSID="{630EBA57-AD80-40DF-B3FC-8FEC6906A537}"
               DTS:CreationName="" />
             <DTS:FlatFileColumn
               DTS:ColumnType="Delimited"
@@ -302,8 +338,8 @@
               DTS:MaximumWidth="50"
               DTS:DataType="130"
               DTS:TextQualified="True"
-              DTS:ObjectName="&quot;ProductGrouping&quot;"
-              DTS:DTSID="{C1ACBD0C-37D7-452C-B2F9-7D7DC59E0347}"
+              DTS:ObjectName="RecommendedPrice"
+              DTS:DTSID="{3EC0C0D0-E040-4F3F-90B0-E309EA4B805A}"
               DTS:CreationName="" />
             <DTS:FlatFileColumn
               DTS:ColumnType="Delimited"
@@ -311,8 +347,8 @@
               DTS:MaximumWidth="50"
               DTS:DataType="130"
               DTS:TextQualified="True"
-              DTS:ObjectName="&quot;RunDate&quot;"
-              DTS:DTSID="{05DF524D-D628-4D4C-AF55-6BC99E37B46B}"
+              DTS:ObjectName="SuperGroup"
+              DTS:DTSID="{0432B430-1B73-40CF-9CA4-380093C53137}"
               DTS:CreationName="" />
             <DTS:FlatFileColumn
               DTS:ColumnType="Delimited"
@@ -320,8 +356,8 @@
               DTS:MaximumWidth="50"
               DTS:DataType="130"
               DTS:TextQualified="True"
-              DTS:ObjectName="&quot;ProductGroupingInsightType&quot;"
-              DTS:DTSID="{99FBAEEA-6092-49DD-A005-7F03EF9E783D}"
+              DTS:ObjectName="HistoricSales"
+              DTS:DTSID="{7000E897-79D0-466D-AF51-648ACD96ACF4}"
               DTS:CreationName="" />
             <DTS:FlatFileColumn
               DTS:ColumnType="Delimited"
@@ -329,44 +365,8 @@
               DTS:MaximumWidth="50"
               DTS:DataType="130"
               DTS:TextQualified="True"
-              DTS:ObjectName="&quot;CurrentPrice&quot;"
-              DTS:DTSID="{743D5245-5F26-4558-AB1C-7D1CA3BAC106}"
-              DTS:CreationName="" />
-            <DTS:FlatFileColumn
-              DTS:ColumnType="Delimited"
-              DTS:ColumnDelimiter="_x002C_"
-              DTS:MaximumWidth="50"
-              DTS:DataType="130"
-              DTS:TextQualified="True"
-              DTS:ObjectName="&quot;RecommendedPrice&quot;"
-              DTS:DTSID="{AE0F1767-8A41-4A6E-AAE9-DC3BC581D899}"
-              DTS:CreationName="" />
-            <DTS:FlatFileColumn
-              DTS:ColumnType="Delimited"
-              DTS:ColumnDelimiter="_x002C_"
-              DTS:MaximumWidth="50"
-              DTS:DataType="130"
-              DTS:TextQualified="True"
-              DTS:ObjectName="&quot;SuperGroup&quot;"
-              DTS:DTSID="{0C4651E9-8609-4D17-847A-57028B0707F6}"
-              DTS:CreationName="" />
-            <DTS:FlatFileColumn
-              DTS:ColumnType="Delimited"
-              DTS:ColumnDelimiter="_x002C_"
-              DTS:MaximumWidth="50"
-              DTS:DataType="130"
-              DTS:TextQualified="True"
-              DTS:ObjectName="&quot;HistoricSales&quot;"
-              DTS:DTSID="{3DA6CCEE-2C5D-446B-9F33-70F2A90A7AD7}"
-              DTS:CreationName="" />
-            <DTS:FlatFileColumn
-              DTS:ColumnType="Delimited"
-              DTS:ColumnDelimiter="_x002C_"
-              DTS:MaximumWidth="50"
-              DTS:DataType="130"
-              DTS:TextQualified="True"
-              DTS:ObjectName="&quot;RecentSales&quot;"
-              DTS:DTSID="{14826D76-BC90-41DD-9621-502675FB6455}"
+              DTS:ObjectName="RecentSales"
+              DTS:DTSID="{779949BD-4D5D-407B-8C82-60ED87195367}"
               DTS:CreationName="" />
             <DTS:FlatFileColumn
               DTS:ColumnType="Delimited"
@@ -374,8 +374,8 @@
               DTS:MaximumWidth="50"
               DTS:DataType="130"
               DTS:TextQualified="True"
-              DTS:ObjectName="&quot;ProfilePeriodSales&quot;"
-              DTS:DTSID="{F05519AB-7BB8-4DD7-9BC4-7EF9F97563F0}"
+              DTS:ObjectName="ProfilePeriodSales"
+              DTS:DTSID="{1E230411-2186-4F48-8572-F04C7F06C36F}"
               DTS:CreationName="" />
           </DTS:FlatFileColumns>
         </DTS:ConnectionManager>
@@ -587,14 +587,35 @@
           VSTAMinorVersion="0"
           Language="CSharp">
           <ProjectItem
-            Name="Properties\Settings.settings"
-            Encoding="UTF8"><![CDATA[<?xml version='1.0' encoding='iso-8859-1'?>
-<SettingsFile xmlns="uri:settings" CurrentProfile="(Default)">
-  <Profiles>
-    <Profile Name="(Default)" />
-  </Profiles>
-  <Settings />
-</SettingsFile>]]></ProjectItem>
+            Name="Properties\AssemblyInfo.cs"
+            Encoding="UTF8"><![CDATA[using System.Reflection;
+using System.Runtime.CompilerServices;
+
+//
+// General Information about an assembly is controlled through the following 
+// set of attributes. Change these attribute values to modify the information
+// associated with an assembly.
+//
+[assembly: AssemblyTitle("ST_a3cb36deba6c4e9d8df747c9ca448544")]
+[assembly: AssemblyDescription("")]
+[assembly: AssemblyConfiguration("")]
+[assembly: AssemblyCompany("Microsoft")]
+[assembly: AssemblyProduct("ST_a3cb36deba6c4e9d8df747c9ca448544")]
+[assembly: AssemblyCopyright("Copyright @ Microsoft 2018")]
+[assembly: AssemblyTrademark("")]
+[assembly: AssemblyCulture("")]
+//
+// Version information for an assembly consists of the following four values:
+//
+//      Major Version
+//      Minor Version 
+//      Build Number
+//      Revision
+//
+// You can specify all the values or you can default the Revision and Build Numbers 
+// by using the '*' as shown below:
+
+[assembly: AssemblyVersion("1.0.*")]]]></ProjectItem>
           <ProjectItem
             Name="Properties\Resources.resx"
             Encoding="UTF8"><![CDATA[<?xml version="1.0" encoding="utf-8"?>
@@ -977,35 +998,14 @@ namespace ST_a3cb36deba6c4e9d8df747c9ca448544.Properties {
     }
 }]]></ProjectItem>
           <ProjectItem
-            Name="Properties\AssemblyInfo.cs"
-            Encoding="UTF8"><![CDATA[using System.Reflection;
-using System.Runtime.CompilerServices;
-
-//
-// General Information about an assembly is controlled through the following 
-// set of attributes. Change these attribute values to modify the information
-// associated with an assembly.
-//
-[assembly: AssemblyTitle("ST_a3cb36deba6c4e9d8df747c9ca448544")]
-[assembly: AssemblyDescription("")]
-[assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("Microsoft")]
-[assembly: AssemblyProduct("ST_a3cb36deba6c4e9d8df747c9ca448544")]
-[assembly: AssemblyCopyright("Copyright @ Microsoft 2018")]
-[assembly: AssemblyTrademark("")]
-[assembly: AssemblyCulture("")]
-//
-// Version information for an assembly consists of the following four values:
-//
-//      Major Version
-//      Minor Version 
-//      Build Number
-//      Revision
-//
-// You can specify all the values or you can default the Revision and Build Numbers 
-// by using the '*' as shown below:
-
-[assembly: AssemblyVersion("1.0.*")]]]></ProjectItem>
+            Name="Properties\Settings.settings"
+            Encoding="UTF8"><![CDATA[<?xml version='1.0' encoding='iso-8859-1'?>
+<SettingsFile xmlns="uri:settings" CurrentProfile="(Default)">
+  <Profiles>
+    <Profile Name="(Default)" />
+  </Profiles>
+  <Settings />
+</SettingsFile>]]></ProjectItem>
           <ProjectItem
             Name="Properties\Resources.Designer.cs"
             Encoding="UTF8"><![CDATA[//------------------------------------------------------------------------------
@@ -1244,7 +1244,7 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</BinaryItem>
                       dataType="System.String"
                       description="The SQL command to be executed."
                       name="SqlCommand"
-                      UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor, Microsoft.DataTransformationServices.Controls, Version=13.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91"></property>
+                      UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor, Microsoft.DataTransformationServices.Controls, Version=14.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91"></property>
                     <property
                       dataType="System.Int32"
                       description="Specifies the column code page to use when code page information is unavailable from the data source."
@@ -1433,7 +1433,7 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</BinaryItem>
                       dataType="System.String"
                       description="The SQL command to be executed."
                       name="SqlCommand"
-                      UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor, Microsoft.DataTransformationServices.Controls, Version=13.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91">SELECT (CASE left(ci.CustomerId,2)
+                      UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor, Microsoft.DataTransformationServices.Controls, Version=14.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91">SELECT (CASE left(ci.CustomerId,2)
                  WHEN '01' THEN 'FDF'
                  WHEN '02' THEN 'FEL'
                  WHEN '03' THEN 'FHS'
@@ -1709,7 +1709,7 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</BinaryItem>
                       dataType="System.String"
                       description="The SQL command to be executed."
                       name="SqlCommand"
-                      UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor, Microsoft.DataTransformationServices.Controls, Version=13.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91"></property>
+                      UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor, Microsoft.DataTransformationServices.Controls, Version=14.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91"></property>
                     <property
                       dataType="System.Int32"
                       description="Specifies the column code page to use when code page information is unavailable from the data source."
@@ -1850,7 +1850,7 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</BinaryItem>
                       dataType="System.String"
                       description="The SQL command to be executed."
                       name="SqlCommand"
-                      UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor, Microsoft.DataTransformationServices.Controls, Version=13.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91">SELECT 
+                      UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor, Microsoft.DataTransformationServices.Controls, Version=14.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91">SELECT 
 	pg.ProductGroupingKey as [GrowthAndRecoveryProductGroup],
 	CASE WHEN ISNUMERIC(pg.IdValue) = 0 THEN
 		pg.IdValue + '000'
@@ -2037,7 +2037,7 @@ FROM ETL.Staging_GrowthAndRecovery_Product_Grouping pg</property>
                       dataType="System.String"
                       description="The SQL command to be executed."
                       name="SqlCommand"
-                      UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor, Microsoft.DataTransformationServices.Controls, Version=13.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91"></property>
+                      UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor, Microsoft.DataTransformationServices.Controls, Version=14.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91"></property>
                     <property
                       dataType="System.Int32"
                       description="Specifies the column code page to use when code page information is unavailable from the data source."
@@ -2224,7 +2224,7 @@ FROM ETL.Staging_GrowthAndRecovery_Product_Grouping pg</property>
                       dataType="System.String"
                       description="The SQL command to be executed."
                       name="SqlCommand"
-                      UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor, Microsoft.DataTransformationServices.Controls, Version=13.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91">SELECT        ItemNumber, RecommendedItemNumber, Support, Confidence, Context_Key, { fn CONCAT(Primary_PriceListCode, Primary_PriceListSubCode) 
+                      UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor, Microsoft.DataTransformationServices.Controls, Version=14.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91">SELECT        ItemNumber, RecommendedItemNumber, Support, Confidence, Context_Key, { fn CONCAT(Primary_PriceListCode, Primary_PriceListSubCode) 
                          } AS PrimaryPriceListCode, { fn CONCAT(Secondary_PriceListCode, Secondary_PriceListSubCode) } AS SecondaryPriceListCode
 FROM            ETL.Staging_RecommendedItems</property>
                     <property
@@ -2650,7 +2650,7 @@ FROM            ETL.Staging_RecommendedItems</property>
                       dataType="System.String"
                       description="The SQL command to be executed."
                       name="SqlCommand"
-                      UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor, Microsoft.DataTransformationServices.Controls, Version=13.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91"></property>
+                      UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor, Microsoft.DataTransformationServices.Controls, Version=14.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91"></property>
                     <property
                       dataType="System.Int32"
                       description="Specifies the column code page to use when code page information is unavailable from the data source."
@@ -2887,14 +2887,168 @@ FROM            ETL.Staging_RecommendedItems</property>
                       name="Flat File Source Output">
                       <outputColumns>
                         <outputColumn
-                          refId="Package\Process Files\Process GrowthAndRecovery Customer Insights\Flat File Source.Outputs[Flat File Source Output].Columns[&quot;CurrencyIsoCode&quot;]"
+                          refId="Package\Process Files\Process GrowthAndRecovery Customer Insights\Flat File Source.Outputs[Flat File Source Output].Columns[CustomerInsightKey]"
+                          codePage="1252"
+                          dataType="str"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\Process Files\Process GrowthAndRecovery Customer Insights\Flat File Source.Outputs[Flat File Source Output].ExternalColumns[CustomerInsightKey]"
+                          length="50"
+                          lineageId="Package\Process Files\Process GrowthAndRecovery Customer Insights\Flat File Source.Outputs[Flat File Source Output].Columns[CustomerInsightKey]"
+                          name="CustomerInsightKey"
+                          truncationRowDisposition="FailComponent">
+                          <properties>
+                            <property
+                              dataType="System.Boolean"
+                              description="Indicates whether the column uses the faster, locale-neutral parsing routines."
+                              name="FastParse">false</property>
+                            <property
+                              dataType="System.Boolean"
+                              description="Indicates whether the data is in binary format."
+                              name="UseBinaryFormat">false</property>
+                          </properties>
+                        </outputColumn>
+                        <outputColumn
+                          refId="Package\Process Files\Process GrowthAndRecovery Customer Insights\Flat File Source.Outputs[Flat File Source Output].Columns[CustomerInsightVersionKey]"
+                          codePage="1252"
+                          dataType="str"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\Process Files\Process GrowthAndRecovery Customer Insights\Flat File Source.Outputs[Flat File Source Output].ExternalColumns[CustomerInsightVersionKey]"
+                          length="50"
+                          lineageId="Package\Process Files\Process GrowthAndRecovery Customer Insights\Flat File Source.Outputs[Flat File Source Output].Columns[CustomerInsightVersionKey]"
+                          name="CustomerInsightVersionKey"
+                          truncationRowDisposition="FailComponent">
+                          <properties>
+                            <property
+                              dataType="System.Boolean"
+                              description="Indicates whether the column uses the faster, locale-neutral parsing routines."
+                              name="FastParse">false</property>
+                            <property
+                              dataType="System.Boolean"
+                              description="Indicates whether the data is in binary format."
+                              name="UseBinaryFormat">false</property>
+                          </properties>
+                        </outputColumn>
+                        <outputColumn
+                          refId="Package\Process Files\Process GrowthAndRecovery Customer Insights\Flat File Source.Outputs[Flat File Source Output].Columns[CustomerId]"
+                          codePage="1252"
+                          dataType="str"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\Process Files\Process GrowthAndRecovery Customer Insights\Flat File Source.Outputs[Flat File Source Output].ExternalColumns[CustomerId]"
+                          length="50"
+                          lineageId="Package\Process Files\Process GrowthAndRecovery Customer Insights\Flat File Source.Outputs[Flat File Source Output].Columns[CustomerId]"
+                          name="CustomerId"
+                          truncationRowDisposition="FailComponent">
+                          <properties>
+                            <property
+                              dataType="System.Boolean"
+                              description="Indicates whether the column uses the faster, locale-neutral parsing routines."
+                              name="FastParse">false</property>
+                            <property
+                              dataType="System.Boolean"
+                              description="Indicates whether the data is in binary format."
+                              name="UseBinaryFormat">false</property>
+                          </properties>
+                        </outputColumn>
+                        <outputColumn
+                          refId="Package\Process Files\Process GrowthAndRecovery Customer Insights\Flat File Source.Outputs[Flat File Source Output].Columns[Name]"
+                          codePage="1252"
+                          dataType="str"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\Process Files\Process GrowthAndRecovery Customer Insights\Flat File Source.Outputs[Flat File Source Output].ExternalColumns[Name]"
+                          length="50"
+                          lineageId="Package\Process Files\Process GrowthAndRecovery Customer Insights\Flat File Source.Outputs[Flat File Source Output].Columns[Name]"
+                          name="Name"
+                          truncationRowDisposition="FailComponent">
+                          <properties>
+                            <property
+                              dataType="System.Boolean"
+                              description="Indicates whether the column uses the faster, locale-neutral parsing routines."
+                              name="FastParse">false</property>
+                            <property
+                              dataType="System.Boolean"
+                              description="Indicates whether the data is in binary format."
+                              name="UseBinaryFormat">false</property>
+                          </properties>
+                        </outputColumn>
+                        <outputColumn
+                          refId="Package\Process Files\Process GrowthAndRecovery Customer Insights\Flat File Source.Outputs[Flat File Source Output].Columns[CustomerCity]"
+                          codePage="1252"
+                          dataType="str"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\Process Files\Process GrowthAndRecovery Customer Insights\Flat File Source.Outputs[Flat File Source Output].ExternalColumns[CustomerCity]"
+                          length="50"
+                          lineageId="Package\Process Files\Process GrowthAndRecovery Customer Insights\Flat File Source.Outputs[Flat File Source Output].Columns[CustomerCity]"
+                          name="CustomerCity"
+                          truncationRowDisposition="FailComponent">
+                          <properties>
+                            <property
+                              dataType="System.Boolean"
+                              description="Indicates whether the column uses the faster, locale-neutral parsing routines."
+                              name="FastParse">false</property>
+                            <property
+                              dataType="System.Boolean"
+                              description="Indicates whether the data is in binary format."
+                              name="UseBinaryFormat">false</property>
+                          </properties>
+                        </outputColumn>
+                        <outputColumn
+                          refId="Package\Process Files\Process GrowthAndRecovery Customer Insights\Flat File Source.Outputs[Flat File Source Output].Columns[CustomerState]"
+                          codePage="1252"
+                          dataType="str"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\Process Files\Process GrowthAndRecovery Customer Insights\Flat File Source.Outputs[Flat File Source Output].ExternalColumns[CustomerState]"
+                          length="50"
+                          lineageId="Package\Process Files\Process GrowthAndRecovery Customer Insights\Flat File Source.Outputs[Flat File Source Output].Columns[CustomerState]"
+                          name="CustomerState"
+                          truncationRowDisposition="FailComponent">
+                          <properties>
+                            <property
+                              dataType="System.Boolean"
+                              description="Indicates whether the column uses the faster, locale-neutral parsing routines."
+                              name="FastParse">false</property>
+                            <property
+                              dataType="System.Boolean"
+                              description="Indicates whether the data is in binary format."
+                              name="UseBinaryFormat">false</property>
+                          </properties>
+                        </outputColumn>
+                        <outputColumn
+                          refId="Package\Process Files\Process GrowthAndRecovery Customer Insights\Flat File Source.Outputs[Flat File Source Output].Columns[CustomerCountry]"
+                          codePage="1252"
+                          dataType="str"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\Process Files\Process GrowthAndRecovery Customer Insights\Flat File Source.Outputs[Flat File Source Output].ExternalColumns[CustomerCountry]"
+                          length="50"
+                          lineageId="Package\Process Files\Process GrowthAndRecovery Customer Insights\Flat File Source.Outputs[Flat File Source Output].Columns[CustomerCountry]"
+                          name="CustomerCountry"
+                          truncationRowDisposition="FailComponent">
+                          <properties>
+                            <property
+                              dataType="System.Boolean"
+                              description="Indicates whether the column uses the faster, locale-neutral parsing routines."
+                              name="FastParse">false</property>
+                            <property
+                              dataType="System.Boolean"
+                              description="Indicates whether the data is in binary format."
+                              name="UseBinaryFormat">false</property>
+                          </properties>
+                        </outputColumn>
+                        <outputColumn
+                          refId="Package\Process Files\Process GrowthAndRecovery Customer Insights\Flat File Source.Outputs[Flat File Source Output].Columns[CurrencyIsoCode]"
                           dataType="wstr"
                           errorOrTruncationOperation="Conversion"
                           errorRowDisposition="FailComponent"
-                          externalMetadataColumnId="Package\Process Files\Process GrowthAndRecovery Customer Insights\Flat File Source.Outputs[Flat File Source Output].ExternalColumns[&quot;CurrencyIsoCode&quot;]"
+                          externalMetadataColumnId="Package\Process Files\Process GrowthAndRecovery Customer Insights\Flat File Source.Outputs[Flat File Source Output].ExternalColumns[CurrencyIsoCode]"
                           length="50"
-                          lineageId="Package\Process Files\Process GrowthAndRecovery Customer Insights\Flat File Source.Outputs[Flat File Source Output].Columns[&quot;CurrencyIsoCode&quot;]"
-                          name="&quot;CurrencyIsoCode&quot;"
+                          lineageId="Package\Process Files\Process GrowthAndRecovery Customer Insights\Flat File Source.Outputs[Flat File Source Output].Columns[CurrencyIsoCode]"
+                          name="CurrencyIsoCode"
                           truncationRowDisposition="FailComponent">
                           <properties>
                             <property
@@ -2908,15 +3062,15 @@ FROM            ETL.Staging_RecommendedItems</property>
                           </properties>
                         </outputColumn>
                         <outputColumn
-                          refId="Package\Process Files\Process GrowthAndRecovery Customer Insights\Flat File Source.Outputs[Flat File Source Output].Columns[&quot;CustomerInsightKey&quot;]"
+                          refId="Package\Process Files\Process GrowthAndRecovery Customer Insights\Flat File Source.Outputs[Flat File Source Output].Columns[StatusSummary]"
                           codePage="1252"
                           dataType="str"
                           errorOrTruncationOperation="Conversion"
                           errorRowDisposition="FailComponent"
-                          externalMetadataColumnId="Package\Process Files\Process GrowthAndRecovery Customer Insights\Flat File Source.Outputs[Flat File Source Output].ExternalColumns[&quot;CustomerInsightKey&quot;]"
+                          externalMetadataColumnId="Package\Process Files\Process GrowthAndRecovery Customer Insights\Flat File Source.Outputs[Flat File Source Output].ExternalColumns[StatusSummary]"
                           length="50"
-                          lineageId="Package\Process Files\Process GrowthAndRecovery Customer Insights\Flat File Source.Outputs[Flat File Source Output].Columns[&quot;CustomerInsightKey&quot;]"
-                          name="&quot;CustomerInsightKey&quot;"
+                          lineageId="Package\Process Files\Process GrowthAndRecovery Customer Insights\Flat File Source.Outputs[Flat File Source Output].Columns[StatusSummary]"
+                          name="StatusSummary"
                           truncationRowDisposition="FailComponent">
                           <properties>
                             <property
@@ -2930,15 +3084,15 @@ FROM            ETL.Staging_RecommendedItems</property>
                           </properties>
                         </outputColumn>
                         <outputColumn
-                          refId="Package\Process Files\Process GrowthAndRecovery Customer Insights\Flat File Source.Outputs[Flat File Source Output].Columns[&quot;CustomerInsightVersionKey&quot;]"
+                          refId="Package\Process Files\Process GrowthAndRecovery Customer Insights\Flat File Source.Outputs[Flat File Source Output].Columns[CustomerInsightStatus]"
                           codePage="1252"
                           dataType="str"
                           errorOrTruncationOperation="Conversion"
                           errorRowDisposition="FailComponent"
-                          externalMetadataColumnId="Package\Process Files\Process GrowthAndRecovery Customer Insights\Flat File Source.Outputs[Flat File Source Output].ExternalColumns[&quot;CustomerInsightVersionKey&quot;]"
+                          externalMetadataColumnId="Package\Process Files\Process GrowthAndRecovery Customer Insights\Flat File Source.Outputs[Flat File Source Output].ExternalColumns[CustomerInsightStatus]"
                           length="50"
-                          lineageId="Package\Process Files\Process GrowthAndRecovery Customer Insights\Flat File Source.Outputs[Flat File Source Output].Columns[&quot;CustomerInsightVersionKey&quot;]"
-                          name="&quot;CustomerInsightVersionKey&quot;"
+                          lineageId="Package\Process Files\Process GrowthAndRecovery Customer Insights\Flat File Source.Outputs[Flat File Source Output].Columns[CustomerInsightStatus]"
+                          name="CustomerInsightStatus"
                           truncationRowDisposition="FailComponent">
                           <properties>
                             <property
@@ -2952,15 +3106,15 @@ FROM            ETL.Staging_RecommendedItems</property>
                           </properties>
                         </outputColumn>
                         <outputColumn
-                          refId="Package\Process Files\Process GrowthAndRecovery Customer Insights\Flat File Source.Outputs[Flat File Source Output].Columns[&quot;CustomerId&quot;]"
+                          refId="Package\Process Files\Process GrowthAndRecovery Customer Insights\Flat File Source.Outputs[Flat File Source Output].Columns[FlaggedForInitialDelivery]"
                           codePage="1252"
                           dataType="str"
                           errorOrTruncationOperation="Conversion"
                           errorRowDisposition="FailComponent"
-                          externalMetadataColumnId="Package\Process Files\Process GrowthAndRecovery Customer Insights\Flat File Source.Outputs[Flat File Source Output].ExternalColumns[&quot;CustomerId&quot;]"
+                          externalMetadataColumnId="Package\Process Files\Process GrowthAndRecovery Customer Insights\Flat File Source.Outputs[Flat File Source Output].ExternalColumns[FlaggedForInitialDelivery]"
                           length="50"
-                          lineageId="Package\Process Files\Process GrowthAndRecovery Customer Insights\Flat File Source.Outputs[Flat File Source Output].Columns[&quot;CustomerId&quot;]"
-                          name="&quot;CustomerId&quot;"
+                          lineageId="Package\Process Files\Process GrowthAndRecovery Customer Insights\Flat File Source.Outputs[Flat File Source Output].Columns[FlaggedForInitialDelivery]"
+                          name="FlaggedForInitialDelivery"
                           truncationRowDisposition="FailComponent">
                           <properties>
                             <property
@@ -2974,15 +3128,15 @@ FROM            ETL.Staging_RecommendedItems</property>
                           </properties>
                         </outputColumn>
                         <outputColumn
-                          refId="Package\Process Files\Process GrowthAndRecovery Customer Insights\Flat File Source.Outputs[Flat File Source Output].Columns[&quot;CustomerCity&quot;]"
+                          refId="Package\Process Files\Process GrowthAndRecovery Customer Insights\Flat File Source.Outputs[Flat File Source Output].Columns[InitiativeName]"
                           codePage="1252"
                           dataType="str"
                           errorOrTruncationOperation="Conversion"
                           errorRowDisposition="FailComponent"
-                          externalMetadataColumnId="Package\Process Files\Process GrowthAndRecovery Customer Insights\Flat File Source.Outputs[Flat File Source Output].ExternalColumns[&quot;CustomerCity&quot;]"
+                          externalMetadataColumnId="Package\Process Files\Process GrowthAndRecovery Customer Insights\Flat File Source.Outputs[Flat File Source Output].ExternalColumns[InitiativeName]"
                           length="50"
-                          lineageId="Package\Process Files\Process GrowthAndRecovery Customer Insights\Flat File Source.Outputs[Flat File Source Output].Columns[&quot;CustomerCity&quot;]"
-                          name="&quot;CustomerCity&quot;"
+                          lineageId="Package\Process Files\Process GrowthAndRecovery Customer Insights\Flat File Source.Outputs[Flat File Source Output].Columns[InitiativeName]"
+                          name="InitiativeName"
                           truncationRowDisposition="FailComponent">
                           <properties>
                             <property
@@ -2996,15 +3150,15 @@ FROM            ETL.Staging_RecommendedItems</property>
                           </properties>
                         </outputColumn>
                         <outputColumn
-                          refId="Package\Process Files\Process GrowthAndRecovery Customer Insights\Flat File Source.Outputs[Flat File Source Output].Columns[&quot;CustomerState&quot;]"
+                          refId="Package\Process Files\Process GrowthAndRecovery Customer Insights\Flat File Source.Outputs[Flat File Source Output].Columns[ReportingGroup]"
                           codePage="1252"
                           dataType="str"
                           errorOrTruncationOperation="Conversion"
                           errorRowDisposition="FailComponent"
-                          externalMetadataColumnId="Package\Process Files\Process GrowthAndRecovery Customer Insights\Flat File Source.Outputs[Flat File Source Output].ExternalColumns[&quot;CustomerState&quot;]"
+                          externalMetadataColumnId="Package\Process Files\Process GrowthAndRecovery Customer Insights\Flat File Source.Outputs[Flat File Source Output].ExternalColumns[ReportingGroup]"
                           length="50"
-                          lineageId="Package\Process Files\Process GrowthAndRecovery Customer Insights\Flat File Source.Outputs[Flat File Source Output].Columns[&quot;CustomerState&quot;]"
-                          name="&quot;CustomerState&quot;"
+                          lineageId="Package\Process Files\Process GrowthAndRecovery Customer Insights\Flat File Source.Outputs[Flat File Source Output].Columns[ReportingGroup]"
+                          name="ReportingGroup"
                           truncationRowDisposition="FailComponent">
                           <properties>
                             <property
@@ -3018,169 +3172,15 @@ FROM            ETL.Staging_RecommendedItems</property>
                           </properties>
                         </outputColumn>
                         <outputColumn
-                          refId="Package\Process Files\Process GrowthAndRecovery Customer Insights\Flat File Source.Outputs[Flat File Source Output].Columns[&quot;CustomerCountry&quot;]"
+                          refId="Package\Process Files\Process GrowthAndRecovery Customer Insights\Flat File Source.Outputs[Flat File Source Output].Columns[CustomerInsightType]"
                           codePage="1252"
                           dataType="str"
                           errorOrTruncationOperation="Conversion"
                           errorRowDisposition="FailComponent"
-                          externalMetadataColumnId="Package\Process Files\Process GrowthAndRecovery Customer Insights\Flat File Source.Outputs[Flat File Source Output].ExternalColumns[&quot;CustomerCountry&quot;]"
+                          externalMetadataColumnId="Package\Process Files\Process GrowthAndRecovery Customer Insights\Flat File Source.Outputs[Flat File Source Output].ExternalColumns[CustomerInsightType]"
                           length="50"
-                          lineageId="Package\Process Files\Process GrowthAndRecovery Customer Insights\Flat File Source.Outputs[Flat File Source Output].Columns[&quot;CustomerCountry&quot;]"
-                          name="&quot;CustomerCountry&quot;"
-                          truncationRowDisposition="FailComponent">
-                          <properties>
-                            <property
-                              dataType="System.Boolean"
-                              description="Indicates whether the column uses the faster, locale-neutral parsing routines."
-                              name="FastParse">false</property>
-                            <property
-                              dataType="System.Boolean"
-                              description="Indicates whether the data is in binary format."
-                              name="UseBinaryFormat">false</property>
-                          </properties>
-                        </outputColumn>
-                        <outputColumn
-                          refId="Package\Process Files\Process GrowthAndRecovery Customer Insights\Flat File Source.Outputs[Flat File Source Output].Columns[&quot;StatusSummary&quot;]"
-                          codePage="1252"
-                          dataType="str"
-                          errorOrTruncationOperation="Conversion"
-                          errorRowDisposition="FailComponent"
-                          externalMetadataColumnId="Package\Process Files\Process GrowthAndRecovery Customer Insights\Flat File Source.Outputs[Flat File Source Output].ExternalColumns[&quot;StatusSummary&quot;]"
-                          length="50"
-                          lineageId="Package\Process Files\Process GrowthAndRecovery Customer Insights\Flat File Source.Outputs[Flat File Source Output].Columns[&quot;StatusSummary&quot;]"
-                          name="&quot;StatusSummary&quot;"
-                          truncationRowDisposition="FailComponent">
-                          <properties>
-                            <property
-                              dataType="System.Boolean"
-                              description="Indicates whether the column uses the faster, locale-neutral parsing routines."
-                              name="FastParse">false</property>
-                            <property
-                              dataType="System.Boolean"
-                              description="Indicates whether the data is in binary format."
-                              name="UseBinaryFormat">false</property>
-                          </properties>
-                        </outputColumn>
-                        <outputColumn
-                          refId="Package\Process Files\Process GrowthAndRecovery Customer Insights\Flat File Source.Outputs[Flat File Source Output].Columns[&quot;CustomerInsightStatus&quot;]"
-                          codePage="1252"
-                          dataType="str"
-                          errorOrTruncationOperation="Conversion"
-                          errorRowDisposition="FailComponent"
-                          externalMetadataColumnId="Package\Process Files\Process GrowthAndRecovery Customer Insights\Flat File Source.Outputs[Flat File Source Output].ExternalColumns[&quot;CustomerInsightStatus&quot;]"
-                          length="50"
-                          lineageId="Package\Process Files\Process GrowthAndRecovery Customer Insights\Flat File Source.Outputs[Flat File Source Output].Columns[&quot;CustomerInsightStatus&quot;]"
-                          name="&quot;CustomerInsightStatus&quot;"
-                          truncationRowDisposition="FailComponent">
-                          <properties>
-                            <property
-                              dataType="System.Boolean"
-                              description="Indicates whether the column uses the faster, locale-neutral parsing routines."
-                              name="FastParse">false</property>
-                            <property
-                              dataType="System.Boolean"
-                              description="Indicates whether the data is in binary format."
-                              name="UseBinaryFormat">false</property>
-                          </properties>
-                        </outputColumn>
-                        <outputColumn
-                          refId="Package\Process Files\Process GrowthAndRecovery Customer Insights\Flat File Source.Outputs[Flat File Source Output].Columns[&quot;FlaggedForInitialDelivery&quot;]"
-                          codePage="1252"
-                          dataType="str"
-                          errorOrTruncationOperation="Conversion"
-                          errorRowDisposition="FailComponent"
-                          externalMetadataColumnId="Package\Process Files\Process GrowthAndRecovery Customer Insights\Flat File Source.Outputs[Flat File Source Output].ExternalColumns[&quot;FlaggedForInitialDelivery&quot;]"
-                          length="50"
-                          lineageId="Package\Process Files\Process GrowthAndRecovery Customer Insights\Flat File Source.Outputs[Flat File Source Output].Columns[&quot;FlaggedForInitialDelivery&quot;]"
-                          name="&quot;FlaggedForInitialDelivery&quot;"
-                          truncationRowDisposition="FailComponent">
-                          <properties>
-                            <property
-                              dataType="System.Boolean"
-                              description="Indicates whether the column uses the faster, locale-neutral parsing routines."
-                              name="FastParse">false</property>
-                            <property
-                              dataType="System.Boolean"
-                              description="Indicates whether the data is in binary format."
-                              name="UseBinaryFormat">false</property>
-                          </properties>
-                        </outputColumn>
-                        <outputColumn
-                          refId="Package\Process Files\Process GrowthAndRecovery Customer Insights\Flat File Source.Outputs[Flat File Source Output].Columns[&quot;InitiativeName&quot;]"
-                          codePage="1252"
-                          dataType="str"
-                          errorOrTruncationOperation="Conversion"
-                          errorRowDisposition="FailComponent"
-                          externalMetadataColumnId="Package\Process Files\Process GrowthAndRecovery Customer Insights\Flat File Source.Outputs[Flat File Source Output].ExternalColumns[&quot;InitiativeName&quot;]"
-                          length="50"
-                          lineageId="Package\Process Files\Process GrowthAndRecovery Customer Insights\Flat File Source.Outputs[Flat File Source Output].Columns[&quot;InitiativeName&quot;]"
-                          name="&quot;InitiativeName&quot;"
-                          truncationRowDisposition="FailComponent">
-                          <properties>
-                            <property
-                              dataType="System.Boolean"
-                              description="Indicates whether the column uses the faster, locale-neutral parsing routines."
-                              name="FastParse">false</property>
-                            <property
-                              dataType="System.Boolean"
-                              description="Indicates whether the data is in binary format."
-                              name="UseBinaryFormat">false</property>
-                          </properties>
-                        </outputColumn>
-                        <outputColumn
-                          refId="Package\Process Files\Process GrowthAndRecovery Customer Insights\Flat File Source.Outputs[Flat File Source Output].Columns[&quot;ReportingGroup&quot;]"
-                          codePage="1252"
-                          dataType="str"
-                          errorOrTruncationOperation="Conversion"
-                          errorRowDisposition="FailComponent"
-                          externalMetadataColumnId="Package\Process Files\Process GrowthAndRecovery Customer Insights\Flat File Source.Outputs[Flat File Source Output].ExternalColumns[&quot;ReportingGroup&quot;]"
-                          length="50"
-                          lineageId="Package\Process Files\Process GrowthAndRecovery Customer Insights\Flat File Source.Outputs[Flat File Source Output].Columns[&quot;ReportingGroup&quot;]"
-                          name="&quot;ReportingGroup&quot;"
-                          truncationRowDisposition="FailComponent">
-                          <properties>
-                            <property
-                              dataType="System.Boolean"
-                              description="Indicates whether the column uses the faster, locale-neutral parsing routines."
-                              name="FastParse">false</property>
-                            <property
-                              dataType="System.Boolean"
-                              description="Indicates whether the data is in binary format."
-                              name="UseBinaryFormat">false</property>
-                          </properties>
-                        </outputColumn>
-                        <outputColumn
-                          refId="Package\Process Files\Process GrowthAndRecovery Customer Insights\Flat File Source.Outputs[Flat File Source Output].Columns[&quot;CustomerInsightType&quot;]"
-                          codePage="1252"
-                          dataType="str"
-                          errorOrTruncationOperation="Conversion"
-                          errorRowDisposition="FailComponent"
-                          externalMetadataColumnId="Package\Process Files\Process GrowthAndRecovery Customer Insights\Flat File Source.Outputs[Flat File Source Output].ExternalColumns[&quot;CustomerInsightType&quot;]"
-                          length="50"
-                          lineageId="Package\Process Files\Process GrowthAndRecovery Customer Insights\Flat File Source.Outputs[Flat File Source Output].Columns[&quot;CustomerInsightType&quot;]"
-                          name="&quot;CustomerInsightType&quot;"
-                          truncationRowDisposition="FailComponent">
-                          <properties>
-                            <property
-                              dataType="System.Boolean"
-                              description="Indicates whether the column uses the faster, locale-neutral parsing routines."
-                              name="FastParse">false</property>
-                            <property
-                              dataType="System.Boolean"
-                              description="Indicates whether the data is in binary format."
-                              name="UseBinaryFormat">false</property>
-                          </properties>
-                        </outputColumn>
-                        <outputColumn
-                          refId="Package\Process Files\Process GrowthAndRecovery Customer Insights\Flat File Source.Outputs[Flat File Source Output].Columns[&quot;Name&quot;]"
-                          codePage="1252"
-                          dataType="str"
-                          errorOrTruncationOperation="Conversion"
-                          errorRowDisposition="FailComponent"
-                          externalMetadataColumnId="Package\Process Files\Process GrowthAndRecovery Customer Insights\Flat File Source.Outputs[Flat File Source Output].ExternalColumns[&quot;Name&quot;]"
-                          length="50"
-                          lineageId="Package\Process Files\Process GrowthAndRecovery Customer Insights\Flat File Source.Outputs[Flat File Source Output].Columns[&quot;Name&quot;]"
-                          name="&quot;Name&quot;"
+                          lineageId="Package\Process Files\Process GrowthAndRecovery Customer Insights\Flat File Source.Outputs[Flat File Source Output].Columns[CustomerInsightType]"
+                          name="CustomerInsightType"
                           truncationRowDisposition="FailComponent">
                           <properties>
                             <property
@@ -3197,89 +3197,88 @@ FROM            ETL.Staging_RecommendedItems</property>
                       <externalMetadataColumns
                         isUsed="True">
                         <externalMetadataColumn
-                          refId="Package\Process Files\Process GrowthAndRecovery Customer Insights\Flat File Source.Outputs[Flat File Source Output].ExternalColumns[&quot;CurrencyIsoCode&quot;]"
+                          refId="Package\Process Files\Process GrowthAndRecovery Customer Insights\Flat File Source.Outputs[Flat File Source Output].ExternalColumns[CustomerInsightKey]"
                           codePage="1252"
                           dataType="str"
                           length="50"
-                          name="&quot;CurrencyIsoCode&quot;" />
+                          name="CustomerInsightKey" />
                         <externalMetadataColumn
-                          refId="Package\Process Files\Process GrowthAndRecovery Customer Insights\Flat File Source.Outputs[Flat File Source Output].ExternalColumns[&quot;Name&quot;]"
+                          refId="Package\Process Files\Process GrowthAndRecovery Customer Insights\Flat File Source.Outputs[Flat File Source Output].ExternalColumns[CustomerInsightVersionKey]"
                           codePage="1252"
                           dataType="str"
                           length="50"
-                          name="&quot;Name&quot;" />
+                          name="CustomerInsightVersionKey" />
                         <externalMetadataColumn
-                          refId="Package\Process Files\Process GrowthAndRecovery Customer Insights\Flat File Source.Outputs[Flat File Source Output].ExternalColumns[&quot;CustomerInsightKey&quot;]"
+                          refId="Package\Process Files\Process GrowthAndRecovery Customer Insights\Flat File Source.Outputs[Flat File Source Output].ExternalColumns[CustomerId]"
                           codePage="1252"
                           dataType="str"
                           length="50"
-                          name="&quot;CustomerInsightKey&quot;" />
+                          name="CustomerId" />
                         <externalMetadataColumn
-                          refId="Package\Process Files\Process GrowthAndRecovery Customer Insights\Flat File Source.Outputs[Flat File Source Output].ExternalColumns[&quot;CustomerInsightVersionKey&quot;]"
+                          refId="Package\Process Files\Process GrowthAndRecovery Customer Insights\Flat File Source.Outputs[Flat File Source Output].ExternalColumns[Name]"
                           codePage="1252"
                           dataType="str"
                           length="50"
-                          name="&quot;CustomerInsightVersionKey&quot;" />
+                          name="Name" />
                         <externalMetadataColumn
-                          refId="Package\Process Files\Process GrowthAndRecovery Customer Insights\Flat File Source.Outputs[Flat File Source Output].ExternalColumns[&quot;CustomerId&quot;]"
+                          refId="Package\Process Files\Process GrowthAndRecovery Customer Insights\Flat File Source.Outputs[Flat File Source Output].ExternalColumns[CustomerCity]"
                           codePage="1252"
                           dataType="str"
                           length="50"
-                          name="&quot;CustomerId&quot;" />
+                          name="CustomerCity" />
                         <externalMetadataColumn
-                          refId="Package\Process Files\Process GrowthAndRecovery Customer Insights\Flat File Source.Outputs[Flat File Source Output].ExternalColumns[&quot;CustomerCity&quot;]"
+                          refId="Package\Process Files\Process GrowthAndRecovery Customer Insights\Flat File Source.Outputs[Flat File Source Output].ExternalColumns[CustomerState]"
                           codePage="1252"
                           dataType="str"
                           length="50"
-                          name="&quot;CustomerCity&quot;" />
+                          name="CustomerState" />
                         <externalMetadataColumn
-                          refId="Package\Process Files\Process GrowthAndRecovery Customer Insights\Flat File Source.Outputs[Flat File Source Output].ExternalColumns[&quot;CustomerState&quot;]"
+                          refId="Package\Process Files\Process GrowthAndRecovery Customer Insights\Flat File Source.Outputs[Flat File Source Output].ExternalColumns[CustomerCountry]"
                           codePage="1252"
                           dataType="str"
                           length="50"
-                          name="&quot;CustomerState&quot;" />
+                          name="CustomerCountry" />
                         <externalMetadataColumn
-                          refId="Package\Process Files\Process GrowthAndRecovery Customer Insights\Flat File Source.Outputs[Flat File Source Output].ExternalColumns[&quot;CustomerCountry&quot;]"
-                          codePage="1252"
-                          dataType="str"
+                          refId="Package\Process Files\Process GrowthAndRecovery Customer Insights\Flat File Source.Outputs[Flat File Source Output].ExternalColumns[CurrencyIsoCode]"
+                          dataType="wstr"
                           length="50"
-                          name="&quot;CustomerCountry&quot;" />
+                          name="CurrencyIsoCode" />
                         <externalMetadataColumn
-                          refId="Package\Process Files\Process GrowthAndRecovery Customer Insights\Flat File Source.Outputs[Flat File Source Output].ExternalColumns[&quot;StatusSummary&quot;]"
+                          refId="Package\Process Files\Process GrowthAndRecovery Customer Insights\Flat File Source.Outputs[Flat File Source Output].ExternalColumns[StatusSummary]"
                           codePage="1252"
                           dataType="str"
                           length="50"
-                          name="&quot;StatusSummary&quot;" />
+                          name="StatusSummary" />
                         <externalMetadataColumn
-                          refId="Package\Process Files\Process GrowthAndRecovery Customer Insights\Flat File Source.Outputs[Flat File Source Output].ExternalColumns[&quot;CustomerInsightStatus&quot;]"
+                          refId="Package\Process Files\Process GrowthAndRecovery Customer Insights\Flat File Source.Outputs[Flat File Source Output].ExternalColumns[CustomerInsightStatus]"
                           codePage="1252"
                           dataType="str"
                           length="50"
-                          name="&quot;CustomerInsightStatus&quot;" />
+                          name="CustomerInsightStatus" />
                         <externalMetadataColumn
-                          refId="Package\Process Files\Process GrowthAndRecovery Customer Insights\Flat File Source.Outputs[Flat File Source Output].ExternalColumns[&quot;FlaggedForInitialDelivery&quot;]"
+                          refId="Package\Process Files\Process GrowthAndRecovery Customer Insights\Flat File Source.Outputs[Flat File Source Output].ExternalColumns[FlaggedForInitialDelivery]"
                           codePage="1252"
                           dataType="str"
                           length="50"
-                          name="&quot;FlaggedForInitialDelivery&quot;" />
+                          name="FlaggedForInitialDelivery" />
                         <externalMetadataColumn
-                          refId="Package\Process Files\Process GrowthAndRecovery Customer Insights\Flat File Source.Outputs[Flat File Source Output].ExternalColumns[&quot;InitiativeName&quot;]"
+                          refId="Package\Process Files\Process GrowthAndRecovery Customer Insights\Flat File Source.Outputs[Flat File Source Output].ExternalColumns[InitiativeName]"
                           codePage="1252"
                           dataType="str"
                           length="50"
-                          name="&quot;InitiativeName&quot;" />
+                          name="InitiativeName" />
                         <externalMetadataColumn
-                          refId="Package\Process Files\Process GrowthAndRecovery Customer Insights\Flat File Source.Outputs[Flat File Source Output].ExternalColumns[&quot;ReportingGroup&quot;]"
+                          refId="Package\Process Files\Process GrowthAndRecovery Customer Insights\Flat File Source.Outputs[Flat File Source Output].ExternalColumns[ReportingGroup]"
                           codePage="1252"
                           dataType="str"
                           length="50"
-                          name="&quot;ReportingGroup&quot;" />
+                          name="ReportingGroup" />
                         <externalMetadataColumn
-                          refId="Package\Process Files\Process GrowthAndRecovery Customer Insights\Flat File Source.Outputs[Flat File Source Output].ExternalColumns[&quot;CustomerInsightType&quot;]"
+                          refId="Package\Process Files\Process GrowthAndRecovery Customer Insights\Flat File Source.Outputs[Flat File Source Output].ExternalColumns[CustomerInsightType]"
                           codePage="1252"
                           dataType="str"
                           length="50"
-                          name="&quot;CustomerInsightType&quot;" />
+                          name="CustomerInsightType" />
                       </externalMetadataColumns>
                     </output>
                     <output
@@ -3336,7 +3335,7 @@ FROM            ETL.Staging_RecommendedItems</property>
                       dataType="System.String"
                       description="The SQL command to be executed."
                       name="SqlCommand"
-                      UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor, Microsoft.DataTransformationServices.Controls, Version=13.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91"></property>
+                      UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor, Microsoft.DataTransformationServices.Controls, Version=14.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91"></property>
                     <property
                       dataType="System.Int32"
                       description="Specifies the column code page to use when code page information is unavailable from the data source."
@@ -3384,116 +3383,116 @@ FROM            ETL.Staging_RecommendedItems</property>
                       name="OLE DB Destination Input">
                       <inputColumns>
                         <inputColumn
-                          refId="Package\Process Files\Process GrowthAndRecovery Customer Insights\OLE DB Destination.Inputs[OLE DB Destination Input].Columns[&quot;CurrencyIsoCode&quot;]"
+                          refId="Package\Process Files\Process GrowthAndRecovery Customer Insights\OLE DB Destination.Inputs[OLE DB Destination Input].Columns[CurrencyIsoCode]"
                           cachedDataType="wstr"
                           cachedLength="50"
-                          cachedName="&quot;CurrencyIsoCode&quot;"
+                          cachedName="CurrencyIsoCode"
                           externalMetadataColumnId="Package\Process Files\Process GrowthAndRecovery Customer Insights\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[CurrencyIsoCode]"
-                          lineageId="Package\Process Files\Process GrowthAndRecovery Customer Insights\Flat File Source.Outputs[Flat File Source Output].Columns[&quot;CurrencyIsoCode&quot;]" />
+                          lineageId="Package\Process Files\Process GrowthAndRecovery Customer Insights\Flat File Source.Outputs[Flat File Source Output].Columns[CurrencyIsoCode]" />
                         <inputColumn
-                          refId="Package\Process Files\Process GrowthAndRecovery Customer Insights\OLE DB Destination.Inputs[OLE DB Destination Input].Columns[&quot;Name&quot;]"
+                          refId="Package\Process Files\Process GrowthAndRecovery Customer Insights\OLE DB Destination.Inputs[OLE DB Destination Input].Columns[Name]"
                           cachedCodepage="1252"
                           cachedDataType="str"
                           cachedLength="50"
-                          cachedName="&quot;Name&quot;"
+                          cachedName="Name"
                           externalMetadataColumnId="Package\Process Files\Process GrowthAndRecovery Customer Insights\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[Name]"
-                          lineageId="Package\Process Files\Process GrowthAndRecovery Customer Insights\Flat File Source.Outputs[Flat File Source Output].Columns[&quot;Name&quot;]" />
+                          lineageId="Package\Process Files\Process GrowthAndRecovery Customer Insights\Flat File Source.Outputs[Flat File Source Output].Columns[Name]" />
                         <inputColumn
-                          refId="Package\Process Files\Process GrowthAndRecovery Customer Insights\OLE DB Destination.Inputs[OLE DB Destination Input].Columns[&quot;CustomerInsightKey&quot;]"
+                          refId="Package\Process Files\Process GrowthAndRecovery Customer Insights\OLE DB Destination.Inputs[OLE DB Destination Input].Columns[CustomerInsightKey]"
                           cachedCodepage="1252"
                           cachedDataType="str"
                           cachedLength="50"
-                          cachedName="&quot;CustomerInsightKey&quot;"
+                          cachedName="CustomerInsightKey"
                           externalMetadataColumnId="Package\Process Files\Process GrowthAndRecovery Customer Insights\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[CustomerInsightKey]"
-                          lineageId="Package\Process Files\Process GrowthAndRecovery Customer Insights\Flat File Source.Outputs[Flat File Source Output].Columns[&quot;CustomerInsightKey&quot;]" />
+                          lineageId="Package\Process Files\Process GrowthAndRecovery Customer Insights\Flat File Source.Outputs[Flat File Source Output].Columns[CustomerInsightKey]" />
                         <inputColumn
-                          refId="Package\Process Files\Process GrowthAndRecovery Customer Insights\OLE DB Destination.Inputs[OLE DB Destination Input].Columns[&quot;CustomerInsightVersionKey&quot;]"
+                          refId="Package\Process Files\Process GrowthAndRecovery Customer Insights\OLE DB Destination.Inputs[OLE DB Destination Input].Columns[CustomerInsightVersionKey]"
                           cachedCodepage="1252"
                           cachedDataType="str"
                           cachedLength="50"
-                          cachedName="&quot;CustomerInsightVersionKey&quot;"
+                          cachedName="CustomerInsightVersionKey"
                           externalMetadataColumnId="Package\Process Files\Process GrowthAndRecovery Customer Insights\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[CustomerInsightVersionKey]"
-                          lineageId="Package\Process Files\Process GrowthAndRecovery Customer Insights\Flat File Source.Outputs[Flat File Source Output].Columns[&quot;CustomerInsightVersionKey&quot;]" />
+                          lineageId="Package\Process Files\Process GrowthAndRecovery Customer Insights\Flat File Source.Outputs[Flat File Source Output].Columns[CustomerInsightVersionKey]" />
                         <inputColumn
-                          refId="Package\Process Files\Process GrowthAndRecovery Customer Insights\OLE DB Destination.Inputs[OLE DB Destination Input].Columns[&quot;CustomerId&quot;]"
+                          refId="Package\Process Files\Process GrowthAndRecovery Customer Insights\OLE DB Destination.Inputs[OLE DB Destination Input].Columns[CustomerId]"
                           cachedCodepage="1252"
                           cachedDataType="str"
                           cachedLength="50"
-                          cachedName="&quot;CustomerId&quot;"
+                          cachedName="CustomerId"
                           externalMetadataColumnId="Package\Process Files\Process GrowthAndRecovery Customer Insights\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[CustomerId]"
-                          lineageId="Package\Process Files\Process GrowthAndRecovery Customer Insights\Flat File Source.Outputs[Flat File Source Output].Columns[&quot;CustomerId&quot;]" />
+                          lineageId="Package\Process Files\Process GrowthAndRecovery Customer Insights\Flat File Source.Outputs[Flat File Source Output].Columns[CustomerId]" />
                         <inputColumn
-                          refId="Package\Process Files\Process GrowthAndRecovery Customer Insights\OLE DB Destination.Inputs[OLE DB Destination Input].Columns[&quot;CustomerCity&quot;]"
+                          refId="Package\Process Files\Process GrowthAndRecovery Customer Insights\OLE DB Destination.Inputs[OLE DB Destination Input].Columns[CustomerCity]"
                           cachedCodepage="1252"
                           cachedDataType="str"
                           cachedLength="50"
-                          cachedName="&quot;CustomerCity&quot;"
+                          cachedName="CustomerCity"
                           externalMetadataColumnId="Package\Process Files\Process GrowthAndRecovery Customer Insights\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[CustomerCity]"
-                          lineageId="Package\Process Files\Process GrowthAndRecovery Customer Insights\Flat File Source.Outputs[Flat File Source Output].Columns[&quot;CustomerCity&quot;]" />
+                          lineageId="Package\Process Files\Process GrowthAndRecovery Customer Insights\Flat File Source.Outputs[Flat File Source Output].Columns[CustomerCity]" />
                         <inputColumn
-                          refId="Package\Process Files\Process GrowthAndRecovery Customer Insights\OLE DB Destination.Inputs[OLE DB Destination Input].Columns[&quot;CustomerState&quot;]"
+                          refId="Package\Process Files\Process GrowthAndRecovery Customer Insights\OLE DB Destination.Inputs[OLE DB Destination Input].Columns[CustomerState]"
                           cachedCodepage="1252"
                           cachedDataType="str"
                           cachedLength="50"
-                          cachedName="&quot;CustomerState&quot;"
+                          cachedName="CustomerState"
                           externalMetadataColumnId="Package\Process Files\Process GrowthAndRecovery Customer Insights\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[CustomerState]"
-                          lineageId="Package\Process Files\Process GrowthAndRecovery Customer Insights\Flat File Source.Outputs[Flat File Source Output].Columns[&quot;CustomerState&quot;]" />
+                          lineageId="Package\Process Files\Process GrowthAndRecovery Customer Insights\Flat File Source.Outputs[Flat File Source Output].Columns[CustomerState]" />
                         <inputColumn
-                          refId="Package\Process Files\Process GrowthAndRecovery Customer Insights\OLE DB Destination.Inputs[OLE DB Destination Input].Columns[&quot;CustomerCountry&quot;]"
+                          refId="Package\Process Files\Process GrowthAndRecovery Customer Insights\OLE DB Destination.Inputs[OLE DB Destination Input].Columns[CustomerCountry]"
                           cachedCodepage="1252"
                           cachedDataType="str"
                           cachedLength="50"
-                          cachedName="&quot;CustomerCountry&quot;"
+                          cachedName="CustomerCountry"
                           externalMetadataColumnId="Package\Process Files\Process GrowthAndRecovery Customer Insights\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[CustomerCountry]"
-                          lineageId="Package\Process Files\Process GrowthAndRecovery Customer Insights\Flat File Source.Outputs[Flat File Source Output].Columns[&quot;CustomerCountry&quot;]" />
+                          lineageId="Package\Process Files\Process GrowthAndRecovery Customer Insights\Flat File Source.Outputs[Flat File Source Output].Columns[CustomerCountry]" />
                         <inputColumn
-                          refId="Package\Process Files\Process GrowthAndRecovery Customer Insights\OLE DB Destination.Inputs[OLE DB Destination Input].Columns[&quot;StatusSummary&quot;]"
+                          refId="Package\Process Files\Process GrowthAndRecovery Customer Insights\OLE DB Destination.Inputs[OLE DB Destination Input].Columns[StatusSummary]"
                           cachedCodepage="1252"
                           cachedDataType="str"
                           cachedLength="50"
-                          cachedName="&quot;StatusSummary&quot;"
+                          cachedName="StatusSummary"
                           externalMetadataColumnId="Package\Process Files\Process GrowthAndRecovery Customer Insights\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[StatusSummary]"
-                          lineageId="Package\Process Files\Process GrowthAndRecovery Customer Insights\Flat File Source.Outputs[Flat File Source Output].Columns[&quot;StatusSummary&quot;]" />
+                          lineageId="Package\Process Files\Process GrowthAndRecovery Customer Insights\Flat File Source.Outputs[Flat File Source Output].Columns[StatusSummary]" />
                         <inputColumn
-                          refId="Package\Process Files\Process GrowthAndRecovery Customer Insights\OLE DB Destination.Inputs[OLE DB Destination Input].Columns[&quot;CustomerInsightStatus&quot;]"
+                          refId="Package\Process Files\Process GrowthAndRecovery Customer Insights\OLE DB Destination.Inputs[OLE DB Destination Input].Columns[CustomerInsightStatus]"
                           cachedCodepage="1252"
                           cachedDataType="str"
                           cachedLength="50"
-                          cachedName="&quot;CustomerInsightStatus&quot;"
+                          cachedName="CustomerInsightStatus"
                           externalMetadataColumnId="Package\Process Files\Process GrowthAndRecovery Customer Insights\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[CustomerInsightStatus]"
-                          lineageId="Package\Process Files\Process GrowthAndRecovery Customer Insights\Flat File Source.Outputs[Flat File Source Output].Columns[&quot;CustomerInsightStatus&quot;]" />
+                          lineageId="Package\Process Files\Process GrowthAndRecovery Customer Insights\Flat File Source.Outputs[Flat File Source Output].Columns[CustomerInsightStatus]" />
                         <inputColumn
-                          refId="Package\Process Files\Process GrowthAndRecovery Customer Insights\OLE DB Destination.Inputs[OLE DB Destination Input].Columns[&quot;FlaggedForInitialDelivery&quot;]"
+                          refId="Package\Process Files\Process GrowthAndRecovery Customer Insights\OLE DB Destination.Inputs[OLE DB Destination Input].Columns[FlaggedForInitialDelivery]"
                           cachedCodepage="1252"
                           cachedDataType="str"
                           cachedLength="50"
-                          cachedName="&quot;FlaggedForInitialDelivery&quot;"
+                          cachedName="FlaggedForInitialDelivery"
                           externalMetadataColumnId="Package\Process Files\Process GrowthAndRecovery Customer Insights\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[FlaggedForInitialDelivery]"
-                          lineageId="Package\Process Files\Process GrowthAndRecovery Customer Insights\Flat File Source.Outputs[Flat File Source Output].Columns[&quot;FlaggedForInitialDelivery&quot;]" />
+                          lineageId="Package\Process Files\Process GrowthAndRecovery Customer Insights\Flat File Source.Outputs[Flat File Source Output].Columns[FlaggedForInitialDelivery]" />
                         <inputColumn
-                          refId="Package\Process Files\Process GrowthAndRecovery Customer Insights\OLE DB Destination.Inputs[OLE DB Destination Input].Columns[&quot;InitiativeName&quot;]"
+                          refId="Package\Process Files\Process GrowthAndRecovery Customer Insights\OLE DB Destination.Inputs[OLE DB Destination Input].Columns[InitiativeName]"
                           cachedCodepage="1252"
                           cachedDataType="str"
                           cachedLength="50"
-                          cachedName="&quot;InitiativeName&quot;"
+                          cachedName="InitiativeName"
                           externalMetadataColumnId="Package\Process Files\Process GrowthAndRecovery Customer Insights\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[InitiativeName]"
-                          lineageId="Package\Process Files\Process GrowthAndRecovery Customer Insights\Flat File Source.Outputs[Flat File Source Output].Columns[&quot;InitiativeName&quot;]" />
+                          lineageId="Package\Process Files\Process GrowthAndRecovery Customer Insights\Flat File Source.Outputs[Flat File Source Output].Columns[InitiativeName]" />
                         <inputColumn
-                          refId="Package\Process Files\Process GrowthAndRecovery Customer Insights\OLE DB Destination.Inputs[OLE DB Destination Input].Columns[&quot;ReportingGroup&quot;]"
+                          refId="Package\Process Files\Process GrowthAndRecovery Customer Insights\OLE DB Destination.Inputs[OLE DB Destination Input].Columns[ReportingGroup]"
                           cachedCodepage="1252"
                           cachedDataType="str"
                           cachedLength="50"
-                          cachedName="&quot;ReportingGroup&quot;"
+                          cachedName="ReportingGroup"
                           externalMetadataColumnId="Package\Process Files\Process GrowthAndRecovery Customer Insights\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[ReportingGroup]"
-                          lineageId="Package\Process Files\Process GrowthAndRecovery Customer Insights\Flat File Source.Outputs[Flat File Source Output].Columns[&quot;ReportingGroup&quot;]" />
+                          lineageId="Package\Process Files\Process GrowthAndRecovery Customer Insights\Flat File Source.Outputs[Flat File Source Output].Columns[ReportingGroup]" />
                         <inputColumn
-                          refId="Package\Process Files\Process GrowthAndRecovery Customer Insights\OLE DB Destination.Inputs[OLE DB Destination Input].Columns[&quot;CustomerInsightType&quot;]"
+                          refId="Package\Process Files\Process GrowthAndRecovery Customer Insights\OLE DB Destination.Inputs[OLE DB Destination Input].Columns[CustomerInsightType]"
                           cachedCodepage="1252"
                           cachedDataType="str"
                           cachedLength="50"
-                          cachedName="&quot;CustomerInsightType&quot;"
+                          cachedName="CustomerInsightType"
                           externalMetadataColumnId="Package\Process Files\Process GrowthAndRecovery Customer Insights\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[CustomerInsightType]"
-                          lineageId="Package\Process Files\Process GrowthAndRecovery Customer Insights\Flat File Source.Outputs[Flat File Source Output].Columns[&quot;CustomerInsightType&quot;]" />
+                          lineageId="Package\Process Files\Process GrowthAndRecovery Customer Insights\Flat File Source.Outputs[Flat File Source Output].Columns[CustomerInsightType]" />
                       </inputColumns>
                       <externalMetadataColumns
                         isUsed="True">
@@ -3801,7 +3800,7 @@ FROM            ETL.Staging_RecommendedItems</property>
                       dataType="System.String"
                       description="The SQL command to be executed."
                       name="SqlCommand"
-                      UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor, Microsoft.DataTransformationServices.Controls, Version=13.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91"></property>
+                      UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor, Microsoft.DataTransformationServices.Controls, Version=14.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91"></property>
                     <property
                       dataType="System.Int32"
                       description="Specifies the column code page to use when code page information is unavailable from the data source."
@@ -3976,14 +3975,15 @@ FROM            ETL.Staging_RecommendedItems</property>
                       name="Flat File Source Output">
                       <outputColumns>
                         <outputColumn
-                          refId="Package\Process Files\Process GrowthAndRecovery ProductGrouping Insights\Flat File Source.Outputs[Flat File Source Output].Columns[&quot;ProductGroupingInsightKey&quot;]"
-                          dataType="wstr"
+                          refId="Package\Process Files\Process GrowthAndRecovery ProductGrouping Insights\Flat File Source.Outputs[Flat File Source Output].Columns[ProductGroupingInsightKey]"
+                          codePage="1252"
+                          dataType="str"
                           errorOrTruncationOperation="Conversion"
                           errorRowDisposition="FailComponent"
-                          externalMetadataColumnId="Package\Process Files\Process GrowthAndRecovery ProductGrouping Insights\Flat File Source.Outputs[Flat File Source Output].ExternalColumns[&quot;ProductGroupingInsightKey&quot;]"
+                          externalMetadataColumnId="Package\Process Files\Process GrowthAndRecovery ProductGrouping Insights\Flat File Source.Outputs[Flat File Source Output].ExternalColumns[ProductGroupingInsightKey]"
                           length="50"
-                          lineageId="Package\Process Files\Process GrowthAndRecovery ProductGrouping Insights\Flat File Source.Outputs[Flat File Source Output].Columns[&quot;ProductGroupingInsightKey&quot;]"
-                          name="&quot;ProductGroupingInsightKey&quot;"
+                          lineageId="Package\Process Files\Process GrowthAndRecovery ProductGrouping Insights\Flat File Source.Outputs[Flat File Source Output].Columns[ProductGroupingInsightKey]"
+                          name="ProductGroupingInsightKey"
                           truncationRowDisposition="FailComponent">
                           <properties>
                             <property
@@ -3997,14 +3997,14 @@ FROM            ETL.Staging_RecommendedItems</property>
                           </properties>
                         </outputColumn>
                         <outputColumn
-                          refId="Package\Process Files\Process GrowthAndRecovery ProductGrouping Insights\Flat File Source.Outputs[Flat File Source Output].Columns[&quot;CurrencyIsoCode&quot;]"
+                          refId="Package\Process Files\Process GrowthAndRecovery ProductGrouping Insights\Flat File Source.Outputs[Flat File Source Output].Columns[CurrencyIsoCode]"
                           dataType="wstr"
                           errorOrTruncationOperation="Conversion"
                           errorRowDisposition="FailComponent"
-                          externalMetadataColumnId="Package\Process Files\Process GrowthAndRecovery ProductGrouping Insights\Flat File Source.Outputs[Flat File Source Output].ExternalColumns[&quot;CurrencyIsoCode&quot;]"
+                          externalMetadataColumnId="Package\Process Files\Process GrowthAndRecovery ProductGrouping Insights\Flat File Source.Outputs[Flat File Source Output].ExternalColumns[CurrencyIsoCode]"
                           length="50"
-                          lineageId="Package\Process Files\Process GrowthAndRecovery ProductGrouping Insights\Flat File Source.Outputs[Flat File Source Output].Columns[&quot;CurrencyIsoCode&quot;]"
-                          name="&quot;CurrencyIsoCode&quot;"
+                          lineageId="Package\Process Files\Process GrowthAndRecovery ProductGrouping Insights\Flat File Source.Outputs[Flat File Source Output].Columns[CurrencyIsoCode]"
+                          name="CurrencyIsoCode"
                           truncationRowDisposition="FailComponent">
                           <properties>
                             <property
@@ -4018,14 +4018,15 @@ FROM            ETL.Staging_RecommendedItems</property>
                           </properties>
                         </outputColumn>
                         <outputColumn
-                          refId="Package\Process Files\Process GrowthAndRecovery ProductGrouping Insights\Flat File Source.Outputs[Flat File Source Output].Columns[&quot;Amount&quot;]"
-                          dataType="wstr"
+                          refId="Package\Process Files\Process GrowthAndRecovery ProductGrouping Insights\Flat File Source.Outputs[Flat File Source Output].Columns[Amount]"
+                          codePage="1252"
+                          dataType="str"
                           errorOrTruncationOperation="Conversion"
                           errorRowDisposition="FailComponent"
-                          externalMetadataColumnId="Package\Process Files\Process GrowthAndRecovery ProductGrouping Insights\Flat File Source.Outputs[Flat File Source Output].ExternalColumns[&quot;Amount&quot;]"
+                          externalMetadataColumnId="Package\Process Files\Process GrowthAndRecovery ProductGrouping Insights\Flat File Source.Outputs[Flat File Source Output].ExternalColumns[Amount]"
                           length="50"
-                          lineageId="Package\Process Files\Process GrowthAndRecovery ProductGrouping Insights\Flat File Source.Outputs[Flat File Source Output].Columns[&quot;Amount&quot;]"
-                          name="&quot;Amount&quot;"
+                          lineageId="Package\Process Files\Process GrowthAndRecovery ProductGrouping Insights\Flat File Source.Outputs[Flat File Source Output].Columns[Amount]"
+                          name="Amount"
                           truncationRowDisposition="FailComponent">
                           <properties>
                             <property
@@ -4039,14 +4040,15 @@ FROM            ETL.Staging_RecommendedItems</property>
                           </properties>
                         </outputColumn>
                         <outputColumn
-                          refId="Package\Process Files\Process GrowthAndRecovery ProductGrouping Insights\Flat File Source.Outputs[Flat File Source Output].Columns[&quot;CustomerInsight&quot;]"
-                          dataType="wstr"
+                          refId="Package\Process Files\Process GrowthAndRecovery ProductGrouping Insights\Flat File Source.Outputs[Flat File Source Output].Columns[CustomerInsight]"
+                          codePage="1252"
+                          dataType="str"
                           errorOrTruncationOperation="Conversion"
                           errorRowDisposition="FailComponent"
-                          externalMetadataColumnId="Package\Process Files\Process GrowthAndRecovery ProductGrouping Insights\Flat File Source.Outputs[Flat File Source Output].ExternalColumns[&quot;CustomerInsight&quot;]"
+                          externalMetadataColumnId="Package\Process Files\Process GrowthAndRecovery ProductGrouping Insights\Flat File Source.Outputs[Flat File Source Output].ExternalColumns[CustomerInsight]"
                           length="50"
-                          lineageId="Package\Process Files\Process GrowthAndRecovery ProductGrouping Insights\Flat File Source.Outputs[Flat File Source Output].Columns[&quot;CustomerInsight&quot;]"
-                          name="&quot;CustomerInsight&quot;"
+                          lineageId="Package\Process Files\Process GrowthAndRecovery ProductGrouping Insights\Flat File Source.Outputs[Flat File Source Output].Columns[CustomerInsight]"
+                          name="CustomerInsight"
                           truncationRowDisposition="FailComponent">
                           <properties>
                             <property
@@ -4060,14 +4062,14 @@ FROM            ETL.Staging_RecommendedItems</property>
                           </properties>
                         </outputColumn>
                         <outputColumn
-                          refId="Package\Process Files\Process GrowthAndRecovery ProductGrouping Insights\Flat File Source.Outputs[Flat File Source Output].Columns[&quot;State&quot;]"
+                          refId="Package\Process Files\Process GrowthAndRecovery ProductGrouping Insights\Flat File Source.Outputs[Flat File Source Output].Columns[State]"
                           dataType="wstr"
                           errorOrTruncationOperation="Conversion"
                           errorRowDisposition="FailComponent"
-                          externalMetadataColumnId="Package\Process Files\Process GrowthAndRecovery ProductGrouping Insights\Flat File Source.Outputs[Flat File Source Output].ExternalColumns[&quot;State&quot;]"
+                          externalMetadataColumnId="Package\Process Files\Process GrowthAndRecovery ProductGrouping Insights\Flat File Source.Outputs[Flat File Source Output].ExternalColumns[State]"
                           length="50"
-                          lineageId="Package\Process Files\Process GrowthAndRecovery ProductGrouping Insights\Flat File Source.Outputs[Flat File Source Output].Columns[&quot;State&quot;]"
-                          name="&quot;State&quot;"
+                          lineageId="Package\Process Files\Process GrowthAndRecovery ProductGrouping Insights\Flat File Source.Outputs[Flat File Source Output].Columns[State]"
+                          name="State"
                           truncationRowDisposition="FailComponent">
                           <properties>
                             <property
@@ -4081,14 +4083,15 @@ FROM            ETL.Staging_RecommendedItems</property>
                           </properties>
                         </outputColumn>
                         <outputColumn
-                          refId="Package\Process Files\Process GrowthAndRecovery ProductGrouping Insights\Flat File Source.Outputs[Flat File Source Output].Columns[&quot;ProductGrouping&quot;]"
-                          dataType="wstr"
+                          refId="Package\Process Files\Process GrowthAndRecovery ProductGrouping Insights\Flat File Source.Outputs[Flat File Source Output].Columns[ProductGrouping]"
+                          codePage="1252"
+                          dataType="str"
                           errorOrTruncationOperation="Conversion"
                           errorRowDisposition="FailComponent"
-                          externalMetadataColumnId="Package\Process Files\Process GrowthAndRecovery ProductGrouping Insights\Flat File Source.Outputs[Flat File Source Output].ExternalColumns[&quot;ProductGrouping&quot;]"
+                          externalMetadataColumnId="Package\Process Files\Process GrowthAndRecovery ProductGrouping Insights\Flat File Source.Outputs[Flat File Source Output].ExternalColumns[ProductGrouping]"
                           length="50"
-                          lineageId="Package\Process Files\Process GrowthAndRecovery ProductGrouping Insights\Flat File Source.Outputs[Flat File Source Output].Columns[&quot;ProductGrouping&quot;]"
-                          name="&quot;ProductGrouping&quot;"
+                          lineageId="Package\Process Files\Process GrowthAndRecovery ProductGrouping Insights\Flat File Source.Outputs[Flat File Source Output].Columns[ProductGrouping]"
+                          name="ProductGrouping"
                           truncationRowDisposition="FailComponent">
                           <properties>
                             <property
@@ -4102,14 +4105,14 @@ FROM            ETL.Staging_RecommendedItems</property>
                           </properties>
                         </outputColumn>
                         <outputColumn
-                          refId="Package\Process Files\Process GrowthAndRecovery ProductGrouping Insights\Flat File Source.Outputs[Flat File Source Output].Columns[&quot;RunDate&quot;]"
+                          refId="Package\Process Files\Process GrowthAndRecovery ProductGrouping Insights\Flat File Source.Outputs[Flat File Source Output].Columns[RunDate]"
                           dataType="wstr"
                           errorOrTruncationOperation="Conversion"
                           errorRowDisposition="FailComponent"
-                          externalMetadataColumnId="Package\Process Files\Process GrowthAndRecovery ProductGrouping Insights\Flat File Source.Outputs[Flat File Source Output].ExternalColumns[&quot;RunDate&quot;]"
+                          externalMetadataColumnId="Package\Process Files\Process GrowthAndRecovery ProductGrouping Insights\Flat File Source.Outputs[Flat File Source Output].ExternalColumns[RunDate]"
                           length="50"
-                          lineageId="Package\Process Files\Process GrowthAndRecovery ProductGrouping Insights\Flat File Source.Outputs[Flat File Source Output].Columns[&quot;RunDate&quot;]"
-                          name="&quot;RunDate&quot;"
+                          lineageId="Package\Process Files\Process GrowthAndRecovery ProductGrouping Insights\Flat File Source.Outputs[Flat File Source Output].Columns[RunDate]"
+                          name="RunDate"
                           truncationRowDisposition="FailComponent">
                           <properties>
                             <property
@@ -4123,14 +4126,15 @@ FROM            ETL.Staging_RecommendedItems</property>
                           </properties>
                         </outputColumn>
                         <outputColumn
-                          refId="Package\Process Files\Process GrowthAndRecovery ProductGrouping Insights\Flat File Source.Outputs[Flat File Source Output].Columns[&quot;ProductGroupingInsightType&quot;]"
-                          dataType="wstr"
+                          refId="Package\Process Files\Process GrowthAndRecovery ProductGrouping Insights\Flat File Source.Outputs[Flat File Source Output].Columns[ProductGroupingInsightType]"
+                          codePage="1252"
+                          dataType="str"
                           errorOrTruncationOperation="Conversion"
                           errorRowDisposition="FailComponent"
-                          externalMetadataColumnId="Package\Process Files\Process GrowthAndRecovery ProductGrouping Insights\Flat File Source.Outputs[Flat File Source Output].ExternalColumns[&quot;ProductGroupingInsightType&quot;]"
+                          externalMetadataColumnId="Package\Process Files\Process GrowthAndRecovery ProductGrouping Insights\Flat File Source.Outputs[Flat File Source Output].ExternalColumns[ProductGroupingInsightType]"
                           length="50"
-                          lineageId="Package\Process Files\Process GrowthAndRecovery ProductGrouping Insights\Flat File Source.Outputs[Flat File Source Output].Columns[&quot;ProductGroupingInsightType&quot;]"
-                          name="&quot;ProductGroupingInsightType&quot;"
+                          lineageId="Package\Process Files\Process GrowthAndRecovery ProductGrouping Insights\Flat File Source.Outputs[Flat File Source Output].Columns[ProductGroupingInsightType]"
+                          name="ProductGroupingInsightType"
                           truncationRowDisposition="FailComponent">
                           <properties>
                             <property
@@ -4144,14 +4148,14 @@ FROM            ETL.Staging_RecommendedItems</property>
                           </properties>
                         </outputColumn>
                         <outputColumn
-                          refId="Package\Process Files\Process GrowthAndRecovery ProductGrouping Insights\Flat File Source.Outputs[Flat File Source Output].Columns[&quot;CurrentPrice&quot;]"
+                          refId="Package\Process Files\Process GrowthAndRecovery ProductGrouping Insights\Flat File Source.Outputs[Flat File Source Output].Columns[CurrentPrice]"
                           dataType="wstr"
                           errorOrTruncationOperation="Conversion"
                           errorRowDisposition="FailComponent"
-                          externalMetadataColumnId="Package\Process Files\Process GrowthAndRecovery ProductGrouping Insights\Flat File Source.Outputs[Flat File Source Output].ExternalColumns[&quot;CurrentPrice&quot;]"
+                          externalMetadataColumnId="Package\Process Files\Process GrowthAndRecovery ProductGrouping Insights\Flat File Source.Outputs[Flat File Source Output].ExternalColumns[CurrentPrice]"
                           length="50"
-                          lineageId="Package\Process Files\Process GrowthAndRecovery ProductGrouping Insights\Flat File Source.Outputs[Flat File Source Output].Columns[&quot;CurrentPrice&quot;]"
-                          name="&quot;CurrentPrice&quot;"
+                          lineageId="Package\Process Files\Process GrowthAndRecovery ProductGrouping Insights\Flat File Source.Outputs[Flat File Source Output].Columns[CurrentPrice]"
+                          name="CurrentPrice"
                           truncationRowDisposition="FailComponent">
                           <properties>
                             <property
@@ -4165,14 +4169,14 @@ FROM            ETL.Staging_RecommendedItems</property>
                           </properties>
                         </outputColumn>
                         <outputColumn
-                          refId="Package\Process Files\Process GrowthAndRecovery ProductGrouping Insights\Flat File Source.Outputs[Flat File Source Output].Columns[&quot;RecommendedPrice&quot;]"
+                          refId="Package\Process Files\Process GrowthAndRecovery ProductGrouping Insights\Flat File Source.Outputs[Flat File Source Output].Columns[RecommendedPrice]"
                           dataType="wstr"
                           errorOrTruncationOperation="Conversion"
                           errorRowDisposition="FailComponent"
-                          externalMetadataColumnId="Package\Process Files\Process GrowthAndRecovery ProductGrouping Insights\Flat File Source.Outputs[Flat File Source Output].ExternalColumns[&quot;RecommendedPrice&quot;]"
+                          externalMetadataColumnId="Package\Process Files\Process GrowthAndRecovery ProductGrouping Insights\Flat File Source.Outputs[Flat File Source Output].ExternalColumns[RecommendedPrice]"
                           length="50"
-                          lineageId="Package\Process Files\Process GrowthAndRecovery ProductGrouping Insights\Flat File Source.Outputs[Flat File Source Output].Columns[&quot;RecommendedPrice&quot;]"
-                          name="&quot;RecommendedPrice&quot;"
+                          lineageId="Package\Process Files\Process GrowthAndRecovery ProductGrouping Insights\Flat File Source.Outputs[Flat File Source Output].Columns[RecommendedPrice]"
+                          name="RecommendedPrice"
                           truncationRowDisposition="FailComponent">
                           <properties>
                             <property
@@ -4186,14 +4190,14 @@ FROM            ETL.Staging_RecommendedItems</property>
                           </properties>
                         </outputColumn>
                         <outputColumn
-                          refId="Package\Process Files\Process GrowthAndRecovery ProductGrouping Insights\Flat File Source.Outputs[Flat File Source Output].Columns[&quot;SuperGroup&quot;]"
+                          refId="Package\Process Files\Process GrowthAndRecovery ProductGrouping Insights\Flat File Source.Outputs[Flat File Source Output].Columns[SuperGroup]"
                           dataType="wstr"
                           errorOrTruncationOperation="Conversion"
                           errorRowDisposition="FailComponent"
-                          externalMetadataColumnId="Package\Process Files\Process GrowthAndRecovery ProductGrouping Insights\Flat File Source.Outputs[Flat File Source Output].ExternalColumns[&quot;SuperGroup&quot;]"
+                          externalMetadataColumnId="Package\Process Files\Process GrowthAndRecovery ProductGrouping Insights\Flat File Source.Outputs[Flat File Source Output].ExternalColumns[SuperGroup]"
                           length="50"
-                          lineageId="Package\Process Files\Process GrowthAndRecovery ProductGrouping Insights\Flat File Source.Outputs[Flat File Source Output].Columns[&quot;SuperGroup&quot;]"
-                          name="&quot;SuperGroup&quot;"
+                          lineageId="Package\Process Files\Process GrowthAndRecovery ProductGrouping Insights\Flat File Source.Outputs[Flat File Source Output].Columns[SuperGroup]"
+                          name="SuperGroup"
                           truncationRowDisposition="FailComponent">
                           <properties>
                             <property
@@ -4207,14 +4211,14 @@ FROM            ETL.Staging_RecommendedItems</property>
                           </properties>
                         </outputColumn>
                         <outputColumn
-                          refId="Package\Process Files\Process GrowthAndRecovery ProductGrouping Insights\Flat File Source.Outputs[Flat File Source Output].Columns[&quot;HistoricSales&quot;]"
+                          refId="Package\Process Files\Process GrowthAndRecovery ProductGrouping Insights\Flat File Source.Outputs[Flat File Source Output].Columns[HistoricSales]"
                           dataType="wstr"
                           errorOrTruncationOperation="Conversion"
                           errorRowDisposition="FailComponent"
-                          externalMetadataColumnId="Package\Process Files\Process GrowthAndRecovery ProductGrouping Insights\Flat File Source.Outputs[Flat File Source Output].ExternalColumns[&quot;HistoricSales&quot;]"
+                          externalMetadataColumnId="Package\Process Files\Process GrowthAndRecovery ProductGrouping Insights\Flat File Source.Outputs[Flat File Source Output].ExternalColumns[HistoricSales]"
                           length="50"
-                          lineageId="Package\Process Files\Process GrowthAndRecovery ProductGrouping Insights\Flat File Source.Outputs[Flat File Source Output].Columns[&quot;HistoricSales&quot;]"
-                          name="&quot;HistoricSales&quot;"
+                          lineageId="Package\Process Files\Process GrowthAndRecovery ProductGrouping Insights\Flat File Source.Outputs[Flat File Source Output].Columns[HistoricSales]"
+                          name="HistoricSales"
                           truncationRowDisposition="FailComponent">
                           <properties>
                             <property
@@ -4228,14 +4232,14 @@ FROM            ETL.Staging_RecommendedItems</property>
                           </properties>
                         </outputColumn>
                         <outputColumn
-                          refId="Package\Process Files\Process GrowthAndRecovery ProductGrouping Insights\Flat File Source.Outputs[Flat File Source Output].Columns[&quot;RecentSales&quot;]"
+                          refId="Package\Process Files\Process GrowthAndRecovery ProductGrouping Insights\Flat File Source.Outputs[Flat File Source Output].Columns[RecentSales]"
                           dataType="wstr"
                           errorOrTruncationOperation="Conversion"
                           errorRowDisposition="FailComponent"
-                          externalMetadataColumnId="Package\Process Files\Process GrowthAndRecovery ProductGrouping Insights\Flat File Source.Outputs[Flat File Source Output].ExternalColumns[&quot;RecentSales&quot;]"
+                          externalMetadataColumnId="Package\Process Files\Process GrowthAndRecovery ProductGrouping Insights\Flat File Source.Outputs[Flat File Source Output].ExternalColumns[RecentSales]"
                           length="50"
-                          lineageId="Package\Process Files\Process GrowthAndRecovery ProductGrouping Insights\Flat File Source.Outputs[Flat File Source Output].Columns[&quot;RecentSales&quot;]"
-                          name="&quot;RecentSales&quot;"
+                          lineageId="Package\Process Files\Process GrowthAndRecovery ProductGrouping Insights\Flat File Source.Outputs[Flat File Source Output].Columns[RecentSales]"
+                          name="RecentSales"
                           truncationRowDisposition="FailComponent">
                           <properties>
                             <property
@@ -4249,14 +4253,14 @@ FROM            ETL.Staging_RecommendedItems</property>
                           </properties>
                         </outputColumn>
                         <outputColumn
-                          refId="Package\Process Files\Process GrowthAndRecovery ProductGrouping Insights\Flat File Source.Outputs[Flat File Source Output].Columns[&quot;ProfilePeriodSales&quot;]"
+                          refId="Package\Process Files\Process GrowthAndRecovery ProductGrouping Insights\Flat File Source.Outputs[Flat File Source Output].Columns[ProfilePeriodSales]"
                           dataType="wstr"
                           errorOrTruncationOperation="Conversion"
                           errorRowDisposition="FailComponent"
-                          externalMetadataColumnId="Package\Process Files\Process GrowthAndRecovery ProductGrouping Insights\Flat File Source.Outputs[Flat File Source Output].ExternalColumns[&quot;ProfilePeriodSales&quot;]"
+                          externalMetadataColumnId="Package\Process Files\Process GrowthAndRecovery ProductGrouping Insights\Flat File Source.Outputs[Flat File Source Output].ExternalColumns[ProfilePeriodSales]"
                           length="50"
-                          lineageId="Package\Process Files\Process GrowthAndRecovery ProductGrouping Insights\Flat File Source.Outputs[Flat File Source Output].Columns[&quot;ProfilePeriodSales&quot;]"
-                          name="&quot;ProfilePeriodSales&quot;"
+                          lineageId="Package\Process Files\Process GrowthAndRecovery ProductGrouping Insights\Flat File Source.Outputs[Flat File Source Output].Columns[ProfilePeriodSales]"
+                          name="ProfilePeriodSales"
                           truncationRowDisposition="FailComponent">
                           <properties>
                             <property
@@ -4273,75 +4277,80 @@ FROM            ETL.Staging_RecommendedItems</property>
                       <externalMetadataColumns
                         isUsed="True">
                         <externalMetadataColumn
-                          refId="Package\Process Files\Process GrowthAndRecovery ProductGrouping Insights\Flat File Source.Outputs[Flat File Source Output].ExternalColumns[&quot;CurrencyIsoCode&quot;]"
-                          dataType="wstr"
+                          refId="Package\Process Files\Process GrowthAndRecovery ProductGrouping Insights\Flat File Source.Outputs[Flat File Source Output].ExternalColumns[ProductGroupingInsightKey]"
+                          codePage="1252"
+                          dataType="str"
                           length="50"
-                          name="&quot;CurrencyIsoCode&quot;" />
+                          name="ProductGroupingInsightKey" />
                         <externalMetadataColumn
-                          refId="Package\Process Files\Process GrowthAndRecovery ProductGrouping Insights\Flat File Source.Outputs[Flat File Source Output].ExternalColumns[&quot;ProductGroupingInsightKey&quot;]"
+                          refId="Package\Process Files\Process GrowthAndRecovery ProductGrouping Insights\Flat File Source.Outputs[Flat File Source Output].ExternalColumns[CurrencyIsoCode]"
                           dataType="wstr"
                           length="50"
-                          name="&quot;ProductGroupingInsightKey&quot;" />
+                          name="CurrencyIsoCode" />
                         <externalMetadataColumn
-                          refId="Package\Process Files\Process GrowthAndRecovery ProductGrouping Insights\Flat File Source.Outputs[Flat File Source Output].ExternalColumns[&quot;Amount&quot;]"
-                          dataType="wstr"
+                          refId="Package\Process Files\Process GrowthAndRecovery ProductGrouping Insights\Flat File Source.Outputs[Flat File Source Output].ExternalColumns[Amount]"
+                          codePage="1252"
+                          dataType="str"
                           length="50"
-                          name="&quot;Amount&quot;" />
+                          name="Amount" />
                         <externalMetadataColumn
-                          refId="Package\Process Files\Process GrowthAndRecovery ProductGrouping Insights\Flat File Source.Outputs[Flat File Source Output].ExternalColumns[&quot;CustomerInsight&quot;]"
-                          dataType="wstr"
+                          refId="Package\Process Files\Process GrowthAndRecovery ProductGrouping Insights\Flat File Source.Outputs[Flat File Source Output].ExternalColumns[CustomerInsight]"
+                          codePage="1252"
+                          dataType="str"
                           length="50"
-                          name="&quot;CustomerInsight&quot;" />
+                          name="CustomerInsight" />
                         <externalMetadataColumn
-                          refId="Package\Process Files\Process GrowthAndRecovery ProductGrouping Insights\Flat File Source.Outputs[Flat File Source Output].ExternalColumns[&quot;State&quot;]"
+                          refId="Package\Process Files\Process GrowthAndRecovery ProductGrouping Insights\Flat File Source.Outputs[Flat File Source Output].ExternalColumns[State]"
                           dataType="wstr"
                           length="50"
-                          name="&quot;State&quot;" />
+                          name="State" />
                         <externalMetadataColumn
-                          refId="Package\Process Files\Process GrowthAndRecovery ProductGrouping Insights\Flat File Source.Outputs[Flat File Source Output].ExternalColumns[&quot;ProductGrouping&quot;]"
-                          dataType="wstr"
+                          refId="Package\Process Files\Process GrowthAndRecovery ProductGrouping Insights\Flat File Source.Outputs[Flat File Source Output].ExternalColumns[ProductGrouping]"
+                          codePage="1252"
+                          dataType="str"
                           length="50"
-                          name="&quot;ProductGrouping&quot;" />
+                          name="ProductGrouping" />
                         <externalMetadataColumn
-                          refId="Package\Process Files\Process GrowthAndRecovery ProductGrouping Insights\Flat File Source.Outputs[Flat File Source Output].ExternalColumns[&quot;RunDate&quot;]"
+                          refId="Package\Process Files\Process GrowthAndRecovery ProductGrouping Insights\Flat File Source.Outputs[Flat File Source Output].ExternalColumns[RunDate]"
                           dataType="wstr"
                           length="50"
-                          name="&quot;RunDate&quot;" />
+                          name="RunDate" />
                         <externalMetadataColumn
-                          refId="Package\Process Files\Process GrowthAndRecovery ProductGrouping Insights\Flat File Source.Outputs[Flat File Source Output].ExternalColumns[&quot;ProductGroupingInsightType&quot;]"
-                          dataType="wstr"
+                          refId="Package\Process Files\Process GrowthAndRecovery ProductGrouping Insights\Flat File Source.Outputs[Flat File Source Output].ExternalColumns[ProductGroupingInsightType]"
+                          codePage="1252"
+                          dataType="str"
                           length="50"
-                          name="&quot;ProductGroupingInsightType&quot;" />
+                          name="ProductGroupingInsightType" />
                         <externalMetadataColumn
-                          refId="Package\Process Files\Process GrowthAndRecovery ProductGrouping Insights\Flat File Source.Outputs[Flat File Source Output].ExternalColumns[&quot;CurrentPrice&quot;]"
+                          refId="Package\Process Files\Process GrowthAndRecovery ProductGrouping Insights\Flat File Source.Outputs[Flat File Source Output].ExternalColumns[CurrentPrice]"
                           dataType="wstr"
                           length="50"
-                          name="&quot;CurrentPrice&quot;" />
+                          name="CurrentPrice" />
                         <externalMetadataColumn
-                          refId="Package\Process Files\Process GrowthAndRecovery ProductGrouping Insights\Flat File Source.Outputs[Flat File Source Output].ExternalColumns[&quot;RecommendedPrice&quot;]"
+                          refId="Package\Process Files\Process GrowthAndRecovery ProductGrouping Insights\Flat File Source.Outputs[Flat File Source Output].ExternalColumns[RecommendedPrice]"
                           dataType="wstr"
                           length="50"
-                          name="&quot;RecommendedPrice&quot;" />
+                          name="RecommendedPrice" />
                         <externalMetadataColumn
-                          refId="Package\Process Files\Process GrowthAndRecovery ProductGrouping Insights\Flat File Source.Outputs[Flat File Source Output].ExternalColumns[&quot;SuperGroup&quot;]"
+                          refId="Package\Process Files\Process GrowthAndRecovery ProductGrouping Insights\Flat File Source.Outputs[Flat File Source Output].ExternalColumns[SuperGroup]"
                           dataType="wstr"
                           length="50"
-                          name="&quot;SuperGroup&quot;" />
+                          name="SuperGroup" />
                         <externalMetadataColumn
-                          refId="Package\Process Files\Process GrowthAndRecovery ProductGrouping Insights\Flat File Source.Outputs[Flat File Source Output].ExternalColumns[&quot;HistoricSales&quot;]"
+                          refId="Package\Process Files\Process GrowthAndRecovery ProductGrouping Insights\Flat File Source.Outputs[Flat File Source Output].ExternalColumns[HistoricSales]"
                           dataType="wstr"
                           length="50"
-                          name="&quot;HistoricSales&quot;" />
+                          name="HistoricSales" />
                         <externalMetadataColumn
-                          refId="Package\Process Files\Process GrowthAndRecovery ProductGrouping Insights\Flat File Source.Outputs[Flat File Source Output].ExternalColumns[&quot;RecentSales&quot;]"
+                          refId="Package\Process Files\Process GrowthAndRecovery ProductGrouping Insights\Flat File Source.Outputs[Flat File Source Output].ExternalColumns[RecentSales]"
                           dataType="wstr"
                           length="50"
-                          name="&quot;RecentSales&quot;" />
+                          name="RecentSales" />
                         <externalMetadataColumn
-                          refId="Package\Process Files\Process GrowthAndRecovery ProductGrouping Insights\Flat File Source.Outputs[Flat File Source Output].ExternalColumns[&quot;ProfilePeriodSales&quot;]"
+                          refId="Package\Process Files\Process GrowthAndRecovery ProductGrouping Insights\Flat File Source.Outputs[Flat File Source Output].ExternalColumns[ProfilePeriodSales]"
                           dataType="wstr"
                           length="50"
-                          name="&quot;ProfilePeriodSales&quot;" />
+                          name="ProfilePeriodSales" />
                       </externalMetadataColumns>
                     </output>
                     <output
@@ -4398,7 +4407,7 @@ FROM            ETL.Staging_RecommendedItems</property>
                       dataType="System.String"
                       description="The SQL command to be executed."
                       name="SqlCommand"
-                      UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor, Microsoft.DataTransformationServices.Controls, Version=13.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91"></property>
+                      UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor, Microsoft.DataTransformationServices.Controls, Version=14.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91"></property>
                     <property
                       dataType="System.Int32"
                       description="Specifies the column code page to use when code page information is unavailable from the data source."
@@ -4446,103 +4455,108 @@ FROM            ETL.Staging_RecommendedItems</property>
                       name="OLE DB Destination Input">
                       <inputColumns>
                         <inputColumn
-                          refId="Package\Process Files\Process GrowthAndRecovery ProductGrouping Insights\OLE DB Destination.Inputs[OLE DB Destination Input].Columns[&quot;ProductGroupingInsightKey&quot;]"
-                          cachedDataType="wstr"
+                          refId="Package\Process Files\Process GrowthAndRecovery ProductGrouping Insights\OLE DB Destination.Inputs[OLE DB Destination Input].Columns[ProductGroupingInsightKey]"
+                          cachedCodepage="1252"
+                          cachedDataType="str"
                           cachedLength="50"
-                          cachedName="&quot;ProductGroupingInsightKey&quot;"
+                          cachedName="ProductGroupingInsightKey"
                           externalMetadataColumnId="Package\Process Files\Process GrowthAndRecovery ProductGrouping Insights\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[ProductGroupingInsightKey]"
-                          lineageId="Package\Process Files\Process GrowthAndRecovery ProductGrouping Insights\Flat File Source.Outputs[Flat File Source Output].Columns[&quot;ProductGroupingInsightKey&quot;]" />
+                          lineageId="Package\Process Files\Process GrowthAndRecovery ProductGrouping Insights\Flat File Source.Outputs[Flat File Source Output].Columns[ProductGroupingInsightKey]" />
                         <inputColumn
-                          refId="Package\Process Files\Process GrowthAndRecovery ProductGrouping Insights\OLE DB Destination.Inputs[OLE DB Destination Input].Columns[&quot;Amount&quot;]"
-                          cachedDataType="wstr"
+                          refId="Package\Process Files\Process GrowthAndRecovery ProductGrouping Insights\OLE DB Destination.Inputs[OLE DB Destination Input].Columns[Amount]"
+                          cachedCodepage="1252"
+                          cachedDataType="str"
                           cachedLength="50"
-                          cachedName="&quot;Amount&quot;"
+                          cachedName="Amount"
                           externalMetadataColumnId="Package\Process Files\Process GrowthAndRecovery ProductGrouping Insights\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[Amount]"
-                          lineageId="Package\Process Files\Process GrowthAndRecovery ProductGrouping Insights\Flat File Source.Outputs[Flat File Source Output].Columns[&quot;Amount&quot;]" />
+                          lineageId="Package\Process Files\Process GrowthAndRecovery ProductGrouping Insights\Flat File Source.Outputs[Flat File Source Output].Columns[Amount]" />
                         <inputColumn
-                          refId="Package\Process Files\Process GrowthAndRecovery ProductGrouping Insights\OLE DB Destination.Inputs[OLE DB Destination Input].Columns[&quot;CustomerInsight&quot;]"
-                          cachedDataType="wstr"
+                          refId="Package\Process Files\Process GrowthAndRecovery ProductGrouping Insights\OLE DB Destination.Inputs[OLE DB Destination Input].Columns[CustomerInsight]"
+                          cachedCodepage="1252"
+                          cachedDataType="str"
                           cachedLength="50"
-                          cachedName="&quot;CustomerInsight&quot;"
+                          cachedName="CustomerInsight"
                           externalMetadataColumnId="Package\Process Files\Process GrowthAndRecovery ProductGrouping Insights\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[CustomerInsight]"
-                          lineageId="Package\Process Files\Process GrowthAndRecovery ProductGrouping Insights\Flat File Source.Outputs[Flat File Source Output].Columns[&quot;CustomerInsight&quot;]" />
+                          lineageId="Package\Process Files\Process GrowthAndRecovery ProductGrouping Insights\Flat File Source.Outputs[Flat File Source Output].Columns[CustomerInsight]" />
                         <inputColumn
-                          refId="Package\Process Files\Process GrowthAndRecovery ProductGrouping Insights\OLE DB Destination.Inputs[OLE DB Destination Input].Columns[&quot;State&quot;]"
+                          refId="Package\Process Files\Process GrowthAndRecovery ProductGrouping Insights\OLE DB Destination.Inputs[OLE DB Destination Input].Columns[State]"
                           cachedDataType="wstr"
                           cachedLength="50"
-                          cachedName="&quot;State&quot;"
+                          cachedName="State"
                           externalMetadataColumnId="Package\Process Files\Process GrowthAndRecovery ProductGrouping Insights\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[State]"
-                          lineageId="Package\Process Files\Process GrowthAndRecovery ProductGrouping Insights\Flat File Source.Outputs[Flat File Source Output].Columns[&quot;State&quot;]" />
+                          lineageId="Package\Process Files\Process GrowthAndRecovery ProductGrouping Insights\Flat File Source.Outputs[Flat File Source Output].Columns[State]" />
                         <inputColumn
-                          refId="Package\Process Files\Process GrowthAndRecovery ProductGrouping Insights\OLE DB Destination.Inputs[OLE DB Destination Input].Columns[&quot;ProductGrouping&quot;]"
-                          cachedDataType="wstr"
+                          refId="Package\Process Files\Process GrowthAndRecovery ProductGrouping Insights\OLE DB Destination.Inputs[OLE DB Destination Input].Columns[ProductGrouping]"
+                          cachedCodepage="1252"
+                          cachedDataType="str"
                           cachedLength="50"
-                          cachedName="&quot;ProductGrouping&quot;"
+                          cachedName="ProductGrouping"
                           externalMetadataColumnId="Package\Process Files\Process GrowthAndRecovery ProductGrouping Insights\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[ProductGrouping]"
-                          lineageId="Package\Process Files\Process GrowthAndRecovery ProductGrouping Insights\Flat File Source.Outputs[Flat File Source Output].Columns[&quot;ProductGrouping&quot;]" />
+                          lineageId="Package\Process Files\Process GrowthAndRecovery ProductGrouping Insights\Flat File Source.Outputs[Flat File Source Output].Columns[ProductGrouping]" />
                         <inputColumn
-                          refId="Package\Process Files\Process GrowthAndRecovery ProductGrouping Insights\OLE DB Destination.Inputs[OLE DB Destination Input].Columns[&quot;CurrencyIsoCode&quot;]"
+                          refId="Package\Process Files\Process GrowthAndRecovery ProductGrouping Insights\OLE DB Destination.Inputs[OLE DB Destination Input].Columns[CurrencyIsoCode]"
                           cachedDataType="wstr"
                           cachedLength="50"
-                          cachedName="&quot;CurrencyIsoCode&quot;"
+                          cachedName="CurrencyIsoCode"
                           externalMetadataColumnId="Package\Process Files\Process GrowthAndRecovery ProductGrouping Insights\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[CurrencyIsoCode]"
-                          lineageId="Package\Process Files\Process GrowthAndRecovery ProductGrouping Insights\Flat File Source.Outputs[Flat File Source Output].Columns[&quot;CurrencyIsoCode&quot;]" />
+                          lineageId="Package\Process Files\Process GrowthAndRecovery ProductGrouping Insights\Flat File Source.Outputs[Flat File Source Output].Columns[CurrencyIsoCode]" />
                         <inputColumn
-                          refId="Package\Process Files\Process GrowthAndRecovery ProductGrouping Insights\OLE DB Destination.Inputs[OLE DB Destination Input].Columns[&quot;RunDate&quot;]"
+                          refId="Package\Process Files\Process GrowthAndRecovery ProductGrouping Insights\OLE DB Destination.Inputs[OLE DB Destination Input].Columns[RunDate]"
                           cachedDataType="wstr"
                           cachedLength="50"
-                          cachedName="&quot;RunDate&quot;"
+                          cachedName="RunDate"
                           externalMetadataColumnId="Package\Process Files\Process GrowthAndRecovery ProductGrouping Insights\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[RunDate]"
-                          lineageId="Package\Process Files\Process GrowthAndRecovery ProductGrouping Insights\Flat File Source.Outputs[Flat File Source Output].Columns[&quot;RunDate&quot;]" />
+                          lineageId="Package\Process Files\Process GrowthAndRecovery ProductGrouping Insights\Flat File Source.Outputs[Flat File Source Output].Columns[RunDate]" />
                         <inputColumn
-                          refId="Package\Process Files\Process GrowthAndRecovery ProductGrouping Insights\OLE DB Destination.Inputs[OLE DB Destination Input].Columns[&quot;ProductGroupingInsightType&quot;]"
-                          cachedDataType="wstr"
+                          refId="Package\Process Files\Process GrowthAndRecovery ProductGrouping Insights\OLE DB Destination.Inputs[OLE DB Destination Input].Columns[ProductGroupingInsightType]"
+                          cachedCodepage="1252"
+                          cachedDataType="str"
                           cachedLength="50"
-                          cachedName="&quot;ProductGroupingInsightType&quot;"
+                          cachedName="ProductGroupingInsightType"
                           externalMetadataColumnId="Package\Process Files\Process GrowthAndRecovery ProductGrouping Insights\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[ProductGroupingInsightType]"
-                          lineageId="Package\Process Files\Process GrowthAndRecovery ProductGrouping Insights\Flat File Source.Outputs[Flat File Source Output].Columns[&quot;ProductGroupingInsightType&quot;]" />
+                          lineageId="Package\Process Files\Process GrowthAndRecovery ProductGrouping Insights\Flat File Source.Outputs[Flat File Source Output].Columns[ProductGroupingInsightType]" />
                         <inputColumn
-                          refId="Package\Process Files\Process GrowthAndRecovery ProductGrouping Insights\OLE DB Destination.Inputs[OLE DB Destination Input].Columns[&quot;CurrentPrice&quot;]"
+                          refId="Package\Process Files\Process GrowthAndRecovery ProductGrouping Insights\OLE DB Destination.Inputs[OLE DB Destination Input].Columns[CurrentPrice]"
                           cachedDataType="wstr"
                           cachedLength="50"
-                          cachedName="&quot;CurrentPrice&quot;"
+                          cachedName="CurrentPrice"
                           externalMetadataColumnId="Package\Process Files\Process GrowthAndRecovery ProductGrouping Insights\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[CurrentPrice]"
-                          lineageId="Package\Process Files\Process GrowthAndRecovery ProductGrouping Insights\Flat File Source.Outputs[Flat File Source Output].Columns[&quot;CurrentPrice&quot;]" />
+                          lineageId="Package\Process Files\Process GrowthAndRecovery ProductGrouping Insights\Flat File Source.Outputs[Flat File Source Output].Columns[CurrentPrice]" />
                         <inputColumn
-                          refId="Package\Process Files\Process GrowthAndRecovery ProductGrouping Insights\OLE DB Destination.Inputs[OLE DB Destination Input].Columns[&quot;RecommendedPrice&quot;]"
+                          refId="Package\Process Files\Process GrowthAndRecovery ProductGrouping Insights\OLE DB Destination.Inputs[OLE DB Destination Input].Columns[RecommendedPrice]"
                           cachedDataType="wstr"
                           cachedLength="50"
-                          cachedName="&quot;RecommendedPrice&quot;"
+                          cachedName="RecommendedPrice"
                           externalMetadataColumnId="Package\Process Files\Process GrowthAndRecovery ProductGrouping Insights\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[RecommendedPrice]"
-                          lineageId="Package\Process Files\Process GrowthAndRecovery ProductGrouping Insights\Flat File Source.Outputs[Flat File Source Output].Columns[&quot;RecommendedPrice&quot;]" />
+                          lineageId="Package\Process Files\Process GrowthAndRecovery ProductGrouping Insights\Flat File Source.Outputs[Flat File Source Output].Columns[RecommendedPrice]" />
                         <inputColumn
-                          refId="Package\Process Files\Process GrowthAndRecovery ProductGrouping Insights\OLE DB Destination.Inputs[OLE DB Destination Input].Columns[&quot;SuperGroup&quot;]"
+                          refId="Package\Process Files\Process GrowthAndRecovery ProductGrouping Insights\OLE DB Destination.Inputs[OLE DB Destination Input].Columns[SuperGroup]"
                           cachedDataType="wstr"
                           cachedLength="50"
-                          cachedName="&quot;SuperGroup&quot;"
+                          cachedName="SuperGroup"
                           externalMetadataColumnId="Package\Process Files\Process GrowthAndRecovery ProductGrouping Insights\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[SuperGroup]"
-                          lineageId="Package\Process Files\Process GrowthAndRecovery ProductGrouping Insights\Flat File Source.Outputs[Flat File Source Output].Columns[&quot;SuperGroup&quot;]" />
+                          lineageId="Package\Process Files\Process GrowthAndRecovery ProductGrouping Insights\Flat File Source.Outputs[Flat File Source Output].Columns[SuperGroup]" />
                         <inputColumn
-                          refId="Package\Process Files\Process GrowthAndRecovery ProductGrouping Insights\OLE DB Destination.Inputs[OLE DB Destination Input].Columns[&quot;HistoricSales&quot;]"
+                          refId="Package\Process Files\Process GrowthAndRecovery ProductGrouping Insights\OLE DB Destination.Inputs[OLE DB Destination Input].Columns[HistoricSales]"
                           cachedDataType="wstr"
                           cachedLength="50"
-                          cachedName="&quot;HistoricSales&quot;"
+                          cachedName="HistoricSales"
                           externalMetadataColumnId="Package\Process Files\Process GrowthAndRecovery ProductGrouping Insights\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[HistoricSales]"
-                          lineageId="Package\Process Files\Process GrowthAndRecovery ProductGrouping Insights\Flat File Source.Outputs[Flat File Source Output].Columns[&quot;HistoricSales&quot;]" />
+                          lineageId="Package\Process Files\Process GrowthAndRecovery ProductGrouping Insights\Flat File Source.Outputs[Flat File Source Output].Columns[HistoricSales]" />
                         <inputColumn
-                          refId="Package\Process Files\Process GrowthAndRecovery ProductGrouping Insights\OLE DB Destination.Inputs[OLE DB Destination Input].Columns[&quot;RecentSales&quot;]"
+                          refId="Package\Process Files\Process GrowthAndRecovery ProductGrouping Insights\OLE DB Destination.Inputs[OLE DB Destination Input].Columns[RecentSales]"
                           cachedDataType="wstr"
                           cachedLength="50"
-                          cachedName="&quot;RecentSales&quot;"
+                          cachedName="RecentSales"
                           externalMetadataColumnId="Package\Process Files\Process GrowthAndRecovery ProductGrouping Insights\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[RecentSales]"
-                          lineageId="Package\Process Files\Process GrowthAndRecovery ProductGrouping Insights\Flat File Source.Outputs[Flat File Source Output].Columns[&quot;RecentSales&quot;]" />
+                          lineageId="Package\Process Files\Process GrowthAndRecovery ProductGrouping Insights\Flat File Source.Outputs[Flat File Source Output].Columns[RecentSales]" />
                         <inputColumn
-                          refId="Package\Process Files\Process GrowthAndRecovery ProductGrouping Insights\OLE DB Destination.Inputs[OLE DB Destination Input].Columns[&quot;ProfilePeriodSales&quot;]"
+                          refId="Package\Process Files\Process GrowthAndRecovery ProductGrouping Insights\OLE DB Destination.Inputs[OLE DB Destination Input].Columns[ProfilePeriodSales]"
                           cachedDataType="wstr"
                           cachedLength="50"
-                          cachedName="&quot;ProfilePeriodSales&quot;"
+                          cachedName="ProfilePeriodSales"
                           externalMetadataColumnId="Package\Process Files\Process GrowthAndRecovery ProductGrouping Insights\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[ProfilePeriodSales]"
-                          lineageId="Package\Process Files\Process GrowthAndRecovery ProductGrouping Insights\Flat File Source.Outputs[Flat File Source Output].Columns[&quot;ProfilePeriodSales&quot;]" />
+                          lineageId="Package\Process Files\Process GrowthAndRecovery ProductGrouping Insights\Flat File Source.Outputs[Flat File Source Output].Columns[ProfilePeriodSales]" />
                       </inputColumns>
                       <externalMetadataColumns
                         isUsed="True">
@@ -5011,7 +5025,7 @@ FROM            ETL.Staging_RecommendedItems</property>
                       dataType="System.String"
                       description="The SQL command to be executed."
                       name="SqlCommand"
-                      UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor, Microsoft.DataTransformationServices.Controls, Version=13.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91"></property>
+                      UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor, Microsoft.DataTransformationServices.Controls, Version=14.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91"></property>
                     <property
                       dataType="System.Int32"
                       description="Specifies the column code page to use when code page information is unavailable from the data source."
@@ -5412,7 +5426,7 @@ FROM            ETL.Staging_RecommendedItems</property>
                       dataType="System.String"
                       description="The SQL command to be executed."
                       name="SqlCommand"
-                      UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor, Microsoft.DataTransformationServices.Controls, Version=13.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91"></property>
+                      UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor, Microsoft.DataTransformationServices.Controls, Version=14.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91"></property>
                     <property
                       dataType="System.Int32"
                       description="Specifies the column code page to use when code page information is unavailable from the data source."
@@ -5844,7 +5858,7 @@ FROM            ETL.Staging_RecommendedItems</property>
         <NodeLayout
           Size="338,42"
           Id="Package\Process Files\Process GrowthAndRecovery ProductGrouping Insights"
-          TopLeft="716,174" />
+          TopLeft="715,174" />
         <NodeLayout
           Size="236,42"
           Id="Package\Process Files\Process RecommendedItems File"
@@ -5999,9 +6013,9 @@ FROM            ETL.Staging_RecommendedItems</property>
           <EdgeLayout.Curve>
             <mssgle:Curve
               StartConnector="{assembly:Null}"
-              EndConnector="272.97619047619,123.714285714286"
+              EndConnector="271.97619047619,123.714285714286"
               Start="0,0"
-              End="272.97619047619,116.214285714286">
+              End="271.97619047619,116.214285714286">
               <mssgle:Curve.Segments>
                 <mssgle:SegmentCollection
                   Capacity="5">
@@ -6012,13 +6026,13 @@ FROM            ETL.Staging_RecommendedItems</property>
                     Point2="0,33.2338065661047"
                     Point3="4,33.2338065661047" />
                   <mssgle:LineSegment
-                    End="268.97619047619,33.2338065661047" />
+                    End="267.97619047619,33.2338065661047" />
                   <mssgle:CubicBezierSegment
-                    Point1="268.97619047619,33.2338065661047"
-                    Point2="272.97619047619,33.2338065661047"
-                    Point3="272.97619047619,37.2338065661047" />
+                    Point1="267.97619047619,33.2338065661047"
+                    Point2="271.97619047619,33.2338065661047"
+                    Point3="271.97619047619,37.2338065661047" />
                   <mssgle:LineSegment
-                    End="272.97619047619,116.214285714286" />
+                    End="271.97619047619,116.214285714286" />
                 </mssgle:SegmentCollection>
               </mssgle:Curve.Segments>
             </mssgle:Curve>
@@ -6198,7 +6212,7 @@ FROM            ETL.Staging_RecommendedItems</property>
           </EdgeLayout.Curve>
           <EdgeLayout.Labels>
             <mssgm:EdgeLabel
-              BoundingBox="89.5162281013268,-211.740088993638,30.4826953125,9.7490234375"
+              BoundingBox="89.516228101327,-211.740088993638,30.4826953125,9.7490234375"
               RelativePosition="Any" />
           </EdgeLayout.Labels>
         </EdgeLayout>
@@ -6209,7 +6223,7 @@ FROM            ETL.Staging_RecommendedItems</property>
     design-time-name="Package\Process Data\Process GrowthAndRecoveries">
     <LayoutInfo>
       <GraphLayout
-        Capacity="4" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:assembly="http://schemas.microsoft.com/winfx/2006/xaml">
+        Capacity="4" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:assembly="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:mssgm="clr-namespace:Microsoft.SqlServer.Graph.Model;assembly=Microsoft.SqlServer.Graph">
         <NodeLayout
           Size="152,42"
           Id="Package\Process Data\Process GrowthAndRecoveries\OLE DB Source"
@@ -6237,7 +6251,9 @@ FROM            ETL.Staging_RecommendedItems</property>
             </mssgle:Curve>
           </EdgeLayout.Curve>
           <EdgeLayout.Labels>
-            <EdgeLabelCollection />
+            <mssgm:EdgeLabel
+              BoundingBox="0,0,0,0"
+              RelativePosition="Any" />
           </EdgeLayout.Labels>
         </EdgeLayout>
       </GraphLayout>
@@ -6268,7 +6284,7 @@ FROM            ETL.Staging_RecommendedItems</property>
     design-time-name="Package\Process Data\Process GrowthAndRecovery ProductGroups">
     <LayoutInfo>
       <GraphLayout
-        Capacity="4" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:assembly="http://schemas.microsoft.com/winfx/2006/xaml">
+        Capacity="4" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:assembly="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:mssgm="clr-namespace:Microsoft.SqlServer.Graph.Model;assembly=Microsoft.SqlServer.Graph">
         <NodeLayout
           Size="152,42"
           Id="Package\Process Data\Process GrowthAndRecovery ProductGroups\OLE DB Source"
@@ -6296,7 +6312,9 @@ FROM            ETL.Staging_RecommendedItems</property>
             </mssgle:Curve>
           </EdgeLayout.Curve>
           <EdgeLayout.Labels>
-            <EdgeLabelCollection />
+            <mssgm:EdgeLabel
+              BoundingBox="0,0,0,0"
+              RelativePosition="Any" />
           </EdgeLayout.Labels>
         </EdgeLayout>
       </GraphLayout>
@@ -6509,7 +6527,7 @@ FROM            ETL.Staging_RecommendedItems</property>
     design-time-name="Package\Process Files\Process GrowthAndRecovery ProductGrouping">
     <LayoutInfo>
       <GraphLayout
-        Capacity="4" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:assembly="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:mssgm="clr-namespace:Microsoft.SqlServer.Graph.Model;assembly=Microsoft.SqlServer.Graph">
+        Capacity="4" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:assembly="http://schemas.microsoft.com/winfx/2006/xaml">
         <NodeLayout
           Size="173,42"
           Id="Package\Process Files\Process GrowthAndRecovery ProductGrouping\OLE DB Destination"
@@ -6537,9 +6555,7 @@ FROM            ETL.Staging_RecommendedItems</property>
             </mssgle:Curve>
           </EdgeLayout.Curve>
           <EdgeLayout.Labels>
-            <mssgm:EdgeLabel
-              BoundingBox="0,0,0,0"
-              RelativePosition="Any" />
+            <EdgeLabelCollection />
           </EdgeLayout.Labels>
         </EdgeLayout>
       </GraphLayout>
@@ -6562,7 +6578,7 @@ FROM            ETL.Staging_RecommendedItems</property>
     design-time-name="Package\Process Files\Process GrowthAndRecovery ProductGrouping Insights">
     <LayoutInfo>
       <GraphLayout
-        Capacity="4" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:assembly="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:mssgm="clr-namespace:Microsoft.SqlServer.Graph.Model;assembly=Microsoft.SqlServer.Graph">
+        Capacity="4" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:assembly="http://schemas.microsoft.com/winfx/2006/xaml">
         <NodeLayout
           Size="173,42"
           Id="Package\Process Files\Process GrowthAndRecovery ProductGrouping Insights\OLE DB Destination"
@@ -6590,9 +6606,7 @@ FROM            ETL.Staging_RecommendedItems</property>
             </mssgle:Curve>
           </EdgeLayout.Curve>
           <EdgeLayout.Labels>
-            <mssgm:EdgeLabel
-              BoundingBox="0,0,0,0"
-              RelativePosition="Any" />
+            <EdgeLabelCollection />
           </EdgeLayout.Labels>
         </EdgeLayout>
       </GraphLayout>
