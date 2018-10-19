@@ -1411,7 +1411,7 @@ namespace KeithLink.Svc.WebApi.Controllers
 
             try
             {
-                _settingLogic.DeleteSettings(settings);
+                _settingLogic.DeleteAuthenKey(settings);
                 returnValue.SuccessResponse = true;
                 returnValue.IsSuccess = true;
             }

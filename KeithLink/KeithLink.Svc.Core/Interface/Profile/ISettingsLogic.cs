@@ -26,6 +26,8 @@ namespace KeithLink.Svc.Core.Interface.Profile {
 
         void DeleteSettings(SettingsModel settings);
 
+        void DeleteAuthenKey(SettingsModel settings);
+
         void SetDefaultApplicationSettings(string email);
     }
 }

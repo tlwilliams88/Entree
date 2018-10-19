@@ -8,8 +8,8 @@
  * Controller of the bekApp
  */
 angular.module('bekApp')
-  .controller('RegisterController', ['$scope', '$state', 'ENV', 'toaster', 'AuthenticationService', 'BranchService', 'UserProfileService', 'PhonegapPushService', 'LocalStorage', 'blockUI', '$interval', 'ApplicationSettingsService',
-    function ($scope, $state, ENV, toaster, AuthenticationService, BranchService, UserProfileService, PhonegapPushService, LocalStorage, blockUI, $interval, ApplicationSettingsService) {
+  .controller('RegisterController', ['$scope', '$state', 'ENV', 'toaster', 'AuthenticationService', 'BranchService', 'UserProfileService', 'PhonegapPushService', 'LocalStorage', 'blockUI', '$interval', 'ApplicationSettingsService', 'TutorialService',
+    function ($scope, $state, ENV, toaster, AuthenticationService, BranchService, UserProfileService, PhonegapPushService, LocalStorage, blockUI, $interval, ApplicationSettingsService, TutorialService) {
 
   $scope.isMobileApp = ENV.mobileApp;
   $scope.signUpBool = false;
@@ -17,7 +17,46 @@ angular.module('bekApp')
   $scope.defaultUserName = ENV.username;
   $scope.saveUserName = $scope.defaultUserName ? true : false;
 
-  if(ENV.mobileApp == true) {
+  var branchCheck;
+  function checkForBranches() {
+    BranchService.getBranches().then(function(resp){
+      if(resp == -1) {
+        return;
+      } else {
+        blockUI.stop();
+        $interval.cancel(branchCheck);
+        $scope.branches = resp.successResponse;
+      }
+    })
+  }
+
+  BranchService.getBranches().then(function(resp) {
+    var branches = [],
+        maintenanceMessage = 'We\'re currently undergoing maintenance for an extended period today.\n We\'ll be back soon.\n Thank you for your patience.';
+    if(resp == -1 && $scope.isMobileApp) {
+      blockUI.start(maintenanceMessage).then(function() {
+        branchCheck = $interval(checkForBranches, 30000);
+      })
+    } else {
+      if(resp && resp.length > 0) {
+        branches = resp;
+      }
+      $scope.branches = branches;
+    }
+  });
+
+  // Biometrics Tutorial
+  var getHideTutorial = LocalStorage.getHideTutorialRegisterPage(),
+      runTutorial =  getHideTutorial ? false : true,
+      message = $scope.autheMethod == 'Touch ID' ? 
+            "After entering your credentials click here to register for " + $scope.authenMethod + ". After registering you will be able to use this method going forward.  <br/><br/>If you would like to unregister at any time you can do so in your profile settings.  <br/><br/>Please be aware that after registering any " + $scope.authenMethod + " entry stored on this device will be able to access Entree." :
+            "After entering your credentials click here to register for " + $scope.authenMethod + ". After registering you will be able to use this method going forward.  <br/><br/>If you would like to unregister at any time you can do so in your profile settings.",
+      overlay = true,
+      offset = {left: -70, top: 64.11},
+      width = 300,
+      highlight = true;
+
+  if($scope.isMobileApp == true) {
 
     window.plugins.touchid.isAvailable(function(biometryType) {
 
@@ -27,13 +66,38 @@ angular.module('bekApp')
       }
       window.plugins.touchid.has("Entree_Credential_User", function() {
         $scope.keyAvailable = true;
+
+        window.plugins.touchid.verify("Entree_Credential_User", "Use " + $scope.authenMethod + " to login", entreeCredentialFound, entreeBiometricResponse);
+        
       }, function() {
         $scope.keyAvailable = false;
       });
-      }, function(msg) {
+
+      if(runTutorial) 
+      {
+
+        TutorialService.setTutorial(
+          "register_tutorial", 
+          "Biometric Register Location", 
+          message,
+          [{name: "Close", onclick: setTutorialHidden}],
+          overlay,
+          "#bioRegister",
+          "top",
+          offset,
+          width,
+          highlight
+        );
+      } 
+    }, function(msg) {
         $scope.authenMethod = 'standard'
-      });
+    });
+
   };
+
+  function setTutorialHidden(){
+    TutorialService.setDisplayTutorial('hide', LocalStorage.setHideTutorialRegisterPage);
+  }
 
   // gets prepopulated login info for dev environment
   if(ENV.username) {
@@ -52,34 +116,6 @@ angular.module('bekApp')
     $scope.saveUserName = !$scope.saveUserName;
     $scope.enteredUserName = username;
   };
-
-  var branchCheck;
-  function checkForBranches() {
-    BranchService.getBranches().then(function(resp){
-      if(resp == -1) {
-        return;
-      } else {
-        blockUI.stop();
-        $interval.cancel(branchCheck);
-        $scope.branches = resp.successResponse;
-      }
-    })
-  }
-
-  BranchService.getBranches().then(function(resp) {
-    var branches = [],
-        maintenanceMessage = 'We\'re currently undergoing maintenance for an extended period today.\n We\'ll be back soon.\n Thank you for your patience.';
-    if(resp == -1 && ENV.mobileApp) {
-      blockUI.start(maintenanceMessage).then(function() {
-        branchCheck = $interval(checkForBranches, 30000);
-      })
-    } else {
-      if(resp && resp.length > 0) {
-        branches = resp;
-      }
-      $scope.branches = branches;
-    }
-  });
 
   $scope.login = function(loginInfo) {
     $scope.loginErrorMessage = '';
@@ -138,11 +174,13 @@ angular.module('bekApp')
   }
 
   function entreeBiometricResponse(msg) {
-    switch(msg) 
+    var message = msg && msg.ErrorMessage ? msg.ErrorMessage : msg;
+
+    switch(message) 
     {
 
       case 'Canceled by user.':
-        return toaster.pop('error', null, msg.ErrorMessage);
+        $scope.userCanceledBiometric = true;
       break;
 
       case 'Fallback authentication mechanism selected.':

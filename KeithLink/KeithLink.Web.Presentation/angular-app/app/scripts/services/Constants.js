@@ -21,6 +21,7 @@ angular.module('bekApp')
       hideTutorialHome: 'hideTutorialHome',
       hideTutorialSearch: 'hideTutorialSearch',
       hideTutorialAddToOrder: 'hideTutorialAddToOrder',
+      hideTutorialRegister: 'hideTutorialRegister',
       searchTerms: 'searchTerms',
       biometryEnabled: 'biometryEnabled',
       biometryType: 'biometryType'
@@ -241,5 +242,25 @@ angular.module('bekApp')
         getimages: false,
         pagesize: null
       }
-    }
+    },
+
+    // tutorials: {
+    //   register: {
+    //     get: LocalStorage.getHideTutorialRegisterPage(),
+    //     set: LocalStorage.setHideTutorialRegisterPage()
+    //   },
+    //   homepage: {
+    //     get: LocalStorage.getHideTutorialHomePage(),
+    //     set: LocalStorage.setHideTutorialRegisterPage()
+    //   },
+    //   addtoorder: {
+    //     get: LocalStorage.getHideTutorialAddToOrder(),
+    //     set: LocalStorage.setHighTutorialAddToOrder()
+    //   },
+    //   orders: {
+    //     get: LocalStorage.getHideTutorialOrders(),
+    //     set: LocalStorage.setHideTutorialOrders()
+    //   }
+
+    // }
   });

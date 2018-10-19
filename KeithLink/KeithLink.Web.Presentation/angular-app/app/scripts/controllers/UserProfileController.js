@@ -5,11 +5,19 @@ angular.module('bekApp')
     function ($scope, UserProfileService, branches, SessionService, $state, AccessService, ApplicationSettingsService, DsrAliasService, LocalStorage, ENV, toaster) {
 
   var init = function(){
+    $scope.isMobileApp = ENV.mobileApp;
+
+    $scope.biometryEnabled = LocalStorage.getBiometryEnabled() ? true : false;
+
     $scope.branches = branches;
 
-    if(ENV.mobileApp == true && LocalStorage.getBiometryEnabled())
+    if($scope.isMobileApp == true)
     {
       $scope.authenMethod = LocalStorage.getBiometryType();
+      if($scope.biometryEnabled == 'true')
+      {
+        $scope.displayBiometricMessage = $scope.biometryEnabled == 'true' && $scope.authenMethod == 'Touch ID';
+      }
     }
     
     $scope.isInternalUser = $scope.userProfile.emailaddress.indexOf('@benekeith.com') > -1;
@@ -86,22 +94,53 @@ angular.module('bekApp')
     });
   };
 
-  $scope.deleteStoredBiometricLogin = function() {
+  $scope.biometricLogin = function(register) {
+    switch(register) {
+      case true :
+        registerBiometricLogin();
+      break;
+
+      case false:
+        deleteStoredBiometricLogin();
+      break;
+    }
+  };
+
+  function registerBiometricLogin() {
+    saveCredentialLocally(); // Key will store locally and on backend if successful
+  };
+
+  function saveCredentialLocally() {
+    window.plugins.touchid.save("Entree_Credential_User", $scope.userProfile.emailaddress, true, storeUserKeyForBiometricLogin);
+  }
+
+  function storeUserKeyForBiometricLogin() {
+    var userDevice = device.uuid.toString(),
+        userKey = {userid: $scope.userProfile.userid, key: $scope.userProfile.emailaddress, value: userDevice};
+
+    ApplicationSettingsService.setUserKey(userKey).then( function() {
+      toaster.pop('success', 'User registered for ' + $scope.authenMethod);
+    },
+    function() {
+      toaster.pop('error', 'Unable to register user for ' + $scope.authenMethod + '.' + ' Please try again.');
+    });
+  }
+
+  function deleteStoredBiometricLogin() {
     var config = {
       userid: '',
       key: 'Entree_Credential_User'+$scope.userProfile.emailaddress,
       value: device.uuid
     };
-        
 
     ApplicationSettingsService.deleteUserKey(config).then(function() {
       
-      window.plugins.touchid.delete(key, function() {
-        toaster.pop('success', null, $scope.authenMethod + ' login has been deleted');
+      window.plugins.touchid.delete(config.key, function() {
+        toaster.pop('success', null, $scope.authenMethod + ' has been unregistered for this device.');
       });
     },
     function() {
-      toaster.pop('error', 'Unable to delete ' + $scope.authenMethod + ' login.  Please try again.')
+      toaster.pop('error', 'Unable to delete ' + $scope.authenMethod + ' login.  Please try again.');
     })
   };
 

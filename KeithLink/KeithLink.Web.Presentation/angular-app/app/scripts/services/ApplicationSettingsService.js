@@ -150,7 +150,10 @@ angular.module('bekApp')
       },
 
       deleteUserKey: function(key) {
-        var promise = $http.delete('/profile/deletekey', key);
+        var promise = $http.delete('/profile/deletekey', {
+          headers: {'Content-Type': 'application/json'},
+          data: key
+        });
         return UtilityService.resolvePromise(promise);
       },
 

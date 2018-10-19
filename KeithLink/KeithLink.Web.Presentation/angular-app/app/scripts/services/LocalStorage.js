@@ -181,6 +181,14 @@ angular.module('bekApp')
         return localStorageService.get(Constants.localStorage.hideTutorialAddToOrder);
       },
 
+      setHideTutorialRegisterPage: function(hideTutorial) { 
+        localStorageService.set(Constants.localStorage.hideTutorialRegister, hideTutorial);
+      },
+
+      getHideTutorialRegisterPage: function() {
+        return localStorageService.get(Constants.localStorage.hideTutorialRegister);
+      },
+
       setBiometryEnabled: function(enabled) {
         localStorageService.set(Constants.localStorage.biometryEnabled, enabled);
       },
