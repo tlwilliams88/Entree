@@ -135,7 +135,7 @@ angular.module('bekApp')
 
     ApplicationSettingsService.deleteUserKey(config).then(function() {
       
-      window.plugins.touchid.delete(config.key, function() {
+      window.plugins.touchid.delete('Entree_Credential_User', function() {
         toaster.pop('success', null, $scope.authenMethod + ' has been unregistered for this device.');
       });
     },

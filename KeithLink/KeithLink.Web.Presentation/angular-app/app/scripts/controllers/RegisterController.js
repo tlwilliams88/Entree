@@ -126,6 +126,9 @@ angular.module('bekApp')
 
       loginInfo.password = '';
       delete loginInfo.value; 
+    } else {
+      loginInfo.username = $scope.loginInfo.username;
+      loginInfo.password = $scope.loginInfo.password;
     }
 
     if($scope.saveUserName){
@@ -165,6 +168,7 @@ angular.module('bekApp')
 
     ApplicationSettingsService.getUserKey(key).then(function(resp) {
       credentials = resp;
+      credentials.uuid = key.value;
 
       LocalStorage.setBiometryEnabled(true);
       LocalStorage.setBiometryType($scope.authenMethod);
