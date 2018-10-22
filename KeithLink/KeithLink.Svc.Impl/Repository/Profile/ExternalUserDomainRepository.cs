@@ -33,16 +33,14 @@ namespace KeithLink.Svc.Impl.Repository.Profile
 
         IEventLogRepository _logger;
 		IAuditLogRepository _auditLog;
-        private readonly ISettingsLogic _settingsLogic;
         //ICustomerContainerRepository _containerRepo;
         #endregion
 
         #region ctor
-        public ExternalUserDomainRepository(IEventLogRepository logger, IAuditLogRepository auditLog, ISettingsLogic settingsLogic)
+        public ExternalUserDomainRepository(IEventLogRepository logger, IAuditLogRepository auditLog)
         {
             _logger = logger;
 			_auditLog = auditLog;
-            _settingsLogic = settingsLogic;
             //_containerRepo = customerContainerRepo;
         }
         #endregion
@@ -81,14 +79,13 @@ namespace KeithLink.Svc.Impl.Repository.Profile
         /// jwames - 8/5/2014 - add tests for argument length
         /// jwames - 8/15/2014 - add locking tests
         /// </remarks>
-        public AuthenticationModel AuthenticateUser(string userName, string password)
+        public AuthenticationModel AuthenticateUser(string userName, string password, bool hasUserKey)
         {
             AuthenticationModel returnValue = new AuthenticationModel();
 
-            bool userKey = _settingsLogic.CheckForStoredKey(userName);
             if (userName.Length == 0) { throw new ArgumentException("userName is required", "userName"); }
             if (userName == null) { throw new ArgumentNullException("userName", "userName is null"); }
-            if (String.IsNullOrEmpty(password) == true && userKey == false) { throw new ArgumentException("password is required", "password"); }
+            if (String.IsNullOrEmpty(password) == true && hasUserKey == false) { throw new ArgumentException("password is required", "password"); }
 
             returnValue.Message = null;
 
@@ -162,7 +159,7 @@ namespace KeithLink.Svc.Impl.Repository.Profile
                             return returnValue;
                         }
                     }
-                    else if (String.IsNullOrEmpty(password) == true && userKey == true)
+                    else if (String.IsNullOrEmpty(password) == true && hasUserKey == true)
                     {
                         _auditLog.WriteToAuditLog(AuditType.AuthenticationSucceeded, userName, string.Concat("Authentication successfull: ", userName));
                         returnValue.Status = AuthenticationStatus.Successful;

@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 namespace KeithLink.Svc.Core.Interface.Profile {
     public interface ICustomerDomainRepository {
-        KeithLink.Svc.Core.Models.Authentication.AuthenticationModel AuthenticateUser(string userName, string password);
+        KeithLink.Svc.Core.Models.Authentication.AuthenticationModel AuthenticateUser(string userName, string password, bool userKey);
         //bool AuthenticateUser(string userName, string password, out string errorMessage);
 
         string CreateUser(string customerName, string emailAddress, string password, string firstName, string lastName, string roleName, List<string> permissions);
