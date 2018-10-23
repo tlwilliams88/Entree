@@ -65,7 +65,7 @@ angular.module('bekApp')
     },
 
     biometricKeyName: {
-      keyName: "Entree_Credential_User'
+      keyName: 'Entree_Credential_User'
     },
     
     exportType: {
