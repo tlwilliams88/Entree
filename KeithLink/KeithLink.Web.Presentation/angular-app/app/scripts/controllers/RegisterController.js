@@ -8,8 +8,8 @@
  * Controller of the bekApp
  */
 angular.module('bekApp')
-  .controller('RegisterController', ['$scope', '$state', 'ENV', 'toaster', 'AuthenticationService', 'BranchService', 'UserProfileService', 'PhonegapPushService', 'LocalStorage', 'blockUI', '$interval', 'ApplicationSettingsService', 'TutorialService',
-    function ($scope, $state, ENV, toaster, AuthenticationService, BranchService, UserProfileService, PhonegapPushService, LocalStorage, blockUI, $interval, ApplicationSettingsService, TutorialService) {
+  .controller('RegisterController', ['$scope', '$state', 'ENV', 'toaster', 'AuthenticationService', 'BranchService', 'UserProfileService', 'PhonegapPushService', 'LocalStorage', 'blockUI', '$interval', 'ApplicationSettingsService', 'TutorialService', 'Constants',
+    function ($scope, $state, ENV, toaster, AuthenticationService, BranchService, UserProfileService, PhonegapPushService, LocalStorage, blockUI, $interval, ApplicationSettingsService, TutorialService, Constants) {
 
   $scope.isMobileApp = ENV.mobileApp;
   $scope.signUpBool = false;
@@ -32,7 +32,7 @@ angular.module('bekApp')
 
   BranchService.getBranches().then(function(resp) {
     var branches = [],
-        maintenanceMessage = 'We\'re currently undergoing maintenance for an extended period today.\n We\'ll be back soon.\n Thank you for your patience.';
+        maintenanceMessage = Constants.maintanenceMessage.message;
     if(resp == -1 && $scope.isMobileApp) {
       blockUI.start(maintenanceMessage).then(function() {
         branchCheck = $interval(checkForBranches, 30000);
@@ -48,9 +48,6 @@ angular.module('bekApp')
   // Biometrics Tutorial
   var getHideTutorial = LocalStorage.getHideTutorialRegisterPage(),
       runTutorial =  getHideTutorial ? false : true,
-      message = $scope.autheMethod == 'Touch ID' ? 
-            "After entering your credentials click here to register for " + $scope.authenMethod + ". After registering you will be able to use this method going forward.  <br/><br/>If you would like to unregister at any time you can do so in your profile settings.  <br/><br/>Please be aware that after registering any " + $scope.authenMethod + " entry stored on this device will be able to access Entree." :
-            "After entering your credentials click here to register for " + $scope.authenMethod + ". After registering you will be able to use this method going forward.  <br/><br/>If you would like to unregister at any time you can do so in your profile settings.",
       overlay = true,
       offset = {left: -70, top: 64.11},
       width = 300,
@@ -64,10 +61,13 @@ angular.module('bekApp')
       if($scope.authenMethod == 'OK') {
         $scope.authenMethod = 'Fingerprint'; // Android
       }
-      window.plugins.touchid.has("Entree_Credential_User", function() {
+
+      var message = $scope.authenMethod == 'Touch ID' ? Constants.biomtericMessage.touchID : Constants.biometricMessage.faceID;
+      
+      window.plugins.touchid.has(Constants.biometricKeyName.keyName, function() {
         $scope.keyAvailable = true;
 
-        window.plugins.touchid.verify("Entree_Credential_User", "Use " + $scope.authenMethod + " to login", entreeCredentialFound, entreeBiometricResponse);
+        window.plugins.touchid.verify(Constants.biometricKeyName.keyName, "Use " + $scope.authenMethod + " to login", entreeCredentialFound, entreeBiometricResponse);
         
       }, function() {
         $scope.keyAvailable = false;
@@ -78,7 +78,7 @@ angular.module('bekApp')
 
         TutorialService.setTutorial(
           "register_tutorial", 
-          "Biometric Register Location", 
+          "Register with " + $scope.authenMethod, 
           message,
           [{name: "Close", onclick: setTutorialHidden}],
           overlay,
@@ -154,7 +154,7 @@ angular.module('bekApp')
 
   $scope.displayBiometricsLogin = function() {
 
-    window.plugins.touchid.verify("Entree_Credential_User", "Use " + $scope.authenMethod + " to login", entreeCredentialFound, entreeBiometricResponse);
+    window.plugins.touchid.verify(Constants.biometricKeyName.keyName, "Use " + $scope.authenMethod + " to login", entreeCredentialFound, entreeBiometricResponse);
 
   };
 
@@ -200,7 +200,7 @@ angular.module('bekApp')
       break;
 
       case '-1':
-        window.plugins.touchid.verify("Entree_Credential_User", "Verifying" + $scope.authenMethod + "authentication", entreeCredentialFound, saveCredentialLocally);
+        window.plugins.touchid.verify(Constants.biometricKeyName.keyName, "Verifying" + $scope.authenMethod + "authentication", entreeCredentialFound, saveCredentialLocally);
       break;
 
     }
@@ -208,11 +208,11 @@ angular.module('bekApp')
   }
 
   function saveCredentialLocally() {
-    window.plugins.touchid.save("Entree_Credential_User", $scope.loginInfo.username, true, successfullySavedCredential, errorSavingCredential);
+    window.plugins.touchid.save(Constants.biometricKeyName.keyName, $scope.loginInfo.username, true, successfullySavedCredential, errorSavingCredential);
   }
 
   function successfullySavedCredential() {
-    window.plugins.touchid.verify("Entree_Credential_User", "Use " + $scope.authenMethod + " to login", entreeCredentialFound, entreeBiometricResponse);
+    window.plugins.touchid.verify(Constants.biometricKeyName.keyName, "Use " + $scope.authenMethod + " to login", entreeCredentialFound, entreeBiometricResponse);
   }
 
   function errorSavingCredential() {

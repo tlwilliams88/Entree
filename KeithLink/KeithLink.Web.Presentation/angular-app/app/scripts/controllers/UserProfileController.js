@@ -111,7 +111,7 @@ angular.module('bekApp')
   };
 
   function saveCredentialLocally() {
-    window.plugins.touchid.save("Entree_Credential_User", $scope.userProfile.emailaddress, true, storeUserKeyForBiometricLogin);
+    window.plugins.touchid.save(Constants.biometricKeyName.keyName, $scope.userProfile.emailaddress, true, storeUserKeyForBiometricLogin);
   }
 
   function storeUserKeyForBiometricLogin() {
@@ -129,13 +129,13 @@ angular.module('bekApp')
   function deleteStoredBiometricLogin() {
     var config = {
       userid: '',
-      key: 'Entree_Credential_User'+$scope.userProfile.emailaddress,
+      key: Constants.biometricKeyName.keyName+$scope.userProfile.emailaddress,
       value: device.uuid
     };
 
     ApplicationSettingsService.deleteUserKey(config).then(function() {
       
-      window.plugins.touchid.delete('Entree_Credential_User', function() {
+      window.plugins.touchid.delete(Constants.biometricKeyName.keyName, function() {
         toaster.pop('success', null, $scope.authenMethod + ' has been unregistered for this device.');
       });
     },
