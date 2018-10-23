@@ -512,9 +512,8 @@ namespace KeithLink.Svc.Impl.Repository.Profile
         /// <returns>paged list of customers</returns>
         public PagedResults<Customer> GetPagedCustomersForDSR(PagingModel paging, string searchTerm, List<Dsr> dsrList, CustomerSearchType searchType)
 		{
-			PagedResults<Customer> returnValue = new PagedResults<Customer>();
-
-            System.Text.StringBuilder whereText = new System.Text.StringBuilder();
+            PagedResults<Customer> returnValue = new PagedResults<Customer>();
+            StringBuilder whereText = new StringBuilder("");
             for (int i = 0; i < dsrList.Count; i++) {
                 if (!String.IsNullOrEmpty(dsrList[i].DsrNumber) && !String.IsNullOrEmpty(dsrList[i].Branch))
                 {
@@ -523,13 +522,17 @@ namespace KeithLink.Svc.Impl.Repository.Profile
                 }
             }
 
+            if (dsrList.Count > 1)
+            {
+                whereText = new StringBuilder("(").Append(whereText).Append(")");
+            }
+
             if (!String.IsNullOrEmpty(whereText.ToString()))
             {
                 returnValue = RetrievePagedResults(paging, searchTerm, whereText.ToString(), searchType);
             }
                         
             return returnValue;
-
 		}
 
         /// <summary>
