@@ -18,6 +18,8 @@ module.exports = function(config) {
       'app/lib/angular-resource/angular-resource.js',
       'app/lib/angular-touch/angular-touch.js',
       'app/lib/angular-sanitize/angular-sanitize.js',
+      'app/lib/angular-aria/aria.js',
+      'app/lib/angular-material/angular-material.js',
       'app/lib/angular-local-storage/angular-local-storage.js',
       'app/lib/angular-ui-router/angular-ui-router.js',
       'app/lib/angular-ui-bootstrap/ui-bootstrap-tpls.js',
