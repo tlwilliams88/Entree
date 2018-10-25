@@ -61,7 +61,8 @@ angular.module('bekApp')
 
     biometricMessage: {
       touchID: 'After entering your credentials, click the Register Touch ID button. After registering you will be able to use this method going forward.  <br/><br/>If you would like to unregister at any time you can do so in your profile settings.  <br/><br/>Please be aware that after registering any Touch ID entry stored on this device will be able to access Entree.',
-      faceID: 'After entering your credentials, click the Register Face ID button. After registering you will be able to use this method going forward.  <br/><br/>If you would like to unregister at any time you can do so in your profile settings.'
+      faceID: 'After entering your credentials, click the Register Face ID button. After registering you will be able to use this method going forward.  <br/><br/>If you would like to unregister at any time you can do so in your profile settings.',
+      fingerprint: 'After entering your credentials, click the Register Fingerprint button. After registering you will be able to use this method going forward.  <br/><br/>If you would like to unregister at any time you can do so in your profile settings.',
     },
 
     biometricKeyName: {

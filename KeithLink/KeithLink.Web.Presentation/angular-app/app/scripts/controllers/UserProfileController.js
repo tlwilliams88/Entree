@@ -1,8 +1,8 @@
 'use strict';
 
 angular.module('bekApp')
-  .controller('UserProfileController', ['$scope', 'UserProfileService', 'branches', 'SessionService', '$state', 'AccessService', 'ApplicationSettingsService', 'DsrAliasService', 'LocalStorage', 'ENV', 'toaster',
-    function ($scope, UserProfileService, branches, SessionService, $state, AccessService, ApplicationSettingsService, DsrAliasService, LocalStorage, ENV, toaster) {
+  .controller('UserProfileController', ['$scope', 'UserProfileService', 'branches', 'SessionService', '$state', 'AccessService', 'ApplicationSettingsService', 'DsrAliasService', 'LocalStorage', 'ENV', 'toaster', 'Constants',
+    function ($scope, UserProfileService, branches, SessionService, $state, AccessService, ApplicationSettingsService, DsrAliasService, LocalStorage, ENV, toaster, Constants) {
 
   var init = function(){
     $scope.isMobileApp = ENV.mobileApp;
@@ -16,7 +16,7 @@ angular.module('bekApp')
       $scope.authenMethod = LocalStorage.getBiometryType();
       if($scope.biometryEnabled == 'true')
       {
-        $scope.displayBiometricMessage = $scope.biometryEnabled == 'true' && $scope.authenMethod == 'Touch ID';
+        $scope.displayBiometricMessage = $scope.biometryEnabled == 'true' && ($scope.authenMethod == 'Touch ID' || $scope.authenMethod == 'Fingerprint');
       }
     }
     

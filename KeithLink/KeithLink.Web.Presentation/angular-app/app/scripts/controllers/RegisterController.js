@@ -58,11 +58,13 @@ angular.module('bekApp')
     window.plugins.touchid.isAvailable(function(biometryType) {
 
       $scope.authenMethod = biometryType == 'touch' && biometryType != 'OK' ? 'Touch ID' : 'Face ID'; // iOS
-      if($scope.authenMethod == 'OK') {
+      if(biometryType == 'OK') {
         $scope.authenMethod = 'Fingerprint'; // Android
       }
 
-      var message = $scope.authenMethod == 'Touch ID' ? Constants.biomtericMessage.touchID : Constants.biometricMessage.faceID;
+      var message = $scope.authenMethod == 'Touch ID' && $scope.authenMethod != 'Fingerprint' ? Constants.biomtericMessage.touchID : Constants.biometricMessage.faceID,
+          message = $scope.authenMethod == 'Fingerprint' ? Constants.biometricMessage.fingerprint : message;
+
       
       window.plugins.touchid.has(Constants.biometricKeyName.keyName, function() {
         $scope.keyAvailable = true;
@@ -78,7 +80,7 @@ angular.module('bekApp')
 
         TutorialService.setTutorial(
           "register_tutorial", 
-          "Register with " + $scope.authenMethod, 
+          "Entrée now supports " + $scope.authenMethod, 
           message,
           [{name: "Close", onclick: setTutorialHidden}],
           overlay,
@@ -178,9 +180,12 @@ angular.module('bekApp')
   }
 
   function entreeBiometricResponse(msg) {
-    var message = msg && msg.ErrorMessage ? msg.ErrorMessage : msg;
 
-    switch(message) 
+    var message = msg == '-1' || msg == 'Failed to init Cipher' ? msg : 'messageObject',
+        messageParsed = message == 'messageObject' && typeof(msg) != 'object' ? JSON.parse(msg).ErrorMessage : message.ErrorMessage;
+
+    var biometricStatus = messageParsed != undefined ? messageParsed : message;
+    switch(biometricStatus) 
     {
 
       case 'Canceled by user.':
@@ -192,15 +197,18 @@ angular.module('bekApp')
       break;
 
       case 'Biometry is locked out.':
-        biometryUnavailable(msg.ErrorMessage);
-      break;
-
       case 'User has denied the use of biometry for this app.':
         biometryUnavailable(msg.ErrorMessage);
       break;
 
-      case '-1':
+      case '-1': // iOS, biometric not registered on device
+      case 'Secret Key not set.': // Android, biometric not registered on device
+      case 'Failed to init Cipher': // Android, biometric has been deleted previously
         window.plugins.touchid.verify(Constants.biometricKeyName.keyName, "Verifying" + $scope.authenMethod + "authentication", entreeCredentialFound, saveCredentialLocally);
+      break;
+
+      case 'KeyPermanentlyInvalidatedException': // Android, occurs when key storage is invalidated
+        $scope.loginErrorMessage = "Fingerprint storage has changed or is invalid please register Fingerprint again."
       break;
 
     }
@@ -208,7 +216,7 @@ angular.module('bekApp')
   }
 
   function saveCredentialLocally() {
-    window.plugins.touchid.save(Constants.biometricKeyName.keyName, $scope.loginInfo.username, true, successfullySavedCredential, errorSavingCredential);
+    window.plugins.touchid.save(Constants.biometricKeyName.keyName, $scope.loginInfo.username, false, successfullySavedCredential, errorSavingCredential);
   }
 
   function successfullySavedCredential() {
