@@ -37,7 +37,7 @@ namespace KeithLink.Svc.Impl.Repository.Profile
         /// jwames - 8/5/2014 - add tests for argument length
         /// jwames - 8/18/2014 - change to throw exceptions when authentication fails
         /// </remarks>
-        public bool AuthenticateUser(string emailAddress, string password, bool hasUserKey) {
+        public bool AuthenticateUser(string emailAddress, string password, bool hasUserKey =  false) {
             string msg = null;
             bool success = AuthenticateUser(emailAddress, password, out msg, hasUserKey);
 
@@ -59,7 +59,7 @@ namespace KeithLink.Svc.Impl.Repository.Profile
         /// <remarks>
         /// jwames - 8/18/2014 - documented
         /// </remarks>
-        public bool AuthenticateUser(string emailAddress, string password, out string errorMessage, bool hasUserKey)
+        public bool AuthenticateUser(string emailAddress, string password, out string errorMessage, bool hasUserKey = false)
         {
             if (emailAddress == null) { throw new ArgumentNullException("emailAddress", "emailAddress is null"); }
             if (emailAddress.Length == 0) { throw new ArgumentException("emailAddress is required", "emailAddress"); }

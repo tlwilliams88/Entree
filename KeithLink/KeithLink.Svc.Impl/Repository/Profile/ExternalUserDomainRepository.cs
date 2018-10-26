@@ -79,7 +79,7 @@ namespace KeithLink.Svc.Impl.Repository.Profile
         /// jwames - 8/5/2014 - add tests for argument length
         /// jwames - 8/15/2014 - add locking tests
         /// </remarks>
-        public AuthenticationModel AuthenticateUser(string userName, string password, bool hasUserKey)
+        public AuthenticationModel AuthenticateUser(string userName, string password, bool hasUserKey = false)
         {
             AuthenticationModel returnValue = new AuthenticationModel();
 

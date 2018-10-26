@@ -9,7 +9,7 @@ namespace KeithLink.Svc.Impl.Repository.Profile
 {
 	public class DemoExternalUserDomainRepositoryImpl : ICustomerDomainRepository
 	{
-		public Core.Models.Authentication.AuthenticationModel AuthenticateUser(string userName, string password, bool userKey)
+		public Core.Models.Authentication.AuthenticationModel AuthenticateUser(string userName, string password, bool userKey = false)
 		{
 			return new Core.Models.Authentication.AuthenticationModel() { Status = Core.Enumerations.Authentication.AuthenticationStatus.FailedAuthentication, Message = "External user authentication not supported in the demo environment" };
 		}

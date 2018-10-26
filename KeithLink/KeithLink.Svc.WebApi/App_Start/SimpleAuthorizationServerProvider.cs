@@ -43,9 +43,12 @@ namespace KeithLink.Svc.WebApi
             // Get the HttpContext object for the current request.
             System.Web.HttpRequest myHttpContext = System.Web.HttpContext.Current.Request;
 
-            string[] keys = myHttpContext.Form.GetValues("uuid");
+            string[] values = myHttpContext.Form.GetValues("uuid");
 
-            string userKey = keys[0];
+            if(values.Length > 0)
+            {
+                string userKey = values[0];
+            }
 
             ISettingsLogic SettingsLogic = GlobalConfiguration.Configuration.DependencyResolver.GetService(typeof(ISettingsLogic)) as ISettingsLogic;
 
