@@ -6,8 +6,8 @@ namespace KeithLink.Svc.Core.Interface.Profile
 {
     public interface IUserDomainRepository
     {
-        bool AuthenticateUser(string userName, string password);
-        bool AuthenticateUser(string userName, string password, out string errorMessage);
+        bool AuthenticateUser(string userName, string password, bool hasUserKey = false);
+        bool AuthenticateUser(string userName, string password, out string errorMessage, bool hasUserKey = false);
 
         UserPrincipal GetUser(string userName);
 

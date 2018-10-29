@@ -23,8 +23,6 @@ namespace KeithLink.Svc.WebApi
     /// </summary>
     public class SimpleAuthorizationServerProvider : OAuthAuthorizationServerProvider
     {
-        #region attributes
-        #endregion
 
         #region methods / functions
         /// <summary>
@@ -42,11 +40,25 @@ namespace KeithLink.Svc.WebApi
 
             string errMsg = null;
 
+            // Get the HttpContext object for the current request.
+            System.Web.HttpRequest myHttpContext = System.Web.HttpContext.Current.Request;
+
+            string[] values = myHttpContext.Form.GetValues("uuid");
+
+            if(values.Length > 0)
+            {
+                string userKey = values[0];
+            }
+
+            ISettingsLogic SettingsLogic = GlobalConfiguration.Configuration.DependencyResolver.GetService(typeof(ISettingsLogic)) as ISettingsLogic;
+
+            bool hasUserKey = SettingsLogic.CheckForStoredKey(context.UserName);
+
             // determine if we are authenticating an internal or external user
             if (ProfileHelper.IsInternalAddress(context.UserName)) {
                 IUserDomainRepository ADRepo = GlobalConfiguration.Configuration.DependencyResolver.GetService(typeof(IUserDomainRepository)) as IUserDomainRepository;
 
-                bool success = await Task.Run<bool>(() => ADRepo.AuthenticateUser(context.UserName, context.Password, out errMsg));
+                bool success = await Task.Run<bool>(() => ADRepo.AuthenticateUser(context.UserName, context.Password, out errMsg, hasUserKey));
 
                 if (!success) {
                     context.SetError("invalid_grant", errMsg);
@@ -55,7 +67,7 @@ namespace KeithLink.Svc.WebApi
             } else {
                 ICustomerDomainRepository ADRepo = GlobalConfiguration.Configuration.DependencyResolver.GetService(typeof(ICustomerDomainRepository)) as ICustomerDomainRepository;
 
-                AuthenticationModel authentication = await Task.Run<AuthenticationModel>(() => ADRepo.AuthenticateUser( context.UserName, context.Password ));
+                AuthenticationModel authentication = await Task.Run<AuthenticationModel>(() => ADRepo.AuthenticateUser( context.UserName, context.Password, hasUserKey));
 
                 if (!authentication.Status.Equals( AuthenticationStatus.Successful ) && !authentication.Status.Equals( AuthenticationStatus.PasswordExpired ) ) {
                     context.SetError( "invalid_grant", authentication.Message );

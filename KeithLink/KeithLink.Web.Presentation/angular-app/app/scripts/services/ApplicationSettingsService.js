@@ -149,6 +149,14 @@ angular.module('bekApp')
         return UtilityService.resolvePromise(promise);
       },
 
+      deleteUserKey: function(key) {
+        var promise = $http.delete('/profile/deletekey', {
+          headers: {'Content-Type': 'application/json'},
+          data: key
+        });
+        return UtilityService.resolvePromise(promise);
+      },
+
       setDefaultOrderList: function(list){
         var defaultList = {
           listid: list.listId,

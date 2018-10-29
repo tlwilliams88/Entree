@@ -663,16 +663,8 @@ angular.module('bekApp')
     })
 
     /**********
-    REPORT
+    REPORTS
     **********/
-    .state('menu.reports', {
-      url: '/reports/',
-      templateUrl: 'views/reports.html',
-      controller: 'ReportsController',
-      // data: {
-      //     authorize: 'canPayInvoices'
-      // }
-    })
     .state('menu.itemusagereport', {
       url: '/reports/itemusage',
       templateUrl: 'views/itemusagereport.html',
@@ -769,7 +761,33 @@ angular.module('bekApp')
       url: 'ordermanagement/',
       templateUrl: 'views/admin/ordermanagement.html',
       controller: 'OrderManagementController',
-      resolve: {}
+      resolve: {
+        security: ['UserProfileService', '$q', function(UserProfileService, $q) {
+          return UserProfileService.getCurrentUserProfile().then(function(resp){
+            var profile = resp;
+
+          if(profile.rolename !== 'beksysadmin'){
+            return $q.reject('User Not Authorized');
+          }
+          });
+        }]
+      }
+    })
+    .state('menu.admin.register', {
+      url: 'register/',
+      templateUrl: 'views/admin/register.html',
+      controller: 'RegisterController',
+      resolve: {
+        security: ['UserProfileService', '$q', function(UserProfileService, $q) {
+          return UserProfileService.getCurrentUserProfile().then(function(resp){
+            var profile = resp;
+
+          if(profile.rolename !== 'beksysadmin'){
+            return $q.reject('User Not Authorized');
+          }
+          });
+        }]
+      }
     })
 
     /*************

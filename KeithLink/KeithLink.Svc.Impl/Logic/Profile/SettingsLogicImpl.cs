@@ -222,6 +222,19 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
             }
         }
 
+        public void DeleteAuthenKey(SettingsModel settings)
+        {
+            string key = StoredUserKey(settings.Key);
+
+            Settings myAuthenKey = _repo.Read(x => x.Key == key && x.Value == settings.Value).FirstOrDefault();
+
+            if(myAuthenKey != null)
+            {
+                _repo.Delete( myAuthenKey );
+                _uow.SaveChanges();
+            }
+        }
+
         public void SetDefaultApplicationSettings(string email) {
             CS.UserProfile profile = _profileRepo.GetCSProfile(email);
             Guid userId = Guid.Parse(profile.Id);

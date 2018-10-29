@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-
+using KeithLink.Svc.Core;
 using KeithLink.Svc.Core.Extensions;
 using KeithLink.Svc.Core.Interface.SiteCatalog;
 using KeithLink.Svc.Core.Models.EF;
@@ -24,6 +24,7 @@ namespace KeithLink.Svc.Impl.Logic {
         public List<Division> GetDivisions() {
             List<Division> divisions = _divisionRepository.GetDivisions()
                                                           .Select(c => c.ToDivision())
+                                                          .Where(d => d.Id != Constants.BRANCH_FAR)
                                                           .ToList();
             List<BranchSupportModel> branchsupports = ReadBranchSupport();
 

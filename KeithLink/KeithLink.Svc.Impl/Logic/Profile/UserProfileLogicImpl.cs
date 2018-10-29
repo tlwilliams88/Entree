@@ -407,7 +407,7 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
         /// jwames - 10/3/2014 - documented
         /// jwames - 4/1/2015 - change AD structure
         /// </remarks>
-        public UserProfileReturn CreateGuestUserAndProfile(UserProfile actingUser, string emailAddress, string password, string branchId) {
+        public UserProfileReturn CreateGuestUserAndProfile(UserProfile actingUser, string emailAddress, string password, string branchId, string customerNumber) {
             if (emailAddress == null) throw new Exception( "email address cannot be null" );
             if (ProfileHelper.IsInternalAddress(emailAddress)) { throw new ApplicationException("Cannot create an account in External AD for an Internal User"); }
             if (password == null) throw new Exception( "password cannot be null" );
@@ -428,7 +428,8 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
                                          Core.Constants.AD_GUEST_FIRSTNAME,
                                          Core.Constants.AD_GUEST_LASTNAME,
                                          string.Empty,
-                                         branchId
+                                         branchId,
+                                         customerNumber
                                          );
 
                 try {

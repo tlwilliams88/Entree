@@ -62,6 +62,10 @@ angular.module('bekApp')
             $scope.specialCatalogOpen = !$scope.specialCatalogOpen;
           };
 
+          $scope.toggleReportsSubmenu = function() {
+            $scope.reportsOpen = !$scope.reportsOpen;
+          };
+
           // Menumax
           $scope.redirectToMenumax = function () {
             UserProfileService.generateMenuMaxAuthToken().then(function (resp) {

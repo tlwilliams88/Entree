@@ -30,6 +30,10 @@ namespace KeithLink.Svc.WebApi.Models {
         /// </summary>
         public string BranchId { get; set; }
         /// <summary>
+        /// CustomerNumber
+        /// </summary>
+        public string CustomerNumber { get; set; }
+        /// <summary>
         /// ExistingCustomer
         /// </summary>
         public bool ExistingCustomer { get; set; }

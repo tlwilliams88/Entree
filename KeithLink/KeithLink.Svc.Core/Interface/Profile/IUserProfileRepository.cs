@@ -8,7 +8,7 @@ namespace KeithLink.Svc.Core.Interface.Profile
 {
     public interface IUserProfileRepository
     {
-		void CreateUserProfile(string createdBy, string emailAddress, string firstName, string lastName, string phoneNumber, string branchId);
+		void CreateUserProfile(string createdBy, string emailAddress, string firstName, string lastName, string phoneNumber, string branchId, string customerNumber = "");
 
         void DeleteUserProfile(string userName);
 

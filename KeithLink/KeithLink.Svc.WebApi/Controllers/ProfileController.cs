@@ -125,9 +125,9 @@ namespace KeithLink.Svc.WebApi.Controllers
                 if (this.AuthenticatedUser == null) {
                     // fake a user profile for registration
                     UserProfile tempUser = new UserProfile() { EmailAddress = "registration" };
-                    retVal.SuccessResponse = _profileLogic.CreateGuestUserAndProfile(tempUser, guestInfo.Email, guestInfo.Password, guestInfo.BranchId);
+                    retVal.SuccessResponse = _profileLogic.CreateGuestUserAndProfile(tempUser, guestInfo.Email, guestInfo.Password, guestInfo.BranchId, guestInfo.CustomerNumber);
                 } else {
-                    retVal.SuccessResponse = _profileLogic.CreateGuestUserAndProfile(this.AuthenticatedUser, guestInfo.Email, guestInfo.Password, guestInfo.BranchId);
+                    retVal.SuccessResponse = _profileLogic.CreateGuestUserAndProfile(this.AuthenticatedUser, guestInfo.Email, guestInfo.Password, guestInfo.BranchId, guestInfo.CustomerNumber);
                 }
 
                 MarketingPreferenceModel model = new MarketingPreferenceModel() {
@@ -1411,7 +1411,7 @@ namespace KeithLink.Svc.WebApi.Controllers
 
             try
             {
-                _settingLogic.DeleteSettings(settings);
+                _settingLogic.DeleteAuthenKey(settings);
                 returnValue.SuccessResponse = true;
                 returnValue.IsSuccess = true;
             }

@@ -25,7 +25,7 @@
 
 <div>
   <li ng-if="userContext.customer.canViewUNFI"
-      ng-class="{'is-selected': $state.includes('menu.catalog') && ($state.params.catalogType == constants.catalogType.UNFI || $state.params.catalogType == constants.catalogType.ES)}"
+      ng-class="{'is-selected': $state.includes('menu.catalog') || equipmentAndSupply == 'true'}"
       ng-show="showSpecialtyCatalogs">
     <button class="btn-no-style"
             type="button"
@@ -37,16 +37,16 @@
     </button>
     <ul ng-show="specialCatalogOpen">
       <button class="btn-no-style sub-btn"
-              ng-click="toggleSidebarMenu()"
+              ng-click="toggleSidebarMenu();"
               type="button"
               ui-sref="menu.catalog.home({catalogType: constants.catalogType.UNFI})"
               ng-class="{'is-sub-selected': $state.includes('menu.catalog') && $state.params.catalogType == constants.catalogType.UNFI}">
         <li>Natural and Organic</li>
       </button>
       <button class="btn-no-style sub-btn"
-              ng-click="toggleSidebarMenu(); openExternalLink(flipsnackUrl)"
+              ng-click="toggleSidebarMenu(); openExternalLink(flipsnackUrl); equipmentAndSupply = true;"
               type="button"
-              ng-class="{'is-sub-selected': $state.includes('menu.catalog') && $state.params.catalogType == constants.catalogType.UNFI}">
+              ng-class="{'is-sub-selected': equipmentAndSupply == 'true'}">
         <li>Equipment and Supplies</li>
       </button>
     </ul>
@@ -84,18 +84,37 @@
       KBIT
     </li>
   </a>
-  <button class="btn-no-style"
-          type="button"
-          ng-disabled="::!canRunReports || !canSeePrices"
-          ui-sref="menu.reports"
-          ng-class="{'is-selected': $state.includes('menu.reports')}">
-    <li>
-      <span class="icon-pie sidebar-nav__icon"></span>
+</div>
+<div>
+  <li ng-class="{'is-selected': $state.includes('menu.itemusagereport') || $state.includes('menu.inventoryreport')}">
+    <button class="btn-no-style"
+            type="button"
+            ng-disabled="::!canRunReports || !canSeePrices"
+            ng-click="toggleReportsSubmenu();">
+      <span class="sidebar-nav__icon"><span class="icon-pie"></span></span>
       Reports
-    </li>
-  </button>
-  <span ng-if="::!canRunReports || !canSeePrices" tooltip="Item Usage report and & KBIT access. Contact your DSR for more information." class="glyphicon glyphicon-info-sign pull-right btn-info-sidebar"></span>
-
+      <span ng-class="{'icon-angle-up sidebar-nav__collapse-arrow': !reportsOpen, 'icon-angle-down sidebar-nav__collapse-arrow': reportsOpen}"></span>
+    </button>
+    <span ng-if="::!canRunReports || !canSeePrices" tooltip="Item Usage report and & KBIT access. Contact your DSR for more information." class="glyphicon glyphicon-info-sign pull-right btn-info-sidebar"></span>
+    <ul ng-show="reportsOpen">
+      <button class="btn-no-style sub-btn"
+              ng-click="toggleSidebarMenu();"
+              type="button"
+              ui-sref="menu.itemusagereport"
+              ng-class="{'is-sub-selected': $state.includes('menu.itemusagereport')}">
+        <li><span class="icon-stats-dots" style="padding-right: 5px;"></span>Item Usage</li>
+      </button>
+      <button class="btn-no-style sub-btn"
+              ng-click="toggleSidebarMenu();"
+              ui-sref="menu.inventoryreport"
+              type="button"
+              ng-class="{'is-sub-selected': $state.includes('menu.inventoryreport')}">
+        <li><span class="glyphicon glyphicon-list-alt" style="top: 1px; padding-right: 5px;"></span>Inventory Valuation</li>
+      </button>
+    </ul>
+  </li>
+</div>
+<div ng-click="toggleSidebarMenu()">
   <button class="btn-no-style"
           type="button"
           ng-disabled="!canViewInvoices"
