@@ -1,0 +1,114 @@
+<div page-header-bar>
+    <div header-message>
+      Registration
+    </div>
+  </div>
+  
+  <div class="page-content">
+  <div class="row">
+
+    <div class="row">
+      <div class="col-xs-12 text-red">
+        <p>{{registrationErrorMessage}}</p>
+      </div>
+    </div>
+
+    <form name="registrationForm" novalidate class="register-form col-xs-12 sub-content style-validation-errors">
+
+      <div class="row">
+        <div class="col-md-6 form-group">
+          <label for="customerStatus">Customer Status</label>
+          <div class="radio">
+            <label>
+              <input ng-model="registerUser.existingcustomer" type="radio" name="customerStatus" id="customerStatus1" ng-value="false" ng-init="registerUser.existingcustomer = false">
+              I am NOT a current customer
+            </label>
+          </div>
+           <div class="radio">
+            <label>
+              <input ng-model="registerUser.existingcustomer" type="radio" name="customerStatus" id="customerStatus2" ng-value="true">
+              I am a current customer
+            </label>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-6 form-group">
+          <label for="customerNumber">Customer Number</label>
+          <span ng-show="registerUser.existingcustomer" class="text-red">REQUIRED</span>
+          <input ng-required="registerUser.existingcustomer" ng-trim internal-email-invalid class="form-control" type="text" id="customerNumber" name="customerNumber" ng-model="registerUser.customerNumber">
+        </div>
+        <div class="col-md-6 form-group">
+          <label for="branch">Division</label>
+          <span class="text-red">REQUIRED</span>
+          <a class="pull-right" target="_system" href="Assets/bek-division-map.png?1234224251235234123">Division Map</a>
+          <span ng-show="registrationForm.branch.$error.required && registrationForm.branch.$dirty" class="text-red">Division is required</span>
+          <div class="select-div block full-width">
+            <select required name="branch" id="branch" class="form-control" ng-options="branch.id as branch.branchsupport.branchname for branch in branches" ng-model="registerUser.branchid">
+              <option value="">Please select a division</option>
+            </select>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-6 form-group">
+          <label for="username">Email Address</label>
+          <span class="text-red">REQUIRED</span>
+          <span ng-show="registrationForm.username.$error.internalEmailInvalid" class="text-red">You cannot register with an internal benekeith.com email address</span>
+          <input required ng-trim internal-email-invalid class="form-control" type="text" id="username" name="username" ng-model="registerUser.email">
+        </div>
+        <div class="col-md-6 form-group">
+          <label for="confirmUsername">Confirm Email</label>
+          <span class="text-red">REQUIRED</span>
+          <span ng-show="registrationForm.confirmUsername.$error.matchInput && registrationForm.confirmUsername.$dirty" class="text-red">Emails do not match</span>
+          <span ng-show="registrationForm.confirmUsername.$error.required && registrationForm.confirmUsername.$dirty" class="text-red">Email confirmation is required</span>
+          <input required ng-trim class="form-control" type="text" id="confirmUsername" name="confirmUsername" ng-model="registerUser.confirmEmail" match-input="registerUser.email">
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-6 form-group">
+          <label for="password">Password</label>
+          <span class="text-red">REQUIRED</span>
+          <span ng-show="registrationForm.password.$error.passwordRequirements && registrationForm.password.$dirty && !registrationForm.password.$error.required" class="text-red">Must contain one uppercase letter, one lowercase letter, and a number. Minimum length is 8 characters. Cannot contain any part of your name or email address.</span>
+          <input password-requirements required class="form-control" id="password" email-address="{{registerUser.email}}" type="password" name="password" ng-model="registerUser.password">
+        </div>
+        <div class="col-md-6 form-group">
+          <label for="confirmPassword">Confirm Password</label>
+          <span class="text-red">REQUIRED</span>
+          <span ng-show="registrationForm.confirmPassword.$error.matchInput && registrationForm.confirmPassword.$dirty" class="text-red">Passwords do not match</span>
+          <span ng-show="registrationForm.confirmPassword.$error.required && registrationForm.confirmPassword.$dirty" class="text-red">Password confirmation is required</span>
+          <input required class="form-control" id="confirmPassword" type="password" name="confirmPassword" ng-model="registerUser.confirmPassword" match-input="registerUser.password">
+        </div>
+      </div>
+
+      <hr/>
+
+      <div class="row">
+        <div class="col-xs-12">
+          <div class="checkbox">
+            <label for="discounts">
+              <input type="checkbox" ng-model="registerUser.marketingflag" name="discounts" id="discounts" ng-init="registerUser.marketingflag = true">
+              Select checkbox to learn more about Ben E. Keith
+            </label>
+          </div>
+        </div>
+      </div>
+
+    <hr>
+
+      <div class="row sub-content">
+        <div class="col-xs-12 button-row">
+          <button 
+          ng-click="registerUserFromAdmin(registerUser)" 
+          ng-disabled="registrationForm.$invalid || registrationFormSubmitted" 
+          type="submit" 
+          class="btn-lg btn btn-primary">
+          Submit Registration</button>
+          <a ng-click="clearForm()">Reset</a>
+        </div>
+      </div>
+
+      </form>
+
+  </div>
+</div>

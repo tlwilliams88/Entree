@@ -36,7 +36,7 @@ namespace KeithLink.Svc.Impl.Repository.Profile {
         /// <remarks>
         ///     jwames - 10/3/2014 - documented
         /// </remarks>
-        public void CreateUserProfile(string createdBy, string emailAddress, string firstName, string lastName, string phoneNumber, string branchId) {
+        public void CreateUserProfile(string createdBy, string emailAddress, string firstName, string lastName, string phoneNumber, string branchId, string customerNumber = "") {
             CommerceCreate<Core.Models.Generated.UserProfile> createUser = new CommerceCreate<Core.Models.Generated.UserProfile>("UserProfile");
 
             createUser.Model.FirstName = firstName;
@@ -44,6 +44,7 @@ namespace KeithLink.Svc.Impl.Repository.Profile {
             createUser.Model.Email = emailAddress;
             createUser.Model.Telephone = phoneNumber;
             createUser.Model.DefaultBranch = branchId;
+            createUser.Model.DefaultCustomer = customerNumber;
 
             FoundationService.ExecuteRequest(createUser.ToRequest());
 

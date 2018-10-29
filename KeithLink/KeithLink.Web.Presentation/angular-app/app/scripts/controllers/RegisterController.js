@@ -13,9 +13,19 @@ angular.module('bekApp')
 
   $scope.isMobileApp = ENV.mobileApp;
   $scope.signUpBool = false;
-  $scope.isInternalEmail = false;
+  $scope.isInternalEmail = false; 
   $scope.defaultUserName = ENV.username;
   $scope.saveUserName = $scope.defaultUserName ? true : false;
+  $scope.registerUser = {
+    email: null,
+    confirmEmail: null,
+    password: null,
+    confirmPassword: null,
+    existingcustomer: false,
+    marketingflag: true,
+    branch: null,
+    customerNumber: null
+  };
 
   var branchCheck;
   function checkForBranches() {
@@ -297,6 +307,23 @@ angular.module('bekApp')
         }).finally(function() {
           processingRegistration = false;
         });
+    }
+  };
+
+  $scope.registerUserFromAdmin = function(userProfile) {
+    if (!processingRegistration) {
+      processingRegistration = true;
+      $scope.registrationErrorMessage = null;
+      $scope.registrationSuccessMessage = null;
+
+      UserProfileService.createUser(userProfile).then(function(data) {
+        toaster.pop('success', null, 'New Account Created');
+      }, function(error) {
+        toaster.pop('error', null, error.toString());
+      }).finally(function() {
+          processingRegistration = false;
+      });
+
     }
   };
 
