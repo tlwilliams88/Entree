@@ -22,8 +22,8 @@ angular.module('bekApp')
     $scope.showRecommendedItems = ENV.showRecommendedItems;
 
     if($scope.showRecommendedItems == true) {
-      var pagesize = ENV.isMobileApp == 'true' ? Constants.recommendedItemParameters.Mobile.pagesize : Constants.recommendedItemParameters.Desktop.ItemDetails.pagesize,
-          getimages = ENV.isMobileApp == 'true' ? Constants.recommendedItemParameters.Mobile.getimages : Constants.recommendedItemParameters.Desktop.getimages;
+      var pagesize = ENV.mobileApp == 'true' ? Constants.recommendedItemParameters.Mobile.pagesize : Constants.recommendedItemParameters.Desktop.ItemDetails.pagesize,
+          getimages = ENV.mobileApp == 'true' ? Constants.recommendedItemParameters.Mobile.getimages : Constants.recommendedItemParameters.Desktop.getimages;
       ProductService.getRecommendedItems($scope.item.itemnumber, pagesize, getimages).then(function(resp) {
         $scope.recommendedItems = resp;
       });

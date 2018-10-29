@@ -16,14 +16,12 @@ namespace KeithLink.Svc.Impl.Repository.Profile
     {
         #region attributes
         IEventLogRepository _logger;
-        private readonly ISettingsLogic _settingsLogic;
         #endregion
 
         #region ctor
-        public InternalUserDomainRepository(IEventLogRepository logger, ISettingsLogic settingsLogic)
+        public InternalUserDomainRepository(IEventLogRepository logger)
         {
             _logger = logger;
-            _settingsLogic = settingsLogic;
         }
         #endregion
 
@@ -39,9 +37,9 @@ namespace KeithLink.Svc.Impl.Repository.Profile
         /// jwames - 8/5/2014 - add tests for argument length
         /// jwames - 8/18/2014 - change to throw exceptions when authentication fails
         /// </remarks>
-        public bool AuthenticateUser(string emailAddress, string password) {
+        public bool AuthenticateUser(string emailAddress, string password, bool hasUserKey =  false) {
             string msg = null;
-            bool success = AuthenticateUser(emailAddress, password, out msg);
+            bool success = AuthenticateUser(emailAddress, password, out msg, hasUserKey);
 
             if (success) {
                 return true;
@@ -61,12 +59,11 @@ namespace KeithLink.Svc.Impl.Repository.Profile
         /// <remarks>
         /// jwames - 8/18/2014 - documented
         /// </remarks>
-        public bool AuthenticateUser(string emailAddress, string password, out string errorMessage)
+        public bool AuthenticateUser(string emailAddress, string password, out string errorMessage, bool hasUserKey = false)
         {
-            bool userKey = _settingsLogic.CheckForStoredKey(emailAddress);
             if (emailAddress == null) { throw new ArgumentNullException("emailAddress", "emailAddress is null"); }
             if (emailAddress.Length == 0) { throw new ArgumentException("emailAddress is required", "emailAddress"); }
-            if (String.IsNullOrEmpty(password) == true && userKey == false) { throw new ArgumentException("password is required", "password"); }
+            if (String.IsNullOrEmpty(password) == true && hasUserKey == false) { throw new ArgumentException("password is required", "password"); }
 
             errorMessage = null;
 
@@ -119,7 +116,7 @@ namespace KeithLink.Svc.Impl.Repository.Profile
                     // validate password
                     if (String.IsNullOrEmpty(password) == false && boundServer.ValidateCredentials(userName, password)) {
                         return true;
-                    } else if (String.IsNullOrEmpty(password) == true && userKey == true) {
+                    } else if (String.IsNullOrEmpty(password) == true && hasUserKey == true) {
                         return true;
                     } else {
                         if (authenticatingUser.BadLogonCount >= Configuration.ActiveDirectoryInvalidAttempts)

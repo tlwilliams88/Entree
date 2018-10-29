@@ -16,6 +16,8 @@ angular
     'ngResource',
     'ngSanitize',
     'ngTouch',
+    'ngAria',
+    'ngMaterial',
     'LocalStorageModule',     // HTML5 local storage
     'ui.router',
     'ui.bootstrap',

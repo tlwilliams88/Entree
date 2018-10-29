@@ -179,6 +179,30 @@ angular.module('bekApp')
 
       getHideTutorialAddToOrder: function(){
         return localStorageService.get(Constants.localStorage.hideTutorialAddToOrder);
+      },
+
+      setHideTutorialRegisterPage: function(hideTutorial) { 
+        localStorageService.set(Constants.localStorage.hideTutorialRegister, hideTutorial);
+      },
+
+      getHideTutorialRegisterPage: function() {
+        return localStorageService.get(Constants.localStorage.hideTutorialRegister);
+      },
+
+      setBiometryEnabled: function(enabled) {
+        localStorageService.set(Constants.localStorage.biometryEnabled, enabled);
+      },
+
+      getBiometryEnabled: function() {
+        return localStorageService.get(Constants.localStorage.biometryEnabled);
+      },
+
+      setBiometryType: function(type) {
+        localStorageService.set(Constants.localStorage.biometryType, type);
+      },
+
+      getBiometryType: function() {
+        return localStorageService.get(Constants.localStorage.biometryType);
       }
     };
 
@@ -193,7 +217,6 @@ angular.module('bekApp')
     function setCurrentCustomer(customer) {
       localStorageService.set(Constants.localStorage.currentCustomer, customer);
     }
-
 
     return Service;
 

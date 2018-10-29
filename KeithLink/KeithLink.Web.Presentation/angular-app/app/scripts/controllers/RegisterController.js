@@ -8,8 +8,8 @@
  * Controller of the bekApp
  */
 angular.module('bekApp')
-  .controller('RegisterController', ['$scope', '$state', 'ENV', 'toaster', 'AuthenticationService', 'BranchService', 'UserProfileService', 'PhonegapPushService', 'LocalStorage', 'blockUI', '$interval', 'ApplicationSettingsService',
-    function ($scope, $state, ENV, toaster, AuthenticationService, BranchService, UserProfileService, PhonegapPushService, LocalStorage, blockUI, $interval, ApplicationSettingsService) {
+  .controller('RegisterController', ['$scope', '$state', 'ENV', 'toaster', 'AuthenticationService', 'BranchService', 'UserProfileService', 'PhonegapPushService', 'LocalStorage', 'blockUI', '$interval', 'ApplicationSettingsService', 'TutorialService', 'Constants',
+    function ($scope, $state, ENV, toaster, AuthenticationService, BranchService, UserProfileService, PhonegapPushService, LocalStorage, blockUI, $interval, ApplicationSettingsService, TutorialService, Constants) {
 
   $scope.isMobileApp = ENV.mobileApp;
   $scope.signUpBool = false;
@@ -17,20 +17,89 @@ angular.module('bekApp')
   $scope.defaultUserName = ENV.username;
   $scope.saveUserName = $scope.defaultUserName ? true : false;
 
-  if(ENV.mobileApp == true) {
+  var branchCheck;
+  function checkForBranches() {
+    BranchService.getBranches().then(function(resp){
+      if(resp == -1) {
+        return;
+      } else {
+        blockUI.stop();
+        $interval.cancel(branchCheck);
+        $scope.branches = resp.successResponse;
+      }
+    })
+  }
+
+  BranchService.getBranches().then(function(resp) {
+    var branches = [],
+        maintenanceMessage = Constants.maintanenceMessage.message;
+    if(resp == -1 && $scope.isMobileApp) {
+      blockUI.start(maintenanceMessage).then(function() {
+        branchCheck = $interval(checkForBranches, 30000);
+      })
+    } else {
+      if(resp && resp.length > 0) {
+        branches = resp;
+      }
+      $scope.branches = branches;
+    }
+  });
+
+  // Biometrics Tutorial
+  var getHideTutorial = LocalStorage.getHideTutorialRegisterPage(),
+      runTutorial =  getHideTutorial ? false : true,
+      overlay = true,
+      offset = {left: -70, top: 64.11},
+      width = 300,
+      highlight = true;
+
+  if($scope.isMobileApp == true) {
 
     window.plugins.touchid.isAvailable(function(biometryType) {
 
-      $scope.authenMethod = biometryType == 'touch' || biometryType == 'OK' ? 'TouchID' : 'FaceID';
-      window.plugins.touchid.has("Entree_Credential_User", function() {
-        $scope.passwordAvailable = true;
+      $scope.authenMethod = biometryType == 'touch' && biometryType != 'OK' ? 'Touch ID' : 'Face ID'; // iOS
+      if(biometryType == 'OK') {
+        $scope.authenMethod = 'Fingerprint'; // Android
+      }
+
+      var message = $scope.authenMethod == 'Touch ID' && $scope.authenMethod != 'Fingerprint' ? Constants.biomtericMessage.touchID : Constants.biometricMessage.faceID,
+          message = $scope.authenMethod == 'Fingerprint' ? Constants.biometricMessage.fingerprint : message;
+
+      
+      window.plugins.touchid.has(Constants.biometricKeyName.keyName, function() {
+        $scope.keyAvailable = true;
+
+        window.plugins.touchid.verify(Constants.biometricKeyName.keyName, "Use " + $scope.authenMethod + " to login", entreeCredentialFound, entreeBiometricResponse);
+        
       }, function() {
-        $scope.passwordAvailable = false;
+        $scope.keyAvailable = false;
       });
-      }, function(msg) {
+
+      if(runTutorial) 
+      {
+
+        TutorialService.setTutorial(
+          "register_tutorial", 
+          "Entrée now supports " + $scope.authenMethod, 
+          message,
+          [{name: "Close", onclick: setTutorialHidden}],
+          overlay,
+          "#bioRegister",
+          "top",
+          offset,
+          width,
+          highlight
+        );
+      } 
+    }, function(msg) {
         $scope.authenMethod = 'standard'
-      });
+    });
+
   };
+
+  function setTutorialHidden(){
+    TutorialService.setDisplayTutorial('hide', LocalStorage.setHideTutorialRegisterPage);
+  }
 
   // gets prepopulated login info for dev environment
   if(ENV.username) {
@@ -50,36 +119,19 @@ angular.module('bekApp')
     $scope.enteredUserName = username;
   };
 
-  var branchCheck;
-  function checkForBranches() {
-    BranchService.getBranches().then(function(resp){
-      if(resp == -1) {
-        return;
-      } else {
-        blockUI.stop();
-        $interval.cancel(branchCheck);
-        $scope.branches = resp.successResponse;
-      }
-    })
-  }
-
-  BranchService.getBranches().then(function(resp) {
-    var branches = [],
-        maintenanceMessage = 'We\'re currently undergoing maintenance for an extended period today.\n We\'ll be back soon.\n Thank you for your patience.';
-    if(resp == -1 && ENV.isMobileApp) {
-      blockUI.start(maintenanceMessage).then(function() {
-        branchCheck = $interval(checkForBranches, 30000);
-      })
-    } else {
-      if(resp && resp.length > 0) {
-        branches = resp;
-      }
-      $scope.branches = branches;
-    }
-  });
-
   $scope.login = function(loginInfo) {
     $scope.loginErrorMessage = '';
+
+    if(loginInfo.key) {
+      loginInfo.username = loginInfo.key.slice(22);
+      delete loginInfo.key;
+
+      loginInfo.password = '';
+      delete loginInfo.value; 
+    } else {
+      loginInfo.username = $scope.loginInfo.username;
+      loginInfo.password = $scope.loginInfo.password;
+    }
 
     if($scope.saveUserName){
       LocalStorage.setDefaultUserName(loginInfo.username);
@@ -104,37 +156,80 @@ angular.module('bekApp')
 
   $scope.displayBiometricsLogin = function() {
 
-    window.plugins.touchid.verify("Entree_Credential_User", "Use " + $scope.authenMethod + " to login", successCallBack, errorCallBack);
+    window.plugins.touchid.verify(Constants.biometricKeyName.keyName, "Use " + $scope.authenMethod + " to login", entreeCredentialFound, entreeBiometricResponse);
 
-    function successCallBack(storedKey) {
-
-      var credentials = {},
-          key = {
-            key: storedKey,
-            value: device.uuid
-          };
-
-      ApplicationSettingsService.getUserKey(key).then(function(resp) {
-       credentials = resp;
-
-       $scope.login(credentials);
-      })
-    }
-
-    function errorCallBack(msg) {
-
-      if(msg && msg.ErrorMessage == "Canceled by user.") {
-        return;
-      } else {
-      // Need to save username via api call here
-      window.plugins.touchid.save("Entree_Credential_User", $scope.loginInfo.username, true, function() {
-
-        $scope.login($scope.loginInfo);
-
-      })
-      }
-    }
   };
+
+  function entreeCredentialFound(storedKey) {
+
+    var credentials = {},
+        key = {
+          key: storedKey,
+          value: device.uuid
+        };
+
+    ApplicationSettingsService.getUserKey(key).then(function(resp) {
+      credentials = resp;
+      credentials.uuid = key.value;
+
+      LocalStorage.setBiometryEnabled(true);
+      LocalStorage.setBiometryType($scope.authenMethod);
+
+      $scope.login(credentials);
+    })
+  }
+
+  function entreeBiometricResponse(msg) {
+
+    var message = msg == '-1' || msg == 'Failed to init Cipher' ? msg : 'messageObject',
+        messageParsed = message == 'messageObject' && typeof(msg) != 'object' ? JSON.parse(msg).ErrorMessage : message.ErrorMessage;
+
+    var biometricStatus = messageParsed != undefined ? messageParsed : message;
+    switch(biometricStatus) 
+    {
+
+      case 'Canceled by user.':
+        $scope.userCanceledBiometric = true;
+      break;
+
+      case 'Fallback authentication mechanism selected.':
+        $scope.displayAlternateAuthentication(false);
+      break;
+
+      case 'Biometry is locked out.':
+      case 'User has denied the use of biometry for this app.':
+        biometryUnavailable(msg.ErrorMessage);
+      break;
+
+      case '-1': // iOS, biometric not registered on device
+      case 'Secret Key not set.': // Android, biometric not registered on device
+      case 'Failed to init Cipher': // Android, biometric has been deleted previously
+        window.plugins.touchid.verify(Constants.biometricKeyName.keyName, "Verifying" + $scope.authenMethod + "authentication", entreeCredentialFound, saveCredentialLocally);
+      break;
+
+      case 'KeyPermanentlyInvalidatedException': // Android, occurs when key storage is invalidated
+        $scope.loginErrorMessage = "Fingerprint storage has changed or is invalid please register Fingerprint again."
+      break;
+
+    }
+    
+  }
+
+  function saveCredentialLocally() {
+    window.plugins.touchid.save(Constants.biometricKeyName.keyName, $scope.loginInfo.username, false, successfullySavedCredential, errorSavingCredential);
+  }
+
+  function successfullySavedCredential() {
+    window.plugins.touchid.verify(Constants.biometricKeyName.keyName, "Use " + $scope.authenMethod + " to login", entreeCredentialFound, entreeBiometricResponse);
+  }
+
+  function errorSavingCredential() {
+    return;
+  }
+
+  function biometryUnavailable() {
+    $scope.displayBiometrics = false;
+  }
 
   function storeUserKeyForBiometricLogin(user) {
     var userDevice = device.uuid.toString(),
@@ -142,6 +237,10 @@ angular.module('bekApp')
 
     ApplicationSettingsService.setUserKey(userKey);
   }
+
+  $scope.displayAlternateAuthentication = function(set) {
+    $scope.displayBiometrics = set;
+  };
 
   $scope.forgotPassword = function(email) {
     $scope.checkForInternalEmail(email);

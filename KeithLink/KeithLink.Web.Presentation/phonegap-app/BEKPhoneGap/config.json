@@ -1,0 +1,144 @@
+{
+  "name": "Entree System - Powered by Ben E. Keith",
+  "homepage": "",
+  "author": {
+    "name": "Ben E. Keith",
+    "email": "",
+    "href": ""
+  },
+  "version": "No version number set",
+  "environment": {
+    "debug": {
+      "name": "debug",
+      "apiKey": "web_dev_v1",
+      "apiEndpoint": "http://localhost:60606",
+      "loggingEnabled": true,
+      "username": "sabroussard@somecompany.com",
+      "password": "L1ttleStev1e",
+      "cognosUrl": "http://corpmisdev2d.bekco.com/ibmcognos/setCookie.htm",
+      "menuMaxUrl": "https://menumaxdev.benekeith.com/public/dologin.cfm",
+      "flipsnackUrl": "https://www.flipsnack.com/BenEKeithFoods/keith-kitchen-essentials-2018-catalog.html",
+      "lastListStorageTimeout": "48",
+      "mobileApp": false,
+      "authenMethod": "standard",
+      "passwordAvailable": false,
+      "enableDebugInfo": true,
+      "googleAnalytics": {
+        "web": "UA-58495462-2",
+        "mobile": "UA-58495462-4"
+      }
+    },
+    "demo": {
+      "name": "demo",
+      "apiKey": "web_test_v1",
+      "apiEndpoint": "https://shopapistaging.benekeith.com",
+      "loggingEnabled": false,
+      "cognosUrl": "http://corpmisdev2d.bekco.com/ibmcognos/setCookie.htm",
+      "lastListStorageTimeout": "48",
+      "mobileApp": false,
+      "authenMethod": "standard",
+      "enableDebugInfo": false,
+      "googleAnalytics": {
+        "web": "UA-58495462-2",
+        "mobile": "UA-58495462-4"
+      }
+    },
+    "dev": {
+      "name": "dev",
+      "apiKey": "web_dev_v1",
+      "apiEndpoint": "https://shopapidev.benekeith.com",
+      "loggingEnabled": true,
+      "username": "sabroussard@somecompany.com",
+      "password": "L1ttleStev1e",
+      "cognosUrl": "https://kbitcustomer.benekeith.com/cognos10/setCookie.htm",
+      "menuMaxUrl": "https://menumaxdev.benekeith.com/public/dologin.cfm",
+      "flipsnackUrl": "https://www.flipsnack.com/BenEKeithFoods/keith-kitchen-essentials-2018-catalog.html",
+      "lastListStorageTimeout": "48",
+      "mobileApp": false,
+      "authenMethod": "standard",
+      "passwordAvailable": false,
+      "enableDebugInfo": true,
+      "googleAnalytics": {
+        "web": "UA-58495462-2",
+        "mobile": "UA-58495462-4"
+      }
+    },
+    "test": {
+      "name": "test",
+      "apiKey": "web_test_v1",
+      "apiEndpoint": "https://shopqa.benekeith.com/api",
+      "loggingEnabled": true,
+      "cognosUrl": "https://kbitcustomer.benekeith.com/cognos10/setCookie.htm",
+      "menuMaxUrl": "https://menumaxuat.benekeith.com/public/dologin.cfm",
+      "flipsnackUrl": "https://www.flipsnack.com/BenEKeithFoods/keith-kitchen-essentials-2018-catalog.html",
+      "lastListStorageTimeout": "48",
+      "mobileApp": false,
+      "authenMethod": "standard",
+      "passwordAvailable": false,
+      "enableDebugInfo": true,
+      "phonegapAppId": "com.benekeith.entree",
+      "googleAnalytics": {
+        "web": "UA-58495462-2",
+        "mobile": "UA-58495462-4"
+      }
+    },
+    "prod": {
+      "name": "prod",
+      "apiKey": "web_prod_v1",
+      "apiEndpoint": "https://shop.benekeith.com/api",
+      "cognosUrl": "https://kbitcustomer.benekeith.com/cognos10/setCookie.htm",
+      "menuMaxUrl": "https://www.menumax.com/public/dologin.cfm",
+      "flipsnackUrl": "https://www.flipsnack.com/BenEKeithFoods/keith-kitchen-essentials-2018-catalog.html",
+      "lastListStorageTimeout": "48",
+      "mobileApp": false,
+      "authenMethod": "standard",
+      "passwordAvailable": false,
+      "enableDebugInfo": false,
+      "loggingEnabled": false,
+      "phonegapAppId": "com.benekeith.entreeprod",
+      "googleAnalytics": {
+        "web": "UA-58495462-1",
+        "mobile": "UA-58495462-3"
+      }
+    },
+    "beta": {
+      "name": "beta",
+      "apiKey": "web_prod_v1",
+      "apiEndpoint": "https://shopbeta.benekeith.com/api",
+      "cognosUrl": "https://kbitcustomer.benekeith.com/cognos10/setCookie.htm",
+      "lastListStorageTimeout": "48",
+      "mobileApp": false,
+      "authenMethod": "standard",
+      "passwordAvailable": false,
+      "enableDebugInfo": false,
+      "loggingEnabled": false,
+      "phonegapAppId": "com.benekeith.entreeprod",
+      "googleAnalytics": {
+        "web": "UA-58495462-5",
+        "mobile": "UA-58495462-3"
+      }
+    },
+    "stage": {
+      "name": "stage",
+      "apiKey": "web_stage_v1",
+      "cognosUrl": "https://kbitcustomer.benekeith.com/cognos10/setCookie.htm",
+      "mobileApp": false,
+      "authenMethod": "standard",
+      "passwordAvailable": false,
+      "enableDebugInfo": false,
+      "loggingEnabled": false,
+      "googleAnalytics": {
+        "web": "UA-58495303-1",
+        "mobile": "UA-58495462-4"
+      }
+    }
+  },
+  "build": {
+    "angular": {
+      "description": "Ben E Keith eCommerce Web App"
+    },
+    "phonegap": {
+      "description": "Ben E Keith eCommerce Mobile App"
+    }
+  }
+}
