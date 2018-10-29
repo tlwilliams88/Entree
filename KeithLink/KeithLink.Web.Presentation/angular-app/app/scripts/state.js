@@ -663,16 +663,8 @@ angular.module('bekApp')
     })
 
     /**********
-    REPORT
+    REPORTS
     **********/
-    .state('menu.reports', {
-      url: '/reports/',
-      templateUrl: 'views/reports.html',
-      controller: 'ReportsController',
-      // data: {
-      //     authorize: 'canPayInvoices'
-      // }
-    })
     .state('menu.itemusagereport', {
       url: '/reports/itemusage',
       templateUrl: 'views/itemusagereport.html',
