@@ -17,10 +17,12 @@ namespace KeithLink.Svc.Core.Interface.Orders
 
         List<PurchaseOrder> GetPurchaseOrdersByStatus(string queryStatus);
 
-        string UpdatePurchaseOrder(PurchaseOrder order);
-        
-        string SubmitChangeOrder(Guid userId, Guid orderGroupId);
+        List<PurchaseOrder> ReadPurchaseOrderHeadersInDateRange(Guid customerId, string customerNumber, DateTime startDate, DateTime endDate);
 
-		List<PurchaseOrder> ReadPurchaseOrderHeadersInDateRange(Guid customerId, string customerNumber, DateTime startDate, DateTime endDate);
+        void UpdatePurchaseOrderPrices(string trackingNumber, IEnumerable<LineItem> lineItems);
+
+        string UpdatePurchaseOrder(PurchaseOrder order);
+
+        string SubmitChangeOrder(Guid userId, Guid orderGroupId);
 	}
 }

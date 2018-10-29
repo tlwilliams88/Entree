@@ -593,14 +593,19 @@ namespace KeithLink.Svc.Impl.Logic.SiteCatalog
             return returnValue;
         }
 
-        public ProductsReturn GetProductsByIdsWithPricing(UserSelectedContext catalogInfo, List<string> ids)
+        public ProductsReturn GetProductsByIdsWithPricing(UserSelectedContext context, List<string> ids)
+        {
+            return GetProductsByIdsWithPricing(context, ids.AsQueryable());
+        }
+
+        public ProductsReturn GetProductsByIdsWithPricing(UserSelectedContext context, IQueryable<string> ids)
         {
             int totalProcessed = 0;
             var products = new ProductsReturn() { Products = new List<Product>() };
 
-            while (totalProcessed < ids.Count)
+            while (totalProcessed < ids.Count())
             {
-                var tempProducts = _catalogRepository.GetProductsByIds(catalogInfo.BranchId, ids.Skip(totalProcessed).Take(500).Distinct().ToList());
+                var tempProducts = _catalogRepository.GetProductsByIds(context.BranchId, ids.Skip(totalProcessed).Take(500).Distinct().ToList());
 
                 if (tempProducts != null && tempProducts.Products != null && tempProducts.Products.Count > 0)
                 {
@@ -614,7 +619,7 @@ namespace KeithLink.Svc.Impl.Logic.SiteCatalog
 
             if (products.Products.Count > 0)
             {
-                AddPricingInfo(products, catalogInfo, new SearchInputModel());
+                AddPricingInfo(products, context, new SearchInputModel());
             }
 
             return products;

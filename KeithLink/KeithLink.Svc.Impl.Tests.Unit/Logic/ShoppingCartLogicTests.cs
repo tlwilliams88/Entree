@@ -798,6 +798,20 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic {
                     BranchId = "FUT",
                     CustomerId = "234567"
                 };
+                ShoppingCart testCart = new ShoppingCart
+                {
+                    Active = true,
+                    BranchId = "FUT",
+                    CartId = new Guid("dddddddddddddddddddddddddddddddd"),
+                    Name = "Fake Cart Name",
+                    Items = new List<ShoppingCartItem> {
+                        new ShoppingCartItem {
+                            ItemNumber = "123456",
+                            CatalogId = "FUT"
+                        }
+                    }
+                };
+
 
                 Guid cartId = new Guid("dddddddddddddddddddddddddddddddd");
 
@@ -916,6 +930,9 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic {
                                                        It.IsAny<bool>()))
                     .Returns(new Guid(1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1));
 
+                //mock.Setup(m => m.ReadBasket(It.IsAny<Guid>(), It.IsAny<Guid>(), It.IsAny<bool>()));
+                //    .Returns(new Guid(1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1));
+
                 return mock;
             }
 
@@ -960,6 +977,20 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic {
             public static Mock<IBasketLogic> MakeIBasketLogic() {
                 Mock<IBasketLogic> mock = new Mock<IBasketLogic>();
 
+                ShoppingCart testCart = new ShoppingCart
+                {
+                    Active = true,
+                    BranchId = "FUT",
+                    CartId = new Guid("dddddddddddddddddddddddddddddddd"),
+                    Name = "Fake Cart Name",
+                    Items = new List<ShoppingCartItem> {
+                        new ShoppingCartItem {
+                            ItemNumber = "123456",
+                            CatalogId = "FUT"
+                        }
+                    }
+                };
+
                 Basket basket = new Basket {
                     Active = true,
                     Id = new Guid(1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1).ToString(),
@@ -968,8 +999,12 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic {
                     RequestedShipDate = "1/1/2017",
                     ListType = (int)BasketType.Cart,
                     TempSubTotal = 0,
-                    ReadOnly = false
+                    ReadOnly = false,
+                    //LineItems = new List<LineItem>
+                    //{
+                    //}
                 };
+
                 mock.Setup(f => f.RetrieveSharedCustomerBasket(It.IsAny<UserProfile>(), It.IsAny<UserSelectedContext>(), It.IsAny<Guid>()))
                     .Returns(basket);
 

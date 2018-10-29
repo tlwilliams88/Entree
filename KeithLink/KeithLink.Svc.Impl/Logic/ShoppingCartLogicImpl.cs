@@ -306,9 +306,9 @@ namespace KeithLink.Svc.Impl.Logic
 				return;
 
 			basketRepository.DeleteItem(basket.UserId.ToGuid(), cartId, itemId);
-		}
-        
-		public void LookupProductDetails(UserProfile user, UserSelectedContext catalogInfo, ShoppingCart cart, List<KeithLink.Svc.Core.Models.Lists.ListItemModel> notes = null)
+        }
+
+        public void LookupProductDetails(UserProfile user, UserSelectedContext catalogInfo, ShoppingCart cart, List<ListItemModel> notes = null)
 		{
 			if (cart.Items == null)
 				return;
@@ -337,7 +337,7 @@ namespace KeithLink.Svc.Impl.Logic
 
 			var productHash = products.Products.ToDictionary(p => p.ItemNumber);
 			var priceHash = pricing.Prices.ToDictionary(p => p.ItemNumber);
-			var notesHash = new Dictionary<string, KeithLink.Svc.Core.Models.Lists.ListItemModel>();
+			var notesHash = new Dictionary<string, ListItemModel>();
 			if (notes != null)
 				notesHash = notes.ToDictionary(n => n.ItemNumber);
 			
@@ -345,7 +345,6 @@ namespace KeithLink.Svc.Impl.Logic
 			Parallel.ForEach(cart.Items, item =>
 			{
 				var prod = productHash.ContainsKey(item.ItemNumber) ? productHash[item.ItemNumber] : null;
-				var price = priceHash.ContainsKey(item.ItemNumber) ? priceHash[item.ItemNumber] : null;
 				if (prod != null)
 				{
                     item.IsValid = true;
@@ -373,7 +372,9 @@ namespace KeithLink.Svc.Impl.Logic
 					item.ItemClass = prod.ItemClass;
                     item.IsSpecialtyCatalog = prod.IsSpecialtyCatalog;
 				}
-				if (price != null)
+
+                var price = priceHash.ContainsKey(item.ItemNumber) ? priceHash[item.ItemNumber] : null;
+                if (price != null)
 				{
                     item.SpecialtyItemCost = prod.SpecialtyItemCost;
 					item.PackagePrice = price.PackagePrice.ToString();
@@ -683,6 +684,7 @@ namespace KeithLink.Svc.Impl.Logic
                 _log.WriteInformationLog(logMessage, context);
 
                 var newCartId = CreateCart(user, catalogInfo, shoppingCart, catalogId.ToUpper());
+
                 string orderNumber = null;
                 try
                 {
@@ -716,23 +718,38 @@ namespace KeithLink.Svc.Impl.Logic
 
                 CS.PurchaseOrder purchaseOrder = purchaseOrderRepository.ReadPurchaseOrder(customer.CustomerId, orderNumber);
 
-                var lineItems = ((CommerceRelationshipList)purchaseOrder.Properties["LineItems"]);
-                foreach (var lineItem in lineItems)
-                {
-                    var item = (CS.LineItem)lineItem.Target;
-                    var products = catalogLogic.GetProductsByIds(catalogId, new List<string>() {item.ProductId});
-                    var filteredProducts = products.Products.Where(x => x.ItemNumber == item.ProductId).ToList();
+                var relatedItems = (CommerceRelationshipList)purchaseOrder.Properties["LineItems"];
+                var lineItems = relatedItems.Select(relatedItem => (CS.LineItem)relatedItem.Target).AsQueryable();
+                var productIds = lineItems.Select(item => item.ProductId);
+                ProductsReturn productsReturn = catalogLogic.GetProductsByIdsWithPricing(catalogInfo, productIds);
 
-                    if (filteredProducts.Count > 0) {
-                        item.Notes = filteredProducts[0].Brand;
+                var itemProducts = lineItems
+                    .Join(productsReturn.Products,
+                        lineItem => lineItem.ProductId,
+                        product => product.ItemNumber,
+                        (lineItem, product) => new { lineItem, product });
 
-                        if(item.Each ?? false){
-                            item.ListPrice = (decimal)filteredProducts[0].PackagePriceNumeric;
-                        } else {
-                            item.ListPrice = (decimal)filteredProducts[0].CasePriceNumeric;
+                itemProducts.ToList().ForEach(ip =>
+                    {
+                        ip.lineItem.Notes = ip.product.Brand;
+
+                        decimal price;
+                        if (ip.lineItem.Each ?? false)
+                        {
+                            price = (decimal)ip.product.PackagePriceNumeric;
                         }
+                        else
+                        {
+                            price = (decimal)ip.product.CasePriceNumeric;
+                        }
+
+                        ip.lineItem.ListPrice = price;
+                        ip.lineItem.PlacedPrice = price;
                     }
-                }
+                );
+
+                purchaseOrderRepository.UpdatePurchaseOrderPrices(orderNumber, lineItems);
+
 
                 // Log the control number to the recommended items for this cart
                 _recommendedItemsOrderedAnalyticsRepository.UpdateAnalyticsForCardIdWithControlNumber(cartId.ToString(), orderNumber);

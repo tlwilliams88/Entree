@@ -94,19 +94,12 @@ namespace KeithLink.Svc.Impl.Service.ShoppingCart
 
         public ApprovedCartModel ValidateCart(UserProfile user, UserSelectedContext catalogInfo, Guid cartId, string orderNumber)
         {
-
             ApprovedCartModel ret = new ApprovedCartModel();
 
-            bool isCart = cartId != null && cartId != Guid.Empty ? true : false;
-            if(isCart == true)
-            {
-                Core.Models.ShoppingCart.ShoppingCart currentCart = new Core.Models.ShoppingCart.ShoppingCart();
-            }
-            else
-            {
-                Core.Models.Orders.Order existingOrder = new Core.Models.Orders.Order();
-            }
+            Core.Models.ShoppingCart.ShoppingCart currentCart = null;
+            Core.Models.Orders.Order existingOrder = null;
 
+            bool isCart = cartId != null && cartId != Guid.Empty ? true : false;
             try
             {
                 MinimumOrderAmountModel minimumOrderAmount = _minimumAmountRepo.GetMinimumOrderAmount(catalogInfo.CustomerId, catalogInfo.BranchId);
@@ -119,14 +112,19 @@ namespace KeithLink.Svc.Impl.Service.ShoppingCart
                 {
                     currentCart = _shoppingCartLogic.ReadCart(user, catalogInfo, cartId);
 
-                    subtotal = (decimal)PricingHelper.CalculateCartSubtotal(currentCart.Items);
-
+                    if (currentCart != null)
+                    {
+                        subtotal = (decimal)PricingHelper.CalculateCartSubtotal(currentCart.Items);
+                    }
                 }
                 else
                 {
                     existingOrder = _orderLogic.ReadOrder(user, catalogInfo, orderNumber, false);
 
-                    subtotal = (decimal)existingOrder.OrderTotal;
+                    if (existingOrder != null)
+                    {
+                        subtotal = (decimal)existingOrder.OrderTotal;
+                    }
                 }
 
                 ret.Approved = ret.ApprovedAmount <= subtotal;
@@ -137,7 +135,6 @@ namespace KeithLink.Svc.Impl.Service.ShoppingCart
                 {
                     throw new Exception("The cart total does not meet or exceed the minimum approved amount.  Please contact your DSR for more information.");
                 }
-                
             }
             catch (Exception ex)
             {
@@ -147,7 +144,6 @@ namespace KeithLink.Svc.Impl.Service.ShoppingCart
             }
 
             return ret;
-
         }
         #endregion
 

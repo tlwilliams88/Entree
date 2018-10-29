@@ -727,31 +727,29 @@ namespace KeithLink.Svc.Impl.Logic.Lists
             });
         }
 
-        private void LookupPrices(UserProfile user, List<ListItemModel> listItems, UserSelectedContext catalogInfo)
+        private void LookupPrices(UserProfile user, IEnumerable<ListItemModel> listItems, UserSelectedContext catalogInfo)
         {
-            if (listItems == null || listItems.Count == 0 || user == null)
+            if (listItems == null || listItems.Count() == 0 || user == null)
                 return;
 
-            var prices = new PriceReturn() { Prices = new List<Price>() };
+            IEnumerable<Product> products = listItems
+                .Where(x => x.CustomInventoryItemId < 1)
+                .GroupBy(listItem => listItem.ItemNumber)
+                .Select(group => group.First())
+                .Select(listItem => new Product()
+                {
+                    ItemNumber = listItem.ItemNumber,
+                    CatchWeight = listItem.CatchWeight,
+                    PackagePriceNumeric = listItem.PackagePriceNumeric,
+                    CasePriceNumeric = listItem.CasePriceNumeric,
+                    CategoryName = listItem.CategoryName,
+                    CatalogId = listItem.CatalogId,
+                    Unfi = listItem.Unfi
+                });
 
-            prices.AddRange(_priceLogic.GetPrices(catalogInfo.BranchId, catalogInfo.CustomerId, DateTime.Now.AddDays(1),
-                                                  listItems.Where(x => x.CustomInventoryItemId < 1).GroupBy(g => g.ItemNumber)
-                                                           .Select(i => new Product()
-                                                           {
-                                                               ItemNumber = i.First().ItemNumber,
-                                                               CatchWeight = i.First().CatchWeight,
-                                                               PackagePriceNumeric = i.First().PackagePriceNumeric,
-                                                               CasePriceNumeric = i.First().CasePriceNumeric,
-                                                               CategoryName = i.First().CategoryName,
-                                                               CatalogId = i.First().CatalogId,
-                                                               Unfi = i.First().Unfi
-                                                           })
-                                                           .Distinct()
-                                                           .ToList()
-                                                  )
-                           );
+            PriceReturn priceReturn = _priceLogic.GetPrices(catalogInfo.BranchId, catalogInfo.CustomerId, DateTime.Now.AddDays(1), products);
 
-            Dictionary<string, Price> priceHash = prices.Prices.ToDictionary(p => p.ItemNumber);
+            Dictionary<string, Price> priceHash = priceReturn.Prices.ToDictionary(p => p.ItemNumber);
 
             Parallel.ForEach(listItems, listItem =>
             {

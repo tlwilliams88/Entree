@@ -42,6 +42,7 @@
     <Reference Include="BEKlibrary, Version=2017.10.1.0, Culture=neutral, PublicKeyToken=30bbedabefbbbc7e, processorArchitecture=MSIL">
       <HintPath>..\packages\BEK.Library.2017.10.1\lib\net45\BEKlibrary.dll</HintPath>
     </Reference>
+    <Reference Include="CommerceServer.Foundation.CrossTier, Version=10.0.0.0, Culture=neutral, PublicKeyToken=f5c79cb11734af7a" />
     <Reference Include="Elasticsearch.Net, Version=5.0.0.0, Culture=neutral, PublicKeyToken=96c599bbe3e70f5d, processorArchitecture=MSIL">
       <HintPath>..\packages\Elasticsearch.Net.5.5.0\lib\net45\Elasticsearch.Net.dll</HintPath>
       <Private>True</Private>
@@ -128,7 +129,8 @@
     <Compile Include="Repository\Marketing\CampaignCustomerRepositoryTests.cs" />
     <Compile Include="Repository\Marketing\CatalogCampaignHeaderRepositoryTests.cs" />
     <Compile Include="Repository\MigratedDatabaseTest.cs" />
-    <Compile Include="Repository\Orders\OrderedFromListRepositoryTestscs.cs" />
+    <Compile Include="Repository\Orders\OrderedFromListRepositoryTests.cs" />
+    <Compile Include="Repository\Orders\PurchaseOrderRepositoryTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Email\" />

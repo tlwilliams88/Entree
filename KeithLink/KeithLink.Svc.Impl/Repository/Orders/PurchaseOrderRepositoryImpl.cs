@@ -1,9 +1,13 @@
 ﻿using CommerceServer.Core;
 using CommerceServer.Foundation;
+
+using KeithLink.Common.Core.Extensions;
+using KeithLink.Common.Core.Interfaces.Logging;
 using KeithLink.Svc.Core.Interface.Orders;
 using KeithLink.Svc.Core.Models.Generated;
 using KeithLink.Svc.Impl.Helpers;
-using KeithLink.Common.Core.Extensions;
+using KeithLink.Svc.Impl.Repository.DataConnection;
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,19 +15,21 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Data;
 using System.Globalization;
-using KeithLink.Common.Core.Interfaces.Logging;
 
 namespace KeithLink.Svc.Impl.Repository.Orders
 {
-	public class PurchaseOrderRepositoryImpl: IPurchaseOrderRepository
-	{
+	public class PurchaseOrderRepositoryImpl: DapperDatabaseConnection, IPurchaseOrderRepository
+    {
         private readonly IEventLogRepository _log;
-        public PurchaseOrderRepositoryImpl(IEventLogRepository log)
+
+        public PurchaseOrderRepositoryImpl(IEventLogRepository log) : base(Configuration.CSTransactionsDbConnection)
         {
             _log = log;
         }
-        public Guid? GetSoldToIdForPurchaseOrderByInvoice(string poNumber) {
-            System.Data.DataSet searchableProperties = Svc.Impl.Helpers.CommerceServerCore.GetPoManager().GetSearchableProperties(System.Globalization.CultureInfo.CurrentUICulture.ToString());
+
+        public Guid? GetSoldToIdForPurchaseOrderByInvoice(string poNumber)
+        {
+            DataSet searchableProperties = Svc.Impl.Helpers.CommerceServerCore.GetPoManager().GetSearchableProperties(System.Globalization.CultureInfo.CurrentUICulture.ToString());
             SearchClauseFactory searchClauseFactory = Svc.Impl.Helpers.CommerceServerCore.GetPoManager().GetSearchClauseFactory(searchableProperties, "PurchaseOrder");
             SearchClause poCluase = searchClauseFactory.CreateClause(ExplicitComparisonOperator.Equal, "TrackingNumber", poNumber);
             //SearchClause customerClause = searchClauseFactory.CreateClause(ExplicitComparisonOperator.Equal, "CustomerId", customerNumber);
@@ -38,12 +44,15 @@ namespace KeithLink.Svc.Impl.Repository.Orders
             options.NumberOfRecordsToReturn = 1;
 
             // Perform the search.
-            System.Data.DataSet results = Svc.Impl.Helpers.CommerceServerCore.GetPoManager().SearchPurchaseOrders(poCluase, options);
+            DataSet results = CommerceServerCore.GetPoManager().SearchPurchaseOrders(poCluase, options);
 
-            if (results.Tables.Count > 0 && results.Tables[0].Rows.Count > 0) {
+            if (results.Tables.Count > 0 && results.Tables[0].Rows.Count > 0)
+            {
                 // Enumerate the results of the search.
                 return Guid.Parse(results.Tables[0].Rows[0].ItemArray[2].ToString());
-            } else {
+            } 
+            else
+            {
                 return null;
             }
         }
@@ -51,9 +60,11 @@ namespace KeithLink.Svc.Impl.Repository.Orders
 		public PurchaseOrder ReadPurchaseOrder(Guid customerId, string orderNumber)
 		{
 			var queryBaskets = new CommerceQuery<CommerceEntity, CommerceModelSearch<CommerceEntity>, CommerceBasketQueryOptionsBuilder>("Basket");
-			queryBaskets.SearchCriteria.Model.Properties["UserId"] = customerId.ToCommerceServerFormat();
-			queryBaskets.SearchCriteria.Model.Properties["BasketType"] = 1;
-			queryBaskets.SearchCriteria.Model.Properties["OrderNumber"] = orderNumber;
+
+            var searchModel = queryBaskets.SearchCriteria.Model;
+            searchModel.Properties["UserId"] = customerId.ToCommerceServerFormat();
+            searchModel.Properties["BasketType"] = 1;
+            searchModel.Properties["OrderNumber"] = orderNumber;
 
             queryBaskets.QueryOptions.RefreshBasket = false;
 
@@ -70,15 +81,18 @@ namespace KeithLink.Svc.Impl.Repository.Orders
 			return ((PurchaseOrder)basketResponse.CommerceEntities[0]);
 		}
 
-        public PurchaseOrder ReadPurchaseOrderByTrackingNumber(string confirmationNumber) {
+        public PurchaseOrder ReadPurchaseOrderByTrackingNumber(string confirmationNumber) 
+        {
             Guid? userId = GetSoldToIdForPurchaseOrderByInvoice(confirmationNumber);
 
-            if (userId.HasValue) {
+            if (userId.HasValue) 
+            {
                 var queryBaskets = new CommerceQuery<CommerceEntity, CommerceModelSearch<CommerceEntity>, CommerceBasketQueryOptionsBuilder>("Basket");
-                
-                queryBaskets.SearchCriteria.Model.Properties["UserId"] = userId.Value.ToString("B");
-                queryBaskets.SearchCriteria.Model.Properties["BasketType"] = 1;
-                queryBaskets.SearchCriteria.Model.Properties["OrderNumber"] = confirmationNumber;
+
+                var searchModel = queryBaskets.SearchCriteria.Model;
+                searchModel.Properties["UserId"] = userId.Value.ToString("B");
+                searchModel.Properties["BasketType"] = 1;
+                searchModel.Properties["OrderNumber"] = confirmationNumber;
                 
                 queryBaskets.QueryOptions.RefreshBasket = false;
 
@@ -92,15 +106,20 @@ namespace KeithLink.Svc.Impl.Repository.Orders
 
                 CommerceQueryOperationResponse basketResponse = response.OperationResponses[0] as CommerceQueryOperationResponse;
 
-                return (basketResponse.CommerceEntities.Cast<CommerceEntity>().Select(p => (PurchaseOrder)p).First());
-            } else {
+                return (basketResponse.CommerceEntities.Cast<CommerceEntity>()
+                    .Select(entity => (PurchaseOrder)entity)
+                    .First());
+            }
+            else
+            {
                 return null;
             }
         }
 
-        public List<PurchaseOrder> ReadPurchaseOrderHeadersByCustomerId(Guid customerId) {
+        public List<PurchaseOrder> ReadPurchaseOrderHeadersByCustomerId(Guid customerId)
+        {
             var manager = CommerceServerCore.GetPoManager();
-            System.Data.DataSet searchableProperties = manager.GetSearchableProperties(CultureInfo.CurrentUICulture.ToString());
+            DataSet searchableProperties = manager.GetSearchableProperties(CultureInfo.CurrentUICulture.ToString());
             // set what to search
             SearchClauseFactory searchClauseFactory = manager.GetSearchClauseFactory(searchableProperties, "PurchaseOrder");
             // set what field/value to search for
@@ -133,7 +152,7 @@ namespace KeithLink.Svc.Impl.Repository.Orders
         public List<PurchaseOrder> GetPurchaseOrdersByStatus(string queryStatus)
         {
             var manager = CommerceServerCore.GetPoManager();
-            System.Data.DataSet searchableProperties = manager.GetSearchableProperties(CultureInfo.CurrentUICulture.ToString());
+            DataSet searchableProperties = manager.GetSearchableProperties(CultureInfo.CurrentUICulture.ToString());
             // set what to search
             SearchClauseFactory searchClauseFactory = manager.GetSearchClauseFactory(searchableProperties, "PurchaseOrder");
             // Get a list of the returnable properties - debug only
@@ -157,6 +176,7 @@ namespace KeithLink.Svc.Impl.Repository.Orders
             {
                 poTNs.Add(row["TrackingNumber"].ToString());
             }
+
             // Get the XML representation of the purchase orders.
             if (poTNs.Count > 0)
             {
@@ -166,6 +186,7 @@ namespace KeithLink.Svc.Impl.Repository.Orders
                     Pos.Add(po);
                 }
             }
+
             return Pos;
         }
 
@@ -173,12 +194,13 @@ namespace KeithLink.Svc.Impl.Repository.Orders
 		public List<PurchaseOrder> ReadPurchaseOrderHeadersInDateRange(Guid customerId, string customerNumber, DateTime startDate, DateTime endDate)
 		{
 			var queryBaskets = new CommerceQuery<CommerceEntity, CommerceModelSearch<CommerceEntity>, CommerceBasketQueryOptionsBuilder>("Basket");
-			queryBaskets.SearchCriteria.Model.Properties["UserId"] = customerId.ToCommerceServerFormat();
-			queryBaskets.SearchCriteria.Model.Properties["BasketType"] = 1;
-			queryBaskets.SearchCriteria.Model.Properties["CustomerId"] = customerNumber;
-			queryBaskets.SearchCriteria.Model.Properties["CreatedDateStart"] = startDate;
-			queryBaskets.SearchCriteria.Model.Properties["CreatedDateEnd"] = endDate;
 
+            var searchModel = queryBaskets.SearchCriteria.Model;
+            searchModel.Properties["UserId"] = customerId.ToCommerceServerFormat();
+            searchModel.Properties["BasketType"] = 1;
+            searchModel.Properties["CustomerId"] = customerNumber;
+            searchModel.Properties["CreatedDateStart"] = startDate;
+            searchModel.Properties["CreatedDateEnd"] = endDate;
 
 			queryBaskets.QueryOptions.RefreshBasket = false;
 
@@ -189,12 +211,48 @@ namespace KeithLink.Svc.Impl.Repository.Orders
 
 			CommerceQueryOperationResponse basketResponse = response.OperationResponses[0] as CommerceQueryOperationResponse;
 
-			return basketResponse.CommerceEntities.Cast<CommerceEntity>().Where(c => c.Properties["CustomerId"] != null &&
-																					 c.Properties["CustomerId"].ToString().Equals(customerNumber)
-																					 && c.Properties["RequestedShipDate"].ToString().ToDateTime().Value >= startDate && c.Properties["RequestedShipDate"].ToString().ToDateTime().Value <= endDate
-																				).Select(p => (PurchaseOrder)p).ToList();
-			//return basketResponse.CommerceEntities.Cast<CommerceEntity>().Select(p => (PurchaseOrder)p).ToList();
+			return basketResponse.CommerceEntities.Cast<CommerceEntity>()
+                .Where(entity => entity.Properties["CustomerId"] != null 
+                              && entity.Properties["CustomerId"].ToString().Equals(customerNumber)
+					          && entity.Properties["RequestedShipDate"].ToString().ToDateTime().Value >= startDate 
+                              && entity.Properties["RequestedShipDate"].ToString().ToDateTime().Value <= endDate)
+                .Select(entity => (PurchaseOrder)entity)
+                .ToList();
 		}
+
+        public void UpdatePurchaseOrderPrices(string trackingNumber, IEnumerable<LineItem> lineItems)
+        {
+            //throw new NotImplementedException();
+            if (trackingNumber == null)
+                throw new ArgumentNullException("trackingNumber");
+            if (lineItems == null)
+                throw new ArgumentNullException("lineItems");
+
+            string sqlCommand = @"
+	            UPDATE [dbo].[LineItems]
+                SET PlacedPrice = @PlacedPrice, ListPrice = @ListPrice
+                FROM [dbo].[LineItems]
+                JOIN [dbo].[PurchaseOrders] 
+                ON LineItems.OrderGroupId = PurchaseOrders.OrderGroupId
+                WHERE PurchaseOrders.TrackingNumber = @TrackingNumber
+                AND ProductId = @ProductId
+                ";
+
+            lineItems.ToList().ForEach(lineItem =>
+                {
+                    var parameters =
+                      new
+                      {
+                          TrackingNumber = trackingNumber,
+                          ProductId = lineItem.ProductId,
+                          PlacedPrice = lineItem.PlacedPrice,
+                          ListPrice = lineItem.ListPrice,
+                      };
+
+                    Execute(sqlCommand, parameters);
+                }
+            );
+        }
 
         public string UpdatePurchaseOrder(PurchaseOrder order)
         {

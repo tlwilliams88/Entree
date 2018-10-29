@@ -19,7 +19,7 @@ using KeithLink.Svc.Core.Models.Orders;
 
 namespace KeithLink.Svc.Impl.Tests.Integration.Repository.Orders
 {
-    public class OrderedItemsFromListRepositoryTestscs
+    public class OrderedItemsFromListRepositoryTests
     {
         private static IOrderedItemsFromListRepository MakeRepo()
         {

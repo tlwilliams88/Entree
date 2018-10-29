@@ -274,100 +274,117 @@ angular.module('bekApp')
         }
       });
       return invalidItemFound;
-   }
+    }
 
-   $scope.addItemToCart = function(item) {
-    item.quantity = item.newQuantity;
+    $scope.addItemToCart = function(item) {
+      item.quantity = item.newQuantity;
 
-    delete item.newQuantity;
+      delete item.newQuantity;
 
-    $scope.currentCart.items.push(item);
+      $scope.currentCart.items.push(item);
 
-    updateRecommendedItems();
+      updateRecommendedItems();
 
-    $scope.saveCart($scope.currentCart);
-   };
+      $scope.saveCart($scope.currentCart);
+    };
 
-    processingSaveCart = false;
+      processingSaveCart = false;
 
-    $scope.saveCart = function(cart) {
+      $scope.saveCart = function (cart)
+      {
+        var invalidItemFound =  invalidItemCheck(cart.items);
+        if (!processingSaveCart && !invalidItemFound)
+        {
+          processingSaveCart = true;
+          var updatedCart = angular.copy(cart);
 
-     var invalidItemFound =  invalidItemCheck(cart.items);
-     if (!processingSaveCart && !invalidItemFound) {
-        processingSaveCart = true;
-        var updatedCart = angular.copy(cart);
-
-        // delete items if quantity is 0 or price is 0
-          updatedCart.items = $filter('filter')( updatedCart.items, function(item){
-            return (item.quantity > 0 || (item.quantity === 0 && item.status && item.status.toUpperCase() === 'OUT OF STOCK')) && (PricingService.hasPackagePrice(item) || PricingService.hasCasePrice(item) || (item.price && PricingService.hasPrice(item.price)));
-          });
+          // delete items if quantity is 0 or price is 0
+          updatedCart.items = $filter('filter')(updatedCart.items,
+            function (item)
+            {
+              return (item.quantity > 0 || (item.quantity === 0 && item.status && item.status.toUpperCase() === 'OUT OF STOCK')) && (PricingService.hasPackagePrice(item) || PricingService.hasCasePrice(item) || (item.price && PricingService.hasPrice(item.price)));
+            });
           $scope.currentCart.items = updatedCart.items;
           $scope.currentCart.items = $filter('filter')($scope.currentCart.items, {status: '!Deleted'});
-          if(CartService.cartHeaders.length == 0) {
+          if (CartService.cartHeaders.length == 0)
+          {
             CartService.getCartHeaders();
           }
           var currentCartHeaders = $filter('filter')(CartService.cartHeaders, {id: updatedCart.id});
 
-          currentCartHeaders[0].items.forEach(function(cartItem) {
-            updatedCart.items.forEach(function(item) {
-              if(item.itemnumber == cartItem.itemnumber && item.each == cartItem.each) {
-                item.cartitemid = cartItem.cartitemid;
-              }
-            })
-          })
+          if (currentCartHeaders[0] != null)
+          {
+            currentCartHeaders[0].items.forEach(function (cartItem)
+            {
+              updatedCart.items.forEach(
+                function (item)
+                {
+                  if (item.itemnumber == cartItem.itemnumber && item.each == cartItem.each)
+                  {
+                    item.cartitemid = cartItem.cartitemid;
+                  }
+                })
+            });
+          }
 
           $scope.resetSubmitDisableFlag(true);
-          return CartService.updateCart(updatedCart).then(function(savedCart) {
-            $scope.currentCart.isRenaming = false;
-            $scope.sortBy = null;
-            $scope.sortOrder = false;
+          return CartService.updateCart(updatedCart)
+            .then(function (savedCart)
+              {
+                $scope.currentCart.isRenaming = false;
+                $scope.sortBy = null;
+                $scope.sortOrder = false;
 
-            // clear and reapply all watches on item quantity and each fields
-            clearItemWatches();
-            $scope.currentCart = savedCart;
-            addItemWatches(0);
+                // clear and reapply all watches on item quantity and each fields
+                clearItemWatches();
+                $scope.currentCart = savedCart;
+                addItemWatches(0);
 
-            $scope.cartForm.$setPristine();
-            $scope.displayMessage('success', 'Successfully saved cart ' + savedCart.name);
-            return savedCart.id;
-        }, function() {
-          $scope.displayMessage('error', 'Error saving cart ' + updatedCart.name);
-        }).finally(function() {
-          processingSaveCart = false;
-        });
-      }
-    };
-
-    var processingSubmitOrder = false;
-
-    $scope.submitOrder = function (cart)
-    {
-      var invalidItemFound =  invalidItemCheck(cart.items);
-      var invalidSelectedDate = $scope.validateShipDate($scope.selectedShipDate)
-
-      if (!processingSaveCart && !invalidItemFound && !invalidSelectedDate)
-      {
-        processingSubmitOrder = true;
-        $scope.disableSubmitButtons = true;
-
-        CartService.isSubmitted(cart.id)
-          .then(function (hasBeenSubmitted)
-          {
-            if (!hasBeenSubmitted && (cart.approval.approved == true || $scope.cartSubmissionApproved == true))
+                $scope.cartForm.$setPristine();
+                $scope.displayMessage('success', 'Successfully saved cart ' + savedCart.name);
+                return savedCart.id;
+            },
+            function ()
+            {
+              $scope.displayMessage('error', 'Error saving cart ' + updatedCart.name);
+            })
+            .finally(function ()
             {
               processingSaveCart = false;
-              $scope.saveCart(cart)
-                .then(CartService.submitOrder)
-                .then(function (data) { processSubmitSuccess(data, cart); }, processSubmitError);
-            }
-          })
-          .finally(function ()
-          {
-            processingSubmitOrder = false;
-            $scope.disableSubmitButtons = false;
-          });
-      }
-    };
+            });
+        }
+      };
+
+      var processingSubmitOrder = false;
+
+      $scope.submitOrder = function (cart)
+      {
+        var invalidItemFound = invalidItemCheck(cart.items);
+        var invalidSelectedDate = $scope.validateShipDate($scope.selectedShipDate)
+
+        if (!processingSaveCart && !invalidItemFound && !invalidSelectedDate && !processingSubmitOrder)
+        {
+          processingSubmitOrder = true;
+          $scope.disableSubmitButtons = true;
+
+          CartService.isSubmitted(cart.id)
+            .then(function (hasBeenSubmitted)
+            {
+              if (!hasBeenSubmitted && (cart.approval.approved == true || $scope.cartSubmissionApproved == true))
+              {
+                processingSaveCart = false;
+                $scope.saveCart(cart)
+                  .then(CartService.submitOrder)
+                  .then(function (data) { processSubmitSuccess(data, cart); }, processSubmitError);
+              }
+            })
+            .finally(function ()
+            {
+              processingSubmitOrder = false;
+              $scope.disableSubmitButtons = false;
+            });
+        }
+      };
 
       function processSubmitSuccess(data, cart)
       {
@@ -393,7 +410,7 @@ angular.module('bekApp')
           if (orderNumber === -1)
           {
             //no BEK items bought
-            if (data.ordersReturned && data.ordersReturned.length && data.ordersReturned.length !== data.numberOfOrders)
+            if (data.ordersReturned.length !== data.numberOfOrders)
             {
               status = 'error';
               message = 'One or more catalog orders failed. Please contact your DSR representative for assistance';
@@ -403,7 +420,7 @@ angular.module('bekApp')
               message = 'Successfully submitted order.';
             }
 
-            if (data.ordersReturned && data.ordersReturned[0] !== null)
+            if (data.ordersReturned[0] != null)
             {
               orderNumber = data.ordersReturned[0].ordernumber;
             } else
@@ -438,8 +455,12 @@ angular.module('bekApp')
 
         SessionRecordingService.tagOrder(orderNumber);
 
-        $state.go('menu.orderitems', { invoiceNumber: orderNumber });
         $scope.displayMessage(status, message);
+
+        if (orderNumber != null)
+        {
+          $state.go('menu.orderitems', { invoiceNumber: orderNumber });
+        }
       }
 
       function processSubmitError(error)

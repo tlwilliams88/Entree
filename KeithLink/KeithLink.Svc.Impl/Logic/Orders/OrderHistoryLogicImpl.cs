@@ -616,7 +616,7 @@ namespace KeithLink.Svc.Impl.Logic.Orders
         {
             OrderHistoryFile historyFile = JsonConvert.DeserializeObject<OrderHistoryFile>(rawOrder);
 
-            _log.WriteInformationLog(string.Format("Consuming order update from queue for message ({0})", historyFile.MessageId));
+            _log.WriteInformationLog(string.Format($"Consuming order update from queue for customer number {historyFile.Header.CustomerNumber} and control number {historyFile.Header.ControlNumber}."));
 
             Create(historyFile, false);
 

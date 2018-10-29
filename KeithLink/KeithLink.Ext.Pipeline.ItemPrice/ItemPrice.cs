@@ -40,7 +40,9 @@ namespace KeithLink.Ext.Pipeline.ItemPrice
 
 				if (lineItems != null && lineItems.Count > 0)
 				{
-					var prices = PipelineServiceHelper.CreateWebServiceInstance(url).GetPrices(order["BranchId"].ToString(),
+                    var priceService = PipelineServiceHelper.CreateWebServiceInstance(url);
+
+                    var prices = priceService.GetPrices(order["BranchId"].ToString(),
 						order["CustomerId"].ToString(),
 						DateTime.Parse(order["RequestedShipDate"].ToString()),
 						lineItems.Cast<IDictionary>().Select(
@@ -55,7 +57,8 @@ namespace KeithLink.Ext.Pipeline.ItemPrice
                         if (Item["MainFrameStatus"].ToString().Length == 0) {
                             var itemPrice = ((KeithLink.Ext.Pipeline.ItemPrice.PipelineService.PriceReturn)prices).Prices.Where(p => p.ItemNumber.Equals(Item["product_id"].ToString()));
 
-                            if (itemPrice.Any()) {
+                            if (itemPrice.Any())
+                            {
                                 var price = Item["Each"].ToString().ToLower() == "true" ? itemPrice.First().PackagePrice : itemPrice.First().CasePrice;
 
                                 if (price == 0) //TODO: Enable this check once we are using a real customer. For now there are far too many products without a price.
