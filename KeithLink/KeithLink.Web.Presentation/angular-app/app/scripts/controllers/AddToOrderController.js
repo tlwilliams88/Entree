@@ -1031,6 +1031,8 @@ angular.module('bekApp')
       refreshSubtotal($scope.selectedCart.items, $scope.selectedList.items);
 
       calculatePieces($scope.selectedCart.items);
+
+      $analytics.eventTrack('Added ' + item.orderedfromsource + ' to cart ' + $scope.selectedCart.cartName + ' from Add To Order on Desktop', {  category: item.orderedfromsource + 'Add To Cart From Add To Order On Desktop'});
       
       SessionRecordingService.tagAddRecommendedItem('CartIQ;' + item.itemnumber);
     
